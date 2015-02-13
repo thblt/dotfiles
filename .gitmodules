@@ -28,3 +28,6 @@
 [submodule "vim/bundle/tabular"]
 	path = vim/bundle/tabular
 	url = https://github.com/godlygeek/tabular
+[submodule "vim/bundle/sparkup"]
+	path = vim/bundle/sparkup
+	url = https://github.com/rstacruz/sparkup
