@@ -19,9 +19,6 @@
 [submodule "vim/bundle/Zenburn"]
 	path = vim/bundle/Zenburn
 	url = https://github.com/jnurmine/Zenburn
-[submodule "vim/bundle/twilight"]
-	path = vim/bundle/twilight
-	url = https://github.com/vim-scripts/twilight
 [submodule "vim/bundle/vim-hybrid"]
 	path = vim/bundle/vim-hybrid
 	url = https://github.com/w0ng/vim-hybrid
