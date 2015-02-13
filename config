@@ -1,0 +1,7 @@
+host k9
+  User thblt 
+  Hostname k9.thb.lt
+host namo 
+  User thblt 
+  Hostname namo.thb.lt
+
