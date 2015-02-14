@@ -34,9 +34,11 @@ fi;
 # Variables
 
 if $is_headless; then
-	 export EDITOR="vim"
+    export EDITOR="vim"
+elif $is_mac then
+    export EDITOR="mvim"
 else
- 	 export EDITOR="gvim"
+    export EDITOR="gvim"
 fi;
 
 # Aliases
