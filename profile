@@ -10,7 +10,7 @@ HOSTNAME=
 if [[ `hostname` == "Rudiger.local" ]]; then
 	is_mac=true;
 elif [[ `hostname` = "thblap.local" ]]; then
-	is_mac=:true;
+	is_mac=true;
 elif [[ `hostname` = "namo.thb.lt" ]]; then
 	is_linux=true;
 	is_headless=true;
