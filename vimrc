@@ -22,7 +22,7 @@ set ruler
 set nofoldenable
 
 """ Useful stuff
-set encoding=utf-8
+"set encoding=utf-8
 set scrolloff=3
 set autoindent
 set showmode
@@ -42,3 +42,8 @@ set undofile
 """ Dim inactive windows
 let g:diminactive_use_syntax = 1
 let g:diminactive_use_colorcolumn = 1
+
+let s:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
+if isdirectory(s:clang_library_path)
+    let g:clang_library_path=s:clang_library_path
+endif
