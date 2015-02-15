@@ -13,9 +13,6 @@
 [submodule "vim/bundle/vim-diminactive"]
 	path = vim/bundle/vim-diminactive
 	url = https://github.com/blueyed/vim-diminactive
-[submodule "vim/bundle/command-t"]
-	path = vim/bundle/command-t
-	url = git://git.wincent.com/command-t.git
 [submodule "vim/bundle/Zenburn"]
 	path = vim/bundle/Zenburn
 	url = https://github.com/jnurmine/Zenburn

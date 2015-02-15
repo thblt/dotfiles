@@ -22,7 +22,8 @@ set ruler
 set nofoldenable
 
 """ Useful stuff
-"set encoding=utf-8
+set encoding=utf-8
+set nocompatible
 set scrolloff=3
 set autoindent
 set showmode
