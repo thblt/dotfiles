@@ -1,11 +1,3 @@
-#!/usr/bin/env zsh
-#   _________  _   _ ____   ____ 
-#  |__  / ___|| | | |  _ \ / ___|
-#    / /\___ \| |_| | |_) | |    
-# _ / /_ ___) |  _  |  _ <| |___ 
-#(_)____|____/|_| |_|_| \_\\____|
-#
-
 source ~/.profile
  
 # Complétion 
@@ -38,17 +30,3 @@ prompt redhat
 alias ls='ls --color=auto'
 alias ll='ls --color=auto -lh'
 alias lll='ls --color=auto -lh | less'
-# marre de se faire corriger par zsh ;)
-alias xs='cd'
-alias sl='ls'
-# mplayer en plein framme buffer ;)
-alias mplayerfb='mplayer -vo fbdev -vf scale=1024:768'
-# Un grep avec des couleurs :
-export GREP_COLOR=31
-alias grep='grep --color=auto'
-alias xte='nohup xterm &' # xte lancera un xterm qui ne se fermera pas si on ferme le terminal
-# Pareil pour les variables d'environement :
-#export http_proxy="http://hostname:8080/"
-#export HTTP_PROXY=$http_proxy
-# un VRAI éditeur de texte ;)
-export EDITOR=/usr/bin/vim
