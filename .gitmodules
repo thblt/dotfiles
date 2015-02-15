@@ -13,9 +13,6 @@
 [submodule "vim/bundle/vim-diminactive"]
 	path = vim/bundle/vim-diminactive
 	url = https://github.com/blueyed/vim-diminactive
-[submodule "vim/bundle/command-t"]
-	path = vim/bundle/command-t
-	url = git://git.wincent.com/command-t.git
 [submodule "vim/bundle/Zenburn"]
 	path = vim/bundle/Zenburn
 	url = https://github.com/jnurmine/Zenburn
@@ -49,6 +46,9 @@
 [submodule "vim/bundle/vim-markdown"]
 	path = vim/bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown
-[submodule "vim/bundle/vim-colors-solarized"]
-	path = vim/bundle/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized
+[submodule "vim/bundle/vim-clang-format"]
+	path = vim/bundle/vim-clang-format
+	url = https://github.com/rhysd/vim-clang-format
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim

@@ -22,7 +22,8 @@ set ruler
 set nofoldenable
 
 """ Useful stuff
-"set encoding=utf-8
+set encoding=utf-8
+set nocompatible
 set scrolloff=3
 set autoindent
 set showmode
@@ -46,4 +47,12 @@ let g:diminactive_use_colorcolumn = 1
 let s:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
 if isdirectory(s:clang_library_path)
     let g:clang_library_path=s:clang_library_path
+endif
+
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
