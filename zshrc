@@ -25,8 +25,3 @@ setopt correctall
 autoload -U promptinit
 promptinit
 prompt redhat
- 
-# Les alias marchent comme sous bash
-alias ls='ls --color=auto'
-alias ll='ls --color=auto -lh'
-alias lll='ls --color=auto -lh | less'
