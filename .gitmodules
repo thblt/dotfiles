@@ -46,3 +46,9 @@
 [submodule "vim/bundle/vim-markdown"]
 	path = vim/bundle/vim-markdown
 	url = https://github.com/plasticboy/vim-markdown
+[submodule "vim/bundle/vim-clang-format"]
+	path = vim/bundle/vim-clang-format
+	url = https://github.com/rhysd/vim-clang-format
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim
