@@ -36,11 +36,11 @@ fi;
 # Variables
 
 if $is_headless; then
-    export EDITOR="vim -f"
+    export EDITOR="vim "
 elif $is_mac; then
-    export EDITOR="mvim -f"
+    export EDITOR="mvim"
 else
-    export EDITOR="gvim -f"
+    export EDITOR="gvim"
 fi;
 
 export GREP_COLOR=31
