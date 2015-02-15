@@ -35,16 +35,18 @@ fi;
 
 if $is_headless; then
     export EDITOR="vim"
-elif $is_mac then
+elif $is_mac; then
     export EDITOR="mvim"
 else
     export EDITOR="gvim"
 fi;
 
 # Aliases
+
 alias e=${EDITOR}
 alias irc="irssi -n thblt -c irc.freenode.net -w \"${_irc_password}\""
 alias fuck='sudo $(history -p \!\!)' 
+alias bd='. ~/.bd -s'
 
 # mkcd
 
@@ -56,7 +58,7 @@ fi
 
 # bd
 
-alias bd=". bd -s"
+alias bd="~/.dotfiles/bd -s"
 
 alias ..="cd .."
 alias ..2="cd ../.."
