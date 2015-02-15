@@ -5,14 +5,16 @@ is_mac=false;
 is_linux=false;
 is_headless=false;
 
-if [ $HOSTNAME = "Rudiger.local" ]; then
+HOSTNAME=
+
+if [[ `hostname` == "Rudiger.local" ]]; then
 	is_mac=true;
-elif [ $HOSTNAME = "thblap.local" ]; then
+elif [[ `hostname` = "thblap.local" ]]; then
 	is_mac=:true;
-elif [ $HOSTNAME = "namo.thb.lt" ]; then
+elif [[ `hostname` = "namo.thb.lt" ]]; then
 	is_linux=true;
 	is_headless=true;
-elif [ $HOSTNAME = "k9.thb.lt" ]; then
+elif [[ `hostname` = "k9.thb.lt" ]]; then
 	is_linux=true;
 	is_headless=true;
 else
@@ -40,6 +42,9 @@ elif $is_mac; then
 else
     export EDITOR="gvim -f"
 fi;
+
+export GREP_COLOR=31
+alias grep='grep --color=auto'
 
 # Aliases
 
@@ -74,3 +79,4 @@ if ! $is_linux; then
 	PATH="${Qt5_ROOT}/bin/:${PATH}"
 	export PATH
 fi;
+
