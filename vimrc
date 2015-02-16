@@ -49,6 +49,7 @@ if isdirectory(s:clang_library_path)
     let g:clang_library_path=s:clang_library_path
 endif
 
+""" Use ag on CtrlP
 if executable('ag')
   " Use Ag over Grep
   set grepprg=ag\ --nogroup\ --nocolor
@@ -56,3 +57,8 @@ if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
+
+
+" Make <Leader> char something more accessible on a AZERTY keyboard
+let mapleader = ","
+let g:mapleader = ","

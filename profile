@@ -25,15 +25,11 @@ fi;
 
 source ~/.secrets
 
-if ! $is_linux; then
-	export Qt5_ROOT="/Users/thblt/Documents/Coderies/lib/Qt/5.4/clang_64"
-	export Qt5_DIR="${Qt5_ROOT}/lib/cmake/Qt5/"
-	export _qt5gui_OPENGL_INCLUDE_DIR="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/System/Library/Frameworks/OpenGL.framework/Headers"
-	export BOOST_ROOT="/Users/thblt/Documents/Coderies/lib/Boost/boost_1_57_0/"
-	export Boost_INCLUDE_DIR="/Users/thblt/Documents/Coderies/lib/Boost/boost_1_57_0/boost/"
-fi;
-
 # Variables
+
+if ! $is_headless; then
+    export DEFAULT_USER="thblt";
+fi;
 
 if $is_headless; then
     export EDITOR="vim "
