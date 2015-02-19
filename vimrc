@@ -58,7 +58,3 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-
-" Make <Leader> char something more accessible on a AZERTY keyboard
-let mapleader = ","
-let g:mapleader = ","
