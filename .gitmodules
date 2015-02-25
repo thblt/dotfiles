@@ -1,66 +1,63 @@
-[submodule "vim/bundle/nerdcommenter"]
-	path = vim/bundle/nerdcommenter
+[submodule ".vim/bundle/nerdcommenter"]
+	path = .vim/bundle/nerdcommenter
 	url = https://github.com/scrooloose/nerdcommenter
-[submodule "vim/bundle/nerdtree"]
-	path = vim/bundle/nerdtree
+[submodule ".vim/bundle/nerdtree"]
+	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree
-[submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/fugitive
+[submodule ".vim/bundle/vim-fugitive"]
+	path = .vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive
-[submodule "vim/bundle/vim-tomorrow-theme"]
-	path = vim/bundle/theme-tomorrow
+[submodule ".vim/bundle/vim-tomorrow-theme"]
+	path = .vim/bundle/theme-tomorrow
 	url = https://github.com/chriskempson/vim-tomorrow-theme
-[submodule "vim/bundle/vim-diminactive"]
-	path = vim/bundle/diminactive
+[submodule ".vim/bundle/vim-diminactive"]
+	path = .vim/bundle/diminactive
 	url = https://github.com/blueyed/vim-diminactive
-[submodule "vim/bundle/Zenburn"]
-	path = vim/bundle/Zenburn
-	url = https://github.com/jnurmine/Zenburn
-[submodule "vim/bundle/vim-hybrid"]
-	path = vim/bundle/vim-hybrid
+[submodule ".vim/bundle/vim-hybrid"]
+	path = .vim/bundle/vim-hybrid
 	url = https://github.com/w0ng/vim-hybrid
-[submodule "vim/bundle/tabular"]
-	path = vim/bundle/tabular
+[submodule ".vim/bundle/tabular"]
+	path = .vim/bundle/tabular
 	url = https://github.com/godlygeek/tabular
-[submodule "vim/bundle/sparkup"]
-	path = vim/bundle/sparkup
+[submodule ".vim/bundle/sparkup"]
+	path = .vim/bundle/sparkup
 	url = https://github.com/rstacruz/sparkup
-[submodule "vim/bundle/delimitMate"]
-	path = vim/bundle/delimitMate
+[submodule ".vim/bundle/delimitMate"]
+	path = .vim/bundle/delimitMate
 	url = https://github.com/Raimondi/delimitMate
-[submodule "vim/bundle/vim-surround"]
-	path = vim/bundle/surround
+[submodule ".vim/bundle/vim-surround"]
+	path = .vim/bundle/surround
 	url = https://github.com/tpope/vim-surround
-[submodule "vim/bundle/vim-repeat"]
-	path = vim/bundle/repeat
+[submodule ".vim/bundle/vim-repeat"]
+	path = .vim/bundle/repeat
 	url = https://github.com/tpope/vim-repeat
-[submodule "vim/bundle/tagbar"]
-	path = vim/bundle/tagbar
+[submodule ".vim/bundle/tagbar"]
+	path = .vim/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar.git
-[submodule "vim/bundle/snipmate.vim"]
-	path = vim/bundle/snipmate
+[submodule ".vim/bundle/snipmate.vim"]
+	path = .vim/bundle/snipmate
 	url = https://github.com/msanders/snipmate.vim
-[submodule "vim/bundle/clang_complete"]
-	path = vim/bundle/clang_complete
+[submodule ".vim/bundle/clang_complete"]
+	path = .vim/bundle/clang_complete
 	url = https://github.com/Rip-Rip/clang_complete
-[submodule "vim/bundle/vim-markdown"]
-	path = vim/bundle/markdown
+[submodule ".vim/bundle/vim-markdown"]
+	path = .vim/bundle/markdown
 	url = https://github.com/plasticboy/vim-markdown
-[submodule "vim/bundle/vim-clang-format"]
-	path = vim/bundle/clang-format
+[submodule ".vim/bundle/vim-clang-format"]
+	path = .vim/bundle/clang-format
 	url = https://github.com/rhysd/vim-clang-format
-[submodule "vim/bundle/ctrlp.vim"]
-	path = vim/bundle/ctrlp
+[submodule ".vim/bundle/ctrlp.vim"]
+	path = .vim/bundle/ctrlp
 	url = https://github.com/kien/ctrlp.vim
-[submodule "vim/bundle/vim-airline"]
-	path = vim/bundle/airline
+[submodule ".vim/bundle/vim-airline"]
+	path = .vim/bundle/airline
 	url = https://github.com/bling/vim-airline
-[submodule "vim/bundle/vim-easymotion"]
-	path = vim/bundle/easymotion
+[submodule ".vim/bundle/vim-easymotion"]
+	path = .vim/bundle/easymotion
 	url = https://github.com/Lokaltog/vim-easymotion
-[submodule "vim/bundle/vim-startify"]
-	path = vim/bundle/startify
+[submodule ".vim/bundle/vim-startify"]
+	path = .vim/bundle/startify
 	url = https://github.com/mhinz/vim-startify
-[submodule "vim/bundle/table-mode"]
-	path = vim/bundle/table-mode
+[submodule ".vim/bundle/table-mode"]
+	path = .vim/bundle/table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode
