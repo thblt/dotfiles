@@ -49,6 +49,9 @@ alias irc="irssi -n thblt -c irc.freenode.net -w \"${_irc_password}\""
 alias fuck='sudo $(history -p \!\!)' 
 alias bd='. ~/.bd -s'
 
+alias namo="ssh thblt@namo.thb.lt"
+alias k9="ssh thblt@k9.thb.lt"
+
 # mkcd
 
 function mkcd() { 

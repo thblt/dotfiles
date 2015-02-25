@@ -4,7 +4,10 @@ filetype plugin indent on
 
 set go-=T
 colorscheme Tomorrow-Night
-set guifont=Menlo:h14
+set guifont=Menlo\ Regular\ for\ Powerline:h14
+
+""" Disable MacVim global changes
+set backspace&
 
 """ Indenting
 set autoindent
@@ -23,6 +26,7 @@ set nofoldenable
 
 """ Useful stuff
 set encoding=utf-8
+set shortmess=I        """ No message ?
 set nocompatible
 set scrolloff=3
 set autoindent
@@ -58,3 +62,7 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
+""" Airline
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
