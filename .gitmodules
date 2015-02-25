@@ -8,7 +8,7 @@
 	path = .vim/bundle/fugitive
 	url = https://github.com/tpope/vim-fugitive
 [submodule ".vim/bundle/tomorrow-theme"]
-	path = .vim/bundle/theme-tomorrow
+	path = .vim/bundle/tomorrow-theme
 	url = https://github.com/chriskempson/vim-tomorrow-theme
 [submodule ".vim/bundle/diminactive"]
 	path = .vim/bundle/diminactive
