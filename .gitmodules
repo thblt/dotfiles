@@ -61,3 +61,15 @@
 [submodule ".vim/bundle/table-mode"]
 	path = .vim/bundle/table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode
+[submodule ".vim/bundle/instant-markdown"]
+	path = .vim/bundle/instant-markdown
+	url = https://github.com/suan/vim-instant-markdown
+[submodule ".vim/bundle/goyo"]
+	path = .vim/bundle/goyo
+	url = https://github.com/junegunn/goyo.vim
+[submodule ".vim/bundle/limelight"]
+	path = .vim/bundle/limelight
+	url = https://github.com/junegunn/limelight.vim
+[submodule ".vim/bundle/jinja2"]
+	path = .vim/bundle/jinja2
+	url = https://github.com/Glench/Vim-Jinja2-Syntax
