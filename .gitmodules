@@ -117,7 +117,3 @@
 	path = .vim/bundle/jellybeans-theme
 	url = https://github.com/nanotech/jellybeans.vim
 	branch = master
-[submodule ".vim/bundle/voom"]
-	path = .vim/bundle/voom
-	url = https://github.com/vim-voom/VOoM
-	branch = master
