@@ -1,47 +1,50 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys, os, re
+import argparse, sys, os, re
 
-commands = {
-	"add": (
-		"a"                        # Shortened form
-		"Track file or directory", # Description
-	),
-	"list": (
-		"l",
-		"List dotfiles, along with sync status",
-		),
-	"remove": (
-		"r",
-		"Untrack a file and restore the original if it exists",
-		),
-	"sync": (
-		"s",
-		"Synchronize dotfiles",
-		),
-	}
+_DFROOT_ENV_VAR = "DOTFILES_DIR"
+
+# Initialize argument parser
+
+parser = argparse.ArgumentParser(description='Synchronize dotfiles.')
+
+subparsers = parser.add_subparsers(help='Commands', metavar="command", dest="cmd")
+parser.add_argument('-d', dest='dfroot', metavar="dir", action='store', nargs=1, help="directory where dotfiles are stored")
+
+parser_sync = subparsers.add_parser("sync", help="synchronize dotfiles")
+parser_add = subparsers.add_parser("add", help="add files or directories to the repository")
+parser_remove = subparsers.add_parser("remove", help="stop tracking files or repositories")
+parser_list = subparsers.add_parser("list", help="print synchronization status")
+
+args = parser.parse_args()
 
 # Identify dotfiles directory
 
 dfroot = None
 
-# Attempt 1 : Using environment variable
+# Attempt 1: -d parameter
 
-envvar = "DOTFILES_DIR"
+if args.dfroot:
+	dfroot = args.dfroot[0]
+	if not os.path.isdir(dfroot):
+		print("“{0}” doesn't exist, isn't a directory or can't be read.".format(dfroot))
+		exit(-1)
 
-candidate = os.environ.get(envvar)
+# Attempt 2: Using environment variable
+
+candidate = os.environ.get(_DFROOT_ENV_VAR)
 if candidate:
-	candidate = os.path.expanduser(os.environ[envvar])
+	candidate = os.path.expanduser(os.environ[_DFROOT_ENV_VAR])
 	if not os.path.isabs(candidate):
 		candidate = os.path.expanduser(os.path.join("~", candidate))
-		print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=envvar, dir=candidate))
+		print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 	if os.path.isdir(candidate):
 		dfroot = candidate
 	else:
-		print("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=envvar, dir=candidate))
+		print("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 
-# Attempt 2: In children of ~ using a regular expression
+# Attempt 3: In ~ using a regular expression
 
 if not dfroot:
 	dnre = re.compile("^\.?dot[^a-zA-Z]?files$", re.IGNORECASE)
@@ -65,3 +68,21 @@ if dfroot:
 else:
 	print("Unable to determine dotfiles directory. Set DOTFILES_DIR environment variable or use -d switch.")
 	exit(-1)
+
+# Either we have a directory or we've exit()ed.
+
+class FSNode(object):
+	def __init__(self, source=None, target=None, parent=None):
+		self.__source = dfroot
+		self.__target  = troot
+		self.__parent = parent
+
+	def link(self, path):
+		pass
+
+
+	def unlink(self, path):
+		pass
+
+	def is_linked(self, path):
+		pass
