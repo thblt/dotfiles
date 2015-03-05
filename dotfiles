@@ -1,0 +1,67 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import sys, os, re
+
+commands = {
+	"add": (
+		"a"                        # Shortened form
+		"Track file or directory", # Description
+	),
+	"list": (
+		"l",
+		"List dotfiles, along with sync status",
+		),
+	"remove": (
+		"r",
+		"Untrack a file and restore the original if it exists",
+		),
+	"sync": (
+		"s",
+		"Synchronize dotfiles",
+		),
+	}
+
+# Identify dotfiles directory
+
+dfroot = None
+
+# Attempt 1 : Using environment variable
+
+envvar = "DOTFILES_DIR"
+
+candidate = os.environ.get(envvar)
+if candidate:
+	candidate = os.path.expanduser(os.environ[envvar])
+	if not os.path.isabs(candidate):
+		candidate = os.path.expanduser(os.path.join("~", candidate))
+		print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=envvar, dir=candidate))
+	if os.path.isdir(candidate):
+		dfroot = candidate
+	else:
+		print("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=envvar, dir=candidate))
+
+# Attempt 2: In children of ~ using a regular expression
+
+if not dfroot:
+	dnre = re.compile("^\.?dot[^a-zA-Z]?files$", re.IGNORECASE)
+	home = os.path.expanduser("~")
+
+	candidates = list()
+
+	for f in os.listdir(home):
+		canonical = os.path.join(home, f)
+		if os.path.isdir(canonical) and dnre.match(f):
+			candidates.append(canonical)
+
+	if len(candidates) > 1:
+		print("More than one candidate directory!")
+		print("Can't choose a dotfiles directory between {0} and {1}.".format(", ".join(candidates[0:-1]), candidates[-1]))
+	elif len(candidates) == 1:
+		dfroot = candidates[0]
+
+if dfroot:
+	print("Using {0}".format(dfroot))
+else:
+	print("Unable to determine dotfiles directory. Set DOTFILES_DIR environment variable or use -d switch.")
+	exit(-1)

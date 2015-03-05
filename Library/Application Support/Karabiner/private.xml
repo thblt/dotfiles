@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<root>
+    <item>
+        <name>Thblt's changes for all machines</name>
+		<identifier>private.thblt.all</identifier>
+		<!--Option+Q/S becomes {, } -->
+        <autogen>__KeyToKey__ KeyCode::A, ModifierFlag::OPTION_L, KeyCode::KEY_5, ModifierFlag::OPTION_L</autogen>
+		<autogen>__KeyToKey__ KeyCode::A, ModifierFlag::OPTION_R, KeyCode::KEY_5, ModifierFlag::OPTION_L</autogen>
+        <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::OPTION_L, KeyCode::MINUS, ModifierFlag::OPTION_L</autogen>
+        <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::OPTION_R, KeyCode::MINUS, ModifierFlag::OPTION_L</autogen>
+		<!--Option+M/ù becomes [] -->
+        <autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::OPTION_L, KeyCode::KEY_5, ModifierFlag::OPTION_L, ModifierFlag::SHIFT_L</autogen>
+		<autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::OPTION_R, KeyCode::KEY_5, ModifierFlag::OPTION_L, ModifierFlag::SHIFT_L</autogen>
+		<autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::OPTION_L, KeyCode::MINUS, ModifierFlag::OPTION_L, ModifierFlag::SHIFT_L</autogen>
+		<autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::OPTION_R, KeyCode::MINUS, ModifierFlag::OPTION_L, ModifierFlag::SHIFT_L</autogen>
+		<block>
+			<!--Disable Command-M on keyboard-intensive apps-->
+			<only>Chromium, FIREFOX, GOOGLE_CHROME</only>
+			<autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::COMMAND_L, KeyCode::VK_NONE, ModifierFlag::NONE</autogen>
+			<autogen>__KeyToKey__ KeyCode::SEMICOLON, ModifierFlag::COMMAND_R, KeyCode::VK_NONE, ModifierFlag::NONE</autogen>
+		</block>
+	</item>
+    <!--<item>-->
+		<!--<name>Thblt's changes for Rüdiger<name>-->
+		<!--<identifier>private.thblt.rudiger</identifier>-->
+    <!--</item>-->
+    <!--<item>-->
+        <!--<name>Thblt's changes for Thblap</name>-->
+        <!--<identifier>private.thblt.thblap</identifier>-->
+    <!--</item>-->
+</root>
