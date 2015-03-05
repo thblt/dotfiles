@@ -82,14 +82,6 @@
 	path = .vim/bundle/table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode
 	branch = master
-[submodule ".vim/bundle/goyo"]
-	path = .vim/bundle/goyo
-	url = https://github.com/junegunn/goyo.vim
-	branch = master
-[submodule ".vim/bundle/limelight"]
-	path = .vim/bundle/limelight
-	url = https://github.com/junegunn/limelight.vim
-	branch = master
 [submodule ".vim/bundle/jinja2"]
 	path = .vim/bundle/jinja2
 	url = https://github.com/Glench/Vim-Jinja2-Syntax
@@ -106,14 +98,26 @@
 	path = .vim/bundle/projectionist
 	url = https://github.com/tpope/vim-projectionist
 	branch = master
-[submodule ".vim/bundle/cpp-enhanced-highlight"]
-	path = .vim/bundle/cpp-enhanced-highlight
-	url = https://github.com/octol/vim-cpp-enhanced-highlight
-	branch = master
 [submodule ".vim/bundle/molokai-theme"]
 	path = .vim/bundle/molokai-theme
 	url = https://github.com/tomasr/molokai
 [submodule ".vim/bundle/jellybeans-theme"]
 	path = .vim/bundle/jellybeans-theme
 	url = https://github.com/nanotech/jellybeans.vim
+	branch = master
+[submodule ".vim/bundle/autotag"]
+	path = .vim/bundle/autotag
+	url = https://github.com/craigemery/vim-autotag
+	branch = master
+[submodule ".vim/bundle/cpp-enhanced-highlight"]
+	path = .vim/bundle/cpp-enhanced-highlight
+	url = https://github.com/octol/vim-cpp-enhanced-highlight
+	branch = master
+[submodule ".vim/bundle/goyo"]
+	path = .vim/bundle/goyo
+	url = https://github.com/junegunn/goyo.vim
+	branch = master
+[submodule ".vim/bundle/limelight"]
+	path = .vim/bundle/limelight
+	url = https://github.com/junegunn/limelight.vim
 	branch = master
