@@ -5,7 +5,6 @@
 " ██║   ██║██╔══╝  ██║╚██╗██║██╔══╝  ██╔══██╗██╔══██║██║
 " ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
 "  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
-" MacVim menu customizations are in .gvimrc. They wouldn't work here
 
 execute pathogen#infect()
 call pathogen#helptags()
@@ -34,9 +33,10 @@ set wildmode=list:longest,full         " Autocomplete as much as possible + show
 
 """ Editing
 set backspace=indent,eol,start         " In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
+set hidden                             " Do not close abandoned buffers
+set listchars=tab:▸\ ,eol:¬            " Show invisibles the TextMate way
 set undofile                           " Create undofiles
 set showmatch                          " Show matching brackets
-set listchars=tab:▸\ ,eol:¬            " Show invisibles the TextMate way
 
 """ Indenting
 set autoindent                         " Enable auto-indentation
@@ -48,7 +48,7 @@ set smarttab                           " Be smart, somehow
 """ Search and replace
 set ignorecase                         " Search is case-insensitive by default
 set smartcase                          " ...unless there are uppercase characters in the search pattern
-set gdefault                           " Global substitution by default (replace all)
+set gdefault                         " Global substitution by default (replace all)
 set incsearch                          " Show matches in realtime
 set hlsearch                           " Highlight previous search matches
 " Leader-space clears search results
@@ -62,9 +62,10 @@ nnoremap <leader><space> :noh<cr>
 " ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
 " Mappings
 
-inoremap $$ <esc>
-inoremap <D-o> <esc>:CtrlP<cr>
-nnoremap <D-o> :CtrlP<cr>
+" MacVim menu customizations are in .gvimrc. They wouldn't work here
+
+nnoremap <F8> :TagbarToggle<cr>
+inoremap <F8> <esc>:TagbarToggle<cr>li
 
 " ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
 " ██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║██╔════╝
@@ -78,9 +79,9 @@ nnoremap <D-o> :CtrlP<cr>
 " ╠═╣│├┬┘│  ││││├┤
 " ╩ ╩┴┴└─┴─┘┴┘└┘└─┘
 
-let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts            = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme="powerlineish"
+let g:airline_theme                      = "powerlineish"
 
 " ╔═╗┬ ┬┌┬┐┌─┐╔╦╗┌─┐┌─┐
 " ╠═╣│ │ │ │ │ ║ ├─┤│ ┬
@@ -95,11 +96,11 @@ endif
 " ║   │ ├┬┘│  ╠═╝
 " ╚═╝ ┴ ┴└─┴─┘╩
 
+let g:ctrlp_map = '<D-o>'
+let g:ctrlp_cmd = 'CtrlP'
+
 " Use ag
 if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
@@ -111,6 +112,10 @@ endif
 if has("mac")
 	let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
 endif
+let g:clang_complete_auto = 1
+let g:clang_complete_copen = 0
+let g:clang_snippets = 1
+let g:clang_snippets_engine="ultisnips"
 
 " ╔╦╗┬┌┬┐  ╦┌┐┌┌─┐┌─┐┌┬┐┬┬  ┬┌─┐
 "  ║║││││  ║│││├─┤│   │ │└┐┌┘├┤
@@ -158,9 +163,6 @@ let g:projectionist_heuristics = {
 " ╔╦╗┌─┐┌─┐╔╗ ┌─┐┬─┐
 "  ║ ├─┤│ ┬╠╩╗├─┤├┬┘
 "  ╩ ┴ ┴└─┘╚═╝┴ ┴┴└─
-
-nnoremap <F8> :Tagbar<cr>
-imap <F8> <esc>:Tagbar<cr>ih
 
 " ███████╗██╗██╗     ███████╗████████╗██╗   ██╗██████╗ ███████╗███████╗
 " ██╔════╝██║██║     ██╔════╝╚══██╔══╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔════╝
