@@ -143,6 +143,18 @@ let g:limelight_conceal_guifg   = '#777777'
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
+" ╔═╗┬─┐┌─┐ ┬┌─┐┌─┐┌┬┐┬┌─┐┌┐┌┬┌─┐┌┬┐
+" ╠═╝├┬┘│ │ │├┤ │   │ ││ │││││└─┐ │
+" ╩  ┴└─└─┘└┘└─┘└─┘ ┴ ┴└─┘┘└┘┴└─┘ ┴
+
+let g:projectionist_heuristics = {
+	\ "*": {
+		\ "*.cpp": { "alternate": "{}.hpp" },
+		\ "*.hpp": { "alternate": "{}.cpp" },
+		\ "*.c":   { "alternate": "{}.h" },
+		\ "*.h":   { "alternate": "{}.c" },
+	\}}
+
 " ╔╦╗┌─┐┌─┐╔╗ ┌─┐┬─┐
 "  ║ ├─┤│ ┬╠╩╗├─┤├┬┘
 "  ╩ ┴ ┴└─┘╚═╝┴ ┴┴└─
