@@ -1,3 +1,38 @@
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'        " Vundle itself
+
+Plugin 'gilligan/vim-lldb' " lldb integration
+Plugin 'godlygeek/tabular' " For tabularization. Required by plasticboy/markdown
+Plugin 'honza/vim-snippets' "Default snippets for SnipMate
+Plugin 'junegunn/goyo.vim' " 'Zenroom' mode
+Plugin 'junegunn/limelight.vim' " With Goyo : fade contents outside the current paragraph
+Plugin 'kien/ctrlp.vim' " Fuzzy search
+Plugin 'kien/rainbow_parentheses.vim' " Different colors for nested ({[etc
+Plugin 'Lokaltog/vim-easymotion' " Improved motion commands
+Plugin 'majutsushi/tagbar.git' " tags bar
+Plugin 'mhinz/vim-startify' " Startup screen with recent files
+Plugin 'nanotech/jellybeans.vim' " Color theme
+Plugin 'octol/vim-cpp-enhanced-highlight' " Improved highlighting for C++
+Plugin 'plasticboy/vim-markdown' " Improved markdown handling
+Plugin 'Raimondi/delimitMate' " Autocompletion for quotes, parens…
+Plugin 'rhysd/vim-clang-format' " Interface to clang_format 
+Plugin 'rstacruz/sparkup' " HTML/XML Zen typing
+Plugin 'scrooloose/nerdcommenter' " For comments
+Plugin 'scrooloose/nerdtree'      " Dir/file browsing
+Plugin 'SirVer/ultisnips' " Snippets
+Plugin 'tpope/vim-fugitive' " Git integration
+Plugin 'tpope/vim-projectionist' " Mostly for 'alternate' files (.c/.h etc)
+Plugin 'tpope/vim-repeat' " Improved dot
+Plugin 'tpope/vim-surround' " Edit surroundings
+Plugin 'Valloric/YouCompleteMe' " Completion
+" Disabled ones.
+"Plugin 'craigemery/vim-autotag' " Automatic ctags invocation. Useless with clang completion for now.
+"Plugin 'dhruvasagar/vim-table-mode' " Not removing it now, but haven't used it.
+"Plugin 'vimoutliner/vimoutliner' " Outlining
+Plugin 'bling/vim-airline' " Status line
+call vundle#end()
 
 "  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗
 " ██╔════╝ ██╔════╝████╗  ██║██╔════╝██╔══██╗██╔══██╗██║
@@ -6,53 +41,14 @@
 " ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
 "  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-Plugin 'bling/vim-airline'
-Plugin 'chriskempson/vim-tomorrow-theme' " Colors
-Plugin 'craigemery/vim-autotag'
-Plugin 'dhruvasagar/vim-table-mode'
-Plugin 'gilligan/vim-lldb'
-Plugin 'Glench/Vim-Jinja2-Syntax'
-Plugin 'gmarik/Vundle.vim'        " Vundle itself
-Plugin 'godlygeek/tabular'
-Plugin 'honza/vim-snippets'
-Plugin 'junegunn/goyo.vim'
-Plugin 'junegunn/limelight.vim'
-Plugin 'kien/ctrlp.vim'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'majutsushi/tagbar.git'
-Plugin 'mhinz/vim-startify'
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'octol/vim-cpp-enhanced-highlight'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'Raimondi/delimitMate'
-Plugin 'rhysd/vim-clang-format'
-Plugin 'Rip-Rip/clang_complete'
-Plugin 'rstacruz/sparkup'
-Plugin 'scrooloose/nerdcommenter' " For comments
-Plugin 'scrooloose/nerdtree'      " Dir/file browsing
-Plugin 'SirVer/ultisnips'
-Plugin 'tomasr/molokai'
-Plugin 'tpope/vim-fugitive' " Git integration
-Plugin 'tpope/vim-projectionist'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'vimoutliner/vimoutliner'
-call vundle#end()
-filetype plugin indent on
-
 """ All things modern and very general stuff
-set nocompatible                       " Give up vi compatibility
+set nocompatible          " Give up vi compatibility
 filetype plugin indent on
 syntax on
 set encoding=utf-8
 set shell=zsh\ -i
-set ttyfast                            " Fast terminal we have
-set tags=./tags;$HOME				   " Look for tags in . then search down the tree until ~
+set ttyfast               " Fast terminal we have
+set tags=./tags;$HOME     " Look for tags in . then search down the tree until ~
 
 """ Appearance and visual helpers
 colorscheme jellybeans
