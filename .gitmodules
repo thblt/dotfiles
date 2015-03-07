@@ -1,4 +1,0 @@
-[submodule ".vim/bundle/hybrid"]
-	path = .vim/bundle/hybrid
-	url = https://github.com/w0ng/vim-hybrid
-	branch = master
