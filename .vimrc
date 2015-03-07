@@ -6,8 +6,48 @@
 " ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗
 "  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 
-execute pathogen#infect()
-call pathogen#helptags()
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Bundle 'scrooloose/nerdcommenter'
+Bundle 'scrooloose/nerdtree'
+Bundle 'tpope/vim-fugitive'
+Bundle 'chriskempson/vim-tomorrow-theme'
+Bundle 'blueyed/vim-diminactive'
+Bundle 'w0ng/vim-hybrid'
+Bundle 'godlygeek/tabular'
+Bundle 'rstacruz/sparkup'
+Bundle 'Raimondi/delimitMate'
+Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-repeat'
+Bundle 'majutsushi/tagbar.git'
+Bundle 'Rip-Rip/clang_complete'
+Bundle 'plasticboy/vim-markdown'
+Bundle 'rhysd/vim-clang-format'
+Bundle 'kien/ctrlp.vim'
+Bundle 'bling/vim-airline'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'mhinz/vim-startify'
+Bundle 'dhruvasagar/vim-table-mode'
+Bundle 'Glench/Vim-Jinja2-Syntax'
+Bundle 'kien/rainbow_parentheses.vim'
+Bundle 'vimoutliner/vimoutliner/'
+Bundle 'tpope/vim-projectionist'
+Bundle 'tomasr/molokai'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'craigemery/vim-autotag'
+Bundle 'octol/vim-cpp-enhanced-highlight'
+Bundle 'junegunn/goyo.vim'
+Bundle 'junegunn/limelight.vim'
+Bundle 'gilligan/vim-lldb'
+Bundle 'SirVer/ultisnips'
+Bundle 'honza/vim-snippets'
+Bundle 'Valloric/YouCompleteMe'
+call vundle#end()            " required
+filetype plugin indent on    " required
+"execute pathogen#infect()
+"call pathogen#helptags()
 
 """ All things modern and very general stuff
 set nocompatible                       " Give up vi compatibility
@@ -78,7 +118,6 @@ inoremap <F8> <esc>:TagbarToggle<cr>li
 " ╔═╗┬┬─┐┬  ┬┌┐┌┌─┐
 " ╠═╣│├┬┘│  ││││├┤
 " ╩ ╩┴┴└─┴─┘┴┘└┘└─┘
-
 let g:airline_powerline_fonts            = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme                      = "powerlineish"
@@ -86,7 +125,6 @@ let g:airline_theme                      = "powerlineish"
 " ╔═╗┬ ┬┌┬┐┌─┐╔╦╗┌─┐┌─┐
 " ╠═╣│ │ │ │ │ ║ ├─┤│ ┬
 " ╩ ╩└─┘ ┴ └─┘ ╩ ┴ ┴└─┘
-
 if has("mac")
 	" Homebrew exuberant ctags and not BSD ctags
 	let g:CtagsCmd = '/usr/local/bin/ctags'
@@ -95,7 +133,6 @@ endif
 " ╔═╗┌┬┐┬─┐┬  ╔═╗
 " ║   │ ├┬┘│  ╠═╝
 " ╚═╝ ┴ ┴└─┴─┘╩
-
 let g:ctrlp_map = '<D-o>'
 let g:ctrlp_cmd = 'CtrlP'
 
@@ -108,7 +145,6 @@ endif
 " ╔═╗┬  ┌─┐┌┐┌┌─┐   ╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐
 " ║  │  ├─┤││││ ┬───║  │ ││││├─┘│  ├┤  │ ├┤
 " ╚═╝┴─┘┴ ┴┘└┘└─┘   ╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘
-
 if has("mac")
 	let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
 endif
@@ -120,14 +156,12 @@ let g:clang_snippets_engine="ultisnips"
 " ╔╦╗┬┌┬┐  ╦┌┐┌┌─┐┌─┐┌┬┐┬┬  ┬┌─┐
 "  ║║││││  ║│││├─┤│   │ │└┐┌┘├┤
 " ═╩╝┴┴ ┴  ╩┘└┘┴ ┴└─┘ ┴ ┴ └┘ └─┘
-
 let g:diminactive_use_syntax      = 0
 let g:diminactive_use_colorcolumn = 0
 
 " ╔═╗┌─┐┌─┐┬ ┬╔╦╗┌─┐┌─┐┌─┐
 " ║╣ ├─┤└─┐└┬┘ ║ ├─┤│ ┬└─┐
 " ╚═╝┴ ┴└─┘ ┴  ╩ ┴ ┴└─┘└─┘
-
 let g:easytags_async           = 0
 let g:easytags_auto_highlight  = 0
 let g:easytags_auto_update     = 1
@@ -139,7 +173,6 @@ let g:easytags_suppress_report = 1
 " ╦  ┬┌┬┐┌─┐┬  ┬┌─┐┬ ┬┌┬┐
 " ║  ││││├┤ │  ││ ┬├─┤ │
 " ╩═╝┴┴ ┴└─┘┴─┘┴└─┘┴ ┴ ┴
-
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
 let g:limelight_conceal_guifg   = 'DarkGray'
@@ -151,7 +184,6 @@ autocmd User GoyoLeave Limelight!
 " ╔═╗┬─┐┌─┐ ┬┌─┐┌─┐┌┬┐┬┌─┐┌┐┌┬┌─┐┌┬┐
 " ╠═╝├┬┘│ │ │├┤ │   │ ││ │││││└─┐ │
 " ╩  ┴└─└─┘└┘└─┘└─┘ ┴ ┴└─┘┘└┘┴└─┘ ┴
-
 let g:projectionist_heuristics = {
 	\ "*": {
 		\ "*.cpp": { "alternate": "{}.hpp" },
@@ -159,10 +191,13 @@ let g:projectionist_heuristics = {
 		\ "*.c":   { "alternate": "{}.h" },
 		\ "*.h":   { "alternate": "{}.c" },
 	\}}
-
-" ╔╦╗┌─┐┌─┐╔╗ ┌─┐┬─┐
-"  ║ ├─┤│ ┬╠╩╗├─┤├┬┘
-"  ╩ ┴ ┴└─┘╚═╝┴ ┴┴└─
+"
+" ╦ ╦┬ ┌┬┐┬╔═╗┌┐┌┬┌─┐┌─┐
+" ║ ║│  │ │╚═╗││││├─┘└─┐
+" ╚═╝┴─┘┴ ┴╚═╝┘└┘┴┴  └─┘
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " ███████╗██╗██╗     ███████╗████████╗██╗   ██╗██████╗ ███████╗███████╗
 " ██╔════╝██║██║     ██╔════╝╚══██╔══╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔════╝
