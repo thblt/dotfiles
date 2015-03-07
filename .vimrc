@@ -9,45 +9,41 @@
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/nerdtree'
-Bundle 'tpope/vim-fugitive'
-Bundle 'chriskempson/vim-tomorrow-theme'
-Bundle 'blueyed/vim-diminactive'
-Bundle 'w0ng/vim-hybrid'
-Bundle 'godlygeek/tabular'
-Bundle 'rstacruz/sparkup'
-Bundle 'Raimondi/delimitMate'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-repeat'
-Bundle 'majutsushi/tagbar.git'
-Bundle 'Rip-Rip/clang_complete'
-Bundle 'plasticboy/vim-markdown'
-Bundle 'rhysd/vim-clang-format'
-Bundle 'kien/ctrlp.vim'
-Bundle 'bling/vim-airline'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'mhinz/vim-startify'
-Bundle 'dhruvasagar/vim-table-mode'
-Bundle 'Glench/Vim-Jinja2-Syntax'
-Bundle 'kien/rainbow_parentheses.vim'
-Bundle 'vimoutliner/vimoutliner/'
-Bundle 'tpope/vim-projectionist'
-Bundle 'tomasr/molokai'
-Bundle 'nanotech/jellybeans.vim'
-Bundle 'craigemery/vim-autotag'
-Bundle 'octol/vim-cpp-enhanced-highlight'
-Bundle 'junegunn/goyo.vim'
-Bundle 'junegunn/limelight.vim'
-Bundle 'gilligan/vim-lldb'
-Bundle 'SirVer/ultisnips'
-Bundle 'honza/vim-snippets'
-Bundle 'Valloric/YouCompleteMe'
-call vundle#end()            " required
-filetype plugin indent on    " required
-"execute pathogen#infect()
-"call pathogen#helptags()
+Plugin 'bling/vim-airline'
+Plugin 'chriskempson/vim-tomorrow-theme' " Colors
+Plugin 'craigemery/vim-autotag'
+Plugin 'dhruvasagar/vim-table-mode'
+Plugin 'gilligan/vim-lldb'
+Plugin 'Glench/Vim-Jinja2-Syntax'
+Plugin 'gmarik/Vundle.vim'        " Vundle itself
+Plugin 'godlygeek/tabular'
+Plugin 'honza/vim-snippets'
+Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim'
+Plugin 'kien/ctrlp.vim'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'majutsushi/tagbar.git'
+Plugin 'mhinz/vim-startify'
+Plugin 'nanotech/jellybeans.vim'
+Plugin 'octol/vim-cpp-enhanced-highlight'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'Raimondi/delimitMate'
+Plugin 'rhysd/vim-clang-format'
+Plugin 'Rip-Rip/clang_complete'
+Plugin 'rstacruz/sparkup'
+Plugin 'scrooloose/nerdcommenter' " For comments
+Plugin 'scrooloose/nerdtree'      " Dir/file browsing
+Plugin 'SirVer/ultisnips'
+Plugin 'tomasr/molokai'
+Plugin 'tpope/vim-fugitive' " Git integration
+Plugin 'tpope/vim-projectionist'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-surround'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'vimoutliner/vimoutliner'
+call vundle#end()
+filetype plugin indent on
 
 """ All things modern and very general stuff
 set nocompatible                       " Give up vi compatibility
@@ -152,12 +148,6 @@ let g:clang_complete_auto = 1
 let g:clang_complete_copen = 0
 let g:clang_snippets = 1
 let g:clang_snippets_engine="ultisnips"
-
-" ╔╦╗┬┌┬┐  ╦┌┐┌┌─┐┌─┐┌┬┐┬┬  ┬┌─┐
-"  ║║││││  ║│││├─┤│   │ │└┐┌┘├┤
-" ═╩╝┴┴ ┴  ╩┘└┘┴ ┴└─┘ ┴ ┴ └┘ └─┘
-let g:diminactive_use_syntax      = 0
-let g:diminactive_use_colorcolumn = 0
 
 " ╔═╗┌─┐┌─┐┬ ┬╔╦╗┌─┐┌─┐┌─┐
 " ║╣ ├─┤└─┐└┬┘ ║ ├─┤│ ┬└─┐
