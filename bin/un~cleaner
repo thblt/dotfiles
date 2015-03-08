@@ -8,21 +8,24 @@
 # This *may* behave weirdly if there are undo files for undo files, like
 # '..something.un~.un~'. But the very existence of such files would be weird. 
 
-import argparse, os, re, sys
-exp = re.compile("^\.(.*)\.un~")
+import argparse, os, sys
 
 def clean(path, recursive):
+	global totalSeen, totalRm
+	#verbose("Entering {0}".format (path))
 	for f in os.listdir(path):
 		canonical = os.path.join(path, f) 
 		if os.path.isdir(canonical):
 			if recursive:
 				clean(canonical, True)
 		elif os.path.isfile(canonical):
-			match = exp.match(f)
-			if match:
-				main = os.path.join(path, match.group(1))
+			if f.endswith(".un~") and f.startswith("."): # probably faster than a regex
+			#if f[-4:] == ".un~" and f[0] == ".": # probably faster than a regex
+				totalSeen+=1
+				main = os.path.join(path, f[1:-4])
 				if not (os.path.exists(main) and os.path.isfile(main)):
 					os.remove(canonical)
+					totalRm += 1
 					message("Deleted \t{0}".format(canonical))
 				else:
 					verbose("Not orphaned \t{0}".format(canonical))
@@ -52,5 +55,13 @@ else:
 	def verbose(msg):
 		pass
 
+totalSeen = 0
+totalRm = 0
+
 for p in result.paths:
-	clean(p, result.recursive)
+	if os.path.isdir(p):
+		clean(p, result.recursive)
+	else:
+		message("Not a directory \t{0}".format(p))
+
+message("{0} undo files found, {1} deleted.".format(totalSeen, totalRm))
