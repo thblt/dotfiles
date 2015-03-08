@@ -1,37 +1,38 @@
-filetype off
+filetype off                              " Vundle wants this
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'        " Vundle itself
 
-Plugin 'gilligan/vim-lldb' " lldb integration
-Plugin 'godlygeek/tabular' " For tabularization. Required by plasticboy/markdown
-Plugin 'honza/vim-snippets' "Default snippets for SnipMate
-Plugin 'junegunn/goyo.vim' " 'Zenroom' mode
-Plugin 'junegunn/limelight.vim' " With Goyo : fade contents outside the current paragraph
-Plugin 'kien/ctrlp.vim' " Fuzzy search
-Plugin 'kien/rainbow_parentheses.vim' " Different colors for nested ({[etc
-Plugin 'Lokaltog/vim-easymotion' " Improved motion commands
-Plugin 'majutsushi/tagbar.git' " tags bar
-Plugin 'mhinz/vim-startify' " Startup screen with recent files
-Plugin 'nanotech/jellybeans.vim' " Color theme
-Plugin 'octol/vim-cpp-enhanced-highlight' " Improved highlighting for C++
-Plugin 'plasticboy/vim-markdown' " Improved markdown handling
-Plugin 'Raimondi/delimitMate' " Autocompletion for quotes, parens…
-Plugin 'rhysd/vim-clang-format' " Interface to clang_format 
-Plugin 'rstacruz/sparkup' " HTML/XML Zen typing
-Plugin 'scrooloose/nerdcommenter' " For comments
-Plugin 'scrooloose/nerdtree'      " Dir/file browsing
-Plugin 'SirVer/ultisnips' " Snippets
-Plugin 'tpope/vim-fugitive' " Git integration
-Plugin 'tpope/vim-projectionist' " Mostly for 'alternate' files (.c/.h etc)
-Plugin 'tpope/vim-repeat' " Improved dot
-Plugin 'tpope/vim-surround' " Edit surroundings
-Plugin 'Valloric/YouCompleteMe' " Completion
-" Disabled ones.
-"Plugin 'craigemery/vim-autotag' " Automatic ctags invocation. Useless with clang completion for now.
-"Plugin 'dhruvasagar/vim-table-mode' " Not removing it now, but haven't used it.
-"Plugin 'vimoutliner/vimoutliner' " Outlining
-Plugin 'bling/vim-airline' " Status line
+Plugin 'gmarik/Vundle.vim'                " Vundle itself
+
+Plugin 'bling/vim-airline'                 " Status line
+Plugin 'gilligan/vim-lldb'                 " lldb integration
+Plugin 'godlygeek/tabular'                 " For tabularization. Required by plasticboy/markdown
+Plugin 'honza/vim-snippets'                " Default snippets for SnipMate
+Plugin 'junegunn/goyo.vim'                 " 'Zenroom' mode
+Plugin 'junegunn/limelight.vim'            " With Goyo : fade contents outside the current paragraph
+Plugin 'kien/ctrlp.vim'                    " Fuzzy search
+Plugin 'kien/rainbow_parentheses.vim'      " Different colors for nested ({[etc
+Plugin 'Lokaltog/vim-easymotion'           " Improved motion commands
+Plugin 'majutsushi/tagbar.git'             " tags bar
+Plugin 'mhinz/vim-startify'                " Startup screen with recent files
+Plugin 'nanotech/jellybeans.vim'           " Color theme
+Plugin 'octol/vim-cpp-enhanced-highlight'  " Improved highlighting for C++
+Plugin 'plasticboy/vim-markdown'           " Improved markdown handling
+Plugin 'Raimondi/delimitMate'              " Autocompletion for quotes, parens…
+Plugin 'rhysd/vim-clang-format'            " Interface to clang_format
+Plugin 'rstacruz/sparkup'                  " HTML/XML Zen typing
+Plugin 'scrooloose/nerdcommenter'          " For comments
+Plugin 'scrooloose/nerdtree'               " Dir/file browsing
+Plugin 'SirVer/ultisnips'                  " Snippets
+Plugin 'tpope/vim-fugitive'                " Git integration
+Plugin 'tpope/vim-projectionist'           " Mostly for 'alternate' files (.c/.h etc)
+Plugin 'tpope/vim-repeat'                  " Improved dot
+Plugin 'tpope/vim-surround'                " Edit surroundings
+Plugin 'Valloric/YouCompleteMe'            " Completion
+"Plugin 'craigemery/vim-autotag'           " Automatic ctags invocation. Useless with clang completion.
+"Plugin 'dhruvasagar/vim-table-mode'       " Table editor
+"Plugin 'vimoutliner/vimoutliner'          " Outlining
+
 call vundle#end()
 
 "  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗
@@ -42,47 +43,49 @@ call vundle#end()
 "  ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
 
 """ All things modern and very general stuff
-set nocompatible          " Give up vi compatibility
+set nocompatible                                "  Give up vi compatibility
 filetype plugin indent on
 syntax on
 set encoding=utf-8
-set shell=zsh\ -i
-set ttyfast               " Fast terminal we have
-set tags=./tags;$HOME     " Look for tags in . then search down the tree until ~
+if has("gui")
+	set shell=bash                              "  zsh is *weird* on GUI Vim.
+endif
+set ttyfast                                     "  Fast terminal we have
+set tags=./tags;$HOME                           "  Look for tags in . then search down the tree until ~
 
 """ Appearance and visual helpers
 colorscheme jellybeans
-set cursorline                         " Highlight current line
+set cursorline                                  "  Highlight current line
 set guifont=Menlo\ Regular\ for\ Powerline:h15
-set guioptions=mgt                     " Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
-set laststatus=2                       " Always show a status bar
-set nofoldenable                       " Disable folding by default
-set relativenumber                     " Show *relative* line numbers
-set scrolloff=3                        " Minimal number of screen lines to keep above and below the cursor
-set visualbell                         " Visual beep in terminals
-set wildmenu                           " Command-line completion menu
-set wildmode=list:longest,full         " Autocomplete as much as possible + show full menu
+set guioptions=mgt                              "  Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
+set laststatus=2                                "  Always show a status bar
+set nofoldenable                                "  Disable folding by default
+set relativenumber                              "  Show *relative* line numbers
+set scrolloff=3                                 "  Minimal number of screen lines to keep above and below the cursor
+set visualbell                                  "  Visual beep in terminals
+set wildmenu                                    "  Command-line completion menu
+set wildmode=list:longest,full                  "  Autocomplete as much as possible + show full menu
 
 """ Editing
-set backspace=indent,eol,start         " In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
-set hidden                             " Do not close abandoned buffers
-set listchars=tab:▸\ ,eol:¬            " Show invisibles the TextMate way
-set undofile                           " Create undofiles
-set showmatch                          " Show matching brackets
+set backspace=indent,eol,start                  "  In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
+set hidden                                      "  Do not close abandoned buffers
+set listchars=tab:▸\ ,eol:¬                     "  Show invisibles the TextMate way
+set undofile                                    "  Create undofiles
+set showmatch                                   "  Show matching brackets
 
 """ Indenting
-set autoindent                         " Enable auto-indentation
-set tabstop=4                          " Tab = 4 spaces
-set softtabstop=4                      " Tab = 4 spaces
-set shiftwidth=4                       " Indent/deindent = 4 spaces
-set smarttab                           " Be smart, somehow
+set autoindent                                  "  Enable auto-indentation
+set tabstop=4                                   "  Tab = 4 spaces
+set softtabstop=4                               "  Tab = 4 spaces
+set shiftwidth=4                                "  Indent/deindent = 4 spaces
+set smarttab                                    "  Be smart, somehow
 
 """ Search and replace
-set ignorecase                         " Search is case-insensitive by default
-set smartcase                          " ...unless there are uppercase characters in the search pattern
-set gdefault                         " Global substitution by default (replace all)
-set incsearch                          " Show matches in realtime
-set hlsearch                           " Highlight previous search matches
+set ignorecase                                  "  Search is case-insensitive by default
+set smartcase                                   "  ...unless there are uppercase characters in the search pattern
+set gdefault                                    "  Global substitution by default (replace all)
+set incsearch                                   "  Show matches in realtime
+set hlsearch                                    "  Highlight previous search matches
 " Leader-space clears search results
 nnoremap <leader><space> :noh<cr>
 
@@ -95,9 +98,6 @@ nnoremap <leader><space> :noh<cr>
 " Mappings
 
 " MacVim menu customizations are in .gvimrc. They wouldn't work here
-
-nnoremap <F8> :TagbarToggle<cr>
-inoremap <F8> <esc>:TagbarToggle<cr>li
 
 " ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
 " ██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║██╔════╝
@@ -184,6 +184,13 @@ let g:projectionist_heuristics = {
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" ╦ ╦┌─┐┬ ┬╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐╔╦╗┌─┐
+" ╚╦╝│ ││ │║  │ ││││├─┘│  ├┤  │ ├┤ ║║║├┤
+"  ╩ └─┘└─┘╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘╩ ╩└─┘
+let g:ycm_auto_trigger=0
+let g:ycm_use_ultisnips_completer=1
+let g:ycm_autoclose_preview_window_after_insertion=1
 
 " ███████╗██╗██╗     ███████╗████████╗██╗   ██╗██████╗ ███████╗███████╗
 " ██╔════╝██║██║     ██╔════╝╚══██╔══╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔════╝
