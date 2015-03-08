@@ -2,36 +2,37 @@ filetype off                              " Vundle wants this
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Plugin 'gmarik/Vundle.vim'                " Vundle itself
+Plugin 'gmarik/Vundle.vim'                 "  Vundle itself
 
-Plugin 'bling/vim-airline'                 " Status line
-Plugin 'gilligan/vim-lldb'                 " lldb integration
-Plugin 'godlygeek/tabular'                 " For tabularization. Required by plasticboy/markdown
-Plugin 'honza/vim-snippets'                " Default snippets for SnipMate
-Plugin 'junegunn/goyo.vim'                 " 'Zenroom' mode
-Plugin 'junegunn/limelight.vim'            " With Goyo : fade contents outside the current paragraph
-Plugin 'kien/ctrlp.vim'                    " Fuzzy search
-Plugin 'kien/rainbow_parentheses.vim'      " Different colors for nested ({[etc
-Plugin 'Lokaltog/vim-easymotion'           " Improved motion commands
-Plugin 'majutsushi/tagbar.git'             " tags bar
-Plugin 'mhinz/vim-startify'                " Startup screen with recent files
-Plugin 'nanotech/jellybeans.vim'           " Color theme
-Plugin 'octol/vim-cpp-enhanced-highlight'  " Improved highlighting for C++
-Plugin 'plasticboy/vim-markdown'           " Improved markdown handling
-Plugin 'Raimondi/delimitMate'              " Autocompletion for quotes, parens…
-Plugin 'rhysd/vim-clang-format'            " Interface to clang_format
-Plugin 'rstacruz/sparkup'                  " HTML/XML Zen typing
-Plugin 'scrooloose/nerdcommenter'          " For comments
-Plugin 'scrooloose/nerdtree'               " Dir/file browsing
-Plugin 'SirVer/ultisnips'                  " Snippets
-Plugin 'tpope/vim-fugitive'                " Git integration
-Plugin 'tpope/vim-projectionist'           " Mostly for 'alternate' files (.c/.h etc)
-Plugin 'tpope/vim-repeat'                  " Improved dot
-Plugin 'tpope/vim-surround'                " Edit surroundings
-Plugin 'Valloric/YouCompleteMe'            " Completion
-"Plugin 'craigemery/vim-autotag'           " Automatic ctags invocation. Useless with clang completion.
-"Plugin 'dhruvasagar/vim-table-mode'       " Table editor
-"Plugin 'vimoutliner/vimoutliner'          " Outlining
+Plugin 'bling/vim-airline'                 "  Status line
+Plugin 'dahu/vim-lotr'                     "  Persistent view of registers contents in sidebar
+Plugin 'gilligan/vim-lldb'                 "  lldb integration
+Plugin 'godlygeek/tabular'                 "  For tabularization. Required by plasticboy/markdown
+Plugin 'honza/vim-snippets'                "  Default snippets for UltiSnips
+Plugin 'junegunn/goyo.vim'                 "  'Zenroom' mode
+Plugin 'junegunn/limelight.vim'            "  With Goyo : fade contents outside the current paragraph
+Plugin 'kien/ctrlp.vim'                    "  Fuzzy search
+Plugin 'kien/rainbow_parentheses.vim'      "  Different colors for nested ({[etc
+Plugin 'Lokaltog/vim-easymotion'           "  Improved motion commands
+Plugin 'majutsushi/tagbar.git'             "  tags bar
+Plugin 'mhinz/vim-startify'                "  Startup screen with recent files
+Plugin 'nanotech/jellybeans.vim'           "  Color theme
+Plugin 'octol/vim-cpp-enhanced-highlight'  "  Improved highlighting for C++
+Plugin 'plasticboy/vim-markdown'           "  Improved markdown handling
+Plugin 'Raimondi/delimitMate'              "  Autocompletion for quotes, parens…
+Plugin 'rhysd/vim-clang-format'            "  Interface to clang_format
+Plugin 'rstacruz/sparkup'                  "  HTML/XML Zen typing
+Plugin 'scrooloose/nerdcommenter'          "  For comments
+Plugin 'scrooloose/nerdtree'               "  Dir/file browsing
+Plugin 'SirVer/ultisnips'                  "  Snippets
+Plugin 'tpope/vim-fugitive'                "  Git integration
+Plugin 'tpope/vim-projectionist'           "  Mostly for 'alternate' files (.c/.h etc)
+Plugin 'tpope/vim-repeat'                  "  Improved dot
+Plugin 'tpope/vim-surround'                "  Edit surroundings
+Plugin 'Valloric/YouCompleteMe'            "  Completion
+"Plugin 'craigemery/vim-autotag'           "  Automatic ctags invocation. Useless with clang completion.
+"Plugin 'dhruvasagar/vim-table-mode'       "  Table editor
+"Plugin 'vimoutliner/vimoutliner'          "  Outlining
 
 call vundle#end()
 
@@ -48,7 +49,7 @@ filetype plugin indent on
 syntax on
 set encoding=utf-8
 if has("gui")
-	set shell=bash                              "  zsh is *weird* on GUI Vim.
+"set shell=bash\ -i                          "  zsh is *weird* on GUI Vim.
 endif
 set ttyfast                                     "  Fast terminal we have
 set tags=./tags;$HOME                           "  Look for tags in . then search down the tree until ~
@@ -60,16 +61,19 @@ set guifont=Menlo\ Regular\ for\ Powerline:h15
 set guioptions=mgt                              "  Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
 set laststatus=2                                "  Always show a status bar
 set nofoldenable                                "  Disable folding by default
-set relativenumber                              "  Show *relative* line numbers
+set number                                      "  Show line numbers
+set relativenumber                              "  Show *relative* line numbers (with set number enabled, show real number in current line instead of 0)
 set scrolloff=3                                 "  Minimal number of screen lines to keep above and below the cursor
 set visualbell                                  "  Visual beep in terminals
 set wildmenu                                    "  Command-line completion menu
 set wildmode=list:longest,full                  "  Autocomplete as much as possible + show full menu
 
 """ Editing
+set autoread                                    "  Reload files changed outside vim
 set backspace=indent,eol,start                  "  In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
 set hidden                                      "  Do not close abandoned buffers
 set listchars=tab:▸\ ,eol:¬                     "  Show invisibles the TextMate way
+set nowrap                                      "  Disable by default, reenable for specifics filetypes
 set undofile                                    "  Create undofiles
 set showmatch                                   "  Show matching brackets
 
@@ -86,8 +90,6 @@ set smartcase                                   "  ...unless there are uppercase
 set gdefault                                    "  Global substitution by default (replace all)
 set incsearch                                   "  Show matches in realtime
 set hlsearch                                    "  Highlight previous search matches
-" Leader-space clears search results
-nnoremap <leader><space> :noh<cr>
 
 " ███╗   ███╗ █████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
 " ████╗ ████║██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
@@ -96,8 +98,18 @@ nnoremap <leader><space> :noh<cr>
 " ██║ ╚═╝ ██║██║  ██║██║     ██║     ██║██║ ╚████║╚██████╔╝███████║
 " ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
 " Mappings
-
 " MacVim menu customizations are in .gvimrc. They wouldn't work here
+
+" Leader-space clears search results
+nnoremap <leader><space> :noh<cr>
+"if has("mac")
+  "nnoremap <M-left> :bprevious<cr> 
+  "nnoremap <M-right> :bnext<cr> 
+"endif
+augroup thblt
+	au!
+	au FocusLost * :wa " Save on losing focus
+augroup END
 
 " ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
 " ██╔══██╗██║     ██║   ██║██╔════╝ ██║████╗  ██║██╔════╝
@@ -181,14 +193,14 @@ let g:projectionist_heuristics = {
 " ╦ ╦┬ ┌┬┐┬╔═╗┌┐┌┬┌─┐┌─┐
 " ║ ║│  │ │╚═╗││││├─┘└─┐
 " ╚═╝┴─┘┴ ┴╚═╝┘└┘┴┴  └─┘
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<C-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " ╦ ╦┌─┐┬ ┬╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐╔╦╗┌─┐
 " ╚╦╝│ ││ │║  │ ││││├─┘│  ├┤  │ ├┤ ║║║├┤
 "  ╩ └─┘└─┘╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘╩ ╩└─┘
-let g:ycm_auto_trigger=0
+let g:ycm_auto_trigger=1
 let g:ycm_use_ultisnips_completer=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 
