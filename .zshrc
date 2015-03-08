@@ -3,6 +3,9 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
 plugins=(brew osx pip git)
 
+# Case-insensitive completion *only* when there's no case sensitive match.
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 # Identify computer
 # This allows sharing this .zshrc across machines
 
