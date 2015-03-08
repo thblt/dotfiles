@@ -53,7 +53,6 @@ alias irc="irssi -n thblt -c irc.freenode.net -w \"${_irc_password}\""
 unset _irc_password
 
 alias fuck='sudo $(history -p \!\!)' 
-
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
 
@@ -67,20 +66,13 @@ fi
 
 # Moving between directories
 
-alias bd="bd -s"
+alias bd=". bd -s"
 alias ..="cd .."
 alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
 
-# path stuff
-
-PATH="${HOME}/bin:${PATH}"
-# Not required with homebrew python
-#if ! $is_linux; then
-	#PATH="${PATH}:/Library/Frameworks/Python.framework/Versions/3.4/bin"
-#fi;
-export PATH
+export PATH="${HOME}/bin:${PATH}"
 
 source $ZSH/oh-my-zsh.sh
