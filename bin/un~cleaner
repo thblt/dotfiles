@@ -1,0 +1,56 @@
+#!/usr/bin/python
+
+# Clean orphan Vim undo files (\.(.*)\.un~ with no matching \1)
+# There's a buggy bash oneliner for that, but it doesn't seem to work
+# so well. Here it is in Python, much less elegant, but easier to
+# understand, thus safer (hey, it *deletes* files)
+
+# This *may* behave weirdly if there are undo files for undo files, like
+# '..something.un~.un~'. But the very existence of such files would be weird. 
+
+import argparse, os, re, sys
+exp = re.compile("^\.(.*)\.un~")
+
+def clean(path, recursive):
+	for f in os.listdir(path):
+		canonical = os.path.join(path, f) 
+		if os.path.isdir(canonical):
+			if recursive:
+				clean(canonical, True)
+		elif os.path.isfile(canonical):
+			match = exp.match(f)
+			if match:
+				main = os.path.join(path, match.group(1))
+				if not (os.path.exists(main) and os.path.isfile(main)):
+					os.remove(canonical)
+					message("Deleted \t{0}".format(canonical))
+				else:
+					verbose("Not orphaned \t{0}".format(canonical))
+
+
+parser = argparse.ArgumentParser(description='Delete orphan Vim undo files')
+parser.add_argument('paths', metavar='PATH', type=str, nargs='+',
+                   help='Paths to scan')
+parser.add_argument('-r', action="store_true", dest="recursive", help="Recursive mode")
+verbosity = parser.add_mutually_exclusive_group(required=False)
+verbosity.add_argument('-q', dest="quiet", action="store_true", help="Be quiet")
+verbosity.add_argument('-v', dest="verbose", action="store_true", help="Be verbose")
+
+result = parser.parse_args()
+
+if result.quiet:
+	def message(msg): # And there are even *weirder* ways to do that!
+		pass
+else:
+	def message(msg):
+		print(msg)
+
+if result.verbose:
+	def verbose(msg):
+		print(msg)
+else:
+	def verbose(msg):
+		pass
+
+for p in result.paths:
+	clean(p, result.recursive)
