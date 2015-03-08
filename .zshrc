@@ -3,9 +3,6 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
 plugins=(brew osx pip git)
 
-# Case-insensitive completion *only* when there's no case sensitive match.
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
 # Identify computer
 # This allows sharing this .zshrc across machines
 
@@ -76,6 +73,12 @@ alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
 
-export PATH="${HOME}/bin:${PATH}"
+# $PATH is set in .bashrc
+source ~/.bashrc
 
 source $ZSH/oh-my-zsh.sh
+
+# oh my zsh overrides. Must be *below* the source command
+
+# Case-insensitive completion *only* when there's no case sensitive match.
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
