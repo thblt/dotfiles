@@ -19,8 +19,7 @@ def clean(path, recursive):
 			if recursive:
 				clean(canonical, True)
 		elif os.path.isfile(canonical):
-			if f.endswith(".un~") and f.startswith("."): # probably faster than a regex
-			#if f[-4:] == ".un~" and f[0] == ".": # probably faster than a regex
+			if f.endswith(".un~") and f.startswith("."): # A *bit* more efficient than a regex
 				totalSeen+=1
 				main = os.path.join(path, f[1:-4])
 				if not (os.path.exists(main) and os.path.isfile(main)):
