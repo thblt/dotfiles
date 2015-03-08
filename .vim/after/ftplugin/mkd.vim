@@ -1,3 +1,3 @@
 set linebreak
-nnoremap <buffer> <F8> :Toc<cr>
-inoremap <buffer> <F8> <esc>:Toc<cr>li
+nnoremap <buffer> <silent> <F8> :Toc<cr>
+nnoremap <buffer> <silent><F12> :TableFormat<cr>
