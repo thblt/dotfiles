@@ -8,8 +8,6 @@ _DFROOT_ENV_VAR = "DOTFILES_DIR"
 _PF_SYNONYMS = { "mac" : "Darwin",
 		"win": "Windows"}
 
-# Initialize argument parser
-
 def verbose(msg):
 	print(msg)
 
