@@ -49,7 +49,7 @@ filetype plugin indent on
 syntax on
 set encoding=utf-8
 if has("gui")
-"set shell=bash\ -i                          "  zsh is *weird* on GUI Vim.
+	set shell=bash\ -i                          "  zsh is *weird* on GUI Vim.
 endif
 set ttyfast                                     "  Fast terminal we have
 set tags=./tags;$HOME                           "  Look for tags in . then search down the tree until ~
@@ -60,9 +60,9 @@ set cursorline                                  "  Highlight current line
 set guifont=Menlo\ Regular\ for\ Powerline:h15
 set guioptions=mgt                              "  Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
 set laststatus=2                                "  Always show a status bar
-set nofoldenable                                "  Disable folding by default
+set noshowmode                                  "  Don't show current mode (Airline does it)
 set number                                      "  Show line numbers
-set relativenumber                              "  Show *relative* line numbers (with set number enabled, show real number in current line instead of 0)
+set relativenumber                              "  Show *relative* line numbers (with `number`, shows absolute number at current line instead of 0)
 set scrolloff=3                                 "  Minimal number of screen lines to keep above and below the cursor
 set visualbell                                  "  Visual beep in terminals
 set wildmenu                                    "  Command-line completion menu
@@ -73,6 +73,7 @@ set autoread                                    "  Reload files changed outside 
 set backspace=indent,eol,start                  "  In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
 set hidden                                      "  Do not close abandoned buffers
 set listchars=tab:▸\ ,eol:¬                     "  Show invisibles the TextMate way
+set nofoldenable                                "  Disable folding by default
 set nowrap                                      "  Disable by default, reenable for specifics filetypes
 set undofile                                    "  Create undofiles
 set showmatch                                   "  Show matching brackets
@@ -108,7 +109,7 @@ nnoremap <leader><space> :noh<cr>
 "endif
 augroup thblt
 	au!
-	au FocusLost * :wa " Save on losing focus
+	au FocusLost * silent! wa  " Save on losing focus
 augroup END
 
 " ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
