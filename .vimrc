@@ -1,37 +1,40 @@
-filetype off                              " Vundle wants this
+filetype off                                "  Vundle wants this
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-Plugin 'gmarik/Vundle.vim'                 "  Vundle itself
 
-Plugin 'bling/vim-airline'                 "  Status line
-Plugin 'dahu/vim-lotr'                     "  Persistent view of registers contents in sidebar
-Plugin 'gilligan/vim-lldb'                 "  lldb integration
-Plugin 'godlygeek/tabular'                 "  For tabularization. Required by plasticboy/markdown
-Plugin 'honza/vim-snippets'                "  Default snippets for UltiSnips
-Plugin 'junegunn/goyo.vim'                 "  'Zenroom' mode
-Plugin 'junegunn/limelight.vim'            "  With Goyo : fade contents outside the current paragraph
-Plugin 'kien/ctrlp.vim'                    "  Fuzzy search
-Plugin 'kien/rainbow_parentheses.vim'      "  Different colors for nested ({[etc
-Plugin 'Lokaltog/vim-easymotion'           "  Improved motion commands
-Plugin 'majutsushi/tagbar.git'             "  tags bar
-Plugin 'mhinz/vim-startify'                "  Startup screen with recent files
-Plugin 'nanotech/jellybeans.vim'           "  Color theme
-Plugin 'octol/vim-cpp-enhanced-highlight'  "  Improved highlighting for C++
-Plugin 'plasticboy/vim-markdown'           "  Improved markdown handling
-Plugin 'Raimondi/delimitMate'              "  Autocompletion for quotes, parens…
-Plugin 'rhysd/vim-clang-format'            "  Interface to clang_format
-Plugin 'rstacruz/sparkup'                  "  HTML/XML Zen typing
-Plugin 'scrooloose/nerdcommenter'          "  For comments
-Plugin 'scrooloose/nerdtree'               "  Dir/file browsing
-Plugin 'SirVer/ultisnips'                  "  Snippets
-Plugin 'tpope/vim-fugitive'                "  Git integration
-Plugin 'tpope/vim-projectionist'           "  Mostly for 'alternate' files (.c/.h etc)
-Plugin 'tpope/vim-repeat'                  "  Improved dot
-Plugin 'tpope/vim-surround'                "  Edit surroundings
-Plugin 'Valloric/YouCompleteMe'            "  Completion
-"Plugin 'craigemery/vim-autotag'           "  Automatic ctags invocation. Useless with clang completion.
-"Plugin 'dhruvasagar/vim-table-mode'       "  Table editor
-"Plugin 'vimoutliner/vimoutliner'          "  Outlining
+Plugin 'gmarik/Vundle.vim'                  "  Vundle itself
+
+Plugin 'bling/vim-airline'                  "  Status line
+Plugin 'dahu/vim-lotr'                      "  Persistent view of registers contents in sidebar
+Plugin 'gilligan/vim-lldb'                  "  lldb integration
+Plugin 'godlygeek/tabular'                  "  For tabularization. Required by plasticboy/markdown
+Plugin 'honza/vim-snippets'                 "  Default snippets for UltiSnips
+Plugin 'junegunn/goyo.vim'                  "  'Zenroom' mode
+Plugin 'junegunn/limelight.vim'             "  With Goyo : fade contents outside the current paragraph
+Plugin 'kien/ctrlp.vim'                     "  Fuzzy search
+Plugin 'kien/rainbow_parentheses.vim'       "  Different colors for nested ({[etc
+Plugin 'Lokaltog/vim-easymotion'            "  Improved motion commands
+Plugin 'majutsushi/tagbar.git'              "  tags bar
+Plugin 'mhinz/vim-startify'                 "  Startup screen with recent files
+Plugin 'nanotech/jellybeans.vim'            "  Color theme
+Plugin 'octol/vim-cpp-enhanced-highlight'   "  Improved highlighting for C++
+Plugin 'plasticboy/vim-markdown'            "  Improved markdown handling
+Plugin 'Raimondi/delimitMate'               "  Autocompletion for quotes, parens…
+Plugin 'rhysd/vim-clang-format'             "  Interface to clang_format
+Plugin 'rstacruz/sparkup'                   "  HTML/XML Zen typing
+Plugin 'scrooloose/nerdcommenter'           "  For comments
+Plugin 'scrooloose/nerdtree'                "  Dir/file browsing
+Plugin 'SirVer/ultisnips'                   "  Snippets
+Plugin 'tpope/vim-fugitive'                 "  Git integration
+Plugin 'tpope/vim-projectionist'            "  Mostly for 'alternate' files (.c/.h etc)
+Plugin 'tpope/vim-repeat'                   "  Improved dot
+Plugin 'tpope/vim-surround'                 "  Edit surroundings
+Plugin 'Valloric/YouCompleteMe'             "  Completion
+"Plugin 'chriskempson/base16-vim'
+"Plugin 'craigemery/vim-autotag'            "  Automatic ctags invocation. Useless with clang completion.
+"Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
+"Plugin 'vimoutliner/vimoutliner'           "  Outlining
+
 call vundle#end()
 
 "  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗
@@ -145,17 +148,6 @@ if executable('ag')
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
-" ╔═╗┬  ┌─┐┌┐┌┌─┐   ╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐
-" ║  │  ├─┤││││ ┬───║  │ ││││├─┘│  ├┤  │ ├┤
-" ╚═╝┴─┘┴ ┴┘└┘└─┘   ╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘
-if has("mac")
-	let g:clang_library_path='/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/'
-endif
-let g:clang_complete_auto = 1
-let g:clang_complete_copen = 0
-let g:clang_snippets = 1
-let g:clang_snippets_engine="ultisnips"
-
 " ╔═╗┌─┐┌─┐┬ ┬╔╦╗┌─┐┌─┐┌─┐
 " ║╣ ├─┤└─┐└┬┘ ║ ├─┤│ ┬└─┐
 " ╚═╝┴ ┴└─┘ ┴  ╩ ┴ ┴└─┘└─┘
@@ -199,7 +191,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " ╦ ╦┌─┐┬ ┬╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐╔╦╗┌─┐
 " ╚╦╝│ ││ │║  │ ││││├─┘│  ├┤  │ ├┤ ║║║├┤
 "  ╩ └─┘└─┘╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘╩ ╩└─┘
-let g:ycm_auto_trigger=1
+let g:ycm_auto_trigger=0
 let g:ycm_use_ultisnips_completer=1
 let g:ycm_autoclose_preview_window_after_insertion=1
 
