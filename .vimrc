@@ -1,7 +1,6 @@
 filetype off                              " Vundle wants this
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
 Plugin 'gmarik/Vundle.vim'                 "  Vundle itself
 
 Plugin 'bling/vim-airline'                 "  Status line
@@ -33,7 +32,6 @@ Plugin 'Valloric/YouCompleteMe'            "  Completion
 "Plugin 'craigemery/vim-autotag'           "  Automatic ctags invocation. Useless with clang completion.
 "Plugin 'dhruvasagar/vim-table-mode'       "  Table editor
 "Plugin 'vimoutliner/vimoutliner'          "  Outlining
-
 call vundle#end()
 
 "  ██████╗ ███████╗███╗   ██╗███████╗██████╗  █████╗ ██╗
@@ -104,8 +102,8 @@ set hlsearch                                    "  Highlight previous search mat
 " Leader-space clears search results
 nnoremap <leader><space> :noh<cr>
 "if has("mac")
-  "nnoremap <M-left> :bprevious<cr> 
-  "nnoremap <M-right> :bnext<cr> 
+  "nnoremap <M-left> :bprevious<cr>
+  "nnoremap <M-right> :bnext<cr>
 "endif
 augroup thblt
 	au!
@@ -123,9 +121,9 @@ augroup END
 " ╔═╗┬┬─┐┬  ┬┌┐┌┌─┐
 " ╠═╣│├┬┘│  ││││├┤
 " ╩ ╩┴┴└─┴─┘┴┘└┘└─┘
-let g:airline_powerline_fonts            = 1
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme                      = "powerlineish"
+let g:airline_theme = "powerlineish"
 
 " ╔═╗┬ ┬┌┬┐┌─┐╔╦╗┌─┐┌─┐
 " ╠═╣│ │ │ │ │ ║ ├─┤│ ┬
@@ -161,11 +159,11 @@ let g:clang_snippets_engine="ultisnips"
 " ╔═╗┌─┐┌─┐┬ ┬╔╦╗┌─┐┌─┐┌─┐
 " ║╣ ├─┤└─┐└┬┘ ║ ├─┤│ ┬└─┐
 " ╚═╝┴ ┴└─┘ ┴  ╩ ┴ ┴└─┘└─┘
-let g:easytags_async           = 0
-let g:easytags_auto_highlight  = 0
-let g:easytags_auto_update     = 1
-let g:easytags_dynamic_files   = 1
-let g:easytags_file            = '~/._vimtags'
+let g:easytags_async = 0
+let g:easytags_auto_highlight = 0
+let g:easytags_auto_update = 1
+let g:easytags_dynamic_files = 1
+let g:easytags_file = '~/._vimtags'
 let g:easytags_include_members = 1
 let g:easytags_suppress_report = 1
 
@@ -174,8 +172,8 @@ let g:easytags_suppress_report = 1
 " ╩═╝┴┴ ┴└─┘┴─┘┴└─┘┴ ┴ ┴
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
-let g:limelight_conceal_guifg   = 'DarkGray'
-let g:limelight_conceal_guifg   = '#777777'
+let g:limelight_conceal_guifg = 'DarkGray'
+let g:limelight_conceal_guifg = '#777777'
 
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
