@@ -30,6 +30,7 @@ Plugin 'tpope/vim-projectionist'            "  Mostly for 'alternate' files (.c/
 Plugin 'tpope/vim-repeat'                   "  Improved dot
 Plugin 'tpope/vim-surround'                 "  Edit surroundings
 Plugin 'Valloric/YouCompleteMe'             "  Completion
+Plugin 'jceb/vim-orgmode'
 "Plugin 'chriskempson/base16-vim'
 "Plugin 'craigemery/vim-autotag'            "  Automatic ctags invocation. Useless with clang completion.
 "Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
@@ -110,7 +111,9 @@ nnoremap <leader><space> :noh<cr>
 "endif
 augroup thblt
 	au!
-	au FocusLost * silent! wa  " Save on losing focus
+	au FocusLost * silent! wa                             "  Save on losing focus
+	au FocusLost,TabLeave * call feedkeys("\<C-\>\<C-n>") "  Return to normal mode on losing focus
+	" au FocusLost,TabLeave * stopinsert doesn't work: http://stackoverflow.com/questions/2968548/vim-return-to-command-mode-when-focus-is-lost
 augroup END
 
 " ██████╗ ██╗     ██╗   ██╗ ██████╗ ██╗███╗   ██╗███████╗
