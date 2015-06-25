@@ -10,14 +10,14 @@ is_mac=false;
 is_linux=false;
 is_headless=false;
 
-if [[ `hostname` == "Rudiger.local" ]]; then
+if [[ `hostname` == Rudiger* ]]; then
 	is_mac=true;
-elif [[ `hostname` = "thblap.local" ]]; then
+elif [[ `hostname` == thblap* ]]; then
 	is_mac=true;
-elif [[ `hostname` = "namo.thb.lt" ]]; then
+elif [[ `hostname` == namo* ]]; then
 	is_linux=true;
 	is_headless=true;
-elif [[ `hostname` = "k9.thb.lt" ]]; then
+elif [[ `hostname` == k9* ]]; then
 	is_linux=true;
 	is_headless=true;
 else
@@ -55,7 +55,7 @@ unset _irc_password
 alias fuck='sudo $(history -p \!\!)' 
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
-
+alias bc="bc -l"
 # mkcd
 
 function mkcd() { 
