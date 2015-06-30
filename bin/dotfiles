@@ -1,12 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+###############################
+# Yet another dotfiles script #
+###############################
+
 import argparse, platform, os, re, sys
 
 _DFROOT_ENV_VAR = "DOTFILES_DIR"
-
-_PF_SYNONYMS = { "mac" : "Darwin",
-		"win": "Windows"}
+_DFRC = ".dfrc"
 
 def verbose(msg):
 	print(msg)
@@ -18,7 +20,7 @@ def say(msg):
 	print(msg)
 
 def fatal(msg):
-	print("‼️  \033[91m{0}".format(msg))
+	print("\033[91m{0}".format(msg))
 
 def find_dfroot(default=None):
 
@@ -65,19 +67,35 @@ def find_dfroot(default=None):
 	return None
 
 class FSNode(object):
+
+	pool = set()
+
 	def __init__(self, source=None, target=None, parent=None):
-		self.__source = dfroot
-		self.__target  = troot
+		self.__source = source
+		self.__target = target if target else ( parent.__target if parent else None )
 		self.__parent = parent
 
-	def link(self, path):
+		self.is_dir = os.path.isdir(source)
+
+		if self.is_dir:
+			self.__children = set()
+			for child in os.path.listdir(source):
+				
+			self.__children = None
+
+		FSNode.pool.add(self)
+
+	def link(self, force=False):
 		pass
 
-	def unlink(self, path):
+	def unlink(self):
 		pass
 
-	def is_linked(self, path):
+	def is_linked(self):
 		pass
+
+	def __repr__(self):
+		return "{0}: {1} => {2}".format(self.__class__, self.__source, self.__target)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Synchronize dotfiles.')
@@ -97,8 +115,10 @@ if __name__ == "__main__":
 	if dfroot:
 		notice("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
 	else:
-		fatal("Can't determine dotfiles location. Please pass it with -d PATH or set the {0} environment variable.".format(_DFROOT_ENV_VAR))
+		fatal("Can't determine location of source directory. Please pass it with -d PATH or set the {0} environment variable.".format(_DFROOT_ENV_VAR))
 
-	pf = platform.system()
+	pf = platform.system() # We need this for conditional deployment.
 
+	filesystem = FSNode(dfroot, target)
 
+	for node in FSNode.pool: print(node)
