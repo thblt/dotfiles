@@ -1,0 +1,17 @@
+{
+"ignore": [ 
+	".dotfilesrc",
+	".git",
+	".gitignore",
+	"*.swp",
+	"*.un~"
+	],
+"rules": [
+	{
+		"target": "Library",
+		"platforms": ["Mac"]
+	}
+],
+
+"_modeline": " vim: set ft=json: "
+}
