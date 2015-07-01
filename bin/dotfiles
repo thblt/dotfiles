@@ -5,22 +5,15 @@
 # Yet another dotfiles script #
 ###############################
 
-import argparse, platform, os, re, sys
+import argparse, fnmatch, json, platform, os, re, sys
 
 _DFROOT_ENV_VAR = "DOTFILES_DIR"
-_DFRC = ".dfrc"
+_DFRC = ".dotfilesrc"
 
-def verbose(msg):
-	print(msg)
-
-def notice(msg):
-	print("{0}".format(msg))
-
-def say(msg):
-	print(msg)
-
-def fatal(msg):
-	print("\033[91m{0}".format(msg))
+_FTUPLE_SOURCE = 0
+_FTUPLE_TARGET = 1
+_FTUPLE_IGNORED = 2
+_FTUPLE_IGNORE_REASON = 3
 
 def find_dfroot(default=None):
 
@@ -40,11 +33,11 @@ def find_dfroot(default=None):
 		candidate = os.path.expanduser(os.environ[_DFROOT_ENV_VAR])
 		if not os.path.isabs(candidate):
 			candidate = os.path.expanduser(os.path.join("~", candidate))
-			print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
+			say("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 		if os.path.isdir(candidate):
 			return candidate
 		else:
-			print("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
+			say("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 
 	# Attempt 3: In ~ using a regular expression
 
@@ -59,66 +52,174 @@ def find_dfroot(default=None):
 			candidates.append(canonical)
 
 	if len(candidates) > 1:
-		print("More than one candidate directory!")
-		print("Can't choose a dotfiles directory between {0} and {1}.".format(", ".join(candidates[0:-1]), candidates[-1]))
+		say("More than one candidate directory!")
+		say("Can't choose a dotfiles directory between {0} and {1}.".format(", ".join(candidates[0:-1]), candidates[-1]))
 		return None
 	elif len(candidates) == 1:
 		return candidates[0]
 	return None
 
-class FSNode(object):
+# Returns of list of tuple ( source (str), target (str), ignore (bool), ignored_reason (tuple) )
+def enumerate(source_root, target_root, dfrc):
+	def do_enumerate(source_pos, target_pos, ignore_all=False, ignored_reason=None):
+		files = list()
+		source_can = os.path.join(source_root, source_pos)
+		finest("Scanning {0}".format(source_can))
+		for f in os.listdir(source_can):
+			source_rel = os.path.join(source_pos, f)
+			target_rel = os.path.join(target_pos, f)
+			ignore_this = False or ignore_all
 
-	pool = set()
+			# Recursively processing ignored directories is needed to allow
+			# checking for ignored files that happens to have been linked.
 
-	def __init__(self, source=None, target=None, parent=None):
-		self.__source = source
-		self.__target = target if target else ( parent.__target if parent else None )
-		self.__parent = parent
+			if not ignore_this:
+			# Process ignore rules
+			# Notice on fnmatch: it behaves!
+			# It will match some_dir/file.txt on *.txt, but not on file.txt
+				for i in dfrc["ignore"]:
+					if fnmatch.fnmatch(source_rel, i):
+						fine("Ignoring {0}".format(source_rel))
+						ignore_this = True
+						ignored_reason = ( "ignore_rule", i)
+						break
 
-		self.is_dir = os.path.isdir(source)
+			if not ignore_this:
+			# Process other rules
+			# Wording inconsistency warning : a rule's "target" is a "source" file!!!
+				for r in dfrc["rules"]:
+					if fnmatch.fnmatch(source_rel, r["target"]):
+						if "platforms" in r:
+							if not this_platform in r["platforms"]:
+								notice("Skipping {0}".format(source_rel))
+								ignore_this = True
+								ignored_reason = ("platform_rule", i)
 
-		if self.is_dir:
-			self.__children = set()
-			for child in os.path.listdir(source):
-				
-			self.__children = None
+			files.append( ( source_rel, target_rel, ignore_this, ignored_reason if ignore_this else None) )
 
-		FSNode.pool.add(self)
+			if os.path.isdir(source_rel):
+				files.extend( do_enumerate(source_rel, target_rel, ignore_this, ignored_reason) )
+		return files
 
-	def link(self, force=False):
-		pass
+	return do_enumerate("", "")
 
-	def unlink(self):
-		pass
+# Process a list of files as returned by enumerate() and add 
+# their synchronisation status. Returns a list of tuples ( (source, target), sync_status )
+def status(source, target, files):
+	ret = list()
 
-	def is_linked(self):
-		pass
+	for this_source, this_target, ignored, ignored_reason in files:
+		# Absolute paths
+		source_abs = os.path.abspath(os.path.join(source, this_source))
+		target_abs = os.path.abspath(os.path.join(target, this_target))
 
-	def __repr__(self):
-		return "{0}: {1} => {2}".format(self.__class__, self.__source, self.__target)
+		if os.path.exists(target_abs): # If target path exists
+			if os.path.abspath(os.path.realpath(target_abs)) == source_abs:
+				if ignored:
+					# If the file is ignored but found on target, it is a conflict if the file is explictely linked.
+					ret.append("ignored_linked" if os.path.islink(target_abs) else "ok")
+				else:
+					ret.append("ok")
+			else: # If target exists but is not a link to source.
+				if ignored:
+					ret.append("ok")
+				else:
+				# This is a conflict ONLY if source is not a directory.
+					ret.append("ok" if os.path.isdir(target_abs) else "conflict")
+		else: # If target path DOES NOT exist
+			ret.append( "ok" if ignored else "unlinked")
+
+	return ret
+
+def command_sync(source, target, args, dfrc):
+	files = enumerate(source, target, dfrc)
+
+def command_add(source, target, args, dfrc):
+	pass
+
+def command_remove(source, target, args, dfrc):
+	pass
+
+def command_status(source, target, args, dfrc):
+	files = enumerate(source, target, dfrc)
+	statuses = status(source, target, files)
+
+	for i in range(0, len(files)):
+		if statuses[i] != "ok":
+			print("{0} : {1}".format(files[i][_FTUPLE_SOURCE], statuses[i]))
+	#print(status(source, target, files))
+	#for f in status(source, target, files):
+		#print("{0} => {1} : {2}".format(f[0][0], f[0][1], f[1]))
+
+def make_print(enabled=True, template="{0}"):
+	if enabled:
+		def ret(msg):
+			print(template.format(msg))
+	else:
+		def ret(msg):
+			pass
+	return ret
 
 if __name__ == "__main__":
+	
+	# Parsing command-line arguments
 	parser = argparse.ArgumentParser(description='Synchronize dotfiles.')
 
 	subparsers = parser.add_subparsers(help='Commands', metavar="command", dest="cmd")
 	parser.add_argument('-d', dest='dfroot', metavar="dir", action='store', nargs=1, help="directory where dotfiles are stored", default=[None])
 
+	verbosity_group = parser.add_mutually_exclusive_group()
+	verbosity_group.add_argument('-v', dest='verbosity', action='count', default=1, help="Increase verbosity (-vv for ultra verbose)")
+	verbosity_group.add_argument('-q', dest='verbosity', action='store_const', const=0, help="Disable output")
+
+	# Parser for sync command
 	parser_sync = subparsers.add_parser("sync", help="synchronize dotfiles")
+	parser_sync.add_argument("--fix", dest="fix", action="store_const", const=True, default=False, help="Unlink ignored files")
+
 	parser_add = subparsers.add_parser("add", help="add files or directories to the repository")
 	parser_remove = subparsers.add_parser("remove", help="stop tracking files or repositories")
-	parser_list = subparsers.add_parser("list", help="print synchronization status")
+	parser_status = subparsers.add_parser("status", help="print synchronization status")
 
 	args = parser.parse_args()
+
+	# Generate print functions
+	finest = make_print(args.verbosity>=5)
+	fine = make_print(args.verbosity>=3)
+	info = make_print(args.verbosity>=2)
+	say = make_print(args.verbosity)
+	fatal = make_print(args.verbosity)
 
 	dfroot = find_dfroot(args.dfroot[0])
 	target = os.path.expanduser("~")
 	if dfroot:
-		notice("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
+		fine("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
 	else:
 		fatal("Can't determine location of source directory. Please pass it with -d PATH or set the {0} environment variable.".format(_DFROOT_ENV_VAR))
+		exit(-1)
 
-	pf = platform.system() # We need this for conditional deployment.
+	# Get the current platform
+	this_platform = platform.system()
+	platform_translations = {"Darwin": "Mac"} # Use more common names
+	if this_platform in platform_translations.keys():
+		this_platform = platform_translations[this_platform]
 
-	filesystem = FSNode(dfroot, target)
+	# Read _DFRC if it exists
+	dfrc = os.path.join(dfroot, _DFRC)
+	# Empty base
+	rcdata = {
+			"ignore": [],
+			"ignore_match": [],
+			"rules": []
+	}
 
-	for node in FSNode.pool: print(node)
+	if os.path.exists(dfrc) and os.path.isfile(dfrc):
+		fine("Reading {0}".format(dfrc))
+		with open(dfrc, "r") as dfrc_f:
+			rcdata.update(json.load(dfrc_f))
+
+{
+	"sync": command_sync,
+	"status": command_status,
+	"add": command_add,
+	"remove": command_remove
+ }[args.cmd](dfroot, target, args, rcdata)
