@@ -1,10 +1,16 @@
 {
+"scm": {
+	"scm": "git",
+	"enabled": true,
+	"auto": true
+	},
 "ignore": [ 
+	"*.swp",
+	"*.un~",
 	".dotfilesrc",
 	".git",
 	".gitignore",
-	"*.swp",
-	"*.un~"
+	"README.md"
 	],
 "rules": [
 	{
