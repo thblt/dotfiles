@@ -16,6 +16,7 @@ Plugin 'kien/rainbow_parentheses.vim'       "  Different colors for nested ({[et
 Plugin 'Lokaltog/vim-easymotion'            "  Improved motion commands
 Plugin 'majutsushi/tagbar.git'              "  tags bar
 Plugin 'mhinz/vim-startify'                 "  Startup screen with recent files
+Plugin 'mileszs/ack.vim'                    "  Ack
 Plugin 'nanotech/jellybeans.vim'            "  Color theme
 Plugin 'octol/vim-cpp-enhanced-highlight'   "  Improved highlighting for C++
 Plugin 'plasticboy/vim-markdown'            "  Improved markdown handling
@@ -111,7 +112,7 @@ nnoremap <leader><space> :noh<cr>
 "endif
 augroup thblt
 	au!
-	au FocusLost * silent! wa                             "  Save on losing focus
+	au FocusLost * wa                             "  Save on losing focus
 	au FocusLost,TabLeave * call feedkeys("\<C-\>\<C-n>") "  Return to normal mode on losing focus
 	" au FocusLost,TabLeave * stopinsert doesn't work: http://stackoverflow.com/questions/2968548/vim-return-to-command-mode-when-focus-is-lost
 augroup END
@@ -148,7 +149,7 @@ let g:ctrlp_cmd = 'CtrlP'
 " Use ag
 if executable('ag')
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  "let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 endif
 
 " ╔═╗┌─┐┌─┐┬ ┬╔╦╗┌─┐┌─┐┌─┐

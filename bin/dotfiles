@@ -5,69 +5,83 @@
 # Yet another dotfiles script #
 ###############################
 
-import argparse, fnmatch, json, platform, os, re, sys
+import argparse, fnmatch, json, platform, re, shutil, sys
+from os import environ, listdir, symlink, unlink
+from os.path import abspath, exists as path_exists, expanduser, isdir, isfile, islink, join, realpath, relpath, split as path_split
 
 _DFROOT_ENV_VAR = "DOTFILES_DIR"
 _DFRC = ".dotfilesrc"
 
-_FTUPLE_SOURCE = 0
-_FTUPLE_TARGET = 1
-_FTUPLE_IGNORED = 2
-_FTUPLE_IGNORE_REASON = 3
+# Quick utility functions
 
-def find_dfroot(default=None):
+def zerono(count):
+	return count if count else "no"
 
-	# Attempt 1: -d parameter
+def zeroNo(count):
+	return count if count else "No"
 
-	if default:
-		if not os.path.isdir(default):
-			print("“{0}” doesn't exist, isn't a directory or can't be read.".format(default))
-			return None
+def s(count, pluralzero=False):
+	return "s" if count > 1 or (not count and pluralzero) else ""
+
+def do(desc, func, *func_args, **func_kwargs):
+	if not args.simulate:
+		info(desc)
+		func(*func_args, **func_kwargs)
+	else:
+		say(desc)
+
+def split_path(path):
+	""" Splits a path in individual components. (Difference with os.path.split is that the
+	latter only separates path and filename. """
+	ret = []
+	head, tail = path_split(path)
+	while 1:
+		head, tail = path_split(path)
+
+		if tail == '':
+			if head != '': ret.insert(0, head)
+			break
 		else:
-			return default
+			ret.insert(0, tail)
+			path = head
 
-	# Attempt 2: Using environment variable
+	return ret
 
-	candidate = os.environ.get(_DFROOT_ENV_VAR)
-	if candidate:
-		candidate = os.path.expanduser(os.environ[_DFROOT_ENV_VAR])
-		if not os.path.isabs(candidate):
-			candidate = os.path.expanduser(os.path.join("~", candidate))
-			say("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
-		if os.path.isdir(candidate):
-			return candidate
-		else:
-			say("Path specified by environment variable {envvar}: “{dir}” doesn't exist or isn't a directory. Skipping.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 
-	# Attempt 3: In ~ using a regular expression
+def enumerate(source_root, target_root, dfrc, full_recursion=True):
+	"""
+	Returns of list of tuple ( source (str), target (str), ignore (bool), ignored_reason (tuple), status (str )
+	Storing source and target is pointless with the current configuration possibilies, but may allow to include externals
+	(ie, configuration commands that would not )
 
-	dnre = re.compile("^\.?dot[^a-zA-Z]?files$", re.IGNORECASE)
-	home = os.path.expanduser("~")
-
-	candidates = list()
-
-	for f in os.listdir(home):
-		canonical = os.path.join(home, f)
-		if os.path.isdir(canonical) and dnre.match(f):
-			candidates.append(canonical)
-
-	if len(candidates) > 1:
-		say("More than one candidate directory!")
-		say("Can't choose a dotfiles directory between {0} and {1}.".format(", ".join(candidates[0:-1]), candidates[-1]))
-		return None
-	elif len(candidates) == 1:
-		return candidates[0]
-	return None
-
-# Returns of list of tuple ( source (str), target (str), ignore (bool), ignored_reason (tuple) )
-def enumerate(source_root, target_root, dfrc):
+	Status can be:
+	ok
+	#		Normal state: Either the source should be linked and is, or it shouldn't and isn't.
+	ok_dirs
+	#		Normal state : Target is not link to source, but target and source are directories.
+	#		This is an acceptable state.
+	ignored_linked
+	#		Something is linked that should have been ignored.
+	broken_link
+	#		Source should be linked and isn't, there's a broken link with the expected name.
+	broken_link_to_ignored
+	#		There's a broken link where an ignored file would be linked.
+	conflict
+	#		Source is not a directory, should be linked, but there's something else at target.
+	"""
 	def do_enumerate(source_pos, target_pos, ignore_all=False, ignored_reason=None):
 		files = list()
-		source_can = os.path.join(source_root, source_pos)
+		source_can = join(source_root, source_pos)
 		finest("Scanning {0}".format(source_can))
-		for f in os.listdir(source_can):
-			source_rel = os.path.join(source_pos, f)
-			target_rel = os.path.join(target_pos, f)
+		for f in listdir(source_can):
+			# Relative paths
+			source_rel = join(source_pos, f)
+			target_rel = join(target_pos, f)
+			# Absolute paths
+			source_abs = realpath(abspath(join(source_root, source_rel))) # We must use realpath here : the dotfiles repo
+			# may contain internal symlinks (the sparkup vim plugin does) which would trigger conflict status if we didn't
+			# resolve them first.
+			target_abs = abspath(join(target_root, target_rel))
 			ignore_this = False or ignore_all
 
 			# Recursively processing ignored directories is needed to allow
@@ -75,7 +89,7 @@ def enumerate(source_root, target_root, dfrc):
 
 			if not ignore_this:
 			# Process ignore rules
-			# Notice on fnmatch: it behaves!
+			# Note on fnmatch: it behaves!
 			# It will match some_dir/file.txt on *.txt, but not on file.txt
 				for i in dfrc["ignore"]:
 					if fnmatch.fnmatch(source_rel, i):
@@ -86,7 +100,8 @@ def enumerate(source_root, target_root, dfrc):
 
 			if not ignore_this:
 			# Process other rules
-			# Wording inconsistency warning : a rule's "target" is a "source" file!!!
+			# Wording inconsistency warning:
+			#	a rule's "target" is what it is applied on, ie "source" locations!!!
 				for r in dfrc["rules"]:
 					if fnmatch.fnmatch(source_rel, r["target"]):
 						if "platforms" in r:
@@ -95,63 +110,165 @@ def enumerate(source_root, target_root, dfrc):
 								ignore_this = True
 								ignored_reason = ("platform_rule", i)
 
-			files.append( ( source_rel, target_rel, ignore_this, ignored_reason if ignore_this else None) )
+			# Compute status
+			if path_exists(target_abs): # If target path exists
+				if abspath(realpath(target_abs)) == source_abs:
+					# If the source is ignored but found linked to target, it is a conflict
+					# iff the target is an explicit link (ignored files may reside in linked dirs).
+					status = "ignored_linked" if ignore_this and islink(target_abs) else "ok"
+				else: # If target exists but is not a link to source.
+					if ignore_this:
+						status = "ok"
+					else:
+						# This is a conflict ONLY if source AND target are not directories.
+						# We don't necessary want to link directories: when managing OSX config files, we may
+						# have a DOTFILES/Library that must *not* replace the default ~/Library
+						status = "ok_dirs" if isdir(target_abs) and isdir(source_abs) else "conflict"
+			else: # If target path DOES NOT exist
+				if islink(target_abs): # If we have a broken path
+					status = "broken_link_to_ignored" if ignore_this else "broken_link"
+				else: # If there's really nothing
+					status =  "ok" if ignore_this else ( "unlinked_dir" if isdir(source_abs) else "unlinked" )
 
-			if os.path.isdir(source_rel):
+			# Append to list
+			files.append( ( source_abs, target_abs, ignore_this, ignored_reason if ignore_this else None, status) )
+
+			# Unless full_recursion==True, we don't go further if we're ignoring this, if this is properly linked or
+			# an unlinked dir
+			if isdir(source_abs) and ( not (ignore_this or status in ( "ok", "unlinked_dir" ) ) or full_recursion):
+				finest("Recursing in [{1}/{2}] {0}".format(source_abs, "ignored" if ignore_this else "syncing", status))
 				files.extend( do_enumerate(source_rel, target_rel, ignore_this, ignored_reason) )
 		return files
 
+	info("Reading files{0}...".format(" (full scan, may be long)" if full_recursion else ""))
 	return do_enumerate("", "")
 
-# Process a list of files as returned by enumerate() and add 
-# their synchronisation status. Returns a list of tuples ( (source, target), sync_status )
-def status(source, target, files):
-	ret = list()
+def command_sync(args, dfrc):
+	source_root = args.from_dir
+	target_root = args.to_dir
 
-	for this_source, this_target, ignored, ignored_reason in files:
-		# Absolute paths
-		source_abs = os.path.abspath(os.path.join(source, this_source))
-		target_abs = os.path.abspath(os.path.join(target, this_target))
+	files = enumerate(source_root, target_root, dfrc, full_recursion=args.unlink)
+	say("Synchronizing files...")
 
-		if os.path.exists(target_abs): # If target path exists
-			if os.path.abspath(os.path.realpath(target_abs)) == source_abs:
-				if ignored:
-					# If the file is ignored but found on target, it is a conflict if the file is explictely linked.
-					ret.append("ignored_linked" if os.path.islink(target_abs) else "ok")
+	linked = 0
+	unlinked = 0
+	deleted_files = 0
+	deleted_trees = 0
+
+	for source, target, ignored, ignore_reason, status in files:
+		if status == "ok":
+			continue
+		if status in ( "unlinked", "unlinked_dir" ) :
+			if not path_exists( target ):
+				do("Symlink\t{0} => {1}".format(source, target), symlink, source, target)
+				linked += 1
+		elif status in ( "ignored_linked", "broken_link_to_ignored", "broken_link" ) and args.unlink:
+			if path_exists(target):
+				do("Unlink\t{0}".format(target), unlink, target)
+				unlinked += 1
+		elif status is "conflict" and args.force:
+			if path_exists(target):
+				if isdir(target):
+					deleted_trees += 1
+					do("DELETE\t{0}".format(target), shutil.rmtree, target)
 				else:
-					ret.append("ok")
-			else: # If target exists but is not a link to source.
-				if ignored:
-					ret.append("ok")
-				else:
-				# This is a conflict ONLY if source is not a directory.
-					ret.append("ok" if os.path.isdir(target_abs) else "conflict")
-		else: # If target path DOES NOT exist
-			ret.append( "ok" if ignored else "unlinked")
+					deleted_files+=1
+					do("DELETE\t{0}".format(target), unlink, target)
+				do("Symlink\t{0} => {1}".format(source, target), symlink, source, target)
 
-	return ret
+	say("{0} new link{1} ; {2} link{3}, {4} file{5} and {6} directory tree{7} were removed.".format(
+		zeroNo(linked), s(linked, True),
+		zerono(unlinked), s(unlinked, True),
+		zerono(deleted_files), s(deleted_files, True),
+		zerono(deleted_trees), s(deleted_trees, True)
+		))
 
-def command_sync(source, target, args, dfrc):
-	files = enumerate(source, target, dfrc)
+def command_add(args, dfrc):
+	source_root = args.from_dir
+	target_root = args.to_dir
 
-def command_add(source, target, args, dfrc):
-	pass
+	srs = split_path(source_root)
+	trs = split_path(target_root)
 
-def command_remove(source, target, args, dfrc):
-	pass
+	for path in [realpath(x) for x in args.paths]:
+		info("Inserting {0}.".format(path))
 
-def command_status(source, target, args, dfrc):
-	files = enumerate(source, target, dfrc)
-	statuses = status(source, target, files)
+		# Sanity checks
+		if not path_exists(path):
+			fatal("Path does not exist: {0}".format(path))
+			continue
 
-	for i in range(0, len(files)):
-		if statuses[i] != "ok":
-			print("{0} : {1}".format(files[i][_FTUPLE_SOURCE], statuses[i]))
-	#print(status(source, target, files))
-	#for f in status(source, target, files):
-		#print("{0} => {1} : {2}".format(f[0][0], f[0][1], f[1]))
+		spath = split_path(path)
+		if spath[0:len(srs)] == srs:
+			fatal("{0} is already inside the dotfiles directory. Use sync if needed.".format(path))
+			continue
 
-def make_print(enabled=True, template="{0}"):
+		if spath[0:len(trs)] != trs or not len(spath) > len(trs):
+			fatal("{0} is not below the target directory, and I don't know how to handle externals yet. Sorry!".format(path))
+			continue
+
+		moveto = join(source_root, relpath(path, target_root))
+		do("Move\t{0} to {1}".format(path, moveto), shutil.move, path, moveto)
+		do("Symlink\t{1} to {0}".format(path, moveto), symlink, moveto, path)
+
+def command_remove(args, dfrc):
+	source_root = args.from_dir
+	target_root = args.to_dir
+
+	srs = split_path(source_root)
+	trs = split_path(target_root)
+
+	for path in [realpath(x) for x in args.paths]:
+		info("Removing {0}.".format(path))
+
+		# Sanity checks
+		if not path_exists(path):
+			fatal("Path does not exist: {0}".format(path))
+			continue
+
+		spath = split_path(path)
+		if not spath[0:len(srs)] == srs:
+			fatal("{0} is not inside the dotfiles directory. Nothing to remove there.".format(path))
+			continue
+
+		# Compute expected target location
+		# @FIXME This WON'T WORK with externals.
+		target = join(target_root, relpath(path, source_root))
+
+		if not path_exists(target):
+			fatal("Target path {0} does not seem to exist. Has it been synced?")
+			say("Remove manually from the dotfiles directory if needed, I won't go any further.")
+			continue
+
+		if not realpath(target) == path:
+			fatal("{0} isn't a link to {1}. Conflict? I prefer to give up here.".format(target, path))
+			continue
+
+		do("Unlink\t{0}".format(target), unlink, target)
+		do("Move\t{0} to {1}".format(path, target), shutil.move, path, target)
+
+def command_status(args, dfrc):
+	source_root = args.from_dir
+	target_root = args.to_dir
+	files = enumerate(source_root, target_root, dfrc, True)
+
+	abnormal = 0
+	ok = 0
+
+	for source, target, ignored, ignore_reason, status in files:
+		if not status in ( "ok", "ok_dirs" ):
+			abnormal += 1
+			status = status + " "*(16-len(status))
+			say("{0}{1}".format(status, relpath(source, source_root)))
+		else:
+			ok+=1
+
+	say("{0} problem{1} found.".format(abnormal if abnormal else "Not a single", s(abnormal)))
+	say("{0} correctly synced file{1}.".format(ok, "s" if ok>1 else ""))
+
+	return abnormal
+
+def mk_print_func(enabled=True, template="{0}"):
 	if enabled:
 		def ret(msg):
 			print(template.format(msg))
@@ -161,41 +278,100 @@ def make_print(enabled=True, template="{0}"):
 	return ret
 
 if __name__ == "__main__":
-	
+
+	# First, let's see if we can find a dotfiles directory.
+
+	df_candidates = list()
+
+	# Attempt 1: using an environment variable
+	candidate = environ.get(_DFROOT_ENV_VAR)
+	if candidate:
+		candidate = expanduser(os.environ[_DFROOT_ENV_VAR])
+		if not path.isabs(candidate):
+			candidate = path.expanduser(join("~", candidate))
+			print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
+		if isdir(candidate):
+			df_candidates.append(candidate)
+
+	# Attempt 2: using a regex
+	# a regex search will be performed on ~,
+	# looking for a directory named [optional dot] "dot" (optional non-letter character) "files".
+	# This search is case-insensitive: DotFiles, .DotFiles, dotfiles, dot.files, .Dot.FILES will match.
+	if not len(df_candidates):
+		dnre = re.compile("^\.?dot[^a-zA-Z]?files$", re.IGNORECASE)
+		home = expanduser("~")
+
+		for f in listdir(home):
+			canonical = join(home, f)
+			if isdir(canonical) and dnre.match(f):
+				df_candidates.append(canonical)
+
 	# Parsing command-line arguments
-	parser = argparse.ArgumentParser(description='Synchronize dotfiles.')
+	parser = argparse.ArgumentParser(description='Synchronize dotfiles.') #, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+	if len(df_candidates) == 1:
+		parser.epilog = "I will synchronize dotfiles from {0} to {1}. Pass other settings if these are not correct.".format(df_candidates[0], expanduser("~"))
+	else:
+		parser.epilog = "I have found {0} dotfiles directory. Please pass one using the -f flags or the {1} env variable".format(
+				"more than one" if len(df_candidates)>1 else "no",
+				_DFROOT_ENV_VAR
+				)
 
 	subparsers = parser.add_subparsers(help='Commands', metavar="command", dest="cmd")
-	parser.add_argument('-d', dest='dfroot', metavar="dir", action='store', nargs=1, help="directory where dotfiles are stored", default=[None])
+
+	parser.add_argument('-f', "--from", dest="from_dir", metavar="dotfiles_dir", action='store', nargs=1, required=True if len(df_candidates) !=1 else False, default=df_candidates[0] if len(df_candidates)==1 else None, help="directory where dotfiles are stored (may also be set by setting a {0} environment variable)".format(_DFROOT_ENV_VAR))
+	parser.add_argument('-t', "--to", dest='to_dir', metavar="target_dir", action='store', nargs=1, default=expanduser("~"), help="target directory, defaults to ~")
+
+	parser.add_argument("--dry-run", dest='simulate', action='store_const', const=True, default=False, help="Simulate only")
 
 	verbosity_group = parser.add_mutually_exclusive_group()
-	verbosity_group.add_argument('-v', dest='verbosity', action='count', default=1, help="Increase verbosity (-vv for ultra verbose)")
+	verbosity_group.add_argument('-v', dest='verbosity', action='count', default=1, help="Increase verbosity (-vvv for ultra verbose)")
 	verbosity_group.add_argument('-q', dest='verbosity', action='store_const', const=0, help="Disable output")
 
 	# Parser for sync command
 	parser_sync = subparsers.add_parser("sync", help="synchronize dotfiles")
-	parser_sync.add_argument("--fix", dest="fix", action="store_const", const=True, default=False, help="Unlink ignored files")
+	parser_sync.add_argument("--unlink", dest="unlink", action="store_const", const=True, default=False, help="Unlink ignored files if needed")
+	parser_sync.add_argument("--force", dest="force", action="store_const", const=True, default=False, help="Replace existing files")
 
 	parser_add = subparsers.add_parser("add", help="add files or directories to the repository")
+	parser_add.add_argument("paths", nargs="+")
 	parser_remove = subparsers.add_parser("remove", help="stop tracking files or repositories")
+	parser_remove.add_argument("paths", nargs="+")
 	parser_status = subparsers.add_parser("status", help="print synchronization status")
 
 	args = parser.parse_args()
 
 	# Generate print functions
-	finest = make_print(args.verbosity>=5)
-	fine = make_print(args.verbosity>=3)
-	info = make_print(args.verbosity>=2)
-	say = make_print(args.verbosity)
-	fatal = make_print(args.verbosity)
+	finest = mk_print_func(args.verbosity>=4)
+	fine = mk_print_func(args.verbosity>=3)
+	info = mk_print_func(args.verbosity>=2)
+	say = mk_print_func(args.verbosity)
+	fatal = mk_print_func(args.verbosity, template="{0} ⚠️")
 
-	dfroot = find_dfroot(args.dfroot[0])
-	target = os.path.expanduser("~")
-	if dfroot:
-		fine("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
-	else:
-		fatal("Can't determine location of source directory. Please pass it with -d PATH or set the {0} environment variable.".format(_DFROOT_ENV_VAR))
+	finest("Maximum verbosity")
+
+	dfroot = args.from_dir
+	target = expanduser(args.to_dir)
+
+	# Sanity checks
+
+	if not dfroot:
+		fatal("Can't determine location of source directory. Please pass it with -f PATH.")
 		exit(-1)
+
+	if not target:
+		fatal("Can't determine location of target directory. Please pass it with -t PATH.")
+		exit(-1)
+
+	if not isdir(dfroot):
+		fatal("Source directory doesn't exist or is not a directory.")
+		exit(-1)
+
+	if not isdir(target):
+		fatal("Target directory doesn't exist or is not a directory.")
+		exit(-1)
+
+	info("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
 
 	# Get the current platform
 	this_platform = platform.system()
@@ -204,22 +380,21 @@ if __name__ == "__main__":
 		this_platform = platform_translations[this_platform]
 
 	# Read _DFRC if it exists
-	dfrc = os.path.join(dfroot, _DFRC)
+	dfrc = join(dfroot, _DFRC)
 	# Empty base
 	rcdata = {
 			"ignore": [],
-			"ignore_match": [],
 			"rules": []
 	}
 
-	if os.path.exists(dfrc) and os.path.isfile(dfrc):
+	if path_exists(dfrc) and isfile(dfrc):
 		fine("Reading {0}".format(dfrc))
 		with open(dfrc, "r") as dfrc_f:
 			rcdata.update(json.load(dfrc_f))
 
-{
+exit({
 	"sync": command_sync,
 	"status": command_status,
 	"add": command_add,
 	"remove": command_remove
- }[args.cmd](dfroot, target, args, rcdata)
+ }[args.cmd](args, rcdata))
