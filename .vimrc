@@ -8,7 +8,6 @@ Plugin 'bling/vim-airline'                  "  Status line
 Plugin 'dahu/vim-lotr'                      "  Persistent view of registers contents in sidebar
 Plugin 'gilligan/vim-lldb'                  "  lldb integration
 Plugin 'godlygeek/tabular'                  "  For tabularization. Required by plasticboy/markdown
-Plugin 'honza/vim-snippets'                 "  Default snippets for UltiSnips
 Plugin 'junegunn/goyo.vim'                  "  'Zenroom' mode
 Plugin 'junegunn/limelight.vim'             "  With Goyo : fade contents outside the current paragraph
 Plugin 'kien/ctrlp.vim'                     "  Fuzzy search
@@ -25,17 +24,20 @@ Plugin 'rhysd/vim-clang-format'             "  Interface to clang_format
 Plugin 'rstacruz/sparkup'                   "  HTML/XML Zen typing
 Plugin 'scrooloose/nerdcommenter'           "  For comments
 Plugin 'scrooloose/nerdtree'                "  Dir/file browsing
-Plugin 'SirVer/ultisnips'                   "  Snippets
 Plugin 'tpope/vim-fugitive'                 "  Git integration
 Plugin 'tpope/vim-projectionist'            "  Mostly for 'alternate' files (.c/.h etc)
 Plugin 'tpope/vim-repeat'                   "  Improved dot
 Plugin 'tpope/vim-surround'                 "  Edit surroundings
-Plugin 'Valloric/YouCompleteMe'             "  Completion
 Plugin 'jceb/vim-orgmode'
 "Plugin 'chriskempson/base16-vim'
 "Plugin 'craigemery/vim-autotag'            "  Automatic ctags invocation. Useless with clang completion.
 "Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
 "Plugin 'vimoutliner/vimoutliner'           "  Outlining
+if v:version >= 740
+	Plugin 'honza/vim-snippets'                 "  Default snippets for UltiSnips
+	Plugin 'SirVer/ultisnips'                   "  Snippets
+	Plugin 'Valloric/YouCompleteMe'             "  Completion
+endif
 
 call vundle#end()
 
