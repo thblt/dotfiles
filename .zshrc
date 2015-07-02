@@ -76,6 +76,7 @@ alias ..5="cd ../../../../.."
 # $PATH is set in .bashrc
 source ~/.bashrc
 
+DISABLE_AUTO_UPDATE="true"
 source $ZSH/oh-my-zsh.sh
 
 # oh my zsh overrides. Must be *below* the source command
