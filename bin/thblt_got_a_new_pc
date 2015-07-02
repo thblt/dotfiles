@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# This script is to be run after dotfiles have been cloned.
+
+if [ "$(uname)" == "Darwin" ]; then
+	echo "Hello, new Mac!"
+	system="mac"
+
+	echo"We're going to need HomeBrew there"
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+	echo "Hello, new Linux!"
+	system="linux"
+fi
+#elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+	## Do something under Windows NT platform
+#fi
+
+echo
+
+if [ ! -d ~/.vim/bundle/Vundle.vim ]; then
+	git clone https://github.com/gmarik/Vundle.vim ~/.vim/bundle/Vundle.vim
+else
+	echo "Vundle seems already here, I skip this part."
+fi
+
+if [ ! -d ~/.oh-my-zsh ]; then
+	git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+else
+	echo "Oh My Zsh seems already here, I skip this part."
+fi
