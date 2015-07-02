@@ -16,6 +16,7 @@ Plugin 'kien/rainbow_parentheses.vim'       "  Different colors for nested ({[et
 Plugin 'Lokaltog/vim-easymotion'            "  Improved motion commands
 Plugin 'majutsushi/tagbar.git'              "  tags bar
 Plugin 'mhinz/vim-startify'                 "  Startup screen with recent files
+Plugin 'mileszs/ack.vim'                    "  Ack
 Plugin 'nanotech/jellybeans.vim'            "  Color theme
 Plugin 'octol/vim-cpp-enhanced-highlight'   "  Improved highlighting for C++
 Plugin 'plasticboy/vim-markdown'            "  Improved markdown handling

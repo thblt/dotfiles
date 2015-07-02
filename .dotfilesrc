@@ -1,9 +1,4 @@
 {
-"scm": {
-	"scm": "git",
-	"enabled": true,
-	"auto": true
-	},
 "ignore": [ 
 	"*.swp",
 	"*.un~",
