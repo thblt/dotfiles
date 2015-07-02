@@ -91,7 +91,7 @@ def enumerate(source_root, target_root, dfrc):
 					if fnmatch.fnmatch(source_rel, r["target"]):
 						if "platforms" in r:
 							if not this_platform in r["platforms"]:
-								notice("Skipping {0}".format(source_rel))
+								info("Skipping {0}".format(source_rel))
 								ignore_this = True
 								ignored_reason = ("platform_rule", i)
 
