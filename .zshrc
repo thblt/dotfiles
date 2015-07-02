@@ -38,7 +38,6 @@ if $is_headless; then
     export EDITOR="vim "
 elif $is_mac; then
     export EDITOR="mvim"
-	alias vim=mvim
 else
     export EDITOR="gvim"
 fi;
