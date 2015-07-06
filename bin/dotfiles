@@ -5,14 +5,21 @@
 # Yet another dotfiles script #
 ###############################
 
-import argparse, fnmatch, json, platform, re, shutil, sys
+import argparse, fnmatch, json, platform, os, re, shutil, subprocess, sys
 from os import environ, listdir, symlink, unlink
+from subprocess import Popen, PIPE
 from os.path import abspath, exists as path_exists, expanduser, isdir, isfile, islink, join, realpath, relpath, split as path_split
 
-_DFROOT_ENV_VAR = "DOTFILES_DIR"
-_DFRC = ".dotfilesrc"
+__DFROOT_ENV_VAR = "DOTFILES_DIR" # Const: Environment variable to set the dotfiles directory location
+__DFRC = ".dotfilesrc"            # Const: The name of dotfiles' configuration file
 
-# Quick utility functions
+__interactive = True              # Global: whether we're running interactively
+__simulate = False                # Global: Whether we're running in simulation (--dry-run) mode
+__current_op = None               # The current operation. Will allow the user to know what was happening in case of a crash. 
+
+####################
+# User interaction #
+####################
 
 def zerono(count):
 	return count if count else "no"
@@ -23,12 +30,44 @@ def zeroNo(count):
 def s(count, pluralzero=False):
 	return "s" if count > 1 or (not count and pluralzero) else ""
 
-def do(desc, func, *func_args, **func_kwargs):
-	if not args.simulate:
-		info(desc)
-		func(*func_args, **func_kwargs)
+def mk_print_func(enabled, template="{0}"):
+	if enabled:
+		def ret(msg):
+			print(template.format(msg))
 	else:
-		say(desc)
+		def ret(msg):
+			pass
+	return ret
+
+def ask(prompt, default, choices):
+	global __interactive
+
+	question = "{0} [{1}]\t({2}): ".format(prompt, "".join(choices), default)
+	if not __interactive:
+		say("{0}{1}".format(question, default))
+		return choices[default]
+
+	# Actually asking if we're enabled.
+	while True:
+		resp = raw_input(question)
+		if not resp:
+			return choices[default]
+		if resp in choices:
+			return resp
+		print("Please enter {0} or {1}.".format(", ".join(choices[:-1]), choices[-1]))
+
+#########################
+# Data handling utility #
+#########################
+
+class Dict2NS(object):
+  def __init__(self, dict_):
+	for k, v in dict_.items():
+		self.__dict__[k] = Dict2NS(v) if type(v) is dict else v
+
+################################
+# Filesystem utility functions #
+################################
 
 def split_path(path):
 	""" Splits a path in individual components. (Difference with os.path.split is that the
@@ -47,27 +86,137 @@ def split_path(path):
 
 	return ret
 
+def check_perms(path, perms):
+	if not os.access(path, perms):
+		print("no 1", path )
+		return False
+	if isdir(path):
+		for p in listdir(path):
+			can = join(path, p)
+			if isdir(can):
+				if not check_perms(can, perms):
+					print("no 2", can )
+					return False
+			else:
+				if not os.access(can, perms): 
+					print("no 3", can )
+					return False
+	return True 
+
+def find_empty_dirs(root):
+	empty = list()
+	not_empty = list()
+
+	hnd = False # has_non_dir
+	for p in listdir(root):
+		can = join(root, p)
+		if isdir(can):
+			e2, ne2 = find_empty_dirs(can)
+			empty.extend(e2)
+			not_empty.extend(ne2)
+		else:
+			hnd = True
+
+	(not_empty if hnd else empty).append(root)
+	return empty, not_empty
+
+##################
+# do() and run() #
+##################
+
+def do(desc, func, *func_args, **func_kwargs):
+	global __simulate
+	if __simulate:
+		info_simul(desc)
+		return True
+	else:
+		info(desc)
+		return func(*func_args, **func_kwargs)
+
+def run(unsafe_cmd, safe_cmd=None):
+	global __simulate
+	execute = True
+	cmd = unsafe_cmd
+	if __simulate:
+		if safe_cmd:
+			if type(safe_cmd[0]) is int:
+				# If safe_cmd is an iterable whose first element is an int, we insert its content
+				# minus this first element at this int's position of unsafe_cmd.
+				cmd = unsafe_cmd[0:safe_cmd[0]-1] + safe_cmd[1:] + unsafe_cmd[safe_cmd[0]-1:]
+			else:
+				# Else we use it as a complete command.
+				cmd = safe_cmd
+		else:
+			execute = False
+
+	# Make a readable version of invocation by joining everything, quoting strings that contains spaces, and replacing quotes with escaped quotes.
+	readable = "{0} {1}".format( cmd[0], " ".join(["\"{0}\"".format(x.replace("\"", "\\\"")) if type(x) is str and " " in x else x for x in cmd[1:]])) # Dumb, but works decently.
+
+	if execute:
+		info("Exec   \t{0}".format(readable))
+		process = Popen(cmd, stdout=PIPE)
+		stdout = process.communicate()
+		process.wait()
+		return (process.returncode, "")
+	else:
+		info_simul ("Exec   \t{0}".format(readable))
+		return (0, "")
+
+########################################
+# Operation functions : do_x and run_x #
+########################################
+
+
+def undo(cmd, *args, **kwargs):
+	""" Adds an operation to the undo stack """
+
+# do_something() are wrappers around do(). See mk_do_func().
+def do_rmfile(path):
+	do("DELETE \t{0}".format(path), unlink, path)
+
+def do_rmtree(path):
+	do("RMTREE \t{0}".format(path), shutil.rmtree, path)
+
+def do_symlink(path, name):
+	do("Symlink\t{0} => {1}".format(path, name), symlink, path, name)
+
+def do_move(orig, dest):
+	do("Move   \t{0} => {1}".format(orig, dest), shutil.move, orig, dest)
+
+# run_something() are wrappers around do(). See mk_run_func().
+def run_git(repo, run_safe, *cmd):
+	can_dry_run = { "add": True, "commit": True, "push": True, "status": False }
+	cmd = ( "git", "--git-dir", join(repo, ".git"), "--work-tree", repo ) + cmd
+	safe = None
+	if can_dry_run[cmd[5]] and run_safe:
+		safe = (7, "--dry-run")
+	return run(cmd, safe)
+
+
+##############################################
+# ~/.dotfiles/ <-> ~ synchronization utility #
+##############################################
 
 def enumerate(source_root, target_root, dfrc, full_recursion=True):
 	"""
 	Returns of list of tuple ( source (str), target (str), ignore (bool), ignored_reason (tuple), status (str )
 	Storing source and target is pointless with the current configuration possibilies, but may allow to include externals
-	(ie, configuration commands that would not )
+	(ie, configuration commands setting alternative target directories ) in the future.
 
 	Status can be:
 	ok
-	#		Normal state: Either the source should be linked and is, or it shouldn't and isn't.
+			Normal state: Either the source should be linked and is, or it shouldn't and isn't.
 	ok_dirs
-	#		Normal state : Target is not link to source, but target and source are directories.
-	#		This is an acceptable state.
+			Normal state : Target is not link to source, but target and source are directories.
+			This is an acceptable state.
 	ignored_linked
-	#		Something is linked that should have been ignored.
+			Something is linked that should have been ignored.
 	broken_link
-	#		Source should be linked and isn't, there's a broken link with the expected name.
+			Source should be linked and isn't, there's a broken link with the expected name.
 	broken_link_to_ignored
-	#		There's a broken link where an ignored file would be linked.
+			There's a broken link where an ignored file would be linked.
 	conflict
-	#		Source is not a directory, should be linked, but there's something else at target.
+			Source and target are not directories, should be linked, but there's something else at target.
 	"""
 	def do_enumerate(source_pos, target_pos, ignore_all=False, ignored_reason=None):
 		files = list()
@@ -84,14 +233,11 @@ def enumerate(source_root, target_root, dfrc, full_recursion=True):
 			target_abs = abspath(join(target_root, target_rel))
 			ignore_this = False or ignore_all
 
-			# Recursively processing ignored directories is needed to allow
-			# checking for ignored files that happens to have been linked.
-
 			if not ignore_this:
 			# Process ignore rules
 			# Note on fnmatch: it behaves!
 			# It will match some_dir/file.txt on *.txt, but not on file.txt
-				for i in dfrc["ignore"]:
+				for i in dfrc.ignore:
 					if fnmatch.fnmatch(source_rel, i):
 						fine("Ignoring {0}".format(source_rel))
 						ignore_this = True
@@ -102,7 +248,7 @@ def enumerate(source_root, target_root, dfrc, full_recursion=True):
 			# Process other rules
 			# Wording inconsistency warning:
 			#	a rule's "target" is what it is applied on, ie "source" locations!!!
-				for r in dfrc["rules"]:
+				for r in dfrc.rules:
 					if fnmatch.fnmatch(source_rel, r["target"]):
 						if "platforms" in r:
 							if not this_platform in r["platforms"]:
@@ -143,45 +289,73 @@ def enumerate(source_root, target_root, dfrc, full_recursion=True):
 	info("Reading files{0}...".format(" (full scan, may be long)" if full_recursion else ""))
 	return do_enumerate("", "")
 
+#############################################
+# Actual commands invoked from command-line #
+#############################################
+
 def command_sync(args, dfrc):
 	source_root = args.from_dir
 	target_root = args.to_dir
 
 	files = enumerate(source_root, target_root, dfrc, full_recursion=args.unlink)
-	say("Synchronizing files...")
 
 	linked = 0
 	unlinked = 0
 	deleted_files = 0
 	deleted_trees = 0
 
+	unsolved_conflicts = 0
+
 	for source, target, ignored, ignore_reason, status in files:
-		if status == "ok":
+		if status in ( "ok", "ok_dirs" ):
+			fine("{0} is properly linked or require no linking, continuing.")
 			continue
 		if status in ( "unlinked", "unlinked_dir" ) :
 			if not path_exists( target ):
-				do("Symlink\t{0} => {1}".format(source, target), symlink, source, target)
+				do_symlink (source, target)
 				linked += 1
-		elif status in ( "ignored_linked", "broken_link_to_ignored", "broken_link" ) and args.unlink:
-			if path_exists(target):
-				do("Unlink\t{0}".format(target), unlink, target)
-				unlinked += 1
-		elif status is "conflict" and args.force:
-			if path_exists(target):
+		elif status in ( "broken_link" ) :
+			if islink(target):
+				if args.unlink or "y" == ask("{0} is a broken link conflicting with {1}.\nRemove and relink?".format(target, source), "y", ( "y", "n" ) ):
+					do_rmfile (target)
+					do_symlink (source, target)
+					unlinked += 1
+					linked += 1
+		elif status in ( "ignored_linked" ):
+			if path_exists(target) or islink(target):
+				if args.unlink or "y" == ask("{0} is a link to ignored file {1}.\nRemove?".format(target, source), "y", "y", ( "y", "n" ) ):
+					do_rmfile (target)
+					unlinked += 1
+		elif status in ( "broken_link_to_ignored" ):
+			if path_exists(target) or islink(target):
+				if args.unlink or "y" == ask("{0} is a broken link whose name matches ignored file {1}.\nRemove?".format(target, source), "y", { "y": True, "n": False } ):
+					do_rmfile (target)
+					unlinked += 1
+		elif status is "conflict" and path_exists(target):
+			if args.force or "y" == ask("{0}{1} conflicts with {2}.\nRemove and link anyway?".format("DIRECTORY " if isdir(target) else "", target, source), "n", ( "y", "n" ) ):
 				if isdir(target):
 					deleted_trees += 1
-					do("DELETE\t{0}".format(target), shutil.rmtree, target)
+					do_rmtree (target)
 				else:
 					deleted_files+=1
-					do("DELETE\t{0}".format(target), unlink, target)
-				do("Symlink\t{0} => {1}".format(source, target), symlink, source, target)
+					do_rmfile(target)
+				do_symlink (source, target)
+				linked += 1
+			else:
+				unsolved_conflicts += 1
 
-	say("{0} new link{1} ; {2} link{3}, {4} file{5} and {6} directory tree{7} were removed.".format(
+	say("\n{0} new link{1} ; {2} link{3}, {4} file{5} and {6} directory tree{7} were removed.".format(
 		zeroNo(linked), s(linked, True),
 		zerono(unlinked), s(unlinked, True),
 		zerono(deleted_files), s(deleted_files, True),
 		zerono(deleted_trees), s(deleted_trees, True)
 		))
+	say("{0} conflict{1} have been left unsolved.".format(
+		zeroNo(unsolved_conflicts),
+		s(unsolved_conflicts)
+		))
+
+	return unsolved_conflicts
 
 def command_add(args, dfrc):
 	source_root = args.from_dir
@@ -190,26 +364,67 @@ def command_add(args, dfrc):
 	srs = split_path(source_root)
 	trs = split_path(target_root)
 
+	added = list()
+
 	for path in [realpath(x) for x in args.paths]:
+
+		moveto = join(source_root, relpath(path, target_root))
+
 		info("Inserting {0}.".format(path))
 
 		# Sanity checks
 		if not path_exists(path):
-			fatal("Path does not exist: {0}".format(path))
+			warn("Path does not exist: {0}".format(path))
+			continue
+
+		if path_exists(moveto):
+			warn("Target path already exists: {0}".format(moveto))
 			continue
 
 		spath = split_path(path)
 		if spath[0:len(srs)] == srs:
-			fatal("{0} is already inside the dotfiles directory. Use sync if needed.".format(path))
+			warn("{0} is already inside the dotfiles directory. Use sync if needed.".format(path))
 			continue
 
 		if spath[0:len(trs)] != trs or not len(spath) > len(trs):
-			fatal("{0} is not below the target directory, and I don't know how to handle externals yet. Sorry!".format(path))
+			warn("{0} is not below the target directory, and I don't know how to handle externals yet. Sorry!".format(path))
 			continue
 
-		moveto = join(source_root, relpath(path, target_root))
-		do("Move\t{0} to {1}".format(path, moveto), shutil.move, path, moveto)
-		do("Symlink\t{1} to {0}".format(path, moveto), symlink, moveto, path)
+		if not check_perms(path, os.W_OK | os.R_OK):
+			warn("I don't have read/write access to {0} or part(s) of it. Giving up.".format(path))
+			continue
+
+		# @FIXME If isdir(path), the same directory hierarchy is traversed four times in a row : 
+		# to check permissions, to check for emptyness, to copy and then to delete. That could certainly be
+		# reduced to three (check permissions+emptyness, copy, delete) or even two traversals (check perms/emptyness/copy, delete)
+		# Not sure about two: that would mean having potentially to restore from a potentially awkward state for no obvious gain.
+		# (It's quite fast as it is on adding the full .vim directory with all bundles)
+
+		if isdir(path):
+			e, ne = find_empty_dirs(path)
+			if len(e) and dfrc.git.automate:
+				ask("{0} {1} that Git will not process.\nShould I add a zero bytes .gitinclude file to empty paths? (Yes, No, Abort)".format(path, "contains empty directories" if len(ne) else "is an empty directory tree"), "a", ("y", "n", "a"))
+				#@FIXME IMPLEMENT !!!!!!!
+
+		do_move (path, moveto)
+		do_symlink (moveto, path)
+		added.append(moveto)
+		if dfrc.git.automate:
+			err, stdout = run_git (source_root, False, "add", moveto)
+			if err:
+				warn("Git failed to add {0}.".format(moveto))
+
+	if added:
+		run_git(source_root, False, "commit", "-m", "Added {0}".format(", ".join(
+			[relpath(p, source_root) for p in added]
+			)))
+
+	say("{0} path{1} added (out of {2}).".format(
+		zeroNo(len(added)),
+		s(len(added)),
+		len(args.paths)
+		))
+	return len(args.paths) - len(added)
 
 def command_remove(args, dfrc):
 	source_root = args.from_dir
@@ -223,12 +438,12 @@ def command_remove(args, dfrc):
 
 		# Sanity checks
 		if not path_exists(path):
-			fatal("Path does not exist: {0}".format(path))
+			warn("Path does not exist: {0}".format(path))
 			continue
 
 		spath = split_path(path)
 		if not spath[0:len(srs)] == srs:
-			fatal("{0} is not inside the dotfiles directory. Nothing to remove there.".format(path))
+			warn("{0} is not inside the dotfiles directory. Nothing to remove there.".format(path))
 			continue
 
 		# Compute expected target location
@@ -236,16 +451,21 @@ def command_remove(args, dfrc):
 		target = join(target_root, relpath(path, source_root))
 
 		if not path_exists(target):
-			fatal("Target path {0} does not seem to exist. Has it been synced?")
+			warn("Target path {0} does not seem to exist. Has it been synced?")
 			say("Remove manually from the dotfiles directory if needed, I won't go any further.")
 			continue
 
 		if not realpath(target) == path:
-			fatal("{0} isn't a link to {1}. Conflict? I prefer to give up here.".format(target, path))
+			warn("{0} isn't a link to {1}. Conflict? I prefer to give up here.".format(target, path))
 			continue
 
-		do("Unlink\t{0}".format(target), unlink, target)
-		do("Move\t{0} to {1}".format(path, target), shutil.move, path, target)
+		do_rmfile (target)
+		do_move (path, target)
+
+def command_gacp(args, dfrc):
+	fatal("Not implemented")
+	return -1
+
 
 def command_status(args, dfrc):
 	source_root = args.from_dir
@@ -263,40 +483,27 @@ def command_status(args, dfrc):
 		else:
 			ok+=1
 
-	say("{0} problem{1} found.".format(abnormal if abnormal else "Not a single", s(abnormal)))
-	say("{0} correctly synced file{1}.".format(ok, "s" if ok>1 else ""))
+	say("\n{2} correctly synced file{3}, {0} problem{1} found.".format(zerono(abnormal), s(abnormal), zeroNo(ok), s(ok)))
 
 	return abnormal
-
-def mk_print_func(enabled=True, template="{0}"):
-	if enabled:
-		def ret(msg):
-			print(template.format(msg))
-	else:
-		def ret(msg):
-			pass
-	return ret
 
 if __name__ == "__main__":
 
 	# First, let's see if we can find a dotfiles directory.
-
 	df_candidates = list()
 
 	# Attempt 1: using an environment variable
-	candidate = environ.get(_DFROOT_ENV_VAR)
+	candidate = environ.get(__DFROOT_ENV_VAR)
 	if candidate:
-		candidate = expanduser(os.environ[_DFROOT_ENV_VAR])
+		candidate = expanduser(os.environ[__DFROOT_ENV_VAR])
 		if not path.isabs(candidate):
 			candidate = path.expanduser(join("~", candidate))
-			print("Relative path found in environment variable {envvar}, converted to “{dir}”.".format(envvar=_DFROOT_ENV_VAR, dir=candidate))
 		if isdir(candidate):
 			df_candidates.append(candidate)
 
-	# Attempt 2: using a regex
-	# a regex search will be performed on ~,
+	# Attempt 2: a regex search will be performed on ~,
 	# looking for a directory named [optional dot] "dot" (optional non-letter character) "files".
-	# This search is case-insensitive: DotFiles, .DotFiles, dotfiles, dot.files, .Dot.FILES will match.
+	# This search is case-insensitive: DotFiles, .DotFiles, dotfiles, dot.files, .Dot-FILES will match.
 	if not len(df_candidates):
 		dnre = re.compile("^\.?dot[^a-zA-Z]?files$", re.IGNORECASE)
 		home = expanduser("~")
@@ -310,45 +517,81 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Synchronize dotfiles.') #, formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 
 	if len(df_candidates) == 1:
-		parser.epilog = "I will synchronize dotfiles from {0} to {1}. Pass other settings if these are not correct.".format(df_candidates[0], expanduser("~"))
+		parser.epilog = "By default on this computer, I will synchronize dotfiles from {0} to {1}. Pass other settings if these are not correct.".format(df_candidates[0], expanduser("~"))
 	else:
 		parser.epilog = "I have found {0} dotfiles directory. Please pass one using the -f flags or the {1} env variable".format(
 				"more than one" if len(df_candidates)>1 else "no",
-				_DFROOT_ENV_VAR
+				__DFROOT_ENV_VAR
 				)
 
+	tmp = parser.add_argument_group("paths")
+	tmp.add_argument('-f', "--from", dest="from_dir", metavar="dotfiles_dir", action='store', nargs=1, required=True if len(df_candidates) !=1 else False, default=df_candidates[0] if len(df_candidates)==1 else None, help="directory where dotfiles are stored (may also be set by setting a {0} environment variable)".format(__DFROOT_ENV_VAR))
+	tmp.add_argument('-t', "--to", dest='to_dir', metavar="target_dir", action='store', nargs=1, default=expanduser("~"), help="target directory, defaults to ~")
+
+	# Common arguments
+	parser.add_argument("-d", "--dry-run", dest='simulate', action='store_const', const=True, default=False, help="simulate only (applies to git commands as well)")
+	parser.add_argument("--no-interaction", dest='interactive', action='store_const', const=False, default=True, help="assume default answer to all questions")
+
+	# Verbosity mutex group
+	tmp = parser.add_mutually_exclusive_group()
+	tmp.add_argument('-v', dest='verbosity', action='count', default=1, help="increase verbosity (-vvv for ultra verbose)")
+	tmp.add_argument('-q', dest='verbosity', action='store_const', const=0, help="disable output except when user choice is required (see --no-interaction")
+
+	# Git options
+	tmp = parser.add_argument_group("git automation")
+
+	# Auto git mutex group
+	tmp2 = tmp.add_mutually_exclusive_group()
+	tmp2.add_argument('--git', dest='git', action='store_const', const=True, default=None, help="enable git automation (overrides config file)")
+	tmp2.add_argument('--no-git', dest='git', action='store_const', const=False, default=None, help="disable git automation (overrides config file) (this is the default)")
+
+	# Git auto push mutex group
+	tmp2 = tmp.add_mutually_exclusive_group()
+	tmp2.add_argument('--git-push', dest='git_push', action='store_const', const=True, default=None, help="automatically push the git repository (overrides config file)")
+	tmp2.add_argument('--no-git-push', dest='git_push', action='store_const', const=False, default=None, help="disable automatic push of the git repository (overrides config file) (this is the default)")
+
+	# Subparsers
 	subparsers = parser.add_subparsers(help='Commands', metavar="command", dest="cmd")
 
-	parser.add_argument('-f', "--from", dest="from_dir", metavar="dotfiles_dir", action='store', nargs=1, required=True if len(df_candidates) !=1 else False, default=df_candidates[0] if len(df_candidates)==1 else None, help="directory where dotfiles are stored (may also be set by setting a {0} environment variable)".format(_DFROOT_ENV_VAR))
-	parser.add_argument('-t', "--to", dest='to_dir', metavar="target_dir", action='store', nargs=1, default=expanduser("~"), help="target directory, defaults to ~")
+	# *sync* command subparser
+	tmp = subparsers.add_parser("sync", help="synchronize dotfiles")
+	tmp.add_argument("--unlink", dest="unlink", action="store_const", const=True, default=False, help="unlink ignored files without asking")
+	tmp.add_argument("--force", dest="force", action="store_const", const=True, default=False, help="replace existing files or directories without asking (DANGEROUS)")
 
-	parser.add_argument("--dry-run", dest='simulate', action='store_const', const=True, default=False, help="Simulate only")
+	# *add* command subparser
+	tmp = subparsers.add_parser("add", help="add files or directories to the repository")
+	tmp.add_argument("paths", nargs="+")
 
-	verbosity_group = parser.add_mutually_exclusive_group()
-	verbosity_group.add_argument('-v', dest='verbosity', action='count', default=1, help="Increase verbosity (-vvv for ultra verbose)")
-	verbosity_group.add_argument('-q', dest='verbosity', action='store_const', const=0, help="Disable output")
+	# *remove* command subparser
+	tmp = subparsers.add_parser("remove", help="stop tracking files or repositories")
+	tmp.add_argument("paths", nargs="+")
 
-	# Parser for sync command
-	parser_sync = subparsers.add_parser("sync", help="synchronize dotfiles")
-	parser_sync.add_argument("--unlink", dest="unlink", action="store_const", const=True, default=False, help="Unlink ignored files if needed")
-	parser_sync.add_argument("--force", dest="force", action="store_const", const=True, default=False, help="Replace existing files")
+	# *gacp* command subparser
+	tmp = subparsers.add_parser("gacp", help="git add, commit and push all modified files")
+	tmp.add_argument("-m", action="store", dest="msg", metavar="message", help="commit message")
 
-	parser_add = subparsers.add_parser("add", help="add files or directories to the repository")
-	parser_add.add_argument("paths", nargs="+")
-	parser_remove = subparsers.add_parser("remove", help="stop tracking files or repositories")
-	parser_remove.add_argument("paths", nargs="+")
-	parser_status = subparsers.add_parser("status", help="print synchronization status")
+	tmp.add_argument("paths", nargs="*", help="paths to add to git")
+
+	# *status* command subparser
+	tmp = subparsers.add_parser("status", help="print synchronization status")
+	tmp.add_argument("--full", dest="fullscan", action="store_const", const=True, default=False, help="Full recursion in dotfiles directory (do not stop at directories or normal states)")
 
 	args = parser.parse_args()
 
-	# Generate print functions
-	finest = mk_print_func(args.verbosity>=4)
-	fine = mk_print_func(args.verbosity>=3)
-	info = mk_print_func(args.verbosity>=2)
-	say = mk_print_func(args.verbosity)
-	fatal = mk_print_func(args.verbosity, template="{0} ⚠️")
+	# We now have the command-line arguments.
 
-	finest("Maximum verbosity")
+	__interactive = args.interactive
+	__simulate = args.simulate
+
+	finest      =  mk_print_func(args.verbosity >= 4)
+	fine        =  mk_print_func(args.verbosity >= 3)
+	info        =  mk_print_func(args.verbosity >= 2)
+	info_simul  =  mk_print_func(args.verbosity >= 2, "Simulate\t{0}")
+	say         =  mk_print_func(args.verbosity)
+	warn        =  mk_print_func(args.verbosity, "⚠️    {0}")
+	fatal       =  mk_print_func(args.verbosity, "🚫    {0}")
+
+	finest("Maximum verbosity.")
 
 	dfroot = args.from_dir
 	target = expanduser(args.to_dir)
@@ -371,6 +614,9 @@ if __name__ == "__main__":
 		fatal("Target directory doesn't exist or is not a directory.")
 		exit(-1)
 
+	if args.simulate:
+		say("Simulation (--dry-run) mode. I won't perform any change to anything, even if I pretend to.")
+
 	info("Working with \"{0}\" syncing with \"{1}\".".format(dfroot, target))
 
 	# Get the current platform
@@ -379,22 +625,44 @@ if __name__ == "__main__":
 	if this_platform in platform_translations.keys():
 		this_platform = platform_translations[this_platform]
 
-	# Read _DFRC if it exists
-	dfrc = join(dfroot, _DFRC)
+	# Read __DFRC if it exists
+
 	# Empty base
-	rcdata = {
+	dfrc = {
+			"git": { "automate": False, "autopush": False },
 			"ignore": [],
 			"rules": []
-	}
+			}
 
-	if path_exists(dfrc) and isfile(dfrc):
-		fine("Reading {0}".format(dfrc))
-		with open(dfrc, "r") as dfrc_f:
-			rcdata.update(json.load(dfrc_f))
+	dfrcpath = join(dfroot, __DFRC)
+	if path_exists(dfrcpath) and isfile(dfrcpath):
+		fine("Reading configuration from {0}.".format(dfrcpath))
+		with open(dfrcpath, "r") as dfrc_f:
+			dfrc.update(json.load(dfrc_f))
 
-exit({
-	"sync": command_sync,
-	"status": command_status,
-	"add": command_add,
-	"remove": command_remove
- }[args.cmd](args, rcdata))
+	dfrc = Dict2NS(dfrc)
+
+	# Override dfrc with command-line args:
+	dfrc.git.automate = args.git if args.git != None else dfrc.git.automate
+	dfrc.git.autopush = dfrc.git.automate and (args.git_push if args.git_push != None else dfrc.git.autopush)
+
+	if args.git_push and not dfrc.git.autopush:
+		warn("--git-push ignored due to git automation being disabled.")
+
+	info("Git automation {0}, automatic push {1}.".format(
+		"enabled" if dfrc.git.automate else "disabled",
+		"enabled" if dfrc.git.autopush else "disabled")
+		)
+
+	#try:
+	ret = {
+			"sync": command_sync,
+			"status": command_status,
+			"add": command_add,
+			"gacp": command_gacp,
+			"remove": command_remove
+			}[args.cmd](args, dfrc)
+	#except:
+		#print ( "Unexpected error: {0}".format(sys.exc_info()))
+
+	exit(-1) # Exit must be outside the try/except block because it raises an exception itself (SystemExit)
