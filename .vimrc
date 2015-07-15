@@ -162,7 +162,7 @@ nnoremap 0 à
 
 augroup thblt
 	au!
-	au FocusLost * wa                                     "  Save on losing focus
+	au FocusLost * :silent! wa                                     "  Save on losing focus
 	au FocusLost,TabLeave * call feedkeys("\<C-\>\<C-n>") "  Return to normal mode on losing focus
 	" au FocusLost,TabLeave * stopinsert doesn't work: http://stackoverflow.com/questions/2968548/vim-return-to-command-mode-when-focus-is-lost
 augroup END
