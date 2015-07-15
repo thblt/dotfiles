@@ -88,8 +88,10 @@ defaults write com.apple.finder ShowPathbar -bool true
 defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
 ###############################################################################
-# Misc                                                                        #
+# Apps                                                                        #
 ###############################################################################
 
-# Set iTerm2 settings folder to somewhere easy to manage
+# Set iTerm2 settings folder to somewhere easier to manage
 defaults write com.googlecode.iterm2 PrefsCustomFolder "~/.iterm2"
+# Disable MacVim Lion-style fullscreen
+defaults write org.vim.MacVim MMNativeFullScreen 0
