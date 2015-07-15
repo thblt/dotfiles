@@ -1,0 +1,15 @@
+versioning:
+    engine: git
+    automate: true
+    push: true
+ignore:  
+    - "*.swp"
+    - "*.un~"
+    - ".dotfilesrc"
+    - ".git"
+    - ".gitignore"
+    - "README.md"
+rules: > 
+    path == "Library" and platform != mac: ignore;
+            
+# vim: ft=yaml
