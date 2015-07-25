@@ -25,7 +25,6 @@ else
 fi;
 
 # Read secrets (not in version control)
-
 source ~/.secrets
 
 # Variables
@@ -37,10 +36,10 @@ fi;
 if $is_headless; then
     export EDITOR="vim "
 elif $is_mac; then
-    export EDITOR="mvim"
+    export EDITOR="mvim --remote-silent"
 	alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 else
-    export EDITOR="gvim"
+    export EDITOR="gvim --remote-silent"
 fi;
 
 export GREP_COLOR=31
@@ -49,8 +48,6 @@ alias grep='grep --color=auto'
 # Aliases
 
 alias e=${EDITOR}
-alias irc="irssi -n thblt -c irc.freenode.net -w \"${_irc_password}\""
-unset _irc_password
 
 alias fuck='sudo $(history -p \!\!)' 
 alias namo="ssh thblt@namo.thb.lt"
@@ -59,7 +56,7 @@ alias bc="bc -l"
 # mkcd
 
 function mkcd() { 
-if mkdir "$@" 
+if mkdir -p "$@" 
 	then cd "$@"
 fi
 }
