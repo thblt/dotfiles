@@ -296,7 +296,9 @@
 	<key>MaxVertically</key>
 	<false/>
 	<key>NSNavLastRootDirectory</key>
-	<string>~/Documents</string>
+	<string>~/Downloads</string>
+	<key>NSNavPanelExpandedSizeForOpenMode</key>
+	<string>{712, 448}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -304,9 +306,9 @@
 	<key>NSScrollAnimationEnabled</key>
 	<false/>
 	<key>NSWindow Frame Preferences</key>
-	<string>936 550 924 485 0 0 2560 1417 </string>
+	<string>299 528 924 485 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>478 701 665 451 0 0 2560 1417 </string>
+	<string>429 722 665 451 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>398 897 665 451 0 0 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -478,7 +480,7 @@
 				<real>0.0</real>
 			</dict>
 			<key>Background Image Is Tiled</key>
-			<false/>
+			<true/>
 			<key>Background Image Location</key>
 			<string></string>
 			<key>Blend</key>
@@ -488,9 +490,9 @@
 			<key>Blinking Cursor</key>
 			<false/>
 			<key>Blur</key>
-			<false/>
+			<true/>
 			<key>Blur Radius</key>
-			<real>2</real>
+			<real>15</real>
 			<key>Bold Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1013,7 +1015,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.0</real>
+			<real>0.10542714595794678</real>
 			<key>Triggers</key>
 			<array/>
 			<key>Unlimited Scrollback</key>
@@ -1768,7 +1770,7 @@
 	<key>NoSyncTimeOfLastPromo</key>
 	<real>453480771.31273699</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>457483165.95592302</real>
+	<real>458656094.61534601</real>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
 	<key>OpenArrangementAtStartup</key>
@@ -1831,7 +1833,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2015-07-01T22:39:22Z</date>
+	<date>2015-07-15T12:28:14Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>Show Toolbelt</key>

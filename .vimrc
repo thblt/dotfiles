@@ -79,7 +79,6 @@ colorscheme jellybeans
 " Note on colorschema/hightlighting listchars:
 " Two highlight groups: SpecialKey and NonText
 highlight specialKey guibg='NONE'
-
 set cursorline                                  "  Highlight current line
 set guifont=Menlo\ Regular\ for\ Powerline:h15
 set guioptions=mgt                              "  Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
@@ -180,17 +179,12 @@ augroup END
 " ╩ ╩┴┴└─┴─┘┴┘└┘└─┘
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#fnamecollapse=0
+let g:airline#extensions#tabline#fnametruncate=0
 let g:airline_theme = "powerlineish"
-let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline#extensions#ctrlp#show_adjacent_modes = 1
-
-" ╔═╗┬ ┬┌┬┐┌─┐╔╦╗┌─┐┌─┐
-" ╠═╣│ │ │ │ │ ║ ├─┤│ ┬
-" ╩ ╩└─┘ ┴ └─┘ ╩ ┴ ┴└─┘
-if has("mac")
-	" Homebrew exuberant ctags and not BSD ctags
-	let g:CtagsCmd = '/usr/local/bin/ctags'
-endif
 
 " ╔═╗┌┬┐┬─┐┬  ╔═╗
 " ║   │ ├┬┘│  ╠═╝
@@ -256,17 +250,18 @@ let g:syntastic_mode_map = { "mode": "passive" }
 " ╦ ╦┬ ┌┬┐┬╔═╗┌┐┌┬┌─┐┌─┐
 " ║ ║│  │ │╚═╗││││├─┘└─┐
 " ╚═╝┴─┘┴ ┴╚═╝┘└┘┴┴  └─┘
-"let g:UltiSnipsExpandTrigger=""
-"let g:UltiSnipsJumpForwardTrigger=""
-"let g:UltiSnipsJumpBackwardTrigger=""
+let g:UltiSnipsExpandTrigger='<c-e>'
+let g:UltiSnipsJumpForwardTrigger='<tab>'
+let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 
 " ╦ ╦┌─┐┬ ┬╔═╗┌─┐┌┬┐┌─┐┬  ┌─┐┌┬┐┌─┐╔╦╗┌─┐
 " ╚╦╝│ ││ │║  │ ││││├─┘│  ├┤  │ ├┤ ║║║├┤
 "  ╩ └─┘└─┘╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘╩ ╩└─┘
-let g:ycm_auto_trigger=2
-let g:ycm_use_ultisnips_completer=1
-let g:ycm_autoclose_preview_window_after_insertion=1
-
+let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
+"let g:ycm_auto_trigger=2
+"let g:ycm_use_ultisnips_completer=1 " default: 1
+"let g:ycm_autoclose_preview_window_after_insertion=1
+"nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " ███████╗██╗   ██╗███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
 " ██╔════╝██║   ██║████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
