@@ -1,0 +1,6 @@
+hs.urlevent.bind("CorsairKbGKeyPressed", function(eventName, params)
+    hs.alert.show("Received gKeyPressed"..params["key"])
+end)
+hs.urlevent.bind("CorsairKbGKeyReleased", function(eventName, params)
+    hs.alert.show("Received gKeyReleased"..params["key"])
+end)
