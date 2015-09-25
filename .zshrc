@@ -1,7 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
-plugins=(brew osx pip git)
+plugins=(brew git pip)
 
 # Identify computer
 # This allows sharing this .zshrc across machines
@@ -69,6 +69,11 @@ alias ..2="cd ../.."
 alias ..3="cd ../../.."
 alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
+
+# Virtualenvwrapper
+
+export WORKON_HOME=~/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
 
 # $PATH is set in .bashrc
 source ~/.bashrc

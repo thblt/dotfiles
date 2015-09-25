@@ -93,6 +93,7 @@ set wildmode=list:longest,full                  "  Autocomplete as much as possi
 
 """ Editing
 set autoread                                    "  Reload files changed outside vim
+set autowrite                                   "  Autosave when leaving window/:make/etc.
 set backspace=indent,eol,start                  "  In insert mode, allow backspace over autoindent, line breaks (join) and start of insert
 set hidden                                      "  Do not close abandoned buffers
 set listchars=tab:▸\ ,eol:¬                     "  Show invisibles the TextMate way
@@ -158,6 +159,9 @@ nnoremap 7 è
 nnoremap 8 !
 nnoremap 9 ç
 nnoremap 0 à
+
+nmap <F8> :TagbarToggle<CR>
+nmap <F2> :NERDTreeToggle<CR>
 
 augroup thblt
 	au!
@@ -237,11 +241,6 @@ let g:projectionist_heuristics = {
 		\ "*.h":   { "alternate": "{}.c" },
 	\}}
 
-" ╔╦╗┌─┐┌─┐╔╗ ┌─┐┬─┐
-"  ║ ├─┤│ ┬╠╩╗├─┤├┬┘
-"  ╩ ┴ ┴└─┘╚═╝┴ ┴┴└─
-nmap <F8> :TagbarToggle<CR>
-"
 " ╔═╗┬ ┬┌┐┌┌┬┐┌─┐┌─┐┌┬┐┬┌─┐
 " ╚═╗└┬┘│││ │ ├─┤└─┐ │ ││
 " ╚═╝ ┴ ┘└┘ ┴ ┴ ┴└─┘ ┴ ┴└─┘
