@@ -1,0 +1,79 @@
+"*":
+  "exception-reporting":
+    userId: "283d22e1-8dc0-7218-bd4f-1155e49ba15e"
+  welcome:
+    showOnStartup: false
+  core:
+    disabledPackages: [
+      "metrics"
+      "relative-line-numbers"
+      "relative-line-numbers"
+      "relative-line-numbers"
+    ]
+    openEmptyEditorOnStart: false
+    themes: [
+      "one-dark-ui"
+      "atom-dark-syntax"
+    ]
+    ignoredNames: [
+      ".git"
+      ".hg"
+      ".svn"
+      ".DS_Store"
+      "._*"
+      "Thumbs.db"
+      ".*.un~"
+      "*.o"
+      "*.hi"
+      "*.pyc"
+      ""
+    ]
+    packagesWithKeymapsDisabled: [
+      "clang-format"
+    ]
+  editor:
+    invisibles: {}
+    showIndentGuide: true
+    showInvisibles: true
+    tabLength: 4
+    fontFamily: "Source Code Pro for Powerline"
+  "autocomplete-clang": {}
+  "tree-view":
+    hideVcsIgnoredFiles: true
+    hideIgnoredNames: true
+  "vim-surround": {}
+  autosave:
+    enabled: true
+  "haskell-ghc-mod":
+    additionalPathDirectories: [
+      "/Users/thblt/Library/Haskell/bin"
+    ]
+  linter:
+    showErrorPanel: false
+  "atom-beautify":
+    _analyticsUserId: "aa65bed7-7783-45b6-a815-e00891778d42"
+  "vim-mode":
+    useSmartcaseForSearch: true
+    useClipboardAsDefaultRegister: true
+  "merge-conflicts": {}
+  "terminal-plus":
+    core: {}
+    style:
+      fontFamily: "Source Code Pro for Powerline"
+      theme: "pro"
+    toggles:
+      autoClose: true
+  "spell-check": {}
+  minimap:
+    autoToggle: false
+  "clang-format":
+    formatCOnSave: false
+    formatCPlusPlusOnSave: false
+    formatJavascriptOnSave: false
+    formatObjectiveCOnSave: false
+  "autocomplete-plus":
+    enableAutoActivation: false
+    suggestionListFollows: "Cursor"
+  Zen:
+    softWrap: true
+  pigments: {}

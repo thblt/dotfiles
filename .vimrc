@@ -48,8 +48,8 @@ if v:version >= 704
 	Plugin 'SirVer/ultisnips'             " Snippets
 	Plugin 'honza/vim-snippets'           " Default snippets for UltiSnips
 	Plugin 'Valloric/YouCompleteMe'       " Completion
+	Plugin 'eagletmt/neco-ghc'            " ghc-mod completion for Haskell
 endif
-"Plugin 'chriskempson/base16-vim'
 "Plugin 'craigemery/vim-autotag'            "  Automatic ctags invocation. Useless with clang completion.
 "Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
 "Plugin 'vimoutliner/vimoutliner'           "  Outlining
@@ -148,7 +148,7 @@ nnoremap è 7
 nnoremap ! 8
 nnoremap ç 9
 nnoremap à 0
-" Reversing 
+" Reversing
 nnoremap 1 &
 nnoremap 2 é
 nnoremap 3 "
@@ -257,6 +257,7 @@ let g:UltiSnipsJumpBackwardTrigger='<s-tab>'
 " ╚╦╝│ ││ │║  │ ││││├─┘│  ├┤  │ ├┤ ║║║├┤
 "  ╩ └─┘└─┘╚═╝└─┘┴ ┴┴  ┴─┘└─┘ ┴ └─┘╩ ╩└─┘
 let g:ycm_global_ycm_extra_conf="~/.vim/.ycm_extra_conf.py"
+let g:ycm_semantic_triggers = {'haskell' : ['.']}
 "let g:ycm_auto_trigger=2
 "let g:ycm_use_ultisnips_completer=1 " default: 1
 "let g:ycm_autoclose_preview_window_after_insertion=1
