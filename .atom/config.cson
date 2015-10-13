@@ -37,6 +37,7 @@
     showInvisibles: true
     tabLength: 4
     fontFamily: "Source Code Pro for Powerline"
+    fontSize: 17
   "autocomplete-clang": {}
   "tree-view":
     hideVcsIgnoredFiles: true
@@ -52,6 +53,7 @@
     showErrorPanel: false
   "atom-beautify":
     _analyticsUserId: "aa65bed7-7783-45b6-a815-e00891778d42"
+    analytics: false
   "vim-mode":
     useSmartcaseForSearch: true
     useClipboardAsDefaultRegister: true
@@ -77,3 +79,4 @@
   Zen:
     softWrap: true
   pigments: {}
+  latexer: {}
