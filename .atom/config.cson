@@ -36,7 +36,7 @@
     showIndentGuide: true
     showInvisibles: true
     tabLength: 4
-    fontFamily: "Source Code Pro for Powerline"
+    fontFamily: "Inconsolata"
     fontSize: 17
   "autocomplete-clang": {}
   "tree-view":
