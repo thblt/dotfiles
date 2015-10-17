@@ -34,12 +34,9 @@ if ! $is_headless; then
 fi;
 
 if $is_headless; then
-    export EDITOR="vim "
-elif $is_mac; then
-    export EDITOR="mvim --remote-silent"
-	alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+    export EDITOR="vim"
 else
-    export EDITOR="gvim --remote-silent"
+    export EDITOR="atom"
 fi;
 
 export GREP_COLOR=31
