@@ -19,6 +19,8 @@
   'parcel'
   'pigments'
   'project-manager'
+  'relative-numbers'
+  'tabularize'
   'terminal-plus'
   'vim-mode'
   'vim-mode-zz'

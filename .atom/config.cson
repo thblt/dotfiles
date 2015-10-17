@@ -31,12 +31,13 @@
     packagesWithKeymapsDisabled: [
       "clang-format"
     ]
+    destroyEmptyPanes: false
   editor:
     invisibles: {}
     showIndentGuide: true
     showInvisibles: true
     tabLength: 4
-    fontFamily: "Inconsolata"
+    fontFamily: "Inconsolata-g for Powerline"
     fontSize: 17
   "autocomplete-clang": {}
   "tree-view":
@@ -61,8 +62,10 @@
   "terminal-plus":
     core: {}
     style:
-      fontFamily: "Source Code Pro for Powerline"
+      fontSize: 13
+      fontFamily: "Inconsolata-g for Powerline"
       theme: "pro"
+      animationSpeed: 0
     toggles:
       autoClose: true
   "spell-check": {}
@@ -80,3 +83,4 @@
     softWrap: true
   pigments: {}
   latexer: {}
+  "autocomplete-python": {}
