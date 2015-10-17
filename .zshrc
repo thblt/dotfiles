@@ -49,14 +49,14 @@ alias grep='grep --color=auto'
 
 alias e=${EDITOR}
 
-alias fuck='sudo $(history -p \!\!)' 
+alias fuck='sudo $(history -p \!\!)'
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
 alias bc="bc -l"
 # mkcd
 
-function mkcd() { 
-if mkdir -p "$@" 
+function mkcd() {
+if mkdir -p "$@"
 	then cd "$@"
 fi
 }
@@ -75,8 +75,12 @@ alias ..5="cd ../../../../.."
 export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-# $PATH is set in .bashrc
-source ~/.bashrc
+# $PATH
+if [ -e /usr/libexec/path_helper ]; then
+	# Darwin/OSX utility to determine system path
+	eval `/usr/libexec/path_helper`
+fi
+export PATH="${HOME}/bin:${PATH}:${HOME}/.cabal/bin"
 
 DISABLE_AUTO_UPDATE="true"
 source $ZSH/oh-my-zsh.sh
