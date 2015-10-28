@@ -6,9 +6,7 @@
   core:
     disabledPackages: [
       "metrics"
-      "relative-line-numbers"
-      "relative-line-numbers"
-      "relative-line-numbers"
+      "open-on-github"
     ]
     openEmptyEditorOnStart: false
     themes: [
@@ -26,19 +24,18 @@
       "*.o"
       "*.hi"
       "*.pyc"
-      ""
-    ]
-    packagesWithKeymapsDisabled: [
-      "clang-format"
     ]
     destroyEmptyPanes: false
   editor:
     invisibles: {}
     showIndentGuide: true
-    showInvisibles: true
     tabLength: 4
     fontFamily: "Inconsolata-g for Powerline"
-    fontSize: 17
+    softWrapAtPreferredLineLength: true
+    fontSize: 20
+    softWrapHangingIndent: 2
+    softWrap: true
+    showInvisibles: true
   "autocomplete-clang": {}
   "tree-view":
     hideVcsIgnoredFiles: true
@@ -48,8 +45,11 @@
     enabled: true
   "haskell-ghc-mod":
     additionalPathDirectories: [
-      "/Users/thblt/Library/Haskell/bin"
+      "/home/thblt/.cabal/bin"
+      "/Users/thblt/.cabal/bin"
     ]
+    enableGhcModi: false
+    useLinter: true
   linter:
     showErrorPanel: false
   "atom-beautify":
@@ -84,3 +84,8 @@
   pigments: {}
   latexer: {}
   "autocomplete-python": {}
+  "git-plus": {}
+  "ide-haskell": {}
+  "pdf-view": {}
+".latex.source":
+  softWrap: true
