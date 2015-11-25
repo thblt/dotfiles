@@ -6,30 +6,59 @@
 
 ;;; Code:
 
+(defconst user-init-dir
+  (cond ((boundp 'user-emacs-directory)
+         user-emacs-directory)
+        ((boundp 'user-init-directory)
+         user-init-directory)
+        (t "~/.emacs.d/")))
+
+
+(defun load-user-file (file)
+  (interactive "f")
+  "Load a file in current user's configuration directory"
+  (load-file (expand-file-name file user-init-dir)))
+
+;; Let customize put its mess elsewhere
+(setq custom-file "~/.emacs.d/_customize.el")
+
+(load-user-file "_customize.el")
+
+;; Automated package management, thanks.
 (require 'package)
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+(setq package-archives '(("gnu"			. "https://elpa.gnu.org/packages/")
+                         ("marmalade"	. "https://marmalade-repo.org/packages/")
+                         ("melpa"		. "https://melpa.org/packages/")))
 
 (package-initialize)
 
 (unless package-archive-contents
   (package-refresh-contents))
 
-(package-initialize)
-;;;;;;;;;;;;;;;; Packages ;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;; === Packages === ;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (package-install 'ace-window)				; 
+(package-install 'anzu)
+(package-install 'avy)
+(package-install 'atom-one-dark-theme)		; Theme
 (package-install 'auctex)                   ; (La)TeX edition
 (package-install 'company)					; Completion
 (package-install 'company-auctex)			; Completion provider for AucTeX
 (package-install 'company-c-headers)		; Completion provider for C header files
 (package-install 'company-ghc)				; Completion provider for Haskell
 (package-install 'company-jedi)				; Completion provider for Python
+(package-install 'cpputils-cmake)           ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(package-install 'diminish)                 ; Don't display some minor modes in modeline
 (package-install 'evil)						; Extensible VI Layer
+(package-install 'expand-region)            ; Expand region by semantic units
 (package-install 'flycheck)					; On-the-fly syntax checking/linting.
 (package-install 'flycheck-haskell)			; Haskell provider for Flycheck
 (package-install 'flycheck-pyflakes)		; Pyflakes provider for Flycheck
+(package-install 'git-timemachine)          ;
+(package-install 'god-mode)                 ; 
+(package-install 'guru-mode)                ; Disable common keybindings
 (package-install 'helm)						; Incremental completion and selection narrowing framework.
 (package-install 'helm-dash)				; Access Dash docsets through Helm.
 (package-install 'magit)					; Git integration
@@ -37,7 +66,7 @@
 (package-install 'projectile)				; Project management
 (package-install 'relative-line-numbers)	; À la vim
 (package-install 'smart-mode-line)			; Better mode line
-(smart-mode-line-enable)
+(package-install 'smartparens)              ; Be smart with parentheses
 (package-install 'writeroom-mode)			; Distraction-free mode
 (package-install 'yasnippet)				; Snippets
 
@@ -47,6 +76,11 @@
   (windmove-default-keybindings))
 
 (load-theme 'atom-one-dark)
+(smart-mode-line-enable)
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(menu-bar-mode -1)
 
 (setq-default comment-empty-lines t				; Prefix empty lines too
               inhibit-startup-screen t			; Skip the startup screens
@@ -55,18 +89,17 @@
               initial-scratch-message "; Scratch buffer\n\n"
               )
 
+;;; OSX keyboard
 (setq mac-option-modifier 'nil
 	  mac-command-modifier 'meta)
 
-;; Look & Feel
+;;; OSX keyboard *on Linux*
 
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+;; Look & Feel
 
 (defun startup-echo-area-message ()
   "I'm ready!")
 
-(global-relative-line-numbers-mode)
 (projectile-global-mode)
 
 ;;; Bindings
@@ -79,29 +112,6 @@
 
 (require 'helm-dash)
 ;(setq helm-dash-browser-func 'eww)
-
-(defun c-doc ()
-  (interactive)
-  (setq-local helm-dash-docsets '("C")))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["black" "#d55e00" "#009e73" "#f8ec59" "#0072b2" "#cc79a7" "#56b4e9" "white"])
- '(custom-safe-themes
-   (quote
-	("3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "4904daa168519536b08ca4655d798ca0fb50d3545e6244cefcf7d0c7b338af7e" default))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 (provide 'init)
 ;;; init.el ends here
