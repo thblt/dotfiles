@@ -1,38 +1,161 @@
-This is my Emacs cheatsheet. It is quite basic for now.
+#+TITLE: Emacs cheatsheet
+#+AUTHOR: Thibault Polge
 
-* Fundamentals
+This is my Emacs cheatsheet. It is quite basic, and will probably
+remain this way, or become quite weird.
+
+Unless otherwise stated, all cited packages are available on MELPA.
+
+*Slang:* Emacs refers to what is commonly called the /backspace/ key as *Del*.
+
+* Editing text
+
 ** Command multipliers
 
-| Keys                   | Action                                                                                            |
-|------------------------+---------------------------------------------------------------------------------------------------|
-| =C--=, =M--=           | Reverse direction of following command.                                                           |
-| =C-[0-9]+=, =M-[0-9]+= | Repeat the following command n times.                                                             |
-| =C-u=                  | Repeat the following command 4 times (may be followed by a number; multiplies itself if repeated) |
+| Keys                   | Command             | Action                                                                                            |
+|------------------------+---------------------+---------------------------------------------------------------------------------------------------|
+| =C--=, =M--=           | ~negative-argument~ | Reverse direction of following command.                                                           |
+| =C-[0-9]+=, =M-[0-9]+= | ~digit-argument~    | Repeat the following command n times.                                                             |
+| =C-u=                  | ~universal-argument~  | Repeat the following command 4 times (may be followed by a number; multiplies itself if repeated) |
 
 ** Moving around
 
-| Keys    | Command     | Unit      | Direction           |
-|---------+-------------+-----------+---------------------|
-| =C-f=   |             | Character | Forward             |
-| =C-b=   |             | Character | Backward            |
-| =M-g c= | ~goto-char~ | Character | Go to nth in buffer (???) |
-| =M-f=   |             | Word      | Forward             |
-| =M-b=   |             | Word      | Backward            |
-| =C-n=   |             | Line      | Forward             |
-| =C-p=   |             | Line      | Backward            |
-| =C-a=   |             | Line      | Start               |
-| =C-e=   |             | Line      | End                 |
-| =M-a=   |             | Sentence  | Start               |
-| =M-e=   |             | Sentence  | End                 |
-| =M-<=   |             | Buffer    | Start               |
-| =M->=   |             | Buffer    | End                 |
-|         |             |           |                     |
+*** Common commands
+
+| Keys    | Command     | Unit      | Direction                 |
+|---------+-------------+-----------+---------------------------|
+| =C-f=   |             | Character | Forward                   |
+| =C-b=   |             | Character | Backward                  |
+| =M-f=   |             | Word      | Forward                   |
+| =M-b=   |             | Word      | Backward                  |
+| =C-n=   |             | Line      | Forward                   |
+| =C-p=   |             | Line      | Backward                  |
+| =C-a=   |             | Line      | Start                     |
+| =C-e=   |             | Line      | End                       |
+| =M-a=   |             | Sentence  | Start                     |
+| =M-e=   |             | Sentence  | End                       |
+| =M-<=   |             | Buffer    | Start                     |
+| =M->=   |             | Buffer    | End                       |
+
+ * *avy* provides motion commands based on a decision tree. 
+
+*** Uncommon commands
+
+| Keys    | Command     | Unit      | Direction                |
+|---------+-------------+-----------+--------------------------|
+| =M-g c= | ~goto-char~ | Character | Go to nth char in buffer |
 
 ** Killing and yanking
 
-*Slang:* In Vim, /yanking/ means cut, in Emacs it means *paste*. 
+*** Killing
 
-** Windows and Frames
+Killing is deleting text. Deleted text is always added to the kill ring.
+
+| Keys      | Command                   | Kills                  |
+|-----------+---------------------------+------------------------|
+| =C-d=     | ~delete-char~             | Character under cursor |
+| =Del=     | ~delete-backward-char~    | Previous character     |
+| =M-d=     | ~kill-word~               | Next word              |
+| =M-del=   | ~backward-kill-word~      | Previous word          |
+| =C-k=     | ~kill-line~               | To end of line         |
+| =M-k=     | ~kill-sentence~           | Next sentence          |
+| =C-x Del= | ~backward-kill-sentence~  | Previous sentence      |
+| =C-w=     | ~kill-region~             | Marked region          |
+|           | ~kill-paragraph~          | Next paragraph         |
+|           | ~backward-kill-paragraph~ | Previous paragraph     |
+
+*** Saving to kill-ring (copying)
+
+| Keys  | Command         | Saves |
+|-------+-----------------+-------|
+| =M-w= | ~kill-ring-save | Region |
+
+*** Yanking
+
+*Slang:* In Vim, /yanking/ means cut, in Emacs it means *paste*.
+
+| Keys  | Command    | Action                                            |
+|-------+------------+---------------------------------------------------|
+| =C-y= | ~yank~     | Yanks latest entry in kill ring                   |
+| =M-y= | ~yank-pop~ | Immediately after ~yank~, pastes earlier deletion |
+
+** Marks and regions
+
+Once the mark has been set, usual motion commands extend the selection.
+
+| Keys             | Command                   | Action                             |
+|------------------+---------------------------+------------------------------------|
+| =C-space=, =C-@= | ~set-mark-command~        | Mark the beginning/end of a region |
+| =C-x C-x=        | ~exchange-point-and-mark~ | Exchange the point and the mark    |
+| =M-h=            | ~mark-paragraph~          | Mark paragraph                     |
+| =C-x C-p=        | ~mark-page~               | Mark page                          |
+| =C-x h=          | ~mark-whole-buffer~       | Mark buffer                        |
+
+** Undoing and redoing
+
+EMacs maintains undo history as a tree, and considers undo as a regular operation
+
+| Keys           | Command         | Action                  |
+|----------------+-----------------+-------------------------|
+| =C-_-, =C-x u= | ~undo~          | Undo last change        |
+|                | ~revert-buffer~ | Revert to saved version |
+
+ * *git-timemachine* provides an interface for browsing a file's Git history.
+
+** Editing goodies
+
+*** Transposition
+
+| Keys      | Command                |
+|-----------+------------------------|
+| =C-t=     | ~transpose-chars~      |
+| =M-t=     | ~transpose-words~      |
+| =C-x C-t= | ~transpose-lines~      |
+|           | ~transpose-sentences~  |
+|           | ~transpose-paragraphs~ |
+
+*** Capitalization
+
+| Keys  | Command           |
+|-------+-------------------|
+| =M-c= | ~capitalize-word~ |
+| =M-u= | ~upcase-word~     |
+| =M-l= | ~downcase-word~   |
+
+All these commands may be prefixed by the negative argument to work on
+previous word or, more usefully, from the beginning of the word if the
+point is somewhere in the middle.
+
+* Searching and replacing
+
+** Searching
+
+| Keys        | Command                   | Mode        | Object                | Direction |
+|-------------+---------------------------+-------------+-----------------------+-----------|
+| =C-s Enter= |                           | Simple      | String                | Forward   |
+| =C-r Enter= |                           | Simple      | String                | Backward  |
+| =C-s=       | ~isearch-forward~         | Incremental | String                | Forward   |
+| =C-r=       | ~isearch-backward~        | Incremental | String                | Backward  |
+| =C-s C-w=   | ~isearch-yank-word~       | Incremental | Word under cursor     | Forward   |
+| =C-s C-y=   | ~isearch-yank-line~       | Incremental | Cursor to end of line | Forward   |
+| =C-s M-y=   | ~isearch-yank-kill~       | Incremental | Top of kill ring      | Forward   |
+| =C-s C-s=   | ~isearch-repeat-forward~  | Incremental | Previous search       | Forward   |
+| =C-s C-r=   | ~isearch-repeat-backward~ | Incremental | Previous search       | Backward  |
+|             |                           |             |                       |           |
+
+*Word search* looks for a sequence of words and ignores line breaks and in some cases formatting. 
+
+*** Commands in incremental search
+
+| Keys    | Command        | Action      |
+|---------+----------------+-------------|
+| =Enter= | ~isearch-exit~ | Exit search |
+|         |                |             |
+
+
+** Replacing
+
+* Windows, frames and buffers
 
 *Slang:* A /frame/ is what graphical OSes refer to as a /window/, a
 /window/ is an internal Emacs frame. This is in fact surprisingly
@@ -40,25 +163,34 @@ logical: Since Emacs /is/ itself a tiling Window manager, it deals
 with windows, and put them into frames. Everything is clear when you
 don't forget that Emacs keeps pretending it's an OS.
 
-** Undoing and redoing
+** Windows
 
-* Vim emulation/modal editing.
+** Frames
+
+** Buffers
+
+| Keys    | Command       | Action        |
+|---------+---------------+---------------|
+| =C-x k= | ~kill-buffer~ | Kill a buffer |
+
+* Excellent packages
+
+** Vim emulation/modal editing.
 
 Emacs is quite good at pretending to be Vim.
 
   * *evil* is the Extensible VI Layer for Emacs. It provides almost
-    perfect Vim behavior, including ex.
+    perfect Vim behavior for text editing, including ex emulation.
   * *god-mode* is a minor-mode similar to Vim's normal mode. It allows
     to enter commands without modifier keys.
 
-* Learning helpers
+** Learning helpers
 
-  - *discover-my-major* 
-  - *guru-mode* disables arrow motions and other bad keybindings and
+  * *discover-my-major* 
+  * *guru-mode* disables arrow motions and other bad keybindings and
     prints the correct binding.
 
-
-* Programming/Emacs as IDE.
+** Programming/Emacs as IDE.
 
   * *company* is an extensible completion framework. It can interface
     with multiple backends. It also allows to use YouCompleteMe daemon
@@ -72,7 +204,7 @@ Emacs is quite good at pretending to be Vim.
 
 * Writing 
 
-** LaTeX *
+** LaTeX
 
     *AucTex* is likely to be the best TeX editing environment
     ever.  

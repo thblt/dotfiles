@@ -2,7 +2,7 @@
 
 ;;; Commentary:
 
-; Don't trust anything in this file. I just started trying to use Emacs.
+;; Don't trust anything in this file.
 
 ;;; Code:
 
@@ -13,7 +13,6 @@
          user-init-directory)
         (t "~/.emacs.d/")))
 
-
 (defun load-user-file (file)
   (interactive "f")
   "Load a file in current user's configuration directory"
@@ -21,11 +20,10 @@
 
 ;; Let customize put its mess elsewhere
 (setq custom-file "~/.emacs.d/_customize.el")
-
 (load-user-file "_customize.el")
 
-;; Automated package management, thanks.
-(require 'package)
+(require 'package)          ; Automated package management, thanks.
+
 
 (setq package-archives '(("gnu"			. "https://elpa.gnu.org/packages/")
                          ("marmalade"	. "https://marmalade-repo.org/packages/")
@@ -34,53 +32,88 @@
 (package-initialize)
 
 (unless package-archive-contents
-  (package-refresh-contents))
+  (package-refresh-contents)) ; Load package list if absent.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;; === Packages === ;;;;;;;;;;;;
+;;;;;;;;;;;; ### Packages ### ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(package-install 'ace-window)				; 
-(package-install 'anzu)
-(package-install 'avy)
+
+;; Appareance and interaction
 (package-install 'atom-one-dark-theme)		; Theme
-(package-install 'auctex)                   ; (La)TeX edition
-(package-install 'company)					; Completion
-(package-install 'company-auctex)			; Completion provider for AucTeX
-(package-install 'company-c-headers)		; Completion provider for C header files
-(package-install 'company-ghc)				; Completion provider for Haskell
-(package-install 'company-jedi)				; Completion provider for Python
-(package-install 'cpputils-cmake)           ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(load-theme 'atom-one-dark)
+(package-install 'ace-window)				; Easily switch between windows.
+(global-set-key (kbd "M-p") 'ace-window)
 (package-install 'diminish)                 ; Don't display some minor modes in modeline
-(package-install 'evil)						; Extensible VI Layer
-(package-install 'expand-region)            ; Expand region by semantic units
-(package-install 'flycheck)					; On-the-fly syntax checking/linting.
-(package-install 'flycheck-haskell)			; Haskell provider for Flycheck
-(package-install 'flycheck-pyflakes)		; Pyflakes provider for Flycheck
-(package-install 'git-timemachine)          ;
-(package-install 'god-mode)                 ; 
 (package-install 'guru-mode)                ; Disable common keybindings
 (package-install 'helm)						; Incremental completion and selection narrowing framework.
-(package-install 'helm-dash)				; Access Dash docsets through Helm.
-(package-install 'magit)					; Git integration
-(package-install 'markdown-mode)			; Markdown
-(package-install 'projectile)				; Project management
-(package-install 'relative-line-numbers)	; À la vim
+(package-install 'neotree)                  ; Folders tree sidebar
+(global-set-key (kbd "<f2>") 'neotree-toggle)
 (package-install 'smart-mode-line)			; Better mode line
-(package-install 'smartparens)              ; Be smart with parentheses
-(package-install 'writeroom-mode)			; Distraction-free mode
-(package-install 'yasnippet)				; Snippets
-
-;;;;;;;;;;;;;;;; Built-in packages ;;;;;;;;;;;;;;;;
+(smart-mode-line-enable)
 (require 'windmove)
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
-(load-theme 'atom-one-dark)
-(smart-mode-line-enable)
+;; Editing
+(package-install 'anzu)                     ; Highlight search matches, show number/position in mode line
+(package-install 'avy)                      ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
+(global-set-key (kbd "C-:") 'avy-goto-char-2)
+(package-install 'god-mode)                 ; Modal editing
+(global-set-key (kbd "<escape>") 'god-local-mode)
+(package-install 'evil)						; Extensible VI Layer
+(package-install 'expand-region)            ; Expand region by semantic units
+(package-install 'relative-line-numbers)	; À la vim
+(package-install 'smartparens)              ; Be smart with parentheses
+(package-install 'writeroom-mode)			; Distraction-free mode
+(package-install 'yasnippet)				; Snippets
 
-(tool-bar-mode -1)
+;; Versioning and history
+(package-install 'git-timemachine)          ; Traverse a file's git history
+(package-install 'magit)					; Git porcelain integration
+
+;; Project management
+(package-install 'projectile)				; Project management
+(projectile-global-mode)
+(diminish 'projectile-mode)
+
+;; General programming
+(package-install 'company)					; Completion framework
+(diminish 'company-mode)
+(package-install 'flycheck)                 ; On the fly checking/linting
+(diminish 'flycheck-mode)
+(package-install 'helm-dash)				; Access Dash docsets through Helm.
+(global-set-key (kbd "<f1>") 'helm-dash-at-point) 
+
+;; === Syntaxes ===
+;; C/C++
+(package-install 'clang-format)             ; Interface to clang-format
+(package-install 'cpputils-cmake)           ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(package-install 'company-c-headers)		; Completion provider for C header files
+
+;; Haskell
+(package-install 'company-ghc)				; Completion provider for Haskell
+(package-install 'flycheck-haskell)			; Haskell provider for Flycheck
+
+;; Markdown
+(package-install 'markdown-mode)			; Markdown major mode
+
+;; TeX
+(package-install 'auctex)                   ; (La)TeX edition
+(package-install 'company-auctex)			; Completion provider for AucTeX
+
+;; Python
+(package-install 'company-jedi)				; Completion provider for Python
+(package-install 'flycheck-pyflakes)		; Pyflakes provider for Flycheck
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;; General look and feel ;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (string= system-type 'darwin)
+  (menu-bar-mode -1)                            ; There's no gain in hiding menu bar on OSX.
+  )
 (scroll-bar-mode -1)
-(menu-bar-mode -1)
+(tool-bar-mode -1)
 
 (setq-default comment-empty-lines t				; Prefix empty lines too
               inhibit-startup-screen t			; Skip the startup screens
@@ -90,28 +123,20 @@
               )
 
 ;;; OSX keyboard
-(setq mac-option-modifier 'nil
-	  mac-command-modifier 'meta)
-
-;;; OSX keyboard *on Linux*
-
+(when (string= system-type 'darwin) 
+  (setq mac-option-modifier 'nil
+		mac-command-modifier 'meta)
+  
+  (global-set-key (kbd "<help>") 'overwrite-mode) ; Fix weird Apple keymap.
+)
 ;; Look & Feel
 
 (defun startup-echo-area-message ()
-  "I'm ready!")
-
-(projectile-global-mode)
+  "I'm ready!") ; Emacs == SpongeBob
 
 ;;; Bindings
-(global-set-key (kbd "C-x o") 'ace-window)
+
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-
-;;; Helm
-
-;;; Helm-dash
-
-(require 'helm-dash)
-;(setq helm-dash-browser-func 'eww)
 
 (provide 'init)
 ;;; init.el ends here
