@@ -1,0 +1,80 @@
+This is my Emacs cheatsheet. It is quite basic for now.
+
+* Fundamentals
+** Command multipliers
+
+| Keys                   | Action                                                                                            |
+|------------------------+---------------------------------------------------------------------------------------------------|
+| =C--=, =M--=           | Reverse direction of following command.                                                           |
+| =C-[0-9]+=, =M-[0-9]+= | Repeat the following command n times.                                                             |
+| =C-u=                  | Repeat the following command 4 times (may be followed by a number; multiplies itself if repeated) |
+
+** Moving around
+
+| Keys    | Command     | Unit      | Direction           |
+|---------+-------------+-----------+---------------------|
+| =C-f=   |             | Character | Forward             |
+| =C-b=   |             | Character | Backward            |
+| =M-g c= | ~goto-char~ | Character | Go to nth in buffer (???) |
+| =M-f=   |             | Word      | Forward             |
+| =M-b=   |             | Word      | Backward            |
+| =C-n=   |             | Line      | Forward             |
+| =C-p=   |             | Line      | Backward            |
+| =C-a=   |             | Line      | Start               |
+| =C-e=   |             | Line      | End                 |
+| =M-a=   |             | Sentence  | Start               |
+| =M-e=   |             | Sentence  | End                 |
+| =M-<=   |             | Buffer    | Start               |
+| =M->=   |             | Buffer    | End                 |
+|         |             |           |                     |
+
+** Killing and yanking
+
+*Slang:* In Vim, /yanking/ means cut, in Emacs it means *paste*. 
+
+** Windows and Frames
+
+*Slang:* A /frame/ is what graphical OSes refer to as a /window/, a
+/window/ is an internal Emacs frame. This is in fact surprisingly
+logical: Since Emacs /is/ itself a tiling Window manager, it deals
+with windows, and put them into frames. Everything is clear when you
+don't forget that Emacs keeps pretending it's an OS.
+
+** Undoing and redoing
+
+* Vim emulation/modal editing.
+
+Emacs is quite good at pretending to be Vim.
+
+  * *evil* is the Extensible VI Layer for Emacs. It provides almost
+    perfect Vim behavior, including ex.
+  * *god-mode* is a minor-mode similar to Vim's normal mode. It allows
+    to enter commands without modifier keys.
+
+* Learning helpers
+
+  - *discover-my-major* 
+  - *guru-mode* disables arrow motions and other bad keybindings and
+    prints the correct binding.
+
+
+* Programming/Emacs as IDE.
+
+  * *company* is an extensible completion framework. It can interface
+    with multiple backends. It also allows to use YouCompleteMe daemon
+    (ycmd).
+  * *flycheck* is a framework for on-the-fly checking and/or linting
+    of source code. Like company, it connects to backends which does
+    the actual work, and deals with integrating them in 
+  * *helm-dash* allows to browse [[https://kapeli.com/dash][Dash]] docsets directly from
+    Emacs. Helm-dash extends the functionality of Helm, which is an
+    excellent fuzzy finder framework.
+
+* Writing 
+
+** LaTeX *
+
+    *AucTex* is likely to be the best TeX editing environment
+    ever.  
+
+** Org mode
