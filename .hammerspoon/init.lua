@@ -1,3 +1,10 @@
+-- Personal settings. I have changing taste.
+
+termEmulatorName = "iTerm"
+textEditorName = "Emacs"
+webBrowserName = "Chromium"
+
+
 -- Variables
 
 hs.window.animationDuration = 0 -- No animation
@@ -39,12 +46,12 @@ end)
 
 --[[ G-Key Bindings
 G1  G2  G3
-+---|---|-- Maximize current window
-    +---|-- Place current window on left half of the screen
-        +-- Place current window on right half of the screen
++---|---|-- Place current window on left half of the screen
+    +---|-- Place current window on right half of the screen
+        +-- Maximize current window
 G4  G5  G6
-+---|---|-- Place current window on left third of the screen
-    +---|-- Place current window on center third of the screen
++---|---|-- Place current window on left of the screen, two thirds width.
+    +---|-- Place current window on right of the screen, one third width.
         +-- Place current window on right third of the screen
 
 G7  G8  G9
@@ -61,45 +68,57 @@ G13 G14 G15
     +---|--
         +--
 G16 G17 G18
-+---|---|--
-    +---|--
-        +--
++---|---|-- Bring terminal to the front
+    +---|-- Bring text editor to the front
+        +-- Bring web browser to the front
 --]]
 
-gKeyPressedBindings[1] = function()
+function positionRelative(x, y, w, h)
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local max = win:screen():frame()
 
-	f.x = max.x
-	f.y = max.y
-	f.w = max.w / 2
-	f.h = max.h
+	f.x = max.w * x
+	f.y = max.h * y
+	f.w = max.w * w
+	f.h = max.h * h
 	win:setFrame(f)
+end
+
+gKeyPressedBindings[1] = function()
+	positionRelative(0, 0, 1/2, 1)
 end
 
 gKeyPressedBindings[2] = function()
-	local win = hs.window.focusedWindow()
-	local f = win:frame()
-	local max = win:screen():frame()
-
-	f.x = max.x + max.w / 2
-	f.y = max.y
-	f.w = max.w / 2
-	f.h = max.h
-	win:setFrame(f)
+	positionRelative(0,0,1,1)
 end
 
 gKeyPressedBindings[3] = function()
-	local win = hs.window.focusedWindow()
-	local f = win:frame()
-	local max = win:screen():frame()
-
-	f.x = max.x + (.05 * max.w)
-	f.y = max.y + (.05 * max.h)
-	f.w = max.w * .9
-	f.h = max.h * .9
-	win:setFrame(f)
+	positionRelative(1/2, 0, 1/2, 1)
 end
 
-hs.notify.show("Hammerspoon", "", "Configuration file loaded", "sdds")
+gKeyPressedBindings[4] = function()
+	positionRelative(0, 0, 2/3, 1)
+end
+
+gKeyPressedBindings[5] = function()
+	positionRelative(2/3, 0, 1/3, 1)
+end
+
+gKeyPressedBindings[6] = function()
+	positionRelative(2/3, 0, 1/3, 1)
+end
+
+gKeyPressedBindings[16] = function()
+	hs.application.launchOrFocus(termEmulatorName)
+end
+
+gKeyPressedBindings[17] = function()
+	hs.application.launchOrFocus(textEditorName)
+end
+
+gKeyPressedBindings[18] = function()
+	hs.application.launchOrFocus(webBrowserName)
+end
+
+hs.notify.show("Hammerspoon", "", "Configuration file loaded", "")
