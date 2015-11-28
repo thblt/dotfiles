@@ -3,3 +3,9 @@
 *.un~
 .vim/bundle/**
 *.pyc
+.emacs.d/elpa
+.emacs.d/eshell
+.emacs.d/games
+.emacs.d/projectile-bookmarks.eld
+
+
