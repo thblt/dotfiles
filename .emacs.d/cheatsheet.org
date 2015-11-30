@@ -6,17 +6,46 @@ remain this way, or become quite weird.
 
 Unless otherwise stated, all cited packages are available on MELPA.
 
-*Slang:* Emacs refers to what is commonly called the /backspace/ key as *Del*.
+* Getting help
+
+Emacs is extensively documented. Knowing the help commands 
+
+ * =C-h= is the entry point to all Emacs documentation. =C-h ?= prints available options.
+
+ * A prefix followed by =C-h= shows available bindings. This is
+   especially useful since knowing the name of a command, even if you
+   already know what it does, allows to find similar/related commands
+   (and ultimately their binding with ~where-is~, see below)
+ 
+ * =C-h c= followed by a key chord prints the command this combination is bound to.
+
+ * The ~where-is~ command takes another command and prints the associated key bindings. It is bound to =C-h w=.
+
+ * The ~apropos~ command searches the documentation for a given pattern.
+
+* Key sequences
+
+| Abreviation | Modifier | Usual binding |
+|-------------+----------+---------------|
+| =C=         | Ctrl     | Ctrl          |
+| =M=         | Meta     | Alt           |
+| =S=         | Shift    | Shift         |
+| =s=         | Super    |               |
+| =h=         | Hyper    |               |
+
+Emacs has some unusual customs:
+
+ * What Emacs calls /Del/ is the *Backspace* key.
 
 * Editing text
 
 ** Command multipliers
 
-| Keys                   | Command             | Action                                                                                            |
-|------------------------+---------------------+---------------------------------------------------------------------------------------------------|
-| =C--=, =M--=           | ~negative-argument~ | Reverse direction of following command.                                                           |
-| =C-[0-9]+=, =M-[0-9]+= | ~digit-argument~    | Repeat the following command n times.                                                             |
-| =C-u=                  | ~universal-argument~  | Repeat the following command 4 times (may be followed by a number; multiplies itself if repeated) |
+| Keys                   | Command              | Action                                                                                            |
+|------------------------+----------------------+---------------------------------------------------------------------------------------------------|
+| =C--=, =M--=           | ~negative-argument~  | Reverse direction of following command.                                                           |
+| =C-[0-9]+=, =M-[0-9]+= | ~digit-argument~     | Repeat the following command n times.                                                             |
+| =C-u=                  | ~universal-argument~ | Repeat the following command 4 times (may be followed by a number; multiplies itself if repeated) |
 
 ** Moving around
 
@@ -132,8 +161,6 @@ point is somewhere in the middle.
 
 | Keys        | Command                   | Mode        | Object                | Direction |
 |-------------+---------------------------+-------------+-----------------------+-----------|
-| =C-s Enter= |                           | Simple      | String                | Forward   |
-| =C-r Enter= |                           | Simple      | String                | Backward  |
 | =C-s=       | ~isearch-forward~         | Incremental | String                | Forward   |
 | =C-r=       | ~isearch-backward~        | Incremental | String                | Backward  |
 | =C-s C-w=   | ~isearch-yank-word~       | Incremental | Word under cursor     | Forward   |
@@ -141,19 +168,65 @@ point is somewhere in the middle.
 | =C-s M-y=   | ~isearch-yank-kill~       | Incremental | Top of kill ring      | Forward   |
 | =C-s C-s=   | ~isearch-repeat-forward~  | Incremental | Previous search       | Forward   |
 | =C-s C-r=   | ~isearch-repeat-backward~ | Incremental | Previous search       | Backward  |
-|             |                           |             |                       |           |
+| =C-M-s=     | ~isearch-forward-regexp~  | Incremental | Regular expression    | Forward   |
+| =C-M-r=     | ~isearch-backward-regexp~ | Incremental | Regular expression    | Backward  |
+| =M-s w=     | ~isearch-forward-word~    | Incremental | Word                  | Forward   |
 
-*Word search* looks for a sequence of words and ignores line breaks and in some cases formatting. 
+ * At a search prompt, =Enter= without a search string disables incremental search.
+
+ * *Word search* looks for a sequence of words and ignores line
+   breaks, spaces, and in some major modes (Org and maybe others) formatting.
+
+ * *Anzu* highlights search results and print a count in mode line.
 
 *** Commands in incremental search
 
 | Keys    | Command        | Action      |
 |---------+----------------+-------------|
 | =Enter= | ~isearch-exit~ | Exit search |
-|         |                |             |
-
 
 ** Replacing
+
+| Keys    | Command                | Type               | Direction |
+|---------+------------------------+--------------------+-----------|
+| =M-%=   | ~query-replace~        | String             | Forward   |
+| =C-M-%= | ~query-replace-regexp~ | Regular expression | Forward   |
+
+*** Commands in replacement mode
+
+| Keys         | Action                                                  |
+|--------------+---------------------------------------------------------|
+| =Space=, =y= | Replace one match                                       |
+| =Del=, =n=   | Skip to next match                                      |
+| =N=          | Skip to next buffer without replacing remaining matches |
+| =Enter=, =q= | Exit search                                             |
+| =.=          | Replace one match and exit                              |
+| ,            | Replace but stay on match                               |
+| =C-r=        | Enter recursive edit                                    |
+| =C-w=        | Delete match and recursive edit                         |
+| =!=          | Replace all                                             |
+| =Y=          | Replace all in all buffers                              |
+| =^=          | Go back to previous match                               |
+| =E=          | Edit replacement string                                 |
+
+* Macros
+
+
+
+
+| Keys            | Command                      | Action                                                                                                             |
+|-----------------+------------------------------+--------------------------------------------------------------------------------------------------------------------|
+| =C-x (=, =<f3>= | ~kmacro-start-macro~         | Starts recording a keyboard macro                                                                                  |
+| =C-x )=, =<f4>= | ~kmacro-end-macro~           | Stops recording a keyboard macro                                                                                   |
+| =C-x e=, =<f4>= | ~kmacro-end-and-call-macro~  | Run the macro                                                                                                      |
+| =C-x C-k r=     | ~apply-macro-to-region-line~ | For each complete line between point and mark, move to the beginning of the line, and run the last keyboard macro. |
+|                 |                              |                                                                                                                    |
+
+=C-x e= may be prefixed by a multiplier with the value 0 (=C-0 C-x e=)
+to repeat the macro an infinite number a times, that is, until the
+first error or end of buffer. Execution can still be aborted with =Ctrl-G=.
+ 
+
 
 * Windows, frames and buffers
 
@@ -162,6 +235,14 @@ point is somewhere in the middle.
 logical: Since Emacs /is/ itself a tiling Window manager, it deals
 with windows, and put them into frames. Everything is clear when you
 don't forget that Emacs keeps pretending it's an OS.
+
+A buffer is basically text, not necessarily related to a file
+(anything that can be displayed in a window is a buffer, including
+=*Messages*=, the scratch buffer, dired directory trees, etc. Buffers
+and windows associations are very loose compared to modern text
+editors. Especially, hiding/showing a buffer has no effect on the
+buffer itself: hidden buffers remain open and available until
+explicitely closed.
 
 ** Windows
 
@@ -177,12 +258,20 @@ don't forget that Emacs keeps pretending it's an OS.
 
 ** Vim emulation/modal editing.
 
-Emacs is quite good at pretending to be Vim.
+Some packages extend Emacs functionnality with Vim-like modal
+editing. Modal editing reduces the need for modifiers, and thus
+reduces risks of injury.
 
   * *evil* is the Extensible VI Layer for Emacs. It provides almost
-    perfect Vim behavior for text editing, including ex emulation.
+    perfect Vim behavior for text editing, including ex emulation. It
+    emulates all of vim modes.
   * *god-mode* is a minor-mode similar to Vim's normal mode. It allows
-    to enter commands without modifier keys.
+    to enter commands without modifier keys. Typing a key in god mode
+    is equivalent to entering =C-key=. =g= replaces meta, and =G=
+    stands for =C-M=. =C-g= must be entered as is. God mode is usally
+    bound to Esc. 
+  * *viper* is a previous incarnation of Vim emulation in Emacs, and
+    should be considered deprecated.
 
 ** Learning helpers
 
@@ -202,7 +291,7 @@ Emacs is quite good at pretending to be Vim.
     Emacs. Helm-dash extends the functionality of Helm, which is an
     excellent fuzzy finder framework.
 
-* Writing 
+* Writing environments 
 
 ** LaTeX
 
