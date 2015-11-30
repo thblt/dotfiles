@@ -1,8 +1,3 @@
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-ZSH_THEME="agnoster"
-plugins=(brew git pip)
-
 # Identify computer
 # This allows sharing this .zshrc across machines
 
@@ -27,26 +22,36 @@ fi;
 # Read secrets (not in version control)
 source ~/.secrets
 
+# Path to your oh-my-zsh installation.
+export ZSH=~/.oh-my-zsh
+ZSH_THEME="agnoster"
+plugins=(brew git pip)
+
+export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
+
 # Variables
 
-if ! $is_headless; then
-    export DEFAULT_USER="thblt";
-fi;
+# $PATH
+if [ -e /usr/libexec/path_helper ]; then
+	# Darwin/OSX utility to determine system path
+	eval `/usr/libexec/path_helper`
+fi
+export PATH="${HOME}/bin:${PATH}:${HOME}/.cabal/bin"
 
-if $is_headless; then
-    export EDITOR="vim"
+# if $is_headless; then
+if [ `command -v emacs` ]; then
+	export EDITOR="emacsclient -a emacs"
 else
-    export EDITOR="atom"
+	export EDITOR="vim"
 fi;
+alias e=${EDITOR} # Shorthand 
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
 
 # Aliases
 
-alias e=${EDITOR}
-
-alias fuck='sudo $(history -p \!\!)'
+alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
 alias bc="bc -l"
@@ -72,12 +77,6 @@ alias ..5="cd ../../../../.."
 export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-# $PATH
-if [ -e /usr/libexec/path_helper ]; then
-	# Darwin/OSX utility to determine system path
-	eval `/usr/libexec/path_helper`
-fi
-export PATH="${HOME}/bin:${PATH}:${HOME}/.cabal/bin"
 
 DISABLE_AUTO_UPDATE="true"
 source $ZSH/oh-my-zsh.sh
