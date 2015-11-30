@@ -1,8 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =6
-let g:netrw_dirhist_1='/Users/thblt/Documents/Thb.lt/_drafts'
-let g:netrw_dirhist_2='/Users/thblt'
-let g:netrw_dirhist_3='/Users/thblt/.dotfiles'
-let g:netrw_dirhist_4='/Users/thblt/Documents/Coderies/Yados'
-let g:netrw_dirhist_5='/Users/thblt/Documents/Coderies/Yados/src'
-let g:netrw_dirhist_6='/Users/thblt/Documents/Coderies/Yados/src/yados'

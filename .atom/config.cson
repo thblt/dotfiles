@@ -63,9 +63,9 @@
     core: {}
     style:
       fontSize: 13
-      fontFamily: "Inconsolata-g for Powerline"
-      theme: "pro"
+      theme: "solid-colors"
       animationSpeed: 0
+      fontFamily: "Inconsolata-g for Powerline"
     toggles:
       autoClose: true
   "spell-check": {}
@@ -89,3 +89,6 @@
   "pdf-view": {}
 ".latex.source":
   softWrap: true
+".text.todo":
+  editor:
+    softWrapHangingIndent: 2
