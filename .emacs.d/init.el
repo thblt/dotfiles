@@ -33,78 +33,105 @@
 (unless package-archive-contents
   (package-refresh-contents))                     ; Load package list if absent.
 
+(eval-and-compile
+  (package-install 'use-package)
+  (require 'use-package)
+  (setq use-package-always-ensure t)
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;; ### Packages ### ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Appareance and interaction
-(package-install 'monokai-theme)             ; Theme
+(use-package monokai-theme)             ; Theme
 (load-theme 'monokai)
-(package-install 'ace-window)                ; Easily switch between windows.
+(use-package ace-window)                ; Easily switch between windows.
 (global-set-key (kbd "M-p") 'ace-window)
-(package-install 'diminish)                  ; Don't display some minor modes in modeline
-(package-install 'guru-mode)                 ; Disable common keybindings
-(package-install 'helm)                      ; Incremental completion and selection narrowing framework.
-(package-install 'neotree)                   ; Folders tree sidebar
+;; (use-package diminish)                  ; Don't display some minor modes in modeline
+(use-package guru-mode)                 ; Disable common keybindings
+(use-package helm)                      ; Incremental completion and selection narrowing framework
+(use-package linum-relative)            ; Relative line numbers
+;;(linum-relative-global-mode t)
+(setq linum-relative-current-symbol "")      ; Absolute line number on current line
+(setq linum-relative-with-helm nil) 
+;; (diminish 'linum-relative-mode)
+(use-package neotree)                   ; Folders tree sidebar
 (global-set-key (kbd "<f2>") 'neotree-toggle)
-(package-install 'smart-mode-line)           ; Better mode line
+(use-package smart-mode-line)           ; Better mode line
 (smart-mode-line-enable)
 (require 'windmove)
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
 ;; Editing
-(package-install 'anzu)                      ; Highlight search matches, show number/position in mode line
-(package-install 'avy)                       ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
+(use-package anzu)                      ; Highlight search matches, show number/position in mode line
+(use-package avy)                       ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
 (global-set-key (kbd "C-:") 'avy-goto-char-2)
-(package-install 'god-mode)                  ; Modal editing
+(use-package god-mode)                  ; Modal editing
 (global-set-key (kbd "<escape>") 'god-local-mode)
-(package-install 'evil)                      ; Extensible VI Layer
-(package-install 'expand-region)             ; Expand region by semantic units
-(package-install 'highlight-indentation)     ; Show indent level markers
-(package-install 'relative-line-numbers)     ; À la vim
-(package-install 'smartparens)               ; Be smart with parentheses
-(package-install 'writeroom-mode)            ; Distraction-free mode
-(package-install 'yasnippet)                 ; Snippets
+(use-package evil)                      ; Extensible VI Layer
+(use-package evil-leader)               ; Enable <leader> key 
+(use-package evil-surround)             ; A port (?) of tpope's Surround
+(use-package evil-nerd-commenter)       ; A port (?) of NerdCommenter
+(use-package expand-region)             ; Expand region by semantic units
+(use-package highlight-indentation)     ; Show indent level markers
+(use-package relative-line-numbers)     ; À la vim
+(use-package smartparens)               ; Be smart with parentheses
+(use-package writeroom-mode)            ; Distraction-free mode
+(use-package yasnippet)                 ; Snippets
 
 ;; Versioning and history
-(package-install 'git-timemachine)           ; Traverse a file's git history
-(package-install 'magit)                     ; Git porcelain integration
+(use-package git-timemachine)           ; Traverse a file's git history
+(use-package magit)                     ; Git porcelain integration
 
 ;; Project management
-(package-install 'projectile)                ; Project management
+(use-package projectile)                ; Project management
 (projectile-global-mode)
-(diminish 'projectile-mode)
+;(diminish 'projectile-mode)
+(setq rm-blacklist (quote (" Projectile" " Undo-Tree")))
 
 ;; General programming
-(package-install 'company)                   ; Completion framework
-(eval-after-load "company" '(diminish 'company-mode))
-(package-install 'flycheck)                  ; On the fly checking/linting
-(eval-after-load "flycheck" '(diminish 'flycheck-mode)) 
-(package-install 'helm-dash)                 ; Access Dash docsets through Helm.
+(use-package company)                   ; Completion framework
+;;(eval-after-load "company" '(diminish 'company-mode))
+(use-package flycheck)                  ; On the fly checking/linting
+;; (eval-after-load "flycheck" '(diminish 'flycheck-mode)) 
+(use-package helm-dash)                 ; Access Dash docsets through Helm.
 (global-set-key (kbd "<f1>") 'helm-dash-at-point) 
 
 ;; === Syntaxes ===
 ;; C/C++
-(package-install 'clang-format)              ; Interface to clang-format
-(package-install 'cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
-(package-install 'company-c-headers)         ; Completion provider for C header files
+(use-package clang-format)              ; Interface to clang-format
+(use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(use-package company-c-headers)         ; Completion provider for C header files
+
+;; CSS/SCSS/LESS
+(use-package scss-mode)                 ; (S)CSS
+(use-package less-css-mode)             ; LESS
 
 ;; Haskell
-(package-install 'company-ghc)               ; Completion provider for Haskell
-(package-install 'flycheck-haskell)          ; Haskell provider for Flycheck
-(package-install 'helm-hoogle)               ; Search Hoogle 
+(use-package company-ghc)               ; Completion provider for Haskell
+(use-package flycheck-haskell)          ; Haskell provider for Flycheck
+(use-package helm-hoogle)               ; Search Hoogle 
+
+;; HTML (template)
+(use-package haml-mode)                 ; HAML templates
+(use-package web-mode)                  ; HTML and HTML templates
 
 ;; Markdown
-(package-install 'markdown-mode)             ; Markdown major mode
+(use-package markdown-mode)             ; Markdown major mode
 
 ;; TeX
-(package-install 'auctex)                    ; (La)TeX edition
-(package-install 'company-auctex)            ; Completion provider for AucTeX
+(use-package tex
+  :ensure auctex)          ; (La)TeX edition
+;;(use-package company-auctex)          ; Completion provider for AucTeX
 
 ;; Python
-(package-install 'company-jedi)              ; Completion provider for Python
-(package-install 'flycheck-pyflakes)         ; Pyflakes provider for Flycheck
+(use-package company-jedi)              ; Completion provider for Python
+(use-package flycheck-pyflakes)         ; Pyflakes provider for Flycheck
+
+;; YAML
+(use-package yaml-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;; General look and feel ;;;;;;;;;;;;;;;;
@@ -128,13 +155,17 @@
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin:~/bin"))   ; Fix path on OSX
+  ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin:~/bin"))   ; Fix path on OSX
   )
+
+;;(global-linum-mode t)
+(column-number-mode t)
+(line-number-mode nil)
 
 ;; Look & Feel
 
 (defun startup-echo-area-message ()
-  "I'm ready!")                                                      ; Emacs == SpongeBob
+  "I'm ready!")                                                      ; Because SpongeBob.
 
 ;;; Bindings
 

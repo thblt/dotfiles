@@ -211,9 +211,6 @@ point is somewhere in the middle.
 
 * Macros
 
-
-
-
 | Keys            | Command                      | Action                                                                                                             |
 |-----------------+------------------------------+--------------------------------------------------------------------------------------------------------------------|
 | =C-x (=, =<f3>= | ~kmacro-start-macro~         | Starts recording a keyboard macro                                                                                  |
@@ -226,8 +223,6 @@ point is somewhere in the middle.
 to repeat the macro an infinite number a times, that is, until the
 first error or end of buffer. Execution can still be aborted with =Ctrl-G=.
  
-
-
 * Windows, frames and buffers
 
 *Slang:* A /frame/ is what graphical OSes refer to as a /window/, a
