@@ -24,9 +24,9 @@
 
 (require 'package)  ; Automated package management, thanks.
 
-(setq package-archives '(("gnu"      . "https://elpa.gnu.org/packages/")
-                         ("marmalade"  . "https://marmalade-repo.org/packages/")
-                         ("melpa"    . "https://melpa.org/packages/")))
+(setq package-archives '(("gnu"       . "https://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa"     . "https://melpa.org/packages/")))
 
 (package-initialize)
 
@@ -51,7 +51,8 @@
 ;; (use-package diminish)                  ; Don't display some minor modes in modeline
 (use-package guru-mode)                 ; Disable common keybindings
 (use-package helm)                      ; Incremental completion and selection narrowing framework
-(use-package linum-relative)            ; Relative line numbers
+(use-package linum-relative            ; Relative line numbers
+  :pin melpa) ; 404 somewhere else for some reason
 ;;(linum-relative-global-mode t)
 (setq linum-relative-current-symbol "")      ; Absolute line number on current line
 (setq linum-relative-with-helm nil) 
@@ -123,7 +124,15 @@
 
 ;; TeX
 (use-package tex
-  :ensure auctex)          ; (La)TeX edition
+  :ensure auctex
+  :init (add-hook 'LaTeX-mode-hook (progn
+									 'turn-on-flyspell
+									 'toggle-word-wrap
+									 'TeX-fold-mode
+									 )
+				  )
+  :config (setq TeX-save-query nil)
+  )                                     ; (La)TeX edition
 ;;(use-package company-auctex)          ; Completion provider for AucTeX
 
 ;; Python
