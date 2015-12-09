@@ -164,7 +164,13 @@
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
-  ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin:~/bin"))   ; Fix path on OSX
+  )
+
+;;; OSX graphical Emacs fixes
+(when (memq window-system '(mac ns))
+  (use-package exec-path-from-shell
+	:init (exec-path-from-shell-initialize) ; Load PATH from shell in Cocoa
+	)
   )
 
 ;;(global-linum-mode t)

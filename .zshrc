@@ -1,3 +1,7 @@
+# Load .profile for common setings
+
+source .profile
+
 # Identify computer
 # This allows sharing this .zshrc across machines
 
@@ -30,13 +34,6 @@ plugins=(brew git pip)
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
 # Variables
-
-# $PATH
-if [ -e /usr/libexec/path_helper ]; then
-	# Darwin/OSX utility to determine system path
-	eval `/usr/libexec/path_helper`
-fi
-export PATH="${HOME}/bin:${PATH}:${HOME}/.cabal/bin"
 
 # if $is_headless; then
 if [ `command -v emacs` ]; then
