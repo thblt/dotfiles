@@ -1,4 +1,4 @@
-;;; init.el --- thblt's Emacs init script
+;; init.el --- thblt's Emacs init script
 
 ;;; Commentary:
 
@@ -158,26 +158,50 @@
     initial-scratch-message "; Scratch buffer\n\n"
     )
 
-;;; OSX keyboard and stuff
+;;; OSX-specific configuration
 (when (string= system-type 'darwin) 
   (setq mac-option-modifier 'nil
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")   ; Fix load-path for mu4e
   )
 
-;;; OSX graphical Emacs fixes
+;;; OSX Cocoa path fix
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
 	:init (exec-path-from-shell-initialize) ; Load PATH from shell in Cocoa
 	)
   )
 
-;;(global-linum-mode t)
 (column-number-mode t)
 (line-number-mode nil)
 
-;; Look & Feel
+;;; === Email. A new, modern way of getting spam ===
+
+;; (require 'mu4e)
+(use-package mu4e ; Not available through package managers.
+  :init (progn
+		  (setq mu4e-maildir "~/.Mail/")
+		  
+		  (setq mu4e-sent-folder "/P1/sent-mail"
+				mu4e-drafts-folder "/P1/Drafts"
+				mu4e-trash-folder "/P1/Trash"
+				user-mail-address "thibault.polge@univ-paris1.fr"
+				smtpmail-default-smtp-server "smtp.univ-paris1.fr"
+				smtpmail-local-domain "univ-paris1.fr"
+				smtpmail-smtp-server "smtp.account1.tld"
+				smtpmail-stream-type 'starttls
+				smtpmail-smtp-service 25)
+		  
+		  (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
+								  ("f:unread"                           "Unread messages"         ?v)
+								  ("f:replied"                          "Flagged"                 ?m)
+								  ) )
+		  )
+  )
+
+;;; === Decoration === 
 
 (defun startup-echo-area-message ()
   "I'm ready!")                                                      ; Because SpongeBob.
