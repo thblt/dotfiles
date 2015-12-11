@@ -37,7 +37,7 @@ export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
 # if $is_headless; then
 if [ `command -v emacs` ]; then
-	export EDITOR="emacsclient -a emacs"
+	export EDITOR="emacsclient --no-wait -a emacs"
 else
 	export EDITOR="vim"
 fi;
