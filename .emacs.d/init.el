@@ -11,16 +11,29 @@
          user-emacs-directory)
         ((boundp 'user-init-directory)
          user-init-directory)
-        (t "~/.emacs.d/")))
+        (t "~/.emacs.d/")
+		)
+  )
 
 (defun load-user-file (file)
   (interactive "f")
   "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))
+  (load-file (expand-file-name file user-init-dir))
+  )
+
+;;; === One wants one's filesystem clean ===
+
+; Autosave and backups in /tmp/ 
+(setq backup-directory-alist
+	  `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+	  `((".*" ,temporary-file-directory t)))
 
 ;; Let customize put its mess elsewhere
 (setq custom-file "~/.emacs.d/_customize.el")
 (load-user-file "_customize.el")
+
+;;; === One needs some extra packages === 
 
 (require 'package)  ; Automated package management, thanks.
 
@@ -40,37 +53,49 @@
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;; ### Packages ### ;;;;;;;;;;;;
+;;;;;;;;;;;; === Packages === ;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Appareance and interaction
-(use-package monokai-theme)             ; Theme
-(load-theme 'monokai)
+(use-package monokai-theme             
+  :init (load-theme 'monokai))          ; Theme
 (use-package ace-window)                ; Easily switch between windows.
 (global-set-key (kbd "M-p") 'ace-window)
-;; (use-package diminish)                  ; Don't display some minor modes in modeline
-(use-package guru-mode)                 ; Disable common keybindings
 (use-package helm)                      ; Incremental completion and selection narrowing framework
-(use-package linum-relative            ; Relative line numbers
-  :pin melpa) ; 404 somewhere else for some reason
-;;(linum-relative-global-mode t)
-(setq linum-relative-current-symbol "")      ; Absolute line number on current line
-(setq linum-relative-with-helm nil) 
+(use-package linum-relative             ; Relative line numbers
+  :pin melpa                            ; 404 somewhere else for some reason
+  :init (linum-relative-global-mode)
+  :config (setq linum-relative-current-symbol ""
+				linum-relative-with-helm nil)
+  ) 
+
 ;; (diminish 'linum-relative-mode)
-(use-package neotree)                   ; Folders tree sidebar
-(global-set-key (kbd "<f2>") 'neotree-toggle)
-(use-package smart-mode-line)           ; Better mode line
-(smart-mode-line-enable)
-(require 'windmove)
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
+(use-package neotree                    ; FS sidebar à la NERDTree
+  :bind ("<f2>" . neotree-toggle)
+  )
+(use-package smart-mode-line           ; Better mode line
+  :init (smart-mode-line-enable)
+  :config 
+  (setq rm-blacklist                   ; ... comes bundled with rich minority
+	(format "^ \\(%s\\)$"
+		(mapconcat #'identity
+			   '("company"
+			     "FlyC.*"
+			     "LR"      ; Limum-Relative
+			     "Projectile.*"
+			     "Undo-Tree"
+				 "yas")    ; Yasnippet
+			   "\\|")))
+  )
+(use-package windmove
+  :init (windmove-default-keybindings)
+  )
 
 ;; Editing
-(use-package anzu)                      ; Highlight search matches, show number/position in mode line
-(use-package avy)                       ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
-(global-set-key (kbd "C-:") 'avy-goto-char-2)
-(use-package god-mode)                  ; Modal editing
-(global-set-key (kbd "<escape>") 'god-local-mode)
+(use-package anzu)                      ; Show matches count/current match # in mode line
+(use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
+  :bind ("C-:" . avy-goto-char-2)
+  )
 (use-package evil)                      ; Extensible VI Layer
 (use-package evil-leader)               ; Enable <leader> key 
 (use-package evil-surround)             ; A port (?) of tpope's Surround
@@ -80,25 +105,24 @@
 (use-package relative-line-numbers)     ; À la vim
 (use-package smartparens)               ; Be smart with parentheses
 (use-package writeroom-mode)            ; Distraction-free mode
-(use-package yasnippet)                 ; Snippets
+(use-package yasnippet                  ; Snippets
+  :init (yas-global-mode)
+  )
 
 ;; Versioning and history
 (use-package git-timemachine)           ; Traverse a file's git history
 (use-package magit)                     ; Git porcelain integration
 
 ;; Project management
-(use-package projectile)                ; Project management
-(projectile-global-mode)
-;(diminish 'projectile-mode)
-(setq rm-blacklist (quote (" Projectile" " Undo-Tree")))
-
+(use-package projectile                 ; Project management
+  :init (projectile-global-mode)
+  )
 ;; General programming
 (use-package company)                   ; Completion framework
-;;(eval-after-load "company" '(diminish 'company-mode))
 (use-package flycheck)                  ; On the fly checking/linting
-;; (eval-after-load "flycheck" '(diminish 'flycheck-mode)) 
-(use-package helm-dash)                 ; Access Dash docsets through Helm.
-(global-set-key (kbd "<f1>") 'helm-dash-at-point) 
+(use-package helm-dash                  ; Access Dash docsets through Helm.
+  :bind ("<f1>" . helm-dash-at-point)
+  )
 
 ;; === Syntaxes ===
 ;; C/C++
@@ -164,7 +188,7 @@
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")   ; Fix load-path for mu4e
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")        ; Fix load-path for mu4e
   )
 
 ;;; OSX Cocoa path fix
@@ -179,8 +203,11 @@
 
 ;;; === Email. A new, modern way of getting spam ===
 
-;; (require 'mu4e)
-(use-package mu4e ; Not available through package managers.
+(use-package mu4e
+  :ensure nil ; Comes with mu, not on a Emacs package repo
+  :config (progn
+			(add-to-list 'load-path "/usr/share/emacs24/site-lisp/mu4e")
+			)
   :init (progn
 		  (setq mu4e-maildir "~/.Mail/")
 		  
@@ -196,7 +223,7 @@
 		  
 		  (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
 								  ("f:unread"                           "Unread messages"         ?v)
-								  ("f:replied"                          "Flagged"                 ?m)
+								  ("f:flagged"                          "Flagged"                 ?m)
 								  ) )
 		  )
   )
@@ -204,7 +231,7 @@
 ;;; === Decoration === 
 
 (defun startup-echo-area-message ()
-  "I'm ready!")                                                      ; Because SpongeBob.
+  "I'm ready!") ; Because SpongeBob.
 
 ;;; Bindings
 
