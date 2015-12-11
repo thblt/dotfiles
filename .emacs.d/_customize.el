@@ -25,6 +25,7 @@
  '(nrepl-message-colors
    (quote
 	("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(safe-local-variable-values (quote ((TeX-master-file . "master"))))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    (quote
@@ -54,4 +55,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(linum ((t (:inherit default :background "#272822" :foreground "#75715E")))))
