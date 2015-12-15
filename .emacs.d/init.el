@@ -1,4 +1,4 @@
-;; init.el --- thblt's Emacs init script
+;; init.el --- thblt's Emacs init script.
 
 ;;; Commentary:
 
@@ -16,7 +16,7 @@
   )
 
 (defun load-user-file (file)
-  (interactive "f")
+  (interactive "fExecute: ")
   "Load a file in current user's configuration directory"
   (load-file (expand-file-name file user-init-dir))
   )
@@ -30,8 +30,8 @@
 	  `((".*" ,temporary-file-directory t)))
 
 ;; Let customize put its mess elsewhere
-(setq custom-file "~/.emacs.d/_customize.el")
-(load-user-file "_customize.el")
+(setq custom-file (concat user-init-dir "customize_autogen.el"))
+(load custom-file)
 
 ;;; === One needs some extra packages === 
 
@@ -52,119 +52,9 @@
   (setq use-package-always-ensure t)
   )
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;; === Packages === ;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Appareance and interaction
-(use-package monokai-theme             
-  :init (load-theme 'monokai))          ; Theme
-(use-package ace-window)                ; Easily switch between windows.
-(global-set-key (kbd "M-p") 'ace-window)
-(use-package helm)                      ; Incremental completion and selection narrowing framework
-(use-package linum-relative             ; Relative line numbers
-  :pin melpa                            ; 404 somewhere else for some reason
-  :init (linum-relative-global-mode)
-  :config (setq linum-relative-current-symbol ""
-				linum-relative-with-helm nil)
-  ) 
-
-;; (diminish 'linum-relative-mode)
-(use-package neotree                    ; FS sidebar à la NERDTree
-  :bind ("<f2>" . neotree-toggle)
-  )
-(use-package smart-mode-line           ; Better mode line
-  :init (smart-mode-line-enable)
-  :config 
-  (setq rm-blacklist                   ; ... comes bundled with rich minority
-	(format "^ \\(%s\\)$"
-		(mapconcat #'identity
-			   '("company"
-			     "FlyC.*"
-			     "LR"      ; Limum-Relative
-			     "Projectile.*"
-			     "Undo-Tree"
-				 "yas")    ; Yasnippet
-			   "\\|")))
-  )
-(use-package windmove
-  :init (windmove-default-keybindings)
-  )
-
-;; Editing
-(use-package anzu)                      ; Show matches count/current match # in mode line
-(use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
-  :bind ("C-:" . avy-goto-char-2)
-  )
-(use-package evil)                      ; Extensible VI Layer
-(use-package evil-leader)               ; Enable <leader> key 
-(use-package evil-surround)             ; A port (?) of tpope's Surround
-(use-package evil-nerd-commenter)       ; A port (?) of NerdCommenter
-(use-package expand-region)             ; Expand region by semantic units
-(use-package highlight-indentation)     ; Show indent level markers
-(use-package relative-line-numbers)     ; À la vim
-(use-package smartparens)               ; Be smart with parentheses
-(use-package writeroom-mode)            ; Distraction-free mode
-(use-package yasnippet                  ; Snippets
-  :init (yas-global-mode)
-  )
-
-;; Versioning and history
-(use-package git-timemachine)           ; Traverse a file's git history
-(use-package magit)                     ; Git porcelain integration
-
-;; Project management
-(use-package projectile                 ; Project management
-  :init (projectile-global-mode)
-  )
-;; General programming
-(use-package company)                   ; Completion framework
-(use-package flycheck)                  ; On the fly checking/linting
-(use-package helm-dash                  ; Access Dash docsets through Helm.
-  :bind ("<f1>" . helm-dash-at-point)
-  )
-
-;; === Syntaxes ===
-;; C/C++
-(use-package clang-format)              ; Interface to clang-format
-(use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
-(use-package company-c-headers)         ; Completion provider for C header files
-
-;; CSS/SCSS/LESS
-(use-package scss-mode)                 ; (S)CSS
-(use-package less-css-mode)             ; LESS
-
-;; Haskell
-(use-package company-ghc)               ; Completion provider for Haskell
-(use-package flycheck-haskell)          ; Haskell provider for Flycheck
-(use-package helm-hoogle)               ; Search Hoogle 
-
-;; HTML (template)
-(use-package haml-mode)                 ; HAML templates
-(use-package web-mode)                  ; HTML and HTML templates
-
-;; Markdown
-(use-package markdown-mode)             ; Markdown major mode
-
-;; TeX
-(use-package tex
-  :ensure auctex
-  :init (add-hook 'LaTeX-mode-hook (progn
-									 'turn-on-flyspell
-									 'toggle-word-wrap
-									 'TeX-fold-mode
-									 )
-				  )
-  :config (setq TeX-save-query nil)
-  )                                     ; (La)TeX edition
-;;(use-package company-auctex)          ; Completion provider for AucTeX
-
-;; Python
-(use-package company-jedi)              ; Completion provider for Python
-(use-package flycheck-pyflakes)         ; Pyflakes provider for Flycheck
-
-;; YAML
-(use-package yaml-mode)
+;; ╔═╗┌─┐┌┐┌┌─┐┬─┐┌─┐┬
+;; ║ ╦├┤ │││├┤ ├┬┘├─┤│
+;; ╚═╝└─┘┘└┘└─┘┴└─┴ ┴┴─┘
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;; General look and feel ;;;;;;;;;;;;;;;;
@@ -182,13 +72,19 @@
     initial-scratch-message "; Scratch buffer\n\n"
     )
 
+(add-hook 'focus-out-hook
+		  (lambda ()
+			(save-some-buffers t)
+			)
+		  ) ; Save everything on losing focus.
+
 ;;; OSX-specific configuration
 (when (string= system-type 'darwin) 
   (setq mac-option-modifier 'nil
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp")        ; Fix load-path for mu4e
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")        ; Fix load-path for mu4e
   )
 
 ;;; OSX Cocoa path fix
@@ -198,15 +94,232 @@
 	)
   )
 
-(column-number-mode t)
-(line-number-mode nil)
+;; Appareance and interaction
+(setq column-number-mode t
+	  line-number-mode nil
+	  )
+
+(use-package monokai-theme             
+  :init (load-theme 'monokai))          ; Theme
+(use-package ace-window)                ; Easily switch between windows.
+(global-set-key (kbd "M-p") 'ace-window)
+(use-package helm)                      ; Incremental completion and selection narrowing framework
+(use-package helm-ag)
+(use-package linum-relative             ; Relative line numbers
+  :pin melpa                            ; 404 somewhere else for some reason
+  :init (linum-relative-global-mode)
+  :config (setq linum-relative-current-symbol ""
+				linum-relative-with-helm nil)
+  ) 
+
+(use-package neotree                    ; FS sidebar à la NERDTree
+  :bind ("<f2>" . neotree-toggle)
+  )
+
+(use-package smart-mode-line         ; Better mode line
+  :config (sml/setup) 
+  :init
+  (setq rm-blacklist
+		(format "^ \\(%s\\)$"
+				(mapconcat #'identity
+						   '("\\$"      ; Rich minority itself
+							 "company"
+							 "FlyC.*"
+							 "LR"      ; Limum-Relative
+							 "Projectile.*"
+							 "SP.*"    ; Smartparens
+							 "Undo-Tree"
+							 "yas")    ; Yasnippet
+						   "\\|"))
+		)
+  )
+
+(use-package windmove
+  :init (windmove-default-keybindings)
+  )
+
+;; Editing
+(use-package anzu)                      ; Show matches count/current match # in mode line
+(use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
+  :bind (("C-:" . avy-goto-char-2)
+		 ("C-=" . avy-goto-line)
+		 )
+  )
+
+(use-package evil                       ; Extensible VI Layer
+  :config (progn
+			(evil-mode)
+			(setq evil-insert-state-cursor '(bar))
+
+			;; Ctrl-something is Emacs's realm: use normal Emacs bindings.
+			;; @TODO Should be done using :bind or something, but I haven't yet found how.		
+			(define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-insert-state-map "\C-e" 'end-of-line)
+			(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-motion-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
+			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+			(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
+			(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
+			(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
+			(define-key evil-normal-state-map "\C-d" 'evil-delete-char)
+			(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
+			(define-key evil-visual-state-map "\C-d" 'evil-delete-char)
+			(define-key evil-normal-state-map "\C-n" 'evil-next-line)
+			(define-key evil-insert-state-map "\C-n" 'evil-next-line)
+			(define-key evil-visual-state-map "\C-n" 'evil-next-line)
+			(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-normal-state-map "\C-w" 'evil-delete)
+			(define-key evil-insert-state-map "\C-w" 'evil-delete)
+			(define-key evil-visual-state-map "\C-w" 'evil-delete)
+			(define-key evil-normal-state-map "\C-y" 'yank)
+			(define-key evil-insert-state-map "\C-y" 'yank)
+			(define-key evil-visual-state-map "\C-y" 'yank)
+			(define-key evil-normal-state-map "\C-k" 'kill-line)
+			(define-key evil-insert-state-map "\C-k" 'kill-line)
+			(define-key evil-visual-state-map "\C-k" 'kill-line)
+			(define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
+			(define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+			(define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+			)
+  )
+;; (use-package evil-leader)            ; Enable <leader> key 
+(use-package evil-surround              ; A port of tpope's Surround
+  :config (global-evil-surround-mode t)
+  )
+(use-package evil-nerd-commenter       ; A port of NerdCommenter
+  :config (evilnc-default-hotkeys)
+  )
+(use-package expand-region)             ; Expand region by semantic units
+(use-package highlight-indentation)     ; Show indent level markers
+(use-package smartparens-confg          ; Be smart with parentheses
+  :ensure smartparens
+  :init (progn
+		  (show-smartparens-global-mode t)
+		  )
+  )
+
+(use-package writeroom-mode)            ; Distraction-free mode
+(use-package yasnippet                  ; Snippets
+  :init (yas-global-mode)
+  )
+
+;; Versioning and history
+(use-package git-timemachine)           ; Traverse a file's git history
+(use-package magit)                     ; Git porcelain integration
+
+;; Project management
+(use-package projectile                 ; Project management
+  :init (projectile-global-mode)
+  )
+;; General programming
+(use-package company                    ; Completion framework
+  :init (add-hook 'prog-mode-hook 'company-mode)
+)
+(use-package flycheck                   ; On the fly checking/linting
+  :init (add-hook 'prog-mode-hook 'flycheck-mode)
+  )
+(use-package helm-dash                  ; Access Dash docsets through Helm.
+  :bind ("<f1>" . helm-dash-at-point)
+  )
+
+(add-hook 'python-mode-hook (lambda ()
+							  (setq-local helm-dash-docsets '("Python 2" "Python 3"))
+							  )
+		  )
+
+;; ╔═╗┬ ┬┌┐┌┌┬┐┌─┐─┐ ┬┌─┐┌─┐
+;; ╚═╗└┬┘│││ │ ├─┤┌┴┬┘├┤ └─┐
+;; ╚═╝ ┴ ┘└┘ ┴ ┴ ┴┴ └─└─┘└─┘
+
+;; BibTeX
+(use-package ebib                       ; BibTex editing *app* 
+  :config (setq ebib-bibtex-dialect 'biblatex)
+  )
+
+;; C/C++
+(use-package clang-format)              ; Interface to clang-format
+(use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(use-package company-c-headers)         ; Completion provider for C header files
+
+(add-hook 'c-mode-common-hook
+		  (lambda ()
+			(setq-local helm-dash-docsets '("C" "C++" "Qt"))
+			)
+		  )
+
+;; CSS/SCSS/LESS
+(use-package scss-mode)                 ; (S)CSS
+(use-package less-css-mode)             ; LESS
+
+;; Emacs Lisp
+(add-hook 'emacs-lisp-mode-hook
+		  (lambda ()
+			(setq-local custom--hooksets '("Emacs Lisp"))
+			)
+		  )
+
+;; Haskell
+(use-package company-ghc)               ; Completion provider for Haskell
+(use-package flycheck-haskell)          ; Haskell provider for Flycheck
+(use-package helm-hoogle)               ; Search Hoogle 
+
+(add-hook 'haskell-mode-hook 
+		  (lambda ()
+			(setq-local helm-dash-docsets '("Haskell"))
+			)
+		  )
+
+;; HTML (template)
+(use-package haml-mode)                 ; HAML templates
+(use-package web-mode)                  ; HTML and HTML templates
+
+
+(add-hook 'html-mode-hook
+		  (lambda ()			
+			(setq-local helm-dash-docsets '("HTML"))
+			)
+		  )
+
+;; Javascript
+(add-hook 'js-mode-hook
+		  (lambda ()
+			(setq-local helm-dash-docsets '("JavaScript"))
+			)
+		  )
+
+;; Markdown
+(use-package markdown-mode)             ; Markdown major mode
+
+;; Python
+(use-package company-jedi)              ; Completion provider for Python
+(use-package flycheck-pyflakes)         ; Pyflakes provider for Flycheck
+
+;; TeX
+(use-package tex-site
+  :ensure auctex
+  :init (add-hook 'LaTeX-mode-hook (progn
+									 'turn-on-flyspell
+									 'toggle-word-wrap
+									 'TeX-fold-mode
+									 )
+				  ) 
+  :config (setq TeX-save-query nil)     ; Autosave
+  )                                     ; (La)TeX edition
+(use-package company-auctex)            ; Completion provider for AucTeX
+
+;; YAML
+(use-package yaml-mode)
 
 ;;; === Email. A new, modern way of getting spam ===
 
 (use-package mu4e
   :ensure nil ; Comes with mu, not on a Emacs package repo
   :config (progn
-			(add-to-list 'load-path "/usr/share/emacs24/site-lisp/mu4e")
+			(add-to-list 'load-path "/usr/share/emacs/site-lisp/") ; OSX and Debian both use this.
 			)
   :init (progn
 		  (setq mu4e-maildir "~/.Mail/")
@@ -223,10 +336,27 @@
 		  
 		  (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
 								  ("f:unread"                           "Unread messages"         ?v)
-								  ("f:flagged"                          "Flagged"                 ?m)
+								  ("flag:flagged"                       "Flagged"                 ?f)
 								  ) )
 		  )
   )
+
+;;; === Feeds
+
+(use-package elfeed
+  :config (progn
+			(setq elfeed-feeds '(
+								 ("https://xkcd.com/atom.xml")
+								 ("http://www.maitre-eolas.fr/feed/atom")
+								 ("http://binaire.blog.lemonde.fr/feed/")
+								 )
+				  )
+			)
+  :init (elfeed-goodies/setup)
+  )
+
+(use-package elfeed-goodies)
+
 
 ;;; === Decoration === 
 
@@ -236,8 +366,6 @@
 ;;; Bindings
 
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
-
-;;; Let's keep the mess out of my filesystem
 
 (server-start)
 
