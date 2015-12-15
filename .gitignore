@@ -6,6 +6,7 @@
 .emacs.d/elpa
 .emacs.d/eshell
 .emacs.d/games
+.emacs.d/irony
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/url
 .emacs.d/ido.last

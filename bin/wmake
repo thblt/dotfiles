@@ -1,13 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 
 # whatever-make
 # -------------
 # Starts from pwd() to / and tries to find, by order of descending priority:
+
 # - A directory with a CMakeLists.txt and a child directory “build”
 #   If found, cd build && make.
 # - A directory with a Makefile.
 #   If found, cd && make.
+#
+# TODO: May some day handle scons, setup.py, cabal...
 
 import multiprocessing, os, sys
 from os.path import join as path_join, exists as path_exists, isdir, isfile

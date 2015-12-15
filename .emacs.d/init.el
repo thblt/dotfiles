@@ -99,6 +99,9 @@
 	  line-number-mode nil
 	  )
 
+;; Version control
+(setq vc-follow-symlinks t)
+
 (use-package monokai-theme             
   :init (load-theme 'monokai))          ; Theme
 (use-package ace-window)                ; Easily switch between windows.
@@ -152,38 +155,40 @@
 			(setq evil-insert-state-cursor '(bar))
 
 			;; Ctrl-something is Emacs's realm: use normal Emacs bindings.
-			;; @TODO Should be done using :bind or something, but I haven't yet found how.		
-			(define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
-			(define-key evil-insert-state-map "\C-e" 'end-of-line)
-			(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-			(define-key evil-motion-state-map "\C-e" 'evil-end-of-line)
-			(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
-			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-			(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
+			;; @TODO Should be done using :bind or something, but I haven't yet found how.
+			(define-key evil-insert-state-map "\C-a" 'evil-beginning-of-line)
+		
 			(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-			(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-			(define-key evil-normal-state-map "\C-d" 'evil-delete-char)
 			(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-			(define-key evil-visual-state-map "\C-d" 'evil-delete-char)
-			(define-key evil-normal-state-map "\C-n" 'evil-next-line)
-			(define-key evil-insert-state-map "\C-n" 'evil-next-line)
-			(define-key evil-visual-state-map "\C-n" 'evil-next-line)
-			(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
-			(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-			(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-			(define-key evil-normal-state-map "\C-w" 'evil-delete)
-			(define-key evil-insert-state-map "\C-w" 'evil-delete)
-			(define-key evil-visual-state-map "\C-w" 'evil-delete)
-			(define-key evil-normal-state-map "\C-y" 'yank)
-			(define-key evil-insert-state-map "\C-y" 'yank)
-			(define-key evil-visual-state-map "\C-y" 'yank)
-			(define-key evil-normal-state-map "\C-k" 'kill-line)
+			(define-key evil-insert-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
 			(define-key evil-insert-state-map "\C-k" 'kill-line)
-			(define-key evil-visual-state-map "\C-k" 'kill-line)
+			(define-key evil-insert-state-map "\C-n" 'evil-next-line)
+			(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-insert-state-map "\C-w" 'evil-delete)
+			(define-key evil-insert-state-map "\C-y" 'yank)
+			(define-key evil-motion-state-map "\C-e" 'end-of-line)
 			(define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
-			(define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+			(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
+			(define-key evil-normal-state-map "\C-d" 'evil-delete-char)
+			(define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
+			(define-key evil-normal-state-map "\C-k" 'kill-line)
+			(define-key evil-normal-state-map "\C-n" 'evil-next-line)
+			(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-normal-state-map "\C-w" 'evil-delete)
+			(define-key evil-normal-state-map "\C-y" 'yank)
 			(define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+			(define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+			(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
+			(define-key evil-visual-state-map "\C-d" 'evil-delete-char)
+			(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-visual-state-map "\C-k" 'kill-line)
+			(define-key evil-visual-state-map "\C-n" 'evil-next-line)
+			(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+			(define-key evil-visual-state-map "\C-w" 'evil-delete)
+			(define-key evil-visual-state-map "\C-y" 'yank)
 			)
   )
 ;; (use-package evil-leader)            ; Enable <leader> key 
@@ -216,11 +221,17 @@
   :init (projectile-global-mode)
   )
 ;; General programming
+
+(setq compile-command "wmake")          ; A small script which invokes the first build system it can find instructions for.
+(bind-key (kbd "<f5>") 'recompile)
+
 (use-package company                    ; Completion framework
   :init (add-hook 'prog-mode-hook 'company-mode)
-)
+  :config (add-to-list 'company-backends 'company-irony)
+  )
 (use-package flycheck                   ; On the fly checking/linting
   :init (add-hook 'prog-mode-hook 'flycheck-mode)
+  :config '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
   )
 (use-package helm-dash                  ; Access Dash docsets through Helm.
   :bind ("<f1>" . helm-dash-at-point)
@@ -242,11 +253,26 @@
 
 ;; C/C++
 (use-package clang-format)              ; Interface to clang-format
+(use-package company-c-headers)         ; Completion provider for C header file
 (use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
-(use-package company-c-headers)         ; Completion provider for C header files
+(use-package irony)
+(use-package flycheck-irony)
+(use-package company-irony)
+
+;; From irony docs
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (add-hook 'c-mode-common-hook
 		  (lambda ()
+			(irony-mode t)
 			(setq-local helm-dash-docsets '("C" "C++" "Qt"))
 			)
 		  )
