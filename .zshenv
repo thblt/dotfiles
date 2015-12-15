@@ -4,4 +4,3 @@ if [ -e /usr/libexec/path_helper ]; then
 	eval `/usr/libexec/path_helper`
 fi
 export PATH="${HOME}/bin:${PATH}:${HOME}/.cabal/bin"
-echo profile
