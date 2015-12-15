@@ -1,7 +1,3 @@
-# Load .profile for common setings
-
-source ~/.profile
-
 # Identify computer
 # This allows sharing this .zshrc across machines
 
