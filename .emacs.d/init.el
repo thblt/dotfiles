@@ -21,19 +21,9 @@
   (load-file (expand-file-name file user-init-dir))
   )
 
-;;; === One wants one's filesystem clean ===
-
-; Autosave and backups in /tmp/ 
-(setq backup-directory-alist
-	  `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-	  `((".*" ,temporary-file-directory t)))
-
-;; Let customize put its mess elsewhere
-(setq custom-file (concat user-init-dir "customize_autogen.el"))
-(load custom-file)
-
-;;; === One needs some extra packages === 
+;; ╔═╗┌─┐┌─┐┬┌─┌─┐┌─┐┌─┐  ╔╦╗┌─┐┌┐┌┌─┐┌─┐┌─┐┌┬┐┌─┐┌┐┌┌┬┐
+;; ╠═╝├─┤│  ├┴┐├─┤│ ┬├┤   ║║║├─┤│││├─┤│ ┬├┤ │││├┤ │││ │
+;; ╩  ┴ ┴└─┘┴ ┴┴ ┴└─┘└─┘  ╩ ╩┴ ┴┘└┘┴ ┴└─┘└─┘┴ ┴└─┘┘└┘ ┴
 
 (require 'package)  ; Automated package management, thanks.
 
@@ -56,27 +46,47 @@
 ;; ║ ╦├┤ │││├┤ ├┬┘├─┤│
 ;; ╚═╝└─┘┘└┘└─┘┴└─┴ ┴┴─┘
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;; General look and feel ;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(setq-default
+ column-number-mode t       ; Column number in modeline
+ line-number-mode t         ; Line - - -
+ comment-empty-lines t      ; Prefix empty lines too
+ inhibit-startup-screen t   ; Skip the startup screens
+ tab-width 2                ; Set tab stops
+ use-dialog-box nil         ; Always use the minibuffer for prompts
+ initial-scratch-message "; Scratch buffer\n\n"
+ vc-follow-symlinks t       ; Always follow symlinks to
+							; version-controlled files.
+ reb-re-syntax 'string      ; String syntax for re-builder
+ )
 
-(unless (string= system-type 'darwin)
-  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar on OSX.
-  )
+;;; === Sanity ===
+(fset 'yes-or-no-p 'y-or-n-p) ;; y/n instead of yes/no
+
+; Autosave and backups in /tmp/ 
+(setq backup-directory-alist
+	  `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+	  `((".*" ,temporary-file-directory t)))
+
+;; Let customize put its mess elsewhere
+
+(setq custom-file (concat user-init-dir "customize_autogen.el"))
+(load custom-file)
+
+;; === Look and feel ===
+
+;;(unless (string= system-type 'darwin)
+;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar on OSX.
+;;  )
 (when window-system (tool-bar-mode -1) (scroll-bar-mode -1))
-
-(setq-default comment-empty-lines t          ; Prefix empty lines too
-    inhibit-startup-screen t                 ; Skip the startup screens
-    tab-width 4								 ; Set tab stops
-    use-dialog-box nil						 ; Always use the minibuffer for prompts
-    initial-scratch-message "; Scratch buffer\n\n"
-    )
 
 (add-hook 'focus-out-hook
 		  (lambda ()
 			(save-some-buffers t)
 			)
-		  ) ; Save everything on losing focus.
+		  ) ; Save everything on losing focus @TODO Make silent:
+			; disable "(No files need saving)", autocreate
+			; directories when needed.
 
 ;;; OSX-specific configuration
 (when (string= system-type 'darwin) 
@@ -94,13 +104,9 @@
 	)
   )
 
-;; Appareance and interaction
-(setq column-number-mode t
-	  line-number-mode nil
-	  )
-
 ;; Version control
-(setq vc-follow-symlinks t)
+
+
 
 (use-package monokai-theme             
   :init (load-theme 'monokai))          ; Theme
@@ -154,13 +160,14 @@
 			(evil-mode)
 			(setq evil-insert-state-cursor '(bar))
 
-			;; Ctrl-something is Emacs's realm: use normal Emacs bindings.
-			;; @TODO Should be done using :bind or something, but I haven't yet found how.
+			;; Ctrl belongs to Emacs's realm: use normal Emacs bindings.
+			;; @TODO Should be done using :bind or something, but I haven't
+			;; yet found how. (Seeing use-package docs, it seems it can't be
+			;; done. See color-moccur example in README.md)
 			(define-key evil-insert-state-map "\C-a" 'evil-beginning-of-line)
-		
 			(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
 			(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-			(define-key evil-insert-state-map "\C-e" 'evil-end-of-line)
+			(define-key evil-insert-state-map "\C-e" 'end-of-line) ;  In insert mode, `evil-end-of-line' puts the cursor *before* the last character.
 			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
 			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
 			(define-key evil-insert-state-map "\C-k" 'kill-line)
@@ -206,6 +213,12 @@
 		  (show-smartparens-global-mode t)
 		  )
   )
+(use-package smart-tabs-mode
+  :init	(add-hook 'prog-mode-hook (lambda ()
+																		smart-tabs-mode-enable)								 
+									)
+	:config	(smart-tabs-insinuate 'c 'c++ 'python 'javascript)
+	)
 
 (use-package writeroom-mode)            ; Distraction-free mode
 (use-package yasnippet                  ; Snippets
@@ -223,7 +236,12 @@
 ;; General programming
 
 (setq compile-command "wmake")          ; A small script which invokes the first build system it can find instructions for.
-(bind-key (kbd "<f5>") 'recompile)
+(bind-key (kbd "<f5>") (lambda ()
+						 (interactive)
+						 (save-some-buffers t)
+						 (recompile)
+						 )
+		  )
 
 (use-package company                    ; Completion framework
   :init (add-hook 'prog-mode-hook 'company-mode)
