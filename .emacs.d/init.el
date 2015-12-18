@@ -157,9 +157,7 @@
 
 (use-package evil                       ; Extensible VI Layer
   :config (progn
-			(evil-mode)
 			(setq evil-insert-state-cursor '(bar))
-
 			;; Ctrl belongs to Emacs's realm: use normal Emacs bindings.
 			;; @TODO Should be done using :bind or something, but I haven't
 			;; yet found how. (Seeing use-package docs, it seems it can't be
@@ -167,7 +165,9 @@
 			(define-key evil-insert-state-map "\C-a" 'evil-beginning-of-line)
 			(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
 			(define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-			(define-key evil-insert-state-map "\C-e" 'end-of-line) ;  In insert mode, `evil-end-of-line' puts the cursor *before* the last character.
+			; In insert mode, `evil-end-of-line' puts the cursor *before*
+			; the last character, which is useless.
+			(define-key evil-insert-state-map "\C-e" 'end-of-line) 
 			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
 			(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
 			(define-key evil-insert-state-map "\C-k" 'kill-line)
@@ -197,7 +197,12 @@
 			(define-key evil-visual-state-map "\C-w" 'evil-delete)
 			(define-key evil-visual-state-map "\C-y" 'yank)
 			)
-  )
+	:init (progn
+					;; Restrict Evil to text-editing modes.
+					(add-hook 'text-mode-hook 'evil-local-mode)
+					(add-hook 'prog-mode-hook 'evil-local-mode)
+					)
+	)
 ;; (use-package evil-leader)            ; Enable <leader> key 
 (use-package evil-surround              ; A port of tpope's Surround
   :config (global-evil-surround-mode t)
@@ -215,7 +220,8 @@
   )
 (use-package smart-tabs-mode
   :init	(add-hook 'prog-mode-hook (lambda ()
-																		smart-tabs-mode-enable)								 
+																		(smart-tabs-mode-enable)
+																		)
 									)
 	:config	(smart-tabs-insinuate 'c 'c++ 'python 'javascript)
 	)
@@ -396,11 +402,7 @@
 								 )
 				  )
 			)
-  :init (elfeed-goodies/setup)
   )
-
-(use-package elfeed-goodies)
-
 
 ;;; === Decoration === 
 
