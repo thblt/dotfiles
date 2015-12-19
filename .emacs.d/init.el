@@ -12,7 +12,7 @@
         ((boundp 'user-init-directory)
          user-init-directory)
         (t "~/.emacs.d/")
-		)
+        )
   )
 
 (defun load-user-file (file)
@@ -47,78 +47,85 @@
 ;; ╚═╝└─┘┘└┘└─┘┴└─┴ ┴┴─┘
 
 (setq-default
+ ;; Modeline
  column-number-mode t       ; Column number in modeline
  line-number-mode t         ; Line - - -
- comment-empty-lines t      ; Prefix empty lines too
- inhibit-startup-screen t   ; Skip the startup screens
+
+ ;; Indentation and general editing
  tab-width 2                ; Set tab stops
- use-dialog-box nil         ; Always use the minibuffer for prompts
- initial-scratch-message "; Scratch buffer\n\n"
- vc-follow-symlinks t       ; Always follow symlinks to
-							; version-controlled files.
+ indent-tabs-mode nil       ; Default to spaces for indent (smart tabs
+                            ; on some syntaxes, see below)
+ comment-empty-lines t      ; 
  reb-re-syntax 'string      ; String syntax for re-builder
+
+ ;; Stuff for programming
+ compile-command "wmake"    ; A small script which invokes the first
+														; build system it can find instructions
+														; for.
+ 
+ ;; General interface improvements
+ vc-follow-symlinks t       ; Always follow symlinks to
+                            ; version-controlled files.
+ use-dialog-box nil         ; Always use the minibuffer for prompts
+ inhibit-startup-screen t   ; Skip the startup screens
  )
 
 ;;; === Sanity ===
 (fset 'yes-or-no-p 'y-or-n-p) ;; y/n instead of yes/no
 
-; Autosave and backups in /tmp/ 
+;; Autosave and backups in /tmp/ 
 (setq backup-directory-alist
-	  `((".*" . ,temporary-file-directory)))
+      `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms
-	  `((".*" ,temporary-file-directory t)))
+      `((".*" ,temporary-file-directory t)))
 
-;; Let customize put its mess elsewhere
-
+;; Let Customize put its mess elsewhere
 (setq custom-file (concat user-init-dir "customize_autogen.el"))
 (load custom-file)
 
 ;; === Look and feel ===
 
 ;;(unless (string= system-type 'darwin)
-;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar on OSX.
+;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
 ;;  )
-(when window-system (tool-bar-mode -1) (scroll-bar-mode -1))
+(when window-system (tool-bar-mode -1) (scroll-bar-mode -1)) ; Toolbar and scrollbars are evil.
 
 (add-hook 'focus-out-hook
-		  (lambda ()
-			(save-some-buffers t)
-			)
-		  ) ; Save everything on losing focus @TODO Make silent:
-			; disable "(No files need saving)", autocreate
-			; directories when needed.
+          (lambda ()
+            (save-some-buffers t)
+            )
+          ) ; Save everything on losing focus @TODO Make silent:
+            ; disable "(No files need saving)", autocreate directories
+            ; when needed.
 
 ;;; OSX-specific configuration
 (when (string= system-type 'darwin) 
   (setq mac-option-modifier 'nil
         mac-command-modifier 'meta)
   
-  (global-set-key (kbd "<help>") 'overwrite-mode)                    ; Fix weird Apple keymap.
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")        ; Fix load-path for mu4e
+  (global-set-key (kbd "<help>") 'overwrite-mode)                  ; Fix weird Apple keymap.on full-size kbs.
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ; Fix load-path for mu4e
   )
 
 ;;; OSX Cocoa path fix
 (when (memq window-system '(mac ns))
   (use-package exec-path-from-shell
-	:init (exec-path-from-shell-initialize) ; Load PATH from shell in Cocoa
-	)
+    :init (exec-path-from-shell-initialize) ; Load PATH from shell in Cocoa
+    )
   )
 
-;; Version control
-
-
-
 (use-package monokai-theme             
-  :init (load-theme 'monokai))          ; Theme
-(use-package ace-window)                ; Easily switch between windows.
-(global-set-key (kbd "M-p") 'ace-window)
+  :init (load-theme 'monokai)
+	)                                     ; Theme
+(use-package ace-window                 ; Easily switch between windows.
+	:bind ("M-p" . ace-window)
+	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
-(use-package helm-ag)
+(use-package helm-ag)                   ; The silver searcher
 (use-package linum-relative             ; Relative line numbers
-  :pin melpa                            ; 404 somewhere else for some reason
   :init (linum-relative-global-mode)
   :config (setq linum-relative-current-symbol ""
-				linum-relative-with-helm nil)
+                linum-relative-with-helm nil)
   ) 
 
 (use-package neotree                    ; FS sidebar à la NERDTree
@@ -129,18 +136,18 @@
   :config (sml/setup) 
   :init
   (setq rm-blacklist
-		(format "^ \\(%s\\)$"
-				(mapconcat #'identity
-						   '("\\$"      ; Rich minority itself
-							 "company"
-							 "FlyC.*"
-							 "LR"      ; Limum-Relative
-							 "Projectile.*"
-							 "SP.*"    ; Smartparens
-							 "Undo-Tree"
-							 "yas")    ; Yasnippet
-						   "\\|"))
-		)
+        (format "^ \\(%s\\)$"
+                (mapconcat #'identity
+                           '("\\$"      ; Rich minority itself
+                             "company"
+                             "FlyC.*"
+                             "LR"      ; Limum-Relative
+                             "Projectile.*"
+                             "SP.*"    ; Smartparens
+                             "Undo-Tree"
+                             "yas")    ; Yasnippet
+                           "\\|"))
+        )
   )
 
 (use-package windmove
@@ -150,9 +157,9 @@
 ;; Editing
 (use-package anzu)                      ; Show matches count/current match # in mode line
 (use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
-  :bind (("C-:" . avy-goto-char-2)
-		 ("C-=" . avy-goto-line)
-		 )
+  :bind (("C-:" . avy-goto-char)
+         ("C-=" . avy-goto-line)
+         )
   )
 
 (use-package evil                       ; Extensible VI Layer
@@ -208,23 +215,24 @@
   :config (global-evil-surround-mode t)
   )
 (use-package evil-nerd-commenter       ; A port of NerdCommenter
-  :config (evilnc-default-hotkeys)
+ ;; :config (evilnc-default-hotkeys)
   )
 (use-package expand-region)             ; Expand region by semantic units
 (use-package highlight-indentation)     ; Show indent level markers
 (use-package smartparens-confg          ; Be smart with parentheses
   :ensure smartparens
   :init (progn
-		  (show-smartparens-global-mode t)
-		  )
+          (show-smartparens-global-mode t)
+          )
   )
+(use-package aggressive-indent)
 (use-package smart-tabs-mode
-  :init	(add-hook 'prog-mode-hook (lambda ()
-																		(smart-tabs-mode-enable)
-																		)
-									)
-	:config	(smart-tabs-insinuate 'c 'c++ 'python 'javascript)
-	)
+  :init (add-hook 'prog-mode-hook (lambda ()
+                                    (smart-tabs-mode-enable)
+                                    )
+                  )
+  :config (smart-tabs-insinuate 'c 'c++ 'python 'javascript)
+  )
 
 (use-package writeroom-mode)            ; Distraction-free mode
 (use-package yasnippet                  ; Snippets
@@ -239,15 +247,15 @@
 (use-package projectile                 ; Project management
   :init (projectile-global-mode)
   )
+
 ;; General programming
 
-(setq compile-command "wmake")          ; A small script which invokes the first build system it can find instructions for.
 (bind-key (kbd "<f5>") (lambda ()
-						 (interactive)
-						 (save-some-buffers t)
-						 (recompile)
-						 )
-		  )
+                         (interactive)
+                         (save-some-buffers t)
+                         (recompile)
+                         )
+          )
 
 (use-package company                    ; Completion framework
   :init (add-hook 'prog-mode-hook 'company-mode)
@@ -262,9 +270,9 @@
   )
 
 (add-hook 'python-mode-hook (lambda ()
-							  (setq-local helm-dash-docsets '("Python 2" "Python 3"))
-							  )
-		  )
+                              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
+                              )
+          )
 
 ;; ╔═╗┬ ┬┌┐┌┌┬┐┌─┐─┐ ┬┌─┐┌─┐
 ;; ╚═╗└┬┘│││ │ ├─┤┌┴┬┘├┤ └─┐
@@ -295,11 +303,11 @@
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (add-hook 'c-mode-common-hook
-		  (lambda ()
-			(irony-mode t)
-			(setq-local helm-dash-docsets '("C" "C++" "Qt"))
-			)
-		  )
+          (lambda ()
+            (irony-mode t)
+            (setq-local helm-dash-docsets '("C" "C++" "Qt"))
+            )
+          )
 
 ;; CSS/SCSS/LESS
 (use-package scss-mode)                 ; (S)CSS
@@ -307,10 +315,10 @@
 
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook
-		  (lambda ()
-			(setq-local custom--hooksets '("Emacs Lisp"))
-			)
-		  )
+          (lambda ()
+            (setq-local custom--hooksets '("Emacs Lisp"))
+            )
+          )
 
 ;; Haskell
 (use-package company-ghc)               ; Completion provider for Haskell
@@ -318,10 +326,10 @@
 (use-package helm-hoogle)               ; Search Hoogle 
 
 (add-hook 'haskell-mode-hook 
-		  (lambda ()
-			(setq-local helm-dash-docsets '("Haskell"))
-			)
-		  )
+          (lambda ()
+            (setq-local helm-dash-docsets '("Haskell"))
+            )
+          )
 
 ;; HTML (template)
 (use-package haml-mode)                 ; HAML templates
@@ -329,17 +337,17 @@
 
 
 (add-hook 'html-mode-hook
-		  (lambda ()			
-			(setq-local helm-dash-docsets '("HTML"))
-			)
-		  )
+          (lambda ()      
+            (setq-local helm-dash-docsets '("HTML"))
+            )
+          )
 
 ;; Javascript
 (add-hook 'js-mode-hook
-		  (lambda ()
-			(setq-local helm-dash-docsets '("JavaScript"))
-			)
-		  )
+          (lambda ()
+            (setq-local helm-dash-docsets '("JavaScript"))
+            )
+          )
 
 ;; Markdown
 (use-package markdown-mode)             ; Markdown major mode
@@ -352,11 +360,11 @@
 (use-package tex-site
   :ensure auctex
   :init (add-hook 'LaTeX-mode-hook (progn
-									 'turn-on-flyspell
-									 'toggle-word-wrap
-									 'TeX-fold-mode
-									 )
-				  ) 
+                                     'turn-on-flyspell
+                                     'toggle-word-wrap
+                                     'TeX-fold-mode
+                                     )
+                  ) 
   :config (setq TeX-save-query nil)     ; Autosave
   )                                     ; (La)TeX edition
 (use-package company-auctex)            ; Completion provider for AucTeX
@@ -369,39 +377,26 @@
 (use-package mu4e
   :ensure nil ; Comes with mu, not on a Emacs package repo
   :config (progn
-			(add-to-list 'load-path "/usr/share/emacs/site-lisp/") ; OSX and Debian both use this.
-			)
+            (add-to-list 'load-path "/usr/share/emacs/site-lisp/") ; OSX and Debian both use this.
+            )
   :init (progn
-		  (setq mu4e-maildir "~/.Mail/")
-		  
-		  (setq mu4e-sent-folder "/P1/sent-mail"
-				mu4e-drafts-folder "/P1/Drafts"
-				mu4e-trash-folder "/P1/Trash"
-				user-mail-address "thibault.polge@univ-paris1.fr"
-				smtpmail-default-smtp-server "smtp.univ-paris1.fr"
-				smtpmail-local-domain "univ-paris1.fr"
-				smtpmail-smtp-server "smtp.account1.tld"
-				smtpmail-stream-type 'starttls
-				smtpmail-smtp-service 25)
-		  
-		  (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
-								  ("f:unread"                           "Unread messages"         ?v)
-								  ("flag:flagged"                       "Flagged"                 ?f)
-								  ) )
-		  )
-  )
-
-;;; === Feeds
-
-(use-package elfeed
-  :config (progn
-			(setq elfeed-feeds '(
-								 ("https://xkcd.com/atom.xml")
-								 ("http://www.maitre-eolas.fr/feed/atom")
-								 ("http://binaire.blog.lemonde.fr/feed/")
-								 )
-				  )
-			)
+          (setq mu4e-maildir "~/.Mail/")
+          
+          (setq mu4e-sent-folder "/P1/sent-mail"
+                mu4e-drafts-folder "/P1/Drafts"
+                mu4e-trash-folder "/P1/Trash"
+                user-mail-address "thibault.polge@univ-paris1.fr"
+                smtpmail-default-smtp-server "smtp.univ-paris1.fr"
+                smtpmail-local-domain "univ-paris1.fr"
+                smtpmail-smtp-server "smtp.account1.tld"
+                smtpmail-stream-type 'starttls
+                smtpmail-smtp-service 25)
+          
+          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
+                                  ("f:unread"                           "Unread messages"         ?v)
+                                  ("flag:flagged"                       "Flagged"                 ?f)
+                                  ) )
+          )
   )
 
 ;;; === Decoration === 

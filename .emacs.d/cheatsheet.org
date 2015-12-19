@@ -294,3 +294,16 @@ reduces risks of injury.
     ever.  
 
 ** Org mode
+* Astonishing slang
+
+Emacs is built around Lisp, and although that makes it amazingly
+extensible, it also comes with its boatload of weird jargon and
+strange habits. Here's a bit of it.
+
+A *defun* is a function or its equivalent in /any/ language which has
+a notion of functions.
+
+A *s-expression* is any kind of balanced expression, surrounded by any
+concevable pair of stuff which goes (by pair, including) parentheses,
+brackets or accolades. `forward-sexp' is faaar from being restricted
+to Lisp's s-expressions.
