@@ -68,6 +68,8 @@
                             ; version-controlled files.
  use-dialog-box nil         ; Always use the minibuffer for prompts
  inhibit-startup-screen t   ; Skip the startup screens
+
+ initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
  )
 
 ;;; === Sanity ===
@@ -84,6 +86,13 @@
 (load custom-file)
 
 ;; === Look and feel ===
+
+(set-face-attribute 'default nil
+                    :font "DejaVu Sans Mono 14" ;; "DejaVu Sans Mono"
+                    )
+(set-face-attribute 'mode-line nil
+                    :family "Open Sans Condensed"
+                    )                   
 
 ;;(unless (string= system-type 'darwin)
 ;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
@@ -118,6 +127,12 @@
   :init (load-theme 'monokai)
 	)                                     ; Theme
 (use-package ace-window                 ; Easily switch between windows.
+  :init (setq aw-dispatch-always t)
+  :config (set-face-attribute 'aw-leading-char-face nil
+                              :height 240
+                              :background "#ccff33"
+                              :foreground "black"
+                              )
 	:bind ("M-p" . ace-window)
 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
@@ -349,7 +364,10 @@
             )
           )
 
-;; Markdown
+;; Lua
+(use-package lua-mode)
+
+;; markdown
 (use-package markdown-mode)             ; Markdown major mode
 
 ;; Python
