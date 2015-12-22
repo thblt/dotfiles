@@ -4,7 +4,6 @@ termEmulatorName = "iTerm"
 textEditorName = "Emacs"
 webBrowserName = "Chromium"
 
-
 -- Variables
 
 hs.window.animationDuration = 0 -- No animation
@@ -47,11 +46,11 @@ end)
 --[[ G-Key Bindings
 G1  G2  G3
 +---|---|-- Place current window on left half of the screen
-    +---|-- Place current window on right half of the screen
-        +-- Maximize current window
+    +---|-- Maximize current window
+        +-- Place current window on right half of the screen
 G4  G5  G6
 +---|---|-- Place current window on left of the screen, two thirds width.
-    +---|-- Place current window on right of the screen, one third width.
+    +---|-- Place current window nicely centered, 4/5 width & height
         +-- Place current window on right third of the screen
 
 G7  G8  G9
@@ -102,7 +101,7 @@ gKeyPressedBindings[4] = function()
 end
 
 gKeyPressedBindings[5] = function()
-	positionRelative(2/3, 0, 1/3, 1)
+	positionRelative(1/10, 1/10, 4/5, 4/5)
 end
 
 gKeyPressedBindings[6] = function()
