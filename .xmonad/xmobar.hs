@@ -1,9 +1,11 @@
 Config {
-    font = "xft:DejaVu Sans Mono-12:book",
+    font = "xft:DejaVu Sans Mono-10:book",
     additionalFonts = [ "xft:PowerlineSymbols-12:Medium" ],
-    bgColor = "#000000",
-    fgColor = "#ffffff",
-    alpha = 180,
+    bgColor = "#f5f4ef",
+    fgColor = "#1f1d14",
+    border = BottomB,
+    borderColor = "#3f3b27",
+    alpha = 255,
     position = Static { xpos = 0, ypos = 0, width = 2560, height = 16 },
     lowerOnStart = True,
     commands = [
@@ -14,5 +16,5 @@ Config {
     ], 
     sepChar = "%",
     alignSep = "}{",
-    template = " %StdinReader% }{ %enp7s0f0%   <fc=#FFFFCC>%date%</fc>"
+    template = "  %StdinReader% }{ %enp7s0f0% %date% "
 }
