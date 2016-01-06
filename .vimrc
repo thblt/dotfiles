@@ -29,7 +29,6 @@ Plugin 'tpope/vim-abolish'                 " working with variants of a word
 Plugin 'tpope/vim-speeddating'             " c-a c-x for dates
 Plugin 'vim-scripts/YankRing.vim'          " Yank registers manipulation
 " Programming
-Plugin 'gilligan/vim-lldb'                 " lldb integration
 Plugin 'majutsushi/tagbar.git'             " tags bar
 Plugin 'rhysd/vim-clang-format'            " Interface to clang_format
 Plugin 'scrooloose/nerdcommenter'          " For comments
@@ -59,7 +58,7 @@ if v:version >= 704
 	Plugin 'ervandew/supertab'             " Tab for everything
 	Plugin 'SirVer/ultisnips'              " Snippets
 	Plugin 'honza/vim-snippets'            " Default snippets for UltiSnips
-	Plugin 'Valloric/YouCompleteMe'        " Completion
+"	Plugin 'Valloric/YouCompleteMe'        " Completion
 endif
 "Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
 "Plugin 'vimoutliner/vimoutliner'           "  Outlining
