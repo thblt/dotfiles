@@ -1,5 +1,5 @@
 [general]
-accounts = Namo
+accounts = Namo, P1
 
 [Account Namo]
 localrepository = LocalNamo
@@ -13,7 +13,7 @@ localfolders = ~/.Mail/Namo
 type = IMAP
 remotehost = namo.thb.lt
 ssl = yes
-sslcacertfile = /Users/thblt/Desktop/Certificats.pem
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteuser = thblt
 
 [Account P1]
@@ -29,4 +29,5 @@ type = IMAP
 remotehost = imap.univ-paris1.fr
 ssl = yes
 remoteuser = tpolge
-sslcacertfile = /Users/thblt/Desktop/Certificats.pem
+sslcacertfile = //etc/ssl/certs/ca-certificates.crt
+
