@@ -1,0 +1,68 @@
+* Arch on Macounet
+** TODO [#B] Une barre d'état avec menus wifi, date, etc.
+** TODO [#A] Régler le touchpad
+*** [#B] Gestes à trois doigts à la OSX
+*** [#A] Sensibilité
+** TODO [#C] Gtk/Qt
+*** DONE [#C] Régler le problème des polices Chromium, Fx et Thunderbird (Roboto thin pour certains éléments d'interface)
+~/.config/fontconfig/fonts.conf :
+#+BEGIN_SRC xml 
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <match target="pattern">
+        <test name="family" qual="any">
+            <string>Roboto</string>
+        </test>
+        <test name="weight" compare="less_eq">
+            <const>normal</const>
+        </test>
+        <edit mode="assign" name="weight">
+            <const>medium</const>
+        </edit>
+    </match>
+</fontconfig>
+#+END_SRC
+** TODO Configurer xMonad
+*** DONE [#A] Trouver une meilleure touche de commande que altgauche (capslock ou ctrl-gauche?)
+Pas fait, mais jusqu'ici ça va.
+*** DONE [#C] Confirmation sur bouton power)
+*** TODO [#C] Verrouillage de l'écran (économiseur...)
+** TODO Réglerh le clavier
+*** DONE [#A] Activer les touches F1-12 au boot
+Dans /etc/modprobe.d/modprobe.conf: 
+=options hid_apple fnmode=2=
+*** TODO [#C] Mapping Apple hors de X
+*** DONE [#A] Ctrl sur Cmd, Alt sur alt, (et peut-être alors contrôle xmonad sur ctrl-gauche) 
+** TODO [#B] automount
+** DONE [#B] changer hostname
+** TODO [#C] Un lecteur PDF compatible avec SyncTex
+** TODO [#A] Git autocommit sur les dossiers gérés (et créer un repo dans Taff/Writing)
+
+* Installer ArchLinux avec Xmonad sur un Macbook Air 4,2 (mid 2011)
+** Gérer le clavier
+Une première difficulté, c'est l'usage standard des touches contrôle et alt partout ailleurs que MacOS : les fonctions usuelles sont mappées sur ctrl, qui est à l'extérieur du clavier, ce qui est une aberration.
+
+Donc, la solution logique sera de corriger le mapping pour avoir 
+
+|----------------+-----------------|
+| Touche logique | Touche physique |
+|----------------+-----------------|
+| Ctrl           | Command         |
+| Alt            | Alt             |
+| Meta           | Ctrl            |
+|----------------+-----------------|
+
+(La touche meta, c'est généralement la touche Windows ; les claviers Apple sont relativement bien conçus, mais beaucoup trop avares de modificateurs --- surtout les petits, portables ou sans fil)
+
+Mais deux problème demeurent : il n'y a pas de touche disponible pour Compose, et surtout, sur Mac alt fonctionne (en partie) comme un Alt-gr, pour accéder aux caractères spéciaux. Par exemple, alt+o donne œ. Comme on tape celle là de la main droite, ce n'est pas grave. Mais elle donne aussi accès aux parenthèses, accolades et chevrons indispensables pour écrire le moindre bout de script, au symbole euro...
+
+Donc en fait on ferait mieux de faire :
+
+|----------------+-----------------|
+| Touche logique | Touche physique |
+|----------------+-----------------|
+| Ctrl           | Command         |
+| Alt            | *Ctrl*          |
+| Meta           | *Alt*           |
+|----------------+-----------------|
