@@ -4,7 +4,10 @@
 # Other display managers may not, or may source different files.
 
 if [ "xmonad" == $1 ]; then
-    feh --bg-fill ~/Pictures/wallpaper/star_wars_imperial_destroyer_space_planet_2560x1440_hd-wallpaper-335666.jpg
+    numlockx on &
+    feh --bg-fill ~/Pictures/wallpaper/star_wars_imperial_destroyer_space_planet_2560x1440_hd-wallpaper-335666.jpg &
     synapse -s &
     /lib/xfce4/notifyd/xfce4-notifyd &
+    compton --config ~/.xmonad/compton.conf &
+    udiskie &
 fi
