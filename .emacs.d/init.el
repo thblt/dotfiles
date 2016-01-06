@@ -221,6 +221,7 @@
 			)
 	:init (progn
 					;; Restrict Evil to text-editing modes.
+          (add-hook 'conf-mode-hook 'evil-local-mode)
 					(add-hook 'text-mode-hook 'evil-local-mode)
 					(add-hook 'prog-mode-hook 'evil-local-mode)
 					)
