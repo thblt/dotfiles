@@ -1,24 +1,6 @@
 # Identify computer
 # This allows sharing this .zshrc across machines
 
-is_mac=false;
-is_linux=false;
-is_headless=false;
-
-if [[ `hostname` == Rudiger* ]]; then
-	is_mac=true;
-elif [[ `hostname` == thblap* ]]; then
-	is_mac=true;
-elif [[ `hostname` == namo* ]]; then
-	is_linux=true;
-	is_headless=true;
-elif [[ `hostname` == k9* ]]; then
-	is_linux=true;
-	is_headless=true;
-else
-	echo "!!!\tUnknown machine!";
-fi;
-
 # Read secrets (not in version control)
 source ~/.secrets
 
@@ -31,24 +13,27 @@ export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
 # Variables
 
-# if $is_headless; then
 if [ `command -v emacs` ]; then
 	export EDITOR="emacsclient --no-wait -a emacs"
 else
-	export EDITOR="vim"
+	export EDITOR="vi"
 fi;
+
+if [ `command -v vim` ]; then
+	alias vi=vim
+fi;
+
 alias e=${EDITOR} # Shorthand 
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
 
-# Aliases
+# Misc aliases
 
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
 alias bc="bc -l"
-# mkcd
 
 function mkcd() {
 if mkdir -p "$@"
@@ -70,7 +55,11 @@ alias ..5="cd ../../../../.."
 export WORKON_HOME=~/.virtualenvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-
+# Load oh my zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+	git clone https://github.com/robbyrussell/oh-my-zsh .oh-my-zsh
+fi
+	
 DISABLE_AUTO_UPDATE="true"
 source $ZSH/oh-my-zsh.sh
 
@@ -78,3 +67,4 @@ source $ZSH/oh-my-zsh.sh
 
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+source ~/.profile
