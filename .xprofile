@@ -5,7 +5,7 @@
 
 if [ "xmonad" == $1 ]; then
     numlockx on &
-    feh --bg-fill ~/Pictures/wallpaper/star_wars_imperial_destroyer_space_planet_2560x1440_hd-wallpaper-335666.jpg &
+    ~/.fehbg &
     synapse -s &
 	dunst & 
     compton --config ~/.xmonad/compton.conf &
