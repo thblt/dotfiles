@@ -411,9 +411,9 @@
                 smtpmail-stream-type 'starttls
                 smtpmail-smtp-service 25)
           
-          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"       "Global inbox"            ?i)
-                                  ("f:unread"                           "Unread messages"         ?v)
-                                  ("flag:flagged"                       "Flagged"                 ?f)
+          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"                       "Global inbox"            ?i)
+                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"     "Unread messages"         ?v)
+                                  ("flag:flagged"                                       "Flagged"                 ?f)
                                   ) )
           )
   )
