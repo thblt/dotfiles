@@ -1,8 +1,11 @@
 .DS_Store
+*.hi
+*.o
 *.swp
 *.un~
 .vim/bundle/**
 *.pyc
+.emacs.d/auto-save-list
 .emacs.d/elpa
 .emacs.d/eshell
 .emacs.d/games
@@ -11,3 +14,6 @@
 .emacs.d/url
 .emacs.d/ido.last
 .emacs.d/recentf
+.xmonad/xmonad-x86_64-linux
+.xmonad/xmonad
+.xmonad/xmonad.errors
