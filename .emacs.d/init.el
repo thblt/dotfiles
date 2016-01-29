@@ -123,9 +123,9 @@
     )
   )
 
-(use-package monokai-theme             
+(use-package monokai-theme              ; Theme 
   :init (load-theme 'monokai)
-	)                                     ; Theme
+	)                                     
 (use-package ace-window                 ; Easily switch between windows.
   :init (setq aw-dispatch-always t)
   :config (set-face-attribute 'aw-leading-char-face nil
@@ -235,6 +235,7 @@
   )
 (use-package expand-region)             ; Expand region by semantic units
 (use-package highlight-indentation)     ; Show indent level markers
+(use-package rainbow-delimiters)        ; Colorize parentheses etc by depth.
 (use-package smartparens-confg          ; Be smart with parentheses
   :ensure smartparens
   :init (progn
@@ -324,6 +325,9 @@
             (setq-local helm-dash-docsets '("C" "C++" "Qt"))
             )
           )
+
+;; CMake
+(use-package cmake-mode)
 
 ;; CSS/SCSS/LESS
 (use-package scss-mode)                 ; (S)CSS
