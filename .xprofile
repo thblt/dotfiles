@@ -4,10 +4,10 @@
 # Other display managers may not, or may source different files.
 
 if [ "xmonad" == $1 ]; then
-    numlockx on &
-    ~/.fehbg &
-    synapse -s &
-	dunst & 
-    compton --config ~/.xmonad/compton.conf &
-    udiskie &
+	compton --config ~/.xmonad/compton.conf &
+	numlockx on &
+	synapse -s &
+	dunst -conf ~/.xmonad/dunstrc & 
+	udiskie &
+	~/.fehbg &
 fi
