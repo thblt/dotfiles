@@ -139,7 +139,7 @@ main = do
       ]
     , focusFollowsMouse = False
     , clickJustFocuses = False
-    , borderWidth = 1
+    , borderWidth = 0
     , normalBorderColor = "#000000"
     , focusedBorderColor = "#ccff33"
     , logHook = dynamicLogWithPP prettyPrinter
