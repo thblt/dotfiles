@@ -93,6 +93,8 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   , ((0, xF86XK_AudioLowerVolume ), spawn "amixer set Master unmute ; amixer set Master 2-" )
   , ((0, xF86XK_AudioRaiseVolume ), spawn "amixer set Master unmute ; amixer set Master 2+" )
   , ((0, xF86XK_AudioMute ), spawn "amixer set Master toggle" )
+  , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
+  , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
   ]
   ++
   [((m .|. modMask, k), windows $ f i)
