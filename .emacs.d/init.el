@@ -409,15 +409,21 @@
                 mu4e-drafts-folder "/P1/Drafts"
                 mu4e-trash-folder "/P1/Trash"
                 user-mail-address "thibault.polge@univ-paris1.fr"
+                message-send-mail-function 'smtpmail-send-it
                 smtpmail-default-smtp-server "smtp.univ-paris1.fr"
                 smtpmail-local-domain "univ-paris1.fr"
-                smtpmail-smtp-server "smtp.account1.tld"
-                smtpmail-stream-type 'starttls
-                smtpmail-smtp-service 25)
+                smtpmail-smtp-server "smtp.univ-paris1.fr"
+                smtpmail-stream-type 'tls
+                smtpmail-smtp-service 465)
           
-          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"                       "Global inbox"            ?i)
-                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"     "Unread messages"         ?v)
-                                  ("flag:flagged"                                       "Flagged"                 ?f)
+          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"
+                                   "Global inbox"            ?i)
+                                  
+                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"
+                                   "Unread messages"         ?v)
+                                  
+                                  ("flag:flagged"
+                                   "Flagged"                 ?f)
                                   ) )
           )
   )
