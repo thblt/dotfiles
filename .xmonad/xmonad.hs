@@ -46,7 +46,7 @@ layoutNames = [
   , "Mirror Tall"
   , "Grid"
   , "Spiral"
-  , "Full"
+  -- , "Full"
     ]
           
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
@@ -149,12 +149,16 @@ pp_font :: Int -> String -> String
 pp_font f s = "<fn=" ++ show f ++ ">" ++ s ++ "</fn>"
   
 pp_icon :: String -> String
-pp_icon f = "<icon=" ++ f ++ "/>"
+pp_icon f = "<icon=" ++ f ++ ".xbm/>"
   
 pp_unsafe :: String -> String
 pp_unsafe "" = ""
 pp_unsafe s = "<raw=" ++ (show $ length s) ++ ":" ++ s ++ "/>"
-             
+
+pp_surround :: String -> String -> String
+pp_surround _ "" = ""
+pp_surround a b = a ++ b ++ a
+
 prettyPrinter :: PP
 prettyPrinter = def
   {
@@ -169,15 +173,19 @@ prettyPrinter = def
   , ppLayout = layoutPrinter
   }
   where
-    layoutPrinter c = concat $ L.intersperse " " $ fmap (makeIcon c) layoutNames
-      where makeIcon c l | c==l = "<fc=#494947><icon=layout_" ++ l ++ ".xbm/></fc>"
-                         | otherwise = "<fc=#c4c3bf><icon=layout_" ++ l ++ ".xbm/></fc>"
+    layoutPrinter c = concat $ L.intersperse " " $ fmap makeIcon layoutNames
+      where makeIcon l   | c==l = pp_active $ pp_icon $ "layout_" ++ l
+                         | otherwise = pp_inactive $ pp_icon $ "layout_" ++ l
 
 {- And now to wrap it all up -}
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+  xmproc <- spawnPipe $ concat $ L.intersperse " " [ "xmobar"
+                                                   , "-F", pp_surround "\"" $ fgColor currentPalette
+                                                   , "-B", pp_surround "\"" $ bgColor currentPalette
+                                                   , "~/.xmonad/xmobar.hs"
+                                                 ]
   xmonad def
     {
       startupHook = setWMName "LG3D",
