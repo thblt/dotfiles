@@ -3,8 +3,8 @@
 from PIL import Image, ImageDraw
 import sys
 
-width = 12
-height = 12
+width = 14
+height = 14
 borderWidth = 0
 strokeWidth = 1
 strokeColor = 0
@@ -66,6 +66,6 @@ endImage(img, "ThreeCol")
 img, draw = beginImage(v2=True)
 
 draw.rectangle( (width/2, height//(7/4)-strokeWidth/2, width, height//(7/4)+strokeWidth/2-1), fill=strokeColor )
-draw.rectangle( (width//(4/3)-2, height//(7/4)-strokeWidth/2, width//(4/3)+strokeWidth/2-2, height), fill=strokeColor )
+draw.rectangle( (width//(4/3)-1, height//(7/4)-strokeWidth/2, width//(4/3)+strokeWidth/2-1, height), fill=strokeColor )
 del draw
 endImage(img, "Spiral")
