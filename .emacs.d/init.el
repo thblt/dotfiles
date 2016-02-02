@@ -6,6 +6,13 @@
 
 ;;; Code:
 
+;; Identify computer
+(setq thblt/base-font-size 110)
+
+(when (string-prefix-p system-name "rudiger")
+  (setq thblt/base-font-size 130)
+  )
+
 (defconst user-init-dir
   (cond ((boundp 'user-emacs-directory)
          user-emacs-directory)
@@ -89,7 +96,7 @@
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
-                    :height 100
+                    :height thblt/base-font-size
                     )
 (set-face-attribute 'mode-line nil
                     :family "DejaVu Sans"
