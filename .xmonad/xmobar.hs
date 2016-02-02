@@ -1,5 +1,5 @@
 Config {
-    font = "xft:DejaVu Sans-10:book",
+    font = "xft:DejaVu Sans-10:Book",
     additionalFonts = [ "xft:DejaVu Sans-10:Bold" ],
     bgColor = "#f5f4ef",
     fgColor = "#1f1d14",

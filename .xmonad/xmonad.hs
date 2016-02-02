@@ -23,6 +23,7 @@ import XMonad.Util.Run (spawnPipe)
 import Graphics.X11.ExtraTypes.XF86
 
 import qualified Data.Map as M
+import qualified Data.List as L
 import System.Exit (exitSuccess)
 import System.IO
 
@@ -93,6 +94,8 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   , ((0, xF86XK_AudioLowerVolume ), spawn "amixer set Master unmute ; amixer set Master 2-" )
   , ((0, xF86XK_AudioRaiseVolume ), spawn "amixer set Master unmute ; amixer set Master 2+" )
   , ((0, xF86XK_AudioMute ), spawn "amixer set Master toggle" )
+  , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
+  , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
   ]
   ++
   [((m .|. modMask, k), windows $ f i)
@@ -105,22 +108,72 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
         | (key, sc) <- zip [xK_a, xK_z, xK_e] [0..]
         , (f, m) <- [(XSS.view, 0), (XSS.shift, shiftMask)]]
 
+{-
+XMobar configuration.  - For consistency, xmobar isn't configured
+through an external file, but with command-line parameters. This
+allows to keep things such as color scheme in a single place, and I
+probably won't be using Xmobar outside of Xmonad.
+-}
+
+data Palette = Palette {
+  bgColor :: String,
+  fgColor :: String,
+  activeColor :: String,
+  inactiveColor ::  String,
+  disabledColor :: String
+  }
+
+currentPalette :: Palette
+currentPalette =
+  Palette {
+  bgColor = "#f5f4ef",
+  fgColor = "#1f1d14",
+  activeColor = "#000000",
+  inactiveColor = "#999999",
+  disabledColor = "#eeeeee" 
+  }
+
+pp_default :: String -> String
+pp_default = xmobarColor (fgColor currentPalette) (bgColor currentPalette) 
+
+pp_active :: String -> String
+pp_active = xmobarColor (activeColor currentPalette) (bgColor currentPalette) 
+
+pp_inactive :: String -> String
+pp_inactive = xmobarColor (inactiveColor currentPalette) (bgColor currentPalette) 
+  
+pp_disabled :: String -> String
+pp_disabled = xmobarColor (disabledColor currentPalette) (bgColor currentPalette) 
+
+pp_font :: Int -> String -> String
+pp_font f s = "<fn=" ++ show f ++ ">" ++ s ++ "</fn>"
+  
+pp_icon :: String -> String
+pp_icon f = "<icon=" ++ f ++ "/>"
+  
+pp_unsafe :: String -> String
+pp_unsafe "" = ""
+pp_unsafe s = "<raw=" ++ (show $ length s) ++ ":" ++ s ++ "/>"
+             
 prettyPrinter :: PP
 prettyPrinter = def
   {
-    ppHidden = \w -> " " ++ w ++ " "
-  , ppCurrent = \w -> "<fn=1><fc=#000000> " ++ w ++ " </fc><fc=#494947,#f5f4ef></fc></fn>"
-  , ppHiddenNoWindows = \w -> "<fc=#dddddd> " ++ w ++ " </fc>"                            
-  , ppTitle = \t -> if
-      | "" == t -> "∅"
-      | otherwise -> "<raw=" ++ (show $ length t) ++ ":" ++ t ++ "/>"
-  , ppSep = "    "
+  {-  ppHidden = \w -> xmobarColor "ff0000" "ffffff" . icon $ "SVGtest/" ++ w ++ "_empty.xpm"
+  , ppCurrent = \w -> "<fc=#000000> <icon=SVGtest/" ++ w ++ "_full.xpm/></fc>"
+  , ppHiddenNoWindows = \w -> "<fc=#00eeee> <icon=SVGtest/" ++ w ++ "_empty.xpm/></fc>" -}
+    ppCurrent = \w -> pp_active $ pp_font 1 w
+  , ppHidden = \w -> pp_inactive w
+  , ppHiddenNoWindows = \w -> pp_disabled w
+  , ppTitle = pp_default . pp_unsafe 
+  , ppSep = "        "
   , ppLayout = layoutPrinter
   }
   where
-    layoutPrinter c = concat $ fmap (makeIcon c) layoutNames
-      where makeIcon c l | c==l = "<fc=#494947><icon=layout_" ++ l ++ ".xbm/></fc> "
-                         | otherwise = "<fc=#c4c3bf><icon=layout_" ++ l ++ ".xbm/></fc> "
+    layoutPrinter c = concat $ L.intersperse " " $ fmap (makeIcon c) layoutNames
+      where makeIcon c l | c==l = "<fc=#494947><icon=layout_" ++ l ++ ".xbm/></fc>"
+                         | otherwise = "<fc=#c4c3bf><icon=layout_" ++ l ++ ".xbm/></fc>"
+
+{- And now to wrap it all up -}
 
 main :: IO ()
 main = do

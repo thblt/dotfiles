@@ -52,7 +52,7 @@
  line-number-mode t         ; Line - - -
 
  ;; Indentation and general editing
- tab-width 2                ; Set tab stops
+ tab-width 4                ; Set tab stops
  indent-tabs-mode nil       ; Default to spaces for indent (smart tabs
                             ; on some syntaxes, see below)
  comment-empty-lines t      ; 
@@ -88,10 +88,11 @@
 ;; === Look and feel ===
 
 (set-face-attribute 'default nil
-                    :font "DejaVu Sans Mono 14" ;; "DejaVu Sans Mono"
+                    :family "DejaVu Sans Mono"
+                    :height 100
                     )
 (set-face-attribute 'mode-line nil
-                    :family "Open Sans Condensed"
+                    :family "DejaVu Sans"
                     )                   
 
 ;;(unless (string= system-type 'darwin)
@@ -123,8 +124,9 @@
     )
   )
 
-(use-package monokai-theme              ; Theme 
-  :init (load-theme 'monokai)
+(use-package monokai-theme)              ; Themes 
+(use-package ample-theme
+  :init (load-theme 'ample)
 	)                                     
 (use-package ace-window                 ; Easily switch between windows.
   :init (setq aw-dispatch-always t)
@@ -154,8 +156,11 @@
         (format "^ \\(%s\\)$"
                 (mapconcat #'identity
                            '("\\$"      ; Rich minority itself
+                             "Abbrev"
+                             "ARev"
                              "company"
                              "FlyC.*"
+                             "Irony"
                              "LR"      ; Limum-Relative
                              "Projectile.*"
                              "SP.*"    ; Smartparens
@@ -221,11 +226,13 @@
 			)
 	:init (progn
 					;; Restrict Evil to text-editing modes.
+          ;; FIXME This won't work in Fundamental mode.
           (add-hook 'conf-mode-hook 'evil-local-mode)
 					(add-hook 'text-mode-hook 'evil-local-mode)
 					(add-hook 'prog-mode-hook 'evil-local-mode)
 					)
 	)
+
 ;; (use-package evil-leader)            ; Enable <leader> key 
 (use-package evil-surround              ; A port of tpope's Surround
   :config (global-evil-surround-mode t)
@@ -244,7 +251,7 @@
   )
 (use-package aggressive-indent)
 (use-package smart-tabs-mode
-  :init (add-hook 'prog-mode-hook (lambda ()
+  :init (add-hook 'c-mode-common-hook (lambda ()
                                     (smart-tabs-mode-enable)
                                     )
                   )
@@ -321,7 +328,9 @@
 
 (add-hook 'c-mode-common-hook
           (lambda ()
+            (local-set-key (kbd "C-c o") 'ff-find-other-file)
             (irony-mode t)
+            (irony-cdb--autodetect-compile-options)
             (setq-local helm-dash-docsets '("C" "C++" "Qt"))
             )
           )
@@ -391,6 +400,9 @@
   :config (setq TeX-save-query nil)     ; Autosave
   )                                     ; (La)TeX edition
 (use-package company-auctex)            ; Completion provider for AucTeX
+
+;; XML
+(use-package emmet-mode)
 
 ;; YAML
 (use-package yaml-mode)
