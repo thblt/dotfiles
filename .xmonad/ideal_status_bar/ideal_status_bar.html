@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>Ideal status bar</title>
+    <link rel="stylesheet" href="./ideal_status_bar.css" type="text/css" />
+  </head>
+  
+  <body>
+
+    <div id="xmobar">
+
+      <div id="left">
+           <div id="desktops" class="item deeper">
+             <ul class="picker">
+               <li class="visible">&alpha;</li><!--
+               --><li class="current">&beta;</li><!--
+               --><li class="visible">&gamma;</li><!--
+               --><li class="inactive">&delta;</li><!--
+               --><li class="inactive">&epsilon;</li><!--
+               --><li class="visible">&zeta;</li><!--
+               --><li class="inactive">&eta;</li><!--
+               --><li class="inactive">&theta;</li><!--
+               --><li class="inactive">&iota;</li>
+             </ul>
+           </div>
+
+           <div id="layouts" class="item deeper">
+             <ul class="picker">
+               <!-- Grid -->
+               <li class="active">
+                 <table class="preview">
+                   <tr><td></td><td></td></tr>
+                   <tr><td></td><td></td></tr>
+                 </table>
+               </li>
+               <li class="current">
+                 <!-- Tall -->
+                 <table class="preview">
+                   <tr> <td class="half" rowspan=2></td> <td></td></tr>
+                   <tr> <td></td></tr>
+                 </table>
+               </li>
+               <!-- Mirror Tall -->
+               <li class="active">
+                 <table class="preview">
+                   <tr> <td colspan=2></td> </tr>
+                   <tr> <td></td> <td></td></tr>
+                 </table>
+               </li>
+             </ul>
+           </div>
+
+           <div id="layouts2" class="item deeper">
+             <ul class="picker">
+               <li class="inactive">K</li>
+               <li class="current">T</li>
+               <li class="inactive">G</li>
+               <li class="inactive">S</li>
+             </ul>
+           </div>
+           <div id="title" class="item">
+             emacs@anna
+           </div>
+    </div>
+
+
+      
+    <div id="right">
+      <div id="time" class="item right"><b>17:36</b></div>
+    </div>
+    
+</div>
+    
+  </body>
+</html>
