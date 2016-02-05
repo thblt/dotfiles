@@ -26,8 +26,7 @@ def printSep(widths):
 	print("+" + "+".join(["-"*(x+2) for x in widths]) + "+")
 	
 if len(argv) == 1:
-	print("""Usage: {0} lambda [lambda...]
-(where lambda is a valid Python lambda function.)""".format(path_split(argv[0])[1]))
+	error("Usage: {0} lambda [lambda...]\n(where lambda is a valid Python lambda function.)", path_split(argv[0])[1])
 	exit(-1)
 	
 for l in argv[1:]:
