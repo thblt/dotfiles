@@ -8,7 +8,7 @@ Unless otherwise stated, all cited packages are available on MELPA.
 
 * Getting help
 
-Emacs is extensively documented. Knowing the help commands 
+Emacs is extensively documented. Knowing the help commands is therefore vital:
 
  * =C-h= is the entry point to all Emacs documentation. =C-h ?= prints available options.
 
