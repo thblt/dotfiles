@@ -113,14 +113,15 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   , ((modMask .|. shiftMask, xK_g), bringMenu)
     
   -- Media keys
-  , ((0, xF86XK_AudioLowerVolume ), spawn "amixer set Master unmute ; amixer set Master 2-" )
-  , ((0, xF86XK_AudioRaiseVolume ), spawn "amixer set Master unmute ; amixer set Master 2+" )
-  , ((0, xF86XK_AudioMute ), spawn "amixer set Master toggle" )
+  , ((0, xF86XK_AudioLowerVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2-; " ++ shNotifyVolume )
+  , ((0, xF86XK_AudioRaiseVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2+; " ++ shNotifyVolume)
+  , ((0, xF86XK_AudioMute ), spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
   , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
   ]
   ++
-  [((m .|. modMask, k), windows $ f i)
+  -- workspace switching
+  [((m .|. modMask, k), windows $ f i)                         
         | (i, k) <- zip (XMonad.workspaces conf) workspacesKeys
         , (f, m) <- [(XSS.greedyView, 0), (XSS.shift, shiftMask)]]
   ++
@@ -129,6 +130,8 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_a, xK_z, xK_e] [0..]
         , (f, m) <- [(XSS.view, 0), (XSS.shift, shiftMask)]]
+  where
+    shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
 
 {-
 XMobar configuration.  - For consistency, xmobar isn't fully configured
@@ -218,8 +221,7 @@ main = do
     , manageHook = composeAll 
       [
         className =? "Gloobus-preview" --> doFloat
---      , className =? "scratchpad" --> doFloat
-      , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
+        , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
       ]
     , focusFollowsMouse = False
     , clickJustFocuses = False
