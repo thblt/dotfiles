@@ -60,6 +60,10 @@ URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.url-select.underline: true
 
+URxvt.tabbed.autohide: true
+
+! Turn on/off ISO 14755 (default enabled).
+URxvt*iso14755: boolean
 
 ! Compile xft: Attempt to find a visual with the given bit depth; option -depth.
 ! URxvt*depth: bitdepth
@@ -325,9 +329,6 @@ URxvt.url-select.underline: true
 
 ! Compile frills: Sets override-redirect for the terminal window, making it almost invisible to window managers; option
 ! URxvt*override-redirect: boolean
-
-! Turn on/off ISO 14755 (default enabled).
-! URxvt*iso14755: boolean
 
 ! Turn on/off ISO 14755 5.2 mode (default enabled).
 ! URxvt*iso14755_52: boolean
