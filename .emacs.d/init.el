@@ -10,7 +10,7 @@
 (setq thblt/base-font-size 110)
 
 (when (string-prefix-p system-name "rudiger")
-  (setq thblt/base-font-size 130)
+  (setq thblt/base-font-size 110)
   )
 
 (defconst user-init-dir
@@ -262,7 +262,7 @@
                                     (smart-tabs-mode-enable)
                                     )
                   )
-  :config (smart-tabs-insinuate 'c 'c++ 'python 'javascript)
+;;  :config (smart-tabs-insinuate 'c 'c++ 'python 'javascript)
   )
 
 (use-package writeroom-mode)            ; Distraction-free mode
