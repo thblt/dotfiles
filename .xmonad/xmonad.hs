@@ -6,27 +6,29 @@ Note this is basically a modified copy of the default config.
 
 {-# LANGUAGE TemplateHaskell #-} 
 
-import Language.Haskell.TH
-import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
-import XMonad
-import XMonad.Actions.WindowBringer
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.SetWMName
-import XMonad.Layout.Grid
-import XMonad.Layout.NoBorders
-import XMonad.Layout.Spiral
-import XMonad.Layout.ThreeColumns
-import XMonad.Layout.ToggleLayouts (toggleLayouts, ToggleLayout (ToggleLayout, Toggle))
-import qualified XMonad.StackSet as XSS
-import XMonad.Util.Run (spawnPipe)
-import XMonad.Util.Scratchpad 
 import Graphics.X11.ExtraTypes.XF86
-import qualified Data.Map as M
-import qualified Data.List as L
+import Language.Haskell.TH
 import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
+import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
+import XMonad
+import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
+import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
+import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
+import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, ToggleStruts (ToggleStruts))
+import XMonad.Hooks.SetWMName (setWMName)
+import XMonad.Layout.Grid (Grid (Grid))
+import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.Spiral (spiral)
+import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
+import XMonad.Layout.ToggleLayouts (toggleLayouts, ToggleLayout (ToggleLayout))
+import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionTerminal)
+import qualified Data.List as L
+import qualified Data.Map as M
+import qualified XMonad.StackSet as XSS
+
+-- Computer-dependent settings.
 
 [d| myHostName = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
 
@@ -39,7 +41,8 @@ workspacesKeys | myHostName == "anna" = macAzertyKeys
   where
     pcAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0] -- From AzertyConfig
     macAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0] -- From AzertyConfig
-        
+
+-- XMonad.
 
 hiddenWorkspaces :: [String]
 hiddenWorkspaces = [ "NSP" ]
@@ -108,9 +111,9 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   , ((modMask .|. shiftMask, xK_Return ), spawn $ terminal conf)
   , ((modMask, xK_s ), scratchpadSpawnActionTerminal $ terminal conf)
 
-    -- Bring/Goto
-  , ((modMask, xK_g), gotoMenu)
-  , ((modMask .|. shiftMask, xK_g), bringMenu)
+    -- Misc actions
+  , ((modMask, xK_g), gotoMenu) -- Go to window
+  , ((modMask .|. shiftMask, xK_g), bringMenu) -- Bring window
     
   -- Media keys
   , ((0, xF86XK_AudioLowerVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2-; " ++ shNotifyVolume )
@@ -211,27 +214,27 @@ main = do
                                                  ]
   xmonad def
     {
-      startupHook = setWMName "LG3D"
-    , terminal = "urxvt"
-    , modMask = mod4Mask -- ``Windows'' key.
-    , workspaces = myWorkspaces
+      borderWidth = 0
+    , clickJustFocuses = False
+    , focusFollowsMouse = False
+    , focusedBorderColor = "#ccff33"
+    , handleEventHook = docksEventHook
     , keys = myKeys
     , layoutHook = myLayout
-    , handleEventHook = docksEventHook
-    , manageHook = composeAll 
-      [
-        className =? "Gloobus-preview" --> doFloat
-        , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
-      ]
-    , focusFollowsMouse = False
-    , clickJustFocuses = False
-    , borderWidth = 0
-    , normalBorderColor = "#000000"
-    , focusedBorderColor = "#ccff33"
     , logHook = dynamicLogWithPP prettyPrinter
       {
         ppOutput = hPutStrLn xmproc
       }
       >> fadeInactiveLogHook 0xeeeeeeee
+    , manageHook = composeAll 
+      [
+        className =? "Gloobus-preview" --> doFloat
+        , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
+      ]
+    , modMask = mod4Mask -- ``Windows'' key.
+    , normalBorderColor = "#000000"
+    , startupHook = setWMName "LG3D"
+    , terminal = "urxvt"
+    , workspaces = myWorkspaces
     }
  
