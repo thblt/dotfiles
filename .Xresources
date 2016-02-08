@@ -1,4 +1,4 @@
-URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=13
+URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=11
 ! URxvt*foreground: white
 ! URxvt*background: #333333
 ! URxvt*color0:  #2E3436
