@@ -63,7 +63,7 @@ URxvt.url-select.underline: true
 URxvt.tabbed.autohide: true
 
 ! Turn on/off ISO 14755 (default enabled).
-URxvt*iso14755: boolean
+URxvt*iso14755: false
 
 ! Compile xft: Attempt to find a visual with the given bit depth; option -depth.
 ! URxvt*depth: bitdepth
