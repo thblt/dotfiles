@@ -1,39 +1,43 @@
 {-
-My XMonad configuration.
-
-Note this is basically a modified copy of the default config. 
+    This is a now a *heavily* modified version of the default configuration.
 -}
 
 {-# LANGUAGE TemplateHaskell #-} 
 
+import qualified Data.List as L
+import qualified Data.Map as M
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
 import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
 import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
+import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
 import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.SetWMName (setWMName)
-import XMonad.Layout.Grid (Grid (Grid))
+import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull)
+-- import XMonad.Layout.Grid (Grid (Grid))
+import XMonad.Layout.Master  (mastered)
+import XMonad.Layout.MultiToggle ((??), EOT (EOT), mkToggle, Toggle (Toggle)) -- @TODO remove wild import
+import XMonad.Layout.MultiToggle.Instances (StdTransformers (FULL, MIRROR))-- @TODO remove wild import
 import XMonad.Layout.NoBorders (smartBorders)
-import XMonad.Layout.Spiral (spiral)
+import qualified XMonad.Layout.Renamed as XLR
+import XMonad.Layout.ResizableTile (ResizableTall (ResizableTall), MirrorResize(MirrorShrink, MirrorExpand))
+import XMonad.Layout.Spacing (smartSpacing)
 import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
-import XMonad.Layout.ToggleLayouts (toggleLayouts, ToggleLayout (ToggleLayout))
+import qualified XMonad.StackSet as XSS
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionTerminal)
-import qualified Data.List as L
-import qualified Data.Map as M
-import qualified XMonad.StackSet as XSS
 
+import XMonad.Layout.LayoutModifier (ModifiedLayout)
+       
 -- Computer-dependent settings.
 
 [d| myHostName = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
-
-myWorkspaces :: [ String ]
-myWorkspaces = map show [ 1 .. 9 :: Int ]
 
 workspacesKeys :: [KeySym]
 workspacesKeys | myHostName == "anna" = macAzertyKeys
@@ -44,33 +48,24 @@ workspacesKeys | myHostName == "anna" = macAzertyKeys
 
 -- XMonad.
 
-hiddenWorkspaces :: [String]
-hiddenWorkspaces = [ "NSP" ]
+myWorkspaces :: [ String ]
+myWorkspaces = map show [ 1 .. 9 :: Int ]
 
-myLayout = avoidStruts . smartBorders $ toggleLayouts Full $
-  tall
-  ||| ThreeCol 1 (3/100) (1/2)
-  ||| Mirror tall
-  ||| Grid
-  ||| spiral (6/7)
-    where tall = Tall 1 (3/100) (1/2)
+myLayoutHook = 
+  avoidStruts . fullscreenFull . mkToggle (FULL ?? MIRROR ?? EOT) . smartBorders $ -- . smartSpacing 1 $
+  emptyBSP
+  ||| (mastered (1/100) (1/2) emptyBSP)
+  ||| renamed "Tall" (ResizableTall 1 (3/100) (1/2) [])
+  ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
+--  ||| Grid
+  where renamed n l = XLR.renamed [XLR.Replace n] l
 
-layoutNames :: [String] -- This is used by the pretty printer.
-layoutNames = [
-    "Tall"
-  , "ThreeCol"
-  , "Mirror Tall"
-  , "Grid"
-  , "Spiral"
-  -- , "Full"
-    ]
-          
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
+myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
     -- Fundamentals
     ((modMask .|. shiftMask, xK_c), kill) -- Kill focused window
-  , ((modMask .|. shiftMask, xK_q     ), io exitSuccess) -- %! Quit xmonad
+  , ((modMask .|. shiftMask, xK_q     ), io exitSuccess) -- Quit xmonad
   , ((modMask, xK_q     ), spawn $ unlines [
           "xmonad --recompile"
         , "if [ $? -eq 0 ]; then"
@@ -82,25 +77,28 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
         ]
      )
 
-    -- Layout transitions
-  , ((modMask, xK_space), sendMessage NextLayout) -- Next layout
-  , ((modMask .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf) -- Reset layouts
-  , ((modMask, xK_h ), sendMessage Shrink) -- %! Shrink the master area
-  , ((modMask, xK_l ), sendMessage Expand) -- %! Expand the master area
-  , ((modMask, xK_f ), sendMessage ToggleStruts)
-  , ((modMask .|. shiftMask, xK_f ), sendMessage ToggleLayout)
-   
-    -- increase or decrease number of windows in the master area
-  , ((modMask              , xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
-  , ((modMask              , xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+    -- Layout management
+  , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
+  , ((modMask .|. shiftMask , xK_space) , setLayout $ XMonad.layoutHook conf) -- Reset layouts
+  , ((modMask               , xK_h )    , sendMessage Shrink) -- %! Shrink the master area
+  , ((modMask               , xK_l )    , sendMessage Expand) -- %! Expand the master area
+
+  , ((modMask               , xK_f )    , sendMessage ToggleStruts)
+  , ((modMask .|. shiftMask , xK_f )    , sendMessage $ Toggle FULL)
+  , ((modMask .|. shiftMask , xK_m)     , sendMessage $ Toggle MIRROR)
+
+  , ((modMask, xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+  , ((modMask, xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+
+  -- Window management within layout  
+  , ((modMask, xK_w), sendMessage MirrorExpand)
+  , ((modMask, xK_x), sendMessage MirrorShrink)
+  , ((modMask, xK_r), sendMessage Rotate)
     
-    -- Move between windows
-  , ((modMask, xK_Tab ), windows XSS.focusDown) 
-  , ((modMask .|. shiftMask, xK_Tab ), windows XSS.focusUp )
-  , ((modMask, xK_m ), windows XSS.focusMaster )
-  , ((modMask, xK_Return), windows XSS.swapMaster)
-  , ((modMask, xK_j ), windows XSS.swapDown )
-  , ((modMask, xK_k ), windows XSS.swapUp )
+  , ((modMask, xK_Tab ), windows XSS.focusDown) -- Focus next in stack
+  , ((modMask .|. shiftMask, xK_Tab ), windows XSS.focusUp ) -- Focus preview in stack 
+  , ((modMask, xK_m ), windows XSS.focusMaster ) -- Focus master 
+  , ((modMask, xK_Return), windows XSS.swapMaster) -- Swap current and master
     
     -- floating layer support
   , ((modMask, xK_t     ), withFocused $ windows . XSS.sink) -- %! Push window back into tiling
@@ -121,7 +119,56 @@ myKeys conf@XConfig {XMonad.modMask = modMask} = M.fromList $
   , ((0, xF86XK_AudioMute ), spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
   , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
-  ]
+
+    -- Navigation2D (Trying it out)
+    -- Switch between layers
+--  , ((modMask,                 xK_space), switchLayer)
+    
+    -- Directional navigation of windows
+  , ((modMask,                 xK_Right), windowGo R False)
+  , ((modMask,                 xK_Left ), windowGo L False)
+  , ((modMask,                 xK_Up   ), windowGo U False)
+  , ((modMask,                 xK_Down ), windowGo D False)
+    
+    -- Swap adjacent windows
+  , ((modMask .|. shiftMask, xK_Right), windowSwap R False)
+  , ((modMask .|. shiftMask, xK_Left ), windowSwap L False)
+  , ((modMask .|. shiftMask, xK_Up   ), windowSwap U False)
+  , ((modMask .|. shiftMask, xK_Down ), windowSwap D False)
+    
+    -- Directional navigation of screens
+--  , ((modMask,                 xK_r    ), screenGo R False)
+--  , ((modMask,                 xK_l    ), screenGo L False)
+--  , ((modMask,                 xK_u    ), screenGo U False)
+--  , ((modMask,                 xK_d    ), screenGo D False)
+    
+    -- Swap workspaces on adjacent screens
+--  , ((modMask .|. controlMask, xK_r    ), screenSwap R False)
+--  , ((modMask .|. controlMask, xK_l    ), screenSwap L False)
+--  , ((modMask .|. controlMask, xK_u    ), screenSwap U False)
+--  , ((modMask .|. controlMask, xK_d    ), screenSwap D False)
+    
+    -- Send window to adjacent screen
+--  , ((modMask .|. mod1Mask,    xK_r    ), windowToScreen R False)
+--  , ((modMask .|. mod1Mask,    xK_l    ), windowToScreen L False)
+--  , ((modMask .|. mod1Mask,    xK_u    ), windowToScreen U False)
+--  , ((modMask .|. mod1Mask,    xK_d    ), windowToScreen D False)
+
+    -- BSP/Experimental
+    , ((modMask,               xK_l ), sendMessage $ ExpandTowards R)
+    , ((modMask,               xK_h ), sendMessage $ ExpandTowards L)
+    , ((modMask,               xK_j ), sendMessage $ ExpandTowards D)
+    , ((modMask,               xK_k ), sendMessage $ ExpandTowards U)
+    , ((modMask .|. shiftMask, xK_l ), sendMessage $ ShrinkFrom R)
+    , ((modMask .|. shiftMask, xK_h ), sendMessage $ ShrinkFrom L)
+    , ((modMask .|. shiftMask, xK_j ), sendMessage $ ShrinkFrom D)
+    , ((modMask .|. shiftMask, xK_k ), sendMessage $ ShrinkFrom U)
+    , ((modMask, xK_r ), sendMessage Rotate)
+
+--    , ((modMask, xK_a), spawn "notify-send Bello")
+    -- , ((modMask,                           xK_s     ), sendMessage Swap)
+
+     ]
   ++
   -- workspace switching
   [((m .|. modMask, k), windows $ f i)                         
@@ -143,35 +190,39 @@ allows to keep things such as color scheme in a single place, and I
 probably won't be using Xmobar outside of Xmonad.
 -}
 
-data Palette = Palette {
-  bgColor :: String,
-  fgColor :: String,
-  activeColor :: String,
-  inactiveColor ::  String,
-  disabledColor :: String
+data StatusPalette = StatusPalette {
+  sbpBg :: String
+  , sbpBorder :: String
+  , sbpFg :: String
+  , sbpAct :: String
+  , sbpInact ::  String
+  , sbpDis :: String
+  , sbpAlpha :: Int
   }
 
-currentPalette :: Palette
+currentPalette :: StatusPalette
 currentPalette =
-  Palette {
-  bgColor = "#f5f4ef",
-  fgColor = "#1f1d14",
-  activeColor = "#000000",
-  inactiveColor = "#999999",
-  disabledColor = "#eeeeee" 
+  StatusPalette { 
+  sbpBg = "#000000"
+  , sbpBorder = "#999999"
+  , sbpFg = "#ffffff"
+  , sbpAct = "#ccff33"
+  , sbpInact = "#cccccc"
+  , sbpDis = "#333333"
+  , sbpAlpha = floor $ 255 * 0.80 
   }
 
 pp_default :: String -> String
-pp_default = xmobarColor (fgColor currentPalette) (bgColor currentPalette) 
+pp_default = xmobarColor (sbpFg currentPalette) (sbpBg currentPalette) 
 
 pp_active :: String -> String
-pp_active = xmobarColor (activeColor currentPalette) (bgColor currentPalette) 
+pp_active = xmobarColor (sbpAct currentPalette) (sbpBg currentPalette) 
 
 pp_inactive :: String -> String
-pp_inactive = xmobarColor (inactiveColor currentPalette) (bgColor currentPalette) 
+pp_inactive = xmobarColor (sbpInact currentPalette) (sbpBg currentPalette) 
   
 pp_disabled :: String -> String
-pp_disabled = xmobarColor (disabledColor currentPalette) (bgColor currentPalette) 
+pp_disabled = xmobarColor (sbpDis currentPalette) (sbpBg currentPalette) 
 
 pp_font :: Int -> String -> String
 pp_font f s = "<fn=" ++ show f ++ ">" ++ s ++ "</fn>"
@@ -192,49 +243,51 @@ prettyPrinter = def
   {
     ppCurrent = \w -> handleHiddenWS w $ pp_active . pp_font 1
   , ppHidden = \w -> handleHiddenWS w $ pp_inactive
-  , ppHiddenNoWindows = \w -> handleHiddenWS w $ pp_disabled 
-  , ppTitle = pp_default . pp_unsafe 
-  , ppSep = "        "
-  , ppLayout = \a -> concat $ L.intersperse " " $ fmap (makeIcon a) layoutNames
+  , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
+  , ppTitle = pp_font 2 . pp_unsafe 
+  , ppSep = "   |   "
+  , ppLayout = \a -> a -- concat $ L.intersperse " " $ fmap (makeIcon a) layoutNames
   }
   where
     handleHiddenWS w f | w `elem` hiddenWorkspaces = ""
-                       | otherwise = f w 
-    makeIcon a l | a==l = pp_active $ pp_icon $ "layout_" ++ l
-                       | otherwise = pp_inactive $ pp_icon $ "layout_" ++ l
+                       | otherwise = f w
+      where hiddenWorkspaces = [ "NSP" ]
+--    makeIcon a l | a==l = pp_active $ pp_icon $ "layout_" ++ l
+--                       | otherwise = pp_inactive $ pp_icon $ "layout_" ++ l
 
 {- And now to wrap it all up -}
 
 main :: IO ()
 main = do
   xmproc <- spawnPipe $ concat $ L.intersperse " " [ "xmobar"
-                                                   , "-F", pp_surround "\"" $ fgColor currentPalette
-                                                   , "-B", pp_surround "\"" $ bgColor currentPalette
+                                                   , "-A", show $ sbpAlpha currentPalette
+                                                   , "-F", pp_surround "\"" $ sbpFg currentPalette
+                                                   , "-B", pp_surround "\"" $ sbpBg currentPalette
                                                    , "~/.xmonad/xmobar.hs"
                                                  ]
-  xmonad def
+  xmonad $ withNavigation2DConfig def $ def
     {
       borderWidth = 0
     , clickJustFocuses = False
     , focusFollowsMouse = False
     , focusedBorderColor = "#ccff33"
-    , handleEventHook = docksEventHook
+    , handleEventHook = fullscreenEventHook <+> docksEventHook
     , keys = myKeys
-    , layoutHook = myLayout
+    , layoutHook = myLayoutHook
     , logHook = dynamicLogWithPP prettyPrinter
       {
         ppOutput = hPutStrLn xmproc
       }
-      >> fadeInactiveLogHook 0xeeeeeeee
+      >> fadeInactiveLogHook 0.9
     , manageHook = composeAll 
       [
         className =? "Gloobus-preview" --> doFloat
-        , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
-      ]
+      , fullscreenManageHook
+      , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
+        ]
     , modMask = mod4Mask -- ``Windows'' key.
     , normalBorderColor = "#000000"
     , startupHook = setWMName "LG3D"
     , terminal = "urxvt"
     , workspaces = myWorkspaces
     }
- 
