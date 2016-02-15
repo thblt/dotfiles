@@ -21,19 +21,14 @@ import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull)
 -- import XMonad.Layout.Grid (Grid (Grid))
-import XMonad.Layout.Master  (mastered)
 import XMonad.Layout.MultiToggle ((??), EOT (EOT), mkToggle, Toggle (Toggle)) -- @TODO remove wild import
 import XMonad.Layout.MultiToggle.Instances (StdTransformers (FULL, MIRROR))-- @TODO remove wild import
 import XMonad.Layout.NoBorders (smartBorders)
 import qualified XMonad.Layout.Renamed as XLR
-import XMonad.Layout.ResizableTile (ResizableTall (ResizableTall), MirrorResize(MirrorShrink, MirrorExpand))
-import XMonad.Layout.Spacing (smartSpacing)
 import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
 import qualified XMonad.StackSet as XSS
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionTerminal)
-
-import XMonad.Layout.LayoutModifier (ModifiedLayout)
        
 -- Computer-dependent settings.
 
@@ -54,8 +49,7 @@ myWorkspaces = map show [ 1 .. 9 :: Int ]
 myLayoutHook = 
   avoidStruts . fullscreenFull . mkToggle (FULL ?? MIRROR ?? EOT) . smartBorders $ -- . smartSpacing 1 $
   emptyBSP
-  ||| (mastered (1/100) (1/2) emptyBSP)
-  ||| renamed "Tall" (ResizableTall 1 (3/100) (1/2) [])
+  ||| Tall 1 (3/100) (1/2) 
   ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
 --  ||| Grid
   where renamed n l = XLR.renamed [XLR.Replace n] l
@@ -85,15 +79,25 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
 
   , ((modMask               , xK_f )    , sendMessage ToggleStruts)
   , ((modMask .|. shiftMask , xK_f )    , sendMessage $ Toggle FULL)
-  , ((modMask .|. shiftMask , xK_m)     , sendMessage $ Toggle MIRROR)
+  , ((modMask .|. shiftMask , xK_r)     , sendMessage $ Toggle MIRROR)
 
   , ((modMask, xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
   , ((modMask, xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
 
   -- Window management within layout  
-  , ((modMask, xK_w), sendMessage MirrorExpand)
-  , ((modMask, xK_x), sendMessage MirrorShrink)
-  , ((modMask, xK_r), sendMessage Rotate)
+    
+  , ((modMask,               xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
+  , ((modMask,               xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
+  , ((modMask,               xK_j ), sendMessage $ ExpandTowards D) -- BSP-Specific
+  , ((modMask,               xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
+  , ((modMask .|. shiftMask, xK_b ), sendMessage $ SelectNode) -- BSP-Specific
+  , ((modMask .|. shiftMask, xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
+  , ((modMask .|. shiftMask, xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
+  , ((modMask .|. shiftMask, xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
+  , ((modMask, xK_w               ), sendMessage $ SelectNode) -- BSP-Specific
+  , ((modMask, xK_x               ), sendMessage $ MoveNode) -- BSP-Specific
+  , ((modMask, xK_r), sendMessage Rotate) -- BSP-Specific
+    
     
   , ((modMask, xK_Tab ), windows XSS.focusDown) -- Focus next in stack
   , ((modMask .|. shiftMask, xK_Tab ), windows XSS.focusUp ) -- Focus preview in stack 
@@ -120,10 +124,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
 
-    -- Navigation2D (Trying it out)
-    -- Switch between layers
---  , ((modMask,                 xK_space), switchLayer)
-    
     -- Directional navigation of windows
   , ((modMask,                 xK_Right), windowGo R False)
   , ((modMask,                 xK_Left ), windowGo L False)
@@ -136,37 +136,13 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask, xK_Up   ), windowSwap U False)
   , ((modMask .|. shiftMask, xK_Down ), windowSwap D False)
     
-    -- Directional navigation of screens
---  , ((modMask,                 xK_r    ), screenGo R False)
---  , ((modMask,                 xK_l    ), screenGo L False)
---  , ((modMask,                 xK_u    ), screenGo U False)
---  , ((modMask,                 xK_d    ), screenGo D False)
+    -- Swap adjacent windows
+  , ((modMask .|. controlMask, xK_Right), windowSwap R False)
+  , ((modMask .|. controlMask, xK_Left ), windowSwap L False)
+  , ((modMask .|. controlMask, xK_Up   ), windowSwap U False)
+  , ((modMask .|. controlMask, xK_Down ), windowSwap D False)
     
-    -- Swap workspaces on adjacent screens
---  , ((modMask .|. controlMask, xK_r    ), screenSwap R False)
---  , ((modMask .|. controlMask, xK_l    ), screenSwap L False)
---  , ((modMask .|. controlMask, xK_u    ), screenSwap U False)
---  , ((modMask .|. controlMask, xK_d    ), screenSwap D False)
-    
-    -- Send window to adjacent screen
---  , ((modMask .|. mod1Mask,    xK_r    ), windowToScreen R False)
---  , ((modMask .|. mod1Mask,    xK_l    ), windowToScreen L False)
---  , ((modMask .|. mod1Mask,    xK_u    ), windowToScreen U False)
---  , ((modMask .|. mod1Mask,    xK_d    ), windowToScreen D False)
-
     -- BSP/Experimental
-    , ((modMask,               xK_l ), sendMessage $ ExpandTowards R)
-    , ((modMask,               xK_h ), sendMessage $ ExpandTowards L)
-    , ((modMask,               xK_j ), sendMessage $ ExpandTowards D)
-    , ((modMask,               xK_k ), sendMessage $ ExpandTowards U)
-    , ((modMask .|. shiftMask, xK_l ), sendMessage $ ShrinkFrom R)
-    , ((modMask .|. shiftMask, xK_h ), sendMessage $ ShrinkFrom L)
-    , ((modMask .|. shiftMask, xK_j ), sendMessage $ ShrinkFrom D)
-    , ((modMask .|. shiftMask, xK_k ), sendMessage $ ShrinkFrom U)
-    , ((modMask, xK_r ), sendMessage Rotate)
-
---    , ((modMask, xK_a), spawn "notify-send Bello")
-    -- , ((modMask,                           xK_s     ), sendMessage Swap)
 
      ]
   ++
