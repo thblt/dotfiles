@@ -8,7 +8,8 @@ Plugin 'kien/ctrlp.vim'                    " Fuzzy search
 Plugin 'mileszs/ack.vim'                   " Ack
 Plugin 'tpope/vim-fugitive'                " Git integration
 " Look and feel
-Plugin 'bling/vim-airline'                 " Status line
+Plugin 'vim-airline/vim-airline'           " Status line
+Plugin 'vim-airline/vim-airline-themes'    " Airline themes
 Plugin 'junegunn/goyo.vim'                 " 'Zenroom' mode
 Plugin 'junegunn/limelight.vim'            " With Goyo : fade contents outside the current paragraph
 Plugin 'mhinz/vim-startify'                " Startup screen with recent files
