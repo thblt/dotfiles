@@ -7,10 +7,10 @@
 ;;; Code:
 
 ;; Identify computer
-(setq thblt/base-font-size 110)
+(setq thblt/base-font-size 100)
 
 (when (string-prefix-p system-name "rudiger")
-  (setq thblt/base-font-size 110)
+  (setq thblt/base-font-size 100)
   )
 
 (defconst user-init-dir
@@ -57,6 +57,7 @@
  ;; Modeline
  column-number-mode t       ; Column number in modeline
  line-number-mode t         ; Line - - -
+ menu-bar-mode nil          ; No menu bar
 
  ;; Indentation and general editing
  tab-width 4                ; Set tab stops
@@ -96,10 +97,12 @@
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
-                    :height thblt/base-font-size
+                    :height 110 ;; thblt/base-font-size
                     )
+
 (set-face-attribute 'mode-line nil
-                    :family "DejaVu Sans"
+                    :family "Source Sans Pro"
+                    :height 110
                     )                   
 
 ;;(unless (string= system-type 'darwin)
