@@ -57,7 +57,6 @@
  ;; Modeline
  column-number-mode t       ; Column number in modeline
  line-number-mode t         ; Line - - -
- menu-bar-mode nil          ; No menu bar
 
  ;; Indentation and general editing
  tab-width 4                ; Set tab stops
@@ -68,8 +67,8 @@
 
  ;; Stuff for programming
  compile-command "wmake"    ; A small script which invokes the first
-														; build system it can find instructions
-														; for.
+                            ; build system it can find instructions
+                            ; for (in .dotfiles/bin)
  
  ;; General interface improvements
  vc-follow-symlinks t       ; Always follow symlinks to
@@ -105,9 +104,9 @@
                     :height 110
                     )                   
 
-;;(unless (string= system-type 'darwin)
-;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
-;;  )
+(unless (string= system-type 'darwin)
+  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
+  )
 (when window-system (tool-bar-mode -1) (scroll-bar-mode -1)) ; Toolbar and scrollbars are evil.
 
 (add-hook 'focus-out-hook
@@ -138,22 +137,22 @@
 (use-package ample-theme
   :init (load-theme 'ample)
 	)                                     
-(use-package ace-window                 ; Easily switch between windows.
-  :init (setq aw-dispatch-always t)
-  :config (set-face-attribute 'aw-leading-char-face nil
-                              :height 240
-                              :background "#ccff33"
-                              :foreground "black"
-                              )
-	:bind ("M-p" . ace-window)
-	)
+;; (use-package ace-window                 ; Easily switch between windows.
+;;   :init (setq aw-dispatch-always t)
+;;   :config (set-face-attribute 'aw-leading-char-face nil
+;;                               :height 240
+;;                               :background "#ccff33"
+;;                               :foreground "black"
+;;                               )
+;; 	:bind ("M-p" . ace-window)
+;; 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
 (use-package helm-ag)                   ; The silver searcher
-(use-package linum-relative             ; Relative line numbers
-  :init (linum-relative-global-mode)
-  :config (setq linum-relative-current-symbol ""
-                linum-relative-with-helm nil)
-  ) 
+;; (use-package linum-relative             ; Relative line numbers
+;;  :init (linum-relative-global-mode)
+;;  :config (setq linum-relative-current-symbol ""
+;;                linum-relative-with-helm nil)
+;;  )
 
 (use-package neotree                    ; FS sidebar à la NERDTree
   :bind ("<f2>" . neotree-toggle)
@@ -234,14 +233,14 @@
 			(define-key evil-visual-state-map "\C-w" 'evil-delete)
 			(define-key evil-visual-state-map "\C-y" 'yank)
 			)
-	:init (progn
-					;; Restrict Evil to text-editing modes.
-          ;; FIXME This won't work in Fundamental mode.
-          (add-hook 'conf-mode-hook 'evil-local-mode)
-					(add-hook 'text-mode-hook 'evil-local-mode)
-					(add-hook 'prog-mode-hook 'evil-local-mode)
-					)
-	)
+	;; :init (progn
+	;; 				;; Restrict Evil to text-editing modes.
+    ;;       ;; FIXME This won't work in Fundamental mode.
+    ;;       (add-hook 'conf-mode-hook 'evil-local-mode)
+	;; 				(add-hook 'text-mode-hook 'evil-local-mode)
+	;; 				(add-hook 'prog-mode-hook 'evil-local-mode)
+	;; 				)
+  )
 
 ;; (use-package evil-leader)            ; Enable <leader> key 
 (use-package evil-surround              ; A port of tpope's Surround
@@ -275,7 +274,8 @@
 
 ;; Versioning and history
 (use-package git-timemachine)           ; Traverse a file's git history
-(use-package magit)                     ; Git porcelain integration
+(use-package magit
+  :defer t)                             ; Git integration
 
 ;; Project management
 (use-package projectile                 ; Project management
@@ -459,7 +459,9 @@
 
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
-(server-start)
+
+(unless (server-running-p)
+  (server-start))
 
 (provide 'init)
 ;;; init.el ends here
