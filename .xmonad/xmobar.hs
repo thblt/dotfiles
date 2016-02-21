@@ -1,7 +1,7 @@
 Config {
-    font = "xft:Source Code Pro-9:Regular"
-    , additionalFonts = [ "xft:Source Code Pro-9:Bold" 
-                      , "xft:Source Sans Pro-9:Bold" ]
+    font = "xft:DejaVu Sans Mono-9:Regular"
+    , additionalFonts = [ "xft:DejaVu Sans Mono-9:Bold" 
+                      , "xft:Deja Sans-9:Bold" ]
     , border = NoBorder -- BottomB
     , lowerOnStart = True
     , commands = [
