@@ -10,7 +10,7 @@
 (setq thblt/base-font-size 100)
 
 (when (string-prefix-p system-name "rudiger")
-  (setq thblt/base-font-size 100)
+  (setq thblt/base-font-size 110)
   )
 
 (defconst user-init-dir
@@ -96,12 +96,12 @@
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
-                    :height 110 ;; thblt/base-font-size
+                    :height thblt/base-font-size
                     )
 
 (set-face-attribute 'mode-line nil
-                    :family "Source Sans Pro"
-                    :height 110
+                    :family "DejaVu Sans"
+                    :height thblt/base-font-size
                     )                   
 
 (unless (string= system-type 'darwin)
@@ -123,7 +123,7 @@
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                  ; Fix weird Apple keymap.on full-size kbs.
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ; Fix load-path for mu4e
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ; Fix load-path for mu4e (not sure this is still needed)
   )
 
 ;;; OSX Cocoa path fix
@@ -417,39 +417,6 @@
 ;; YAML
 (use-package yaml-mode)
 
-;;; === Email. A new, modern way of getting spam ===
-
-(use-package mu4e
-  :ensure nil ; Comes with mu, not on a Emacs package repo
-  :config (progn
-            (add-to-list 'load-path "/usr/share/emacs/site-lisp/") ; OSX and Debian both use this.
-            )
-  :init (progn
-          (setq mu4e-maildir "~/.Mail/")
-          
-          (setq mu4e-sent-folder "/P1/sent-mail"
-                mu4e-drafts-folder "/P1/Drafts"
-                mu4e-trash-folder "/P1/Trash"
-                user-mail-address "thibault.polge@univ-paris1.fr"
-                message-send-mail-function 'smtpmail-send-it
-                smtpmail-default-smtp-server "smtp.univ-paris1.fr"
-                smtpmail-local-domain "univ-paris1.fr"
-                smtpmail-smtp-server "smtp.univ-paris1.fr"
-                smtpmail-stream-type 'tls
-                smtpmail-smtp-service 465)
-          
-          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"
-                                   "Global inbox"            ?i)
-                                  
-                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"
-                                   "Unread messages"         ?v)
-                                  
-                                  ("flag:flagged"
-                                   "Flagged"                 ?f)
-                                  ) )
-          )
-  )
-
 ;;; === Decoration === 
 
 (defun startup-echo-area-message ()
@@ -459,7 +426,11 @@
 
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
+;;; Other configuration modules
 
+(load-user-file "email.el")
+
+(load "server")
 (unless (server-running-p)
   (server-start))
 
