@@ -57,7 +57,6 @@
  ;; Modeline
  column-number-mode t       ; Column number in modeline
  line-number-mode t         ; Line - - -
- menu-bar-mode nil          ; No menu bar
 
  ;; Indentation and general editing
  tab-width 4                ; Set tab stops
@@ -105,9 +104,9 @@
                     :height 110
                     )                   
 
-;;(unless (string= system-type 'darwin)
-;;  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
-;;  )
+(unless (string= system-type 'darwin)
+  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
+  )
 (when window-system (tool-bar-mode -1) (scroll-bar-mode -1)) ; Toolbar and scrollbars are evil.
 
 (add-hook 'focus-out-hook
