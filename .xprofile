@@ -11,3 +11,5 @@ if [ "xmonad" == $1 ]; then
 	udiskie &
 	~/.fehbg &
 fi
+
+offlineimap | grep -v "^msg:" > ~/.offlineimap.log &

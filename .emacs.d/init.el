@@ -10,7 +10,7 @@
 (setq thblt/base-font-size 100)
 
 (when (string-prefix-p system-name "rudiger")
-  (setq thblt/base-font-size 100)
+  (setq thblt/base-font-size 110)
   )
 
 (defconst user-init-dir
@@ -67,8 +67,8 @@
 
  ;; Stuff for programming
  compile-command "wmake"    ; A small script which invokes the first
-														; build system it can find instructions
-														; for.
+                            ; build system it can find instructions
+                            ; for (in .dotfiles/bin)
  
  ;; General interface improvements
  vc-follow-symlinks t       ; Always follow symlinks to
@@ -96,12 +96,12 @@
 
 (set-face-attribute 'default nil
                     :family "DejaVu Sans Mono"
-                    :height 110 ;; thblt/base-font-size
+                    :height thblt/base-font-size
                     )
 
 (set-face-attribute 'mode-line nil
-                    :family "Source Sans Pro"
-                    :height 110
+                    :family "DejaVu Sans"
+                    :height thblt/base-font-size
                     )                   
 
 (unless (string= system-type 'darwin)
@@ -123,7 +123,7 @@
         mac-command-modifier 'meta)
   
   (global-set-key (kbd "<help>") 'overwrite-mode)                  ; Fix weird Apple keymap.on full-size kbs.
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ; Fix load-path for mu4e
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") ; Fix load-path for mu4e (not sure this is still needed)
   )
 
 ;;; OSX Cocoa path fix
@@ -137,22 +137,22 @@
 (use-package ample-theme
   :init (load-theme 'ample)
 	)                                     
-(use-package ace-window                 ; Easily switch between windows.
-  :init (setq aw-dispatch-always t)
-  :config (set-face-attribute 'aw-leading-char-face nil
-                              :height 240
-                              :background "#ccff33"
-                              :foreground "black"
-                              )
-	:bind ("M-p" . ace-window)
-	)
+;; (use-package ace-window                 ; Easily switch between windows.
+;;   :init (setq aw-dispatch-always t)
+;;   :config (set-face-attribute 'aw-leading-char-face nil
+;;                               :height 240
+;;                               :background "#ccff33"
+;;                               :foreground "black"
+;;                               )
+;; 	:bind ("M-p" . ace-window)
+;; 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
 (use-package helm-ag)                   ; The silver searcher
-(use-package linum-relative             ; Relative line numbers
-  :init (linum-relative-global-mode)
-  :config (setq linum-relative-current-symbol ""
-                linum-relative-with-helm nil)
-  ) 
+;; (use-package linum-relative             ; Relative line numbers
+;;  :init (linum-relative-global-mode)
+;;  :config (setq linum-relative-current-symbol ""
+;;                linum-relative-with-helm nil)
+;;  )
 
 (use-package neotree                    ; FS sidebar à la NERDTree
   :bind ("<f2>" . neotree-toggle)
@@ -233,14 +233,14 @@
 			(define-key evil-visual-state-map "\C-w" 'evil-delete)
 			(define-key evil-visual-state-map "\C-y" 'yank)
 			)
-	:init (progn
-					;; Restrict Evil to text-editing modes.
-          ;; FIXME This won't work in Fundamental mode.
-          (add-hook 'conf-mode-hook 'evil-local-mode)
-					(add-hook 'text-mode-hook 'evil-local-mode)
-					(add-hook 'prog-mode-hook 'evil-local-mode)
-					)
-	)
+	;; :init (progn
+	;; 				;; Restrict Evil to text-editing modes.
+    ;;       ;; FIXME This won't work in Fundamental mode.
+    ;;       (add-hook 'conf-mode-hook 'evil-local-mode)
+	;; 				(add-hook 'text-mode-hook 'evil-local-mode)
+	;; 				(add-hook 'prog-mode-hook 'evil-local-mode)
+	;; 				)
+  )
 
 ;; (use-package evil-leader)            ; Enable <leader> key 
 (use-package evil-surround              ; A port of tpope's Surround
@@ -274,7 +274,8 @@
 
 ;; Versioning and history
 (use-package git-timemachine)           ; Traverse a file's git history
-(use-package magit)                     ; Git porcelain integration
+(use-package magit
+  :defer t)                             ; Git integration
 
 ;; Project management
 (use-package projectile                 ; Project management
@@ -416,39 +417,6 @@
 ;; YAML
 (use-package yaml-mode)
 
-;;; === Email. A new, modern way of getting spam ===
-
-(use-package mu4e
-  :ensure nil ; Comes with mu, not on a Emacs package repo
-  :config (progn
-            (add-to-list 'load-path "/usr/share/emacs/site-lisp/") ; OSX and Debian both use this.
-            )
-  :init (progn
-          (setq mu4e-maildir "~/.Mail/")
-          
-          (setq mu4e-sent-folder "/P1/sent-mail"
-                mu4e-drafts-folder "/P1/Drafts"
-                mu4e-trash-folder "/P1/Trash"
-                user-mail-address "thibault.polge@univ-paris1.fr"
-                message-send-mail-function 'smtpmail-send-it
-                smtpmail-default-smtp-server "smtp.univ-paris1.fr"
-                smtpmail-local-domain "univ-paris1.fr"
-                smtpmail-smtp-server "smtp.univ-paris1.fr"
-                smtpmail-stream-type 'tls
-                smtpmail-smtp-service 465)
-          
-          (setq mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"
-                                   "Global inbox"            ?i)
-                                  
-                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"
-                                   "Unread messages"         ?v)
-                                  
-                                  ("flag:flagged"
-                                   "Flagged"                 ?f)
-                                  ) )
-          )
-  )
-
 ;;; === Decoration === 
 
 (defun startup-echo-area-message ()
@@ -458,7 +426,13 @@
 
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 
-(server-start)
+;;; Other configuration modules
+
+(load-user-file "email.el")
+
+(load "server")
+(unless (server-running-p)
+  (server-start))
 
 (provide 'init)
 ;;; init.el ends here

@@ -85,15 +85,14 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask, xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
 
   -- Window management within layout  
-    
-  , ((modMask,               xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
-  , ((modMask,               xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
-  , ((modMask,               xK_j ), sendMessage $ ExpandTowards D) -- BSP-Specific
-  , ((modMask,               xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
-  , ((modMask .|. shiftMask, xK_b ), sendMessage $ SelectNode) -- BSP-Specific
-  , ((modMask .|. shiftMask, xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
-  , ((modMask .|. shiftMask, xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
-  , ((modMask .|. shiftMask, xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
+  , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
+  , ((modMask .|. shiftMask,              xK_j ), sendMessage $ ExpandTowards D) -- BSP-Specific
+  , ((modMask .|. shiftMask,              xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
+  , ((modMask .|. shiftMask,              xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
+  , ((modMask .|. controlMask,            xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
+  , ((modMask .|. controlMask,              xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
+  , ((modMask .|. controlMask,              xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
+  , ((modMask .|. controlMask,              xK_l ), sendMessage $ ShrinkFrom U) -- BSP-Specific
   , ((modMask, xK_w               ), sendMessage $ SelectNode) -- BSP-Specific
   , ((modMask, xK_x               ), sendMessage $ MoveNode) -- BSP-Specific
   , ((modMask, xK_r), sendMessage Rotate) -- BSP-Specific
@@ -130,20 +129,17 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask,                 xK_Up   ), windowGo U False)
   , ((modMask,                 xK_Down ), windowGo D False)
     
+  , ((modMask,                 xK_l), windowGo R False)
+  , ((modMask,                 xK_h ), windowGo L False)
+  , ((modMask,                 xK_k   ), windowGo U False)
+  , ((modMask,                 xK_j ), windowGo D False)
+
     -- Swap adjacent windows
   , ((modMask .|. shiftMask, xK_Right), windowSwap R False)
   , ((modMask .|. shiftMask, xK_Left ), windowSwap L False)
   , ((modMask .|. shiftMask, xK_Up   ), windowSwap U False)
   , ((modMask .|. shiftMask, xK_Down ), windowSwap D False)
     
-    -- Swap adjacent windows
-  , ((modMask .|. controlMask, xK_Right), windowSwap R False)
-  , ((modMask .|. controlMask, xK_Left ), windowSwap L False)
-  , ((modMask .|. controlMask, xK_Up   ), windowSwap U False)
-  , ((modMask .|. controlMask, xK_Down ), windowSwap D False)
-    
-    -- BSP/Experimental
-
      ]
   ++
   -- workspace switching
@@ -258,8 +254,8 @@ main = do
     , manageHook = composeAll 
       [
         className =? "Gloobus-preview" --> doFloat
-      , fullscreenManageHook
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
+      , fullscreenManageHook
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , normalBorderColor = "#000000"
