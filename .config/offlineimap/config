@@ -13,7 +13,7 @@ pythonfile = ~/.config/offlineimap/lib.py
 ui = MachineUI
 
 [DEFAULT]
-refresh_interval = 5
+refresh_interval = 1
 post_sync_hook = mu index --maildir ~/.Mail 
 
 [Account Namo]
