@@ -20,7 +20,7 @@ Config {
                                        -- charged status
                                        , "-i"	, "<fc=#006000>Charged</fc>"
                              ] 10
-        , Run Date "%H:%M" "date" 1
+        , Run Date "%H:%M" "date" 10
         --Run DateZone "%A %_d/%B/%Y %H:%M" "fr_FR.UTF_8" "Europe/Paris" "date" 10
         , Run UnsafeStdinReader
     ] 
