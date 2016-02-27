@@ -217,10 +217,11 @@ prettyPrinter = def
   , ppHidden = \w -> handleHiddenWS w $ pp_inactive
   , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
   , ppTitle = pp_font 2 . pp_unsafe 
-  , ppSep = "   |   "
-  , ppLayout = \a -> a -- concat $ L.intersperse " " $ fmap (makeIcon a) layoutNames
+  , ppSep = " "
+  , ppLayout = \a -> if defaultLayout /= a then a else ""-- concat $ L.intersperse " " $ fmap (makeIcon a) layoutNames
   }
   where
+    defaultLayout = "BSP" 
     handleHiddenWS w f | w `elem` hiddenWorkspaces = ""
                        | otherwise = f w
       where hiddenWorkspaces = [ "NSP" ]
