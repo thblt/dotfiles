@@ -7,7 +7,7 @@
 ;;; Code:
 
 ;; Identify computer
-(setq thblt/base-font-size 100)
+(setq thblt/base-font-size 090)
 
 (when (string-prefix-p system-name "rudiger")
   (setq thblt/base-font-size 110)
