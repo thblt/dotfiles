@@ -12,4 +12,5 @@ if [ "xmonad" == $1 ]; then
 	~/.fehbg &
 fi
 
-offlineimap | grep -v "^msg:" > ~/.offlineimap.log &
+pass "(void)" # Force pass to unlock beforehand.
+offlineimap > ~/.offlineimap.log &
