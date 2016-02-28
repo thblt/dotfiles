@@ -3,11 +3,23 @@
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
 
-if [ "xmonad" == $1 ]; then
+if [ "xmonad" == "$1" ]; then
+
+    # Notification server first, so we can report errors
+    dunst -conf ~/.xmonad/dunstrc & 
+
+    # Keyboard setup
+    numlockx on &
+    if [ "anna" == `hostname` ]; then
+       setxkbmap -layout  "macintosh_vndr/fr" -option "altwin:swap_lalt_lwin"
+    elif [ "rudiger" == `hostname` ]; then
+        setxkbmap fr -option "compose:menu"
+    else
+        notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
+    fi
+         
 	compton --config ~/.xmonad/compton.conf &
-	numlockx on &
 	synapse -s &
-	dunst -conf ~/.xmonad/dunstrc & 
 	udiskie &
 	~/.fehbg &
 fi
