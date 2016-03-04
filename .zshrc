@@ -1,9 +1,6 @@
 # Identify computer
 # This allows sharing this .zshrc across machines
 
-# Read secrets (not in version control)
-source ~/.secrets
-
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
