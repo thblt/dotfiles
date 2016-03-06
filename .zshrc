@@ -1,12 +1,7 @@
-if [[ "$TERM" != "screen" ]] && [[ ! -z $SSH_CONNECTION ]]; then
-	# Attempt to discover a detached session and attach 
-	# it, else create a new session
-	if tmux has-session 2>/dev/null; then
-		tmux attach-session
-	else
-		tmux new-session
-	fi
-fi
+# Don't do anything if not running interactively
+[[ $- != *i* ]] && return
+# Run tmux if not already in it AND we're connected through SSH
+[[ -z "$TMUX" ]] && [[ ! -z $SSH_CONNECTION  ]] && exec tmux
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
