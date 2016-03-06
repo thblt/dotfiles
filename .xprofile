@@ -11,9 +11,9 @@ if [ "xmonad" == "$1" ]; then
     # Keyboard setup
     numlockx on &
     if [ "anna" == `hostname` ]; then
-       setxkbmap -layout  "macintosh_vndr/fr" -option "altwin:swap_lalt_lwin"
+       setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin -option caps:ctrl_modifier
     elif [ "rudiger" == `hostname` ]; then
-        setxkbmap fr -option "compose:menu"
+        setxkbmap fr -option compose:menu -option caps:ctrl_modifier
     else
         notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
     fi
