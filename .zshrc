@@ -1,5 +1,12 @@
-# Identify computer
-# This allows sharing this .zshrc across machines
+if [[ "$TERM" != "screen" ]] && [[ ! -z $SSH_CONNECTION ]]; then
+	# Attempt to discover a detached session and attach 
+	# it, else create a new session
+	if tmux has-session 2>/dev/null; then
+		tmux attach-session
+	else
+		tmux new-session
+	fi
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
