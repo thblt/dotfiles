@@ -1,8 +1,7 @@
-# Identify computer
-# This allows sharing this .zshrc across machines
-
-# Read secrets (not in version control)
-source ~/.secrets
+# Don't do anything if not running interactively
+[[ $- != *i* ]] && return
+# Run tmux if not already in it AND we're connected through SSH
+[[ -z "$TMUX" ]] && [[ ! -z $SSH_CONNECTION  ]] && exec tmux
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh

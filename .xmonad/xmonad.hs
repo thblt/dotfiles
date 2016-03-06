@@ -28,7 +28,7 @@ import qualified XMonad.Layout.Renamed as XLR
 import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
 import qualified XMonad.StackSet as XSS
 import XMonad.Util.Run (spawnPipe)
-import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionTerminal)
+import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionCustom)
        
 -- Computer-dependent settings.
 
@@ -110,7 +110,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask, xK_p ), spawn "synapse" )
   , ((modMask .|. shiftMask, xK_p), spawn "dmenu_run" )
   , ((modMask .|. shiftMask, xK_Return ), spawn $ terminal conf)
-  , ((modMask, xK_s ), scratchpadSpawnActionTerminal $ terminal conf)
+  , ((modMask, xK_s ), scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e tmux-attach-or-new scratchpad")
 
     -- Misc actions
   , ((modMask, xK_g), gotoMenu) -- Go to window
@@ -163,11 +163,11 @@ probably won't be using Xmobar outside of Xmonad.
 -}
 
 data StatusPalette = StatusPalette {
-  sbpBg :: String
-  , sbpBorder :: String
-  , sbpFg :: String
-  , sbpAct :: String
-  , sbpInact ::  String
+  sbpBg :: String       -- Background color
+  , sbpBorder :: String -- Border color
+  , sbpFg :: String     -- Default foreground color
+  , sbpAct :: String    -- Activement element foreground color
+  , sbpInact ::  String -- 
   , sbpDis :: String
   , sbpAlpha :: Int
   }
@@ -181,7 +181,7 @@ currentPalette =
   , sbpAct = "#ccff33"
   , sbpInact = "#cccccc"
   , sbpDis = "#333333"
-  , sbpAlpha = floor $ 255 * 0.80 
+  , sbpAlpha = floor $ 255 * 0.80
   }
 
 pp_default :: String -> String
@@ -218,7 +218,10 @@ prettyPrinter = def
   , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
   , ppTitle = pp_font 2 . pp_unsafe 
   , ppSep = " "
-  , ppLayout = \a -> if defaultLayout /= a then a else ""-- concat $ L.intersperse " " $ fmap (makeIcon a) layoutNames
+  , ppLayout = \a -> case a of
+      "BSP" -> ""
+      "Full" -> xmobarColor "red" (sbpBg currentPalette) "■"
+      _ -> xmobarColor "red" (sbpBg currentPalette) a
   }
   where
     defaultLayout = "BSP" 

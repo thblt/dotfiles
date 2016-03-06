@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [[ ! -z $1 ]]; then
+    (tmux attach -t $1) || (tmux new -s $1)
+else
+    tmux attach || tmux new 
+fi
