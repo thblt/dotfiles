@@ -13,7 +13,7 @@ export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 # Variables
 
 if [ `command -v emacs` ]; then
-	export EDITOR="emacsclient --no-wait -a emacs"
+	export EDITOR="emacsclient -a emacs"
 else
 	export EDITOR="vi"
 fi;
