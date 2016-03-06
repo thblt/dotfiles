@@ -60,8 +60,6 @@ URxvt.keysym.M-u: perl:url-select:select_next
 URxvt.url-select.launcher: /usr/bin/xdg-open
 URxvt.url-select.underline: true
 
-URxvt.tabbed.autohide: true
-
 ! Turn on/off ISO 14755 (default enabled).
 URxvt*iso14755: false
 
