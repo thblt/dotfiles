@@ -13,7 +13,7 @@
      (smtpmail-smtp-server "smtp.sfr.fr")
      (smtpmail-stream-type starttls)
      (smtpmail-smtp-service 25))
-    ("Account2"
+    ("P1"
      (mu4e-sent-folder "/P1/sent-mail")
      (mu4e-drafts-folder "/P1/Drafts")
      (user-mail-address "thibault.polge@univ-paris1.fr")
@@ -63,6 +63,7 @@
                 smtpmail-default-smtp-server "smtp.univ-paris1.fr"
                 smtpmail-local-domain "univ-paris1.fr"
                 smtpmail-smtp-server "smtp.univ-paris1.fr"
+                smtpmail-smtp-user "tpolge"
                 smtpmail-stream-type 'tls
                 smtpmail-smtp-service 465)
           
