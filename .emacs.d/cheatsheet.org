@@ -23,7 +23,7 @@ Emacs is extensively documented. Knowing the help commands is therefore vital:
 
  * The ~apropos~ command searches the documentation for a given pattern.
 
-* Key sequences
+* Understanding key sequences
 
 | Abreviation | Modifier | Usual binding |
 |-------------+----------+---------------|
