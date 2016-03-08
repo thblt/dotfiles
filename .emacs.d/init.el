@@ -104,10 +104,9 @@
                     :height thblt/base-font-size
                     )                   
 
-(unless (string= system-type 'darwin)
-  (menu-bar-mode -1)                         ; There's no gain in hiding menu bar ~on OSX~ for now..
-  )
-(when window-system (tool-bar-mode -1) (scroll-bar-mode -1)) ; Toolbar and scrollbars are evil.
+(unless (string= 'system-type 'darwin) (menu-bar-mode -1))
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 (add-hook 'focus-out-hook
           (lambda ()
@@ -431,8 +430,9 @@
 (load-user-file "email.el")
 
 (load "server")
-(unless (server-running-p)
-  (server-start))
+(unless (server-running-p) ;; This should not happen.
+  (server-start)
+  )
 
 (provide 'init)
 ;;; init.el ends here
