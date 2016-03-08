@@ -15,6 +15,7 @@ import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
+import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.SetWMName (setWMName)
@@ -59,7 +60,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
     -- Fundamentals
     ((modMask .|. shiftMask, xK_c), kill) -- Kill focused window
-  , ((modMask .|. shiftMask, xK_q     ), io exitSuccess) -- Quit xmonad
+  , ((modMask .|. shiftMask, xK_q     ), spawn "~/.xmonad/quit-xmonad.sh" ) --  >> io exitSuccess) -- Quit xmonad
   , ((modMask, xK_q     ), spawn $ unlines [
           "xmonad --recompile"
         , "if [ $? -eq 0 ]; then"
@@ -241,7 +242,7 @@ main = do
                                                    , "-B", pp_surround "\"" $ sbpBg currentPalette
                                                    , "~/.xmonad/xmobar.hs"
                                                  ]
-  xmonad $ withNavigation2DConfig def $ def
+  xmonad . withNavigation2DConfig def $ ewmh def
     {
       borderWidth = 0
     , clickJustFocuses = False
