@@ -6,6 +6,7 @@
 *.swp
 *.un~
 .vim/bundle/**
+*.pyenv
 *.pyc
 .emacs.d/auto-save-list
 .emacs.d/elpa
