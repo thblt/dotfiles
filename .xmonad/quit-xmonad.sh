@@ -32,7 +32,8 @@ done
 
 # Last sanity check
 if [[ -z `wmctrl -l` ]]; then
-	killall xmonad-x86_64-linux
+#	killall xmonad-x86_64-linux
+	kill $PPID
 else
 	notify-send -u normal "Quit failed" "Relaunching termination script."
     ~/.xmonad/quit-xmonad.sh 
