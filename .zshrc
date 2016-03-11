@@ -1,7 +1,7 @@
 # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 # Run tmux if not already in it AND we're connected through SSH
-[[ -z "$TMUX" ]] && [[ ! -z $SSH_CONNECTION  ]] && exec tmux
+# [[ -z "$TMUX" ]] && [[ ! -z $SSH_CONNECTION  ]] && exec tmux
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
@@ -26,6 +26,7 @@ alias e=${EDITOR} # Shorthand
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
+export SSH_AUTH_SOCK=~/.ssh/ssh-agent.socket
 
 # Misc aliases
 
