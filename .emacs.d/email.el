@@ -21,8 +21,11 @@
      (smtpmail-local-domain "univ-paris1.fr")
      (smtpmail-smtp-user "tpolge")
      (smtpmail-smtp-server "smtp.univ-paris1.fr")
-     (smtpmail-stream-type starttls)
-     (smtpmail-smtp-service 465))))
+     (smtpmail-stream-type tls)
+     (smtpmail-smtp-service 465)
+     )
+    )
+  )
 
 (defun my-mu4e-set-account ()
   "Set the account for composing a message."
