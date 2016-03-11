@@ -434,7 +434,8 @@
 
 ;;; Other configuration modules
 
-(load-user-file "email.el")
+(load-user-file "init-email.el")
+(load-user-file "init-mmm-markdown.el")
 
 (load "server")
 (unless (server-running-p) ;; This should not happen.
