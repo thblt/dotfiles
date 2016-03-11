@@ -69,6 +69,13 @@
  compile-command "wmake"    ; A small script which invokes the first
                             ; build system it can find instructions
                             ; for (in .dotfiles/bin)
+
+ browse-url-browser-function 'browse-url-generic
+ browse-url-generic-program "setsid"
+ browse-url-generic-args '("xdg-open")
+ ;; setsid xdg-open prevents emacs from killing xdg-open before it
+ ;; actually opened anything.  see
+ ;; https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
  
  ;; General interface improvements
  vc-follow-symlinks t       ; Always follow symlinks to
