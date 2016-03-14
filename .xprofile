@@ -24,5 +24,6 @@ if [ "xmonad" == "$1" ]; then
 	~/.fehbg &
 fi
 
-pass "(void)" # Force pass to unlock beforehand.
-offlineimap > ~/.offlineimap.log &
+#pass "(void)" # Force pass to unlock beforehand.
+# offlineimap -a Namo &
+# offlineimap -a P1 &
