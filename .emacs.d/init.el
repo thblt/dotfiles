@@ -109,7 +109,7 @@
 (set-face-attribute 'mode-line nil
                     :family "DejaVu Sans"
                     :height thblt/base-font-size
-                    )                   
+                    )
 
 (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
 (tool-bar-mode -1)
@@ -139,10 +139,11 @@
     )
   )
 
-(use-package monokai-theme)              ; Themes 
-(use-package ample-theme
-  :init (load-theme 'ample)
-	)                                     
+;; (use-package monokai-theme)              ; Themes 
+;; (use-package ample-theme
+;;  :init (load-theme 'ample)
+;;  )
+(load-theme 'leuven)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
 ;;   :config (set-face-attribute 'aw-leading-char-face nil
