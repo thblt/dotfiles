@@ -12,17 +12,9 @@ export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
 # Variables
 
-if [ `command -v emacs` ]; then
-	export EDITOR="emacsclient -a emacs"
-else
-	export EDITOR="vi"
-fi;
-
-if [ `command -v vim` ]; then
-	alias vi=vim
-fi;
-
-alias e=${EDITOR} # Shorthand 
+export EDITOR="emacsclient -a ''"
+alias e="${EDITOR} --no-wait" # Shorthand 
+alias ee="${EDITOR} --create-frame --no-wait" # Shorthand 
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
