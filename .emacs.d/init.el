@@ -155,11 +155,11 @@
 ;; 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
 (use-package helm-ag)                   ; The silver searcher
-;; (use-package linum-relative             ; Relative line numbers
+(use-package linum-relative             ; Relative line numbers
 ;;  :init (linum-relative-global-mode)
-;;  :config (setq linum-relative-current-symbol ""
-;;                linum-relative-with-helm nil)
-;;  )
+  :config (setq linum-relative-current-symbol ""
+                linum-relative-with-helm nil)
+  )
 
 (use-package neotree                    ; FS sidebar à la NERDTree
   :bind ("<f2>" . neotree-toggle)
