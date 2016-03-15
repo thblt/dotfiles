@@ -1,12 +1,15 @@
 #!/bin/sh
 
-# Nicely terminates all windows, and, if everything's fine, terminate XMonad.
+# This script is used to properly quit/shutdown/etc when using XMonad
+# or any other standalone window manager.
+
+# Nicely terminates all windows, and, if everything's fine, terminate
+# XMonad.
 
 wait_for_termination() {
-	# Returns 0 after the window ID provided as $1 doesn't
-	# exists anymore (ie, doesn't appear in the output of
-	# wmctrl -l). If window still exists after $2 seconds,
-	# returns -1.
+	# Returns 0 after the window ID $1 doesn't exists anymore (ie,
+	# doesn't appear in the output of wmctrl -l). If window still
+	# exists after $2 seconds, returns -1.
 
     end=$(($SECONDS+$2))
     
