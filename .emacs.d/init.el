@@ -139,10 +139,11 @@
     )
   )
 
-;; (use-package monokai-theme)              ; Themes 
-;; (use-package ample-theme
-;;  :init (load-theme 'ample)
-;;  )
+(use-package ample-theme)
+(use-package material-theme)
+(use-package monokai-theme
+  :defer t
+  ) 
 (load-theme 'leuven)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
@@ -193,7 +194,8 @@
 ;; Editing
 (use-package anzu)                      ; Show matches count/current match # in mode line
 (use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
-  :bind (("C-:" . avy-goto-char)
+  :bind (("C-:" . avy-goto-char-timer)
+;;         ("C-M-:" . avy-goto-char-timer)
          ("C-=" . avy-goto-line)
          )
   )
@@ -367,6 +369,7 @@
           )
 
 ;; Haskell
+(use-package haskell-mode)
 (use-package company-ghc)               ; Completion provider for Haskell
 (use-package flycheck-haskell)          ; Haskell provider for Flycheck
 (use-package helm-hoogle)               ; Search Hoogle 
@@ -380,7 +383,6 @@
 ;; HTML (template)
 (use-package haml-mode)                 ; HAML templates
 (use-package web-mode)                  ; HTML and HTML templates
-
 
 (add-hook 'html-mode-hook
           (lambda ()      
