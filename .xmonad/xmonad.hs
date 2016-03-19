@@ -60,7 +60,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
     -- Fundamentals
     ((modMask .|. shiftMask, xK_c), kill) -- Kill focused window
-  , ((modMask .|. shiftMask, xK_q     ), spawn "~/.xmonad/quit-xmonad.sh" ) --  >> io exitSuccess) -- Quit xmonad
+  , ((modMask .|. shiftMask, xK_q     ), spawn "~/.xmonad/quit-xmonad.sh" ) -- Quit xmonad
   , ((modMask, xK_q     ), spawn $ unlines [
           "xmonad --recompile"
         , "if [ $? -eq 0 ]; then"
@@ -91,9 +91,9 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,              xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
-  , ((modMask .|. controlMask,              xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
-  , ((modMask .|. controlMask,              xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
-  , ((modMask .|. controlMask,              xK_l ), sendMessage $ ShrinkFrom U) -- BSP-Specific
+  , ((modMask .|. controlMask,            xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
+  , ((modMask .|. controlMask,            xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
+  , ((modMask .|. controlMask,            xK_l ), sendMessage $ ShrinkFrom R) -- BSP-Specific
   , ((modMask, xK_w               ), sendMessage $ SelectNode) -- BSP-Specific
   , ((modMask, xK_x               ), sendMessage $ MoveNode) -- BSP-Specific
   , ((modMask, xK_r), sendMessage Rotate) -- BSP-Specific
