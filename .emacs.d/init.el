@@ -96,7 +96,7 @@
       `((".*" ,temporary-file-directory t)))
 
 ;; Let Customize put its mess elsewhere
-(setq custom-file (concat user-init-dir "customize_autogen.el"))
+(setq custom-file (concat user-init-dir "_customize.el"))
 (load custom-file)
 
 ;; === Look and feel ===
