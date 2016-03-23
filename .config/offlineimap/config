@@ -10,19 +10,13 @@ pythonfile = ~/.config/offlineimap/lib.py
 
 # ui = MachineUI
 
-[DEFAULT]
-refresh_interval = 1
-post_sync_hook = mu index --maildir ~/.Mail 
-
 [Account Namo]
 localrepository = LocalNamo
 remoterepository = RemoteNamo
-postsynchook = %(post_sync_hook)s
 
 [Account P1]
 localrepository = LocalP1
 remoterepository = RemoteP1
-postsynchook = %(post_sync_hook)s
 
 [Repository LocalNamo]
 type = Maildir
