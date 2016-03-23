@@ -69,7 +69,7 @@
  compile-command "wmake"    ; A small script which invokes the first
                             ; build system it can find instructions
                             ; for (in .dotfiles/bin)
-
+ 
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
  browse-url-generic-args '("xdg-open")
@@ -134,7 +134,7 @@
 (use-package tao-theme
   :defer t
   )
-(load-theme 'tao-yang)
+(load-theme 'leuven)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
 ;;   :config (set-face-attribute 'aw-leading-char-face nil
@@ -159,30 +159,7 @@
   :bind ("<f2>" . neotree-toggle)
   )
 
-(use-package spaceline-config
-  :ensure spaceline
-  :config
-  (require 'spaceline-config)
-  (spaceline-spacemacs-theme)
-)
-
-(setq rm-blacklist
-      (format "^ \\(%s\\)$"
-              (mapconcat #'identity
-                         '("\\$"      ; Rich minority itself
-                           "Abbrev"
-                           "ARev"
-                           "company"
-                           "FlyC.*"
-                           "Irony"
-                           "LR"      ; Limum-Relative
-                           "Projectile.*"
-                           "SP.*"    ; Smartparens
-                           "Undo-Tree"
-                           "yas")    ; Yasnippet
-                         "\\|"))
-      )
-
+(use-package diminish)
 (use-package spaceline-config
   :ensure spaceline
   :config
@@ -202,6 +179,10 @@
          ("C-=" . avy-goto-line)
          )
   )
+
+(use-package undo-tree
+	     :config (diminish 'undo-tree-mode)
+	     )
 
 (use-package evil                       ; Extensible VI Layer
   :config (progn
@@ -282,6 +263,7 @@
 (use-package writeroom-mode)            ; Distraction-free mode
 (use-package yasnippet                  ; Snippets
   :init (yas-global-mode)
+  :config (diminish 'yas-minor-mode)
   )
 
 ;; Versioning and history
@@ -292,6 +274,7 @@
 ;; Project management
 (use-package projectile                 ; Project management
   :init (projectile-global-mode)
+  :config (diminish 'projectile-mode)
   )
 
 ;; General programming
@@ -305,12 +288,17 @@
 
 (use-package company                    ; Completion framework
   :init (add-hook 'prog-mode-hook 'company-mode)
-  :config (add-to-list 'company-backends 'company-irony)
+  :config (progn
+            (diminish 'company-mode)
+            )
   )
 (use-package flycheck                   ; On the fly checking/linting
   :init (add-hook 'prog-mode-hook 'flycheck-mode)
-  :config '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup)
+  :config (progn
+            (diminish 'flycheck-mode)
+            )
   )
+
 (use-package helm-dash                  ; Access Dash docsets through Helm.
   :bind ("<f1>" . helm-dash-at-point)
   )
@@ -336,6 +324,11 @@
 (use-package irony)
 (use-package flycheck-irony)
 (use-package company-irony)
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
 
 ;; From irony docs
 ;; replace the `completion-at-point' and `complete-symbol' bindings in
