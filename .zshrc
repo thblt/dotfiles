@@ -6,9 +6,8 @@
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
 ZSH_THEME="agnoster"
-plugins=(brew git pip)
-
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
+plugins=(brew fancy-ctrl-z git pip)
 
 # Variables
 
