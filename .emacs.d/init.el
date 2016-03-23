@@ -101,16 +101,6 @@
 
 ;; === Look and feel ===
 
-;; (set-face-attribute 'default nil
-;;                     :family "DejaVu Sans Mono"
-;;                     :height thblt/base-font-size
-;;                     )
-;; 
-;; (set-face-attribute 'mode-line nil
-;;                     :family "DejaVu Sans"
-;;                     :height thblt/base-font-size
-;;                     )
-
 (setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline")))
 
 (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
@@ -143,8 +133,8 @@
 
 (use-package tao-theme
   :defer t
-  ) 
-(load-theme 'leuven)
+  )
+(load-theme 'tao-yang)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
 ;;   :config (set-face-attribute 'aw-leading-char-face nil
@@ -156,7 +146,9 @@
 ;; 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
 (use-package helm-ag)                   ; The silver searcher
-(use-package nlinum)                    ; More efficient line numbering, especially on large file with huge foldings (eg org)
+(use-package nlinum                     ; More efficient line numbering, especially on large file with huge foldings (eg org)
+  :config (nlinum-mode)
+  )
 (use-package linum-relative             ; Relative line numbers
 ;;  :init (linum-relative-global-mode)
   :config (setq linum-relative-current-symbol ""
@@ -172,28 +164,31 @@
   :config
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
-  (spaceline-global)
+)
+
+(setq rm-blacklist
+      (format "^ \\(%s\\)$"
+              (mapconcat #'identity
+                         '("\\$"      ; Rich minority itself
+                           "Abbrev"
+                           "ARev"
+                           "company"
+                           "FlyC.*"
+                           "Irony"
+                           "LR"      ; Limum-Relative
+                           "Projectile.*"
+                           "SP.*"    ; Smartparens
+                           "Undo-Tree"
+                           "yas")    ; Yasnippet
+                         "\\|"))
+      )
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-spacemacs-theme)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   )
-;; (use-package smart-mode-line         ; Better mode line
-;;   :config (sml/setup) 
-;;   :init
-;;   (setq rm-blacklist
-;;         (format "^ \\(%s\\)$"
-;;                 (mapconcat #'identity
-;;                            '("\\$"      ; Rich minority itself
-;;                              "Abbrev"
-;;                              "ARev"
-;;                              "company"
-;;                              "FlyC.*"
-;;                              "Irony"
-;;                              "LR"      ; Limum-Relative
-;;                              "Projectile.*"
-;;                              "SP.*"    ; Smartparens
-;;                              "Undo-Tree"
-;;                              "yas")    ; Yasnippet
-;;                            "\\|"))
-;;         )
-;;   )
 
 (use-package windmove
   :init (windmove-default-keybindings)
