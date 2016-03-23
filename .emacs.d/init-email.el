@@ -54,11 +54,15 @@
           
           (setq mu4e-split-view 'vertical
 
-                )
-          
-          (setq mu4e-maildir "~/.Mail/")
-          
-          (setq mu4e-sent-folder "/P1/sent-mail"
+                mu4e-maildir "~/.Mail/"
+
+
+                mu4e-get-mail-command "offlineimap"
+                mu4e-update-interval 60 ;; seconds
+
+                
+                
+                mu4e-sent-folder "/P1/sent-mail"
                 mu4e-drafts-folder "/P1/Drafts"
                 mu4e-trash-folder "/P1/Trash"
                 user-mail-address "thibault.polge@univ-paris1.fr"

@@ -4,13 +4,11 @@ accounts = Namo, P1
 # offlineimap recommands /not/ using threading.
 # http://www.offlineimap.org/configuration/2016/01/29/why-i-m-not-using-maxconnctions.html
 # and running separate instances instead.
-# maxsyncaccounts = 3
+maxsyncaccounts = 3
 # maxconnections = 3
-
-
 pythonfile = ~/.config/offlineimap/lib.py
 
-ui = MachineUI
+# ui = MachineUI
 
 [DEFAULT]
 refresh_interval = 1
@@ -19,7 +17,6 @@ post_sync_hook = mu index --maildir ~/.Mail
 [Account Namo]
 localrepository = LocalNamo
 remoterepository = RemoteNamo
-autorefresh = %(refresh_interval)s
 postsynchook = %(post_sync_hook)s
 
 [Account P1]
