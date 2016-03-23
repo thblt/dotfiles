@@ -106,11 +106,6 @@
                     :height thblt/base-font-size
                     )
 
-(set-face-attribute 'mode-line nil
-                    :family "DejaVu Sans"
-                    :height thblt/base-font-size
-                    )
-
 (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -139,11 +134,9 @@
     )
   )
 
-(use-package ample-theme)
-(use-package material-theme)
-(use-package monokai-theme
+(use-package tao-theme
   :defer t
-  ) 
+  )
 (load-theme 'leuven)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
@@ -156,6 +149,9 @@
 ;; 	)
 (use-package helm)                      ; Incremental completion and selection narrowing framework
 (use-package helm-ag)                   ; The silver searcher
+(use-package nlinum
+  :config (nlinum-mode)
+  )
 (use-package linum-relative             ; Relative line numbers
 ;;  :init (linum-relative-global-mode)
   :config (setq linum-relative-current-symbol ""
@@ -166,18 +162,18 @@
   :bind ("<f2>" . neotree-toggle)
   )
 
-(use-package smart-mode-line         ; Better mode line
-  :config (sml/setup) 
-  :init
-  (setq rm-blacklist
-        (format "^ \\(%s\\)$"
-                (mapconcat #'identity
-                           '("\\$"      ; Rich minority itself
-                             "Abbrev"
-                             "ARev"
-                             "company"
-                             "FlyC.*"
-                             "Irony"
+;; (use-package smart-mode-line         ; Better mode line
+;;   :config (sml/setup) 
+;;   :init
+   (setq rm-blacklist
+         (format "^ \\(%s\\)$"
+                 (mapconcat #'identity
+                            '("\\$"      ; Rich minority itself
+                              "Abbrev"
+                              "ARev"
+                              "company"
+                              "FlyC.*"
+                              "Irony"
                              "LR"      ; Limum-Relative
                              "Projectile.*"
                              "SP.*"    ; Smartparens
@@ -185,6 +181,13 @@
                              "yas")    ; Yasnippet
                            "\\|"))
         )
+;;  )
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-spacemacs-theme)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   )
 
 (use-package windmove
