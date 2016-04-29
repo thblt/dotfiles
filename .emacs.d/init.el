@@ -134,7 +134,14 @@
 (use-package tao-theme
   :defer t
   )
-(load-theme 'leuven)
+
+(use-package spacemacs-theme
+  :defer t)
+
+(use-package alect-themes
+  :defer t)
+
+(load-theme 'alect-dark)
 ;; (use-package ace-window                 ; Easily switch between windows.
 ;;   :init (setq aw-dispatch-always t)
 ;;   :config (set-face-attribute 'aw-leading-char-face nil
