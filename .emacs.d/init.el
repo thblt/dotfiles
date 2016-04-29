@@ -8,7 +8,6 @@
 
 ;; Identify computer
 (setq thblt/base-font-size 090)
-
 (when (string-prefix-p system-name "rudiger")
   (setq thblt/base-font-size 110)
   )
@@ -32,7 +31,7 @@
 ;; ╠═╝├─┤│  ├┴┐├─┤│ ┬├┤   ║║║├─┤│││├─┤│ ┬├┤ │││├┤ │││ │
 ;; ╩  ┴ ┴└─┘┴ ┴┴ ┴└─┘└─┘  ╩ ╩┴ ┴┘└┘┴ ┴└─┘└─┘┴ ┴└─┘┘└┘ ┴
 
-(require 'package)  ; Automated package management, thanks.
+(require 'package)
 
 (setq package-archives '(("gnu"       . "https://elpa.gnu.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
@@ -102,6 +101,9 @@
 ;; === Look and feel ===
 
 (setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline")))
+(set-face-attribute 'default t :height thblt/base-font-size)
+
+
 
 (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
 (tool-bar-mode -1)
