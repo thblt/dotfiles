@@ -45,7 +45,7 @@ alias ..5="cd ../../../../.."
 
 if command -v virtualenvwrapper.sh > /dev/null; then
 	export WORKON_HOME=~/.virtualenvs
-	virtualenvwrapper.sh
+	source `which virtualenvwrapper.sh`
 fi
 
 # Load oh my zsh
