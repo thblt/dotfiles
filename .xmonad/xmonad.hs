@@ -8,7 +8,6 @@ import qualified Data.List as L
 import qualified Data.Map as M
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
-import System.Exit (exitSuccess)
 import System.IO (hPutStrLn)
 import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
@@ -16,21 +15,22 @@ import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
 import XMonad.Hooks.EwmhDesktops (ewmh)
-import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.SetWMName (setWMName)
-import XMonad.Layout.BinarySpacePartition
-import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull)
--- import XMonad.Layout.Grid (Grid (Grid))
-import XMonad.Layout.MultiToggle ((??), EOT (EOT), mkToggle, Toggle (Toggle)) -- @TODO remove wild import
-import XMonad.Layout.MultiToggle.Instances (StdTransformers (FULL, MIRROR))-- @TODO remove wild import
-import XMonad.Layout.NoBorders (smartBorders)
+import XMonad.Layout.BinarySpacePartition (emptyBSP, ResizeDirectional(..), SelectMoveNode(..), Rotate(Rotate))
+import XMonad.Layout.BorderResize (borderResize)
+import XMonad.Layout.DwmStyle (dwmStyle, shrinkText)
+import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull, fullscreenSupport)
+import XMonad.Layout.NoBorders (noBorders, smartBorders)
+import XMonad.Layout.ToggleLayouts (toggleLayouts, ToggleLayout (ToggleLayout))
 import qualified XMonad.Layout.Renamed as XLR
-import XMonad.Layout.ThreeColumns (ThreeCol (ThreeCol))
+import XMonad.Layout.Spacing (smartSpacing)
 import qualified XMonad.StackSet as XSS
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionCustom)
-       
+
+import XMonad.Actions.MouseResize
+
 -- Computer-dependent settings.
 
 [d| myHostName = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
@@ -47,13 +47,20 @@ workspacesKeys | myHostName == "anna" = macAzertyKeys
 myWorkspaces :: [ String ]
 myWorkspaces = map show [ 1 .. 9 :: Int ]
 
-myLayoutHook = 
-  avoidStruts . fullscreenFull . mkToggle (FULL ?? MIRROR ?? EOT) . smartBorders $ -- . smartSpacing 1 $
-  emptyBSP
-  ||| Tall 1 (3/100) (1/2) 
-  ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
+myLayoutHook = toggleLayouts (noBorders Full) $
+               XLR.renamed [(XLR.Replace "BSP")] $
+                             dwmStyle shrinkText def
+                             . borderResize
+--               . fullscreenFull                            
+                             . smartSpacing 4
+                             . avoidStruts
+                             . smartBorders
+                             $ emptyBSP
+    
+--  ||| Tall 1 (3/100) (1/2) 
+--  ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
 --  ||| Grid
-  where renamed n l = XLR.renamed [XLR.Replace n] l
+--  where renamed n l = XLR.renamed [XLR.Replace n] l
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -79,25 +86,34 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask               , xK_l )    , sendMessage Expand) -- %! Expand the master area
 
   , ((modMask               , xK_f )    , sendMessage ToggleStruts)
-  , ((modMask .|. shiftMask , xK_f )    , sendMessage $ Toggle FULL)
-  , ((modMask .|. shiftMask , xK_r)     , sendMessage $ Toggle MIRROR)
+  , ((modMask .|. shiftMask , xK_f )    , sendMessage $ ToggleLayout)
+{-- Doesn't seem to work with smart spacing
+, ((modMask                 , xK_b )  , sendMessage $ ModifySpacing $ (+) 4)
+  , ((modMask .|. controlMask , xK_b )  , sendMessage $ ModifySpacing $ (-) 4)
+--}
+--  , ((modMask .|. shiftMask , xK_m )    , sendMessage $ Toggle MIRROR)
 
-  , ((modMask, xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
+{-- I don't use these:
+, ((modMask, xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
   , ((modMask, xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
+--}
 
   -- Window management within layout  
   , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_j ), sendMessage $ ExpandTowards D) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
+
+  {-- I never used these:
   , ((modMask .|. controlMask,            xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_l ), sendMessage $ ShrinkFrom R) -- BSP-Specific
+--}
+  
   , ((modMask, xK_w               ), sendMessage $ SelectNode) -- BSP-Specific
   , ((modMask, xK_x               ), sendMessage $ MoveNode) -- BSP-Specific
   , ((modMask, xK_r), sendMessage Rotate) -- BSP-Specific
-    
     
   , ((modMask, xK_Tab ), windows XSS.focusDown) -- Focus next in stack
   , ((modMask .|. shiftMask, xK_Tab ), windows XSS.focusUp ) -- Focus preview in stack 
@@ -234,6 +250,7 @@ prettyPrinter = def
 
 {- And now to wrap it all up -}
 
+
 main :: IO ()
 main = do
   xmproc <- spawnPipe $ concat $ L.intersperse " " [ "xmobar"
@@ -242,28 +259,31 @@ main = do
                                                    , "-B", pp_surround "\"" $ sbpBg currentPalette
                                                    , "~/.xmonad/xmobar.hs"
                                                  ]
-  xmonad . withNavigation2DConfig def $ ewmh def
-    {
-      borderWidth = 0
+  xmonad . fullscreenSupport . withNavigation2DConfig def {
+    defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
+  } $ ewmh def {
+      borderWidth = 1
+    , focusedBorderColor = "#000000"
+    , normalBorderColor = "#000000"
+    
     , clickJustFocuses = False
     , focusFollowsMouse = False
-    , focusedBorderColor = "#ccff33"
-    , handleEventHook = fullscreenEventHook <+> docksEventHook
+--    , handleEventHook = fullscreenEventHook <+> docksEventHook
+    , handleEventHook = docksEventHook    
     , keys = myKeys
     , layoutHook = myLayoutHook
     , logHook = dynamicLogWithPP prettyPrinter
       {
         ppOutput = hPutStrLn xmproc
       }
-      >> fadeInactiveLogHook 0.9
+--      >> fadeInactiveLogHook 0.9 
     , manageHook = composeAll 
       [
         className =? "Gloobus-preview" --> doFloat
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
-      , fullscreenManageHook
+--      , fullscreenManageHook
         ]
     , modMask = mod4Mask -- ``Windows'' key.
-    , normalBorderColor = "#000000"
     , startupHook = setWMName "LG3D"
     , terminal = "urxvt"
     , workspaces = myWorkspaces
