@@ -93,7 +93,7 @@ colorscheme jellybeans
 " Two highlight groups: SpecialKey and NonText
 highlight specialKey guibg='NONE'
 set cursorline                                  " Highlight current line
-set guifont=Inconsolata\-g\ for\ Powerline:h15
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h10
 set guioptions=mgt                              " Menu, tearoff items, tearoff items. No toolbar, no scrollbars.
 set laststatus=2                                " Always show a status bar
 set noshowmode                                  " Don't show current mode (Airline does it)
