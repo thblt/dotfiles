@@ -23,7 +23,6 @@
 (require 'setup-cfamily)
 (require 'setup-haskell)
 (require 'setup-markdown)
-(require 'init-mmm)
 (require 'setup-mu4e)
 (require 'setup-projectile)
 (require 'setup-python)
