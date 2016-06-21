@@ -19,7 +19,7 @@
   )
 (use-package unfill
   :bind (
-         ("M-S-q" . unfill-paragraph)
+         ("M-Q" . unfill-paragraph)
          )
   )
 
