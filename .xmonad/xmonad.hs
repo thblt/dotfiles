@@ -267,7 +267,7 @@ main = do
     , normalBorderColor = "#000000"
     
     , clickJustFocuses = False
-    , focusFollowsMouse = False
+    , focusFollowsMouse = True
 --    , handleEventHook = fullscreenEventHook <+> docksEventHook
     , handleEventHook = docksEventHook    
     , keys = myKeys
