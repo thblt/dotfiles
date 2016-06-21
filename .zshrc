@@ -11,7 +11,7 @@ plugins=(brew fancy-ctrl-z git pip)
 
 # Variables
 
-export EDITOR="emacsclient -a ''"
+export EDITOR="emacsclient -ca ''"
 alias e="${EDITOR} --no-wait" # Shorthand 
 alias ee="${EDITOR} --create-frame --no-wait" # Shorthand 
 
