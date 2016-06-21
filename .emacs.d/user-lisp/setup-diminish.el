@@ -4,6 +4,9 @@
   :config (progn
             ;; Diminish modeline clutter
             (diminish 'abbrev-mode)
+            (diminish 'buffer-face-mode)
+            (diminish 'text-scale-mode)
+            (diminish 'visual-line-mode)
             
             (eval-after-load "company"
               '(diminish 'company-mode))
@@ -31,6 +34,7 @@
 
             (eval-after-load "yasnippet"
               '(diminish 'yas-minor-mode))
+            )
   )
 
 (provide 'setup-diminish)
