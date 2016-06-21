@@ -88,3 +88,4 @@
           )
   )
 
+(provide 'setup-mu4e)
