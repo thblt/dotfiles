@@ -7,6 +7,7 @@
              evil-normal-state-tag "NORMAL"
              evil-visual-state-tag "VISUAL"
              evil-emacs-state-tag "EMACS"
+             evil-replace-state-tag "REPLACE"
              )
             )
 ;;  :config (progn
@@ -50,14 +51,16 @@
 			;; (define-key evil-visual-state-map "\C-w" 'evil-delete)
 			;; (define-key evil-visual-state-map "\C-y" 'yank)
 			;; )
-	:init (progn
-            ;; Restrict Evil to text-editing modes.
-            ;; FIXME This won't work in Fundamental mode.
-            (add-hook 'conf-mode-hook 'evil-local-mode)
-            (add-hook 'text-mode-hook 'evil-local-mode)
-            (add-hook 'prog-mode-hook 'evil-local-mode)
-            )
-    )
+  :init (progn
+          (setq evil-disable-insert-state-bindings t) ;; Use Emacs bindings in insert mode. 
+          
+          ;; Restrict Evil to text-editing modes.
+          ;; FIXME This won't work in Fundamental mode.
+          (add-hook 'conf-mode-hook 'evil-local-mode)
+          (add-hook 'text-mode-hook 'evil-local-mode)
+          (add-hook 'prog-mode-hook 'evil-local-mode)
+          )
+  )
 
 ;; (use-package evil-leader)            ; Enable <leader> key 
 (use-package evil-surround              ; A port of tpope's Surround
