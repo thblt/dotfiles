@@ -29,7 +29,7 @@ remotehost = namo.thb.lt
 ssl = yes
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
 remoteuser = thblt
-remotepasseval = get_pass("Namo")
+remotepasseval = get_netrc_pass("namo.thb.lt")
 
 [Repository LocalP1]
 type = Maildir
@@ -41,4 +41,4 @@ remotehost = imap.univ-paris1.fr
 ssl = yes
 remoteuser = tpolge
 sslcacertfile = //etc/ssl/certs/ca-certificates.crt
-remotepasseval = get_pass("P1")
+remotepasseval = get_netrc_pass("imap.univ-paris1.fr")
