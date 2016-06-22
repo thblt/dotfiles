@@ -13,21 +13,30 @@ import argparse, os, sys
 def clean(path, recursive):
 	global totalSeen, totalRm
 	#verbose("Entering {0}".format (path))
-	for f in os.listdir(path):
-		canonical = os.path.join(path, f) 
-		if os.path.isdir(canonical):
-			if recursive:
-				clean(canonical, True)
-		elif os.path.isfile(canonical):
-			if f.endswith(".un~") and f.startswith("."): # A *bit* more efficient than a regex
-				totalSeen+=1
-				main = os.path.join(path, f[1:-4])
-				if not (os.path.exists(main) and os.path.isfile(main)):
-					os.remove(canonical)
-					totalRm += 1
-					message("Deleted \t{0}".format(canonical))
-				else:
-					verbose("Not orphaned \t{0}".format(canonical))
+	try:
+		file_list = os.listdir(path)
+	except:
+	   		message ("! Can't enter \t{0} (check permissions and retry)".format(path))
+   			return
+	for f in file_list:
+		try:
+			canonical = os.path.join(path, f) 
+			if os.path.isdir(canonical):
+				if recursive:
+					clean(canonical, True)
+			elif os.path.isfile(canonical):
+				if f.endswith(".un~") and f.startswith("."): # A *bit* more efficient than a regex
+					totalSeen+=1
+					main = os.path.join(path, f[1:-4])
+					if not (os.path.exists(main) and os.path.isfile(main)):
+						os.remove(canonical)
+						totalRm += 1
+						message("Deleted \t{0}".format(canonical))
+					else:
+						verbose("Not orphaned \t{0}".format(canonical))
+		except:
+			message ("! Can't access \t{0} (check permissions and retry)".format(canonical))
+			
 
 
 parser = argparse.ArgumentParser(description='Delete orphan Vim undo files')
