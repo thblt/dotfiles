@@ -6,6 +6,7 @@
             (diminish 'abbrev-mode)
             (diminish 'buffer-face-mode)
             (diminish 'text-scale-mode)
+            (diminish 'variable-pitch-mode)
             (diminish 'visual-line-mode)
             
             (eval-after-load "company"
