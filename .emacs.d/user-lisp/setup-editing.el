@@ -26,8 +26,6 @@
 (use-package undo-tree
 	     :config (diminish 'undo-tree-mode)
 	     )
-
-
 (use-package expand-region)             ; Expand region by semantic units
 (use-package highlight-indentation)     ; Show indent level markers
 (use-package rainbow-delimiters)        ; Colorize parentheses etc by depth.
@@ -50,5 +48,14 @@
 (use-package yasnippet                  ; Snippets
   :init (yas-global-mode)
   )
+
+; Save everything on losing focus @TODO Make silent:
+; disable "(No files need saving)", autocreate directories
+; when needed.
+(add-hook 'focus-out-hook
+          (lambda ()
+            (save-some-buffers t)
+            )
+          )
 
 (provide 'setup-editing)
