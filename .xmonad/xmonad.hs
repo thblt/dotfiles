@@ -227,10 +227,12 @@ pp_surround :: String -> String -> String
 pp_surround _ "" = ""
 pp_surround a b = a ++ b ++ a
 
-prettyPrinter :: PP
-prettyPrinter = def
+-- myPP :: PP
+myPP pipe = def
   {
-    ppCurrent = \w -> handleHiddenWS w $ pp_active . pp_font 1
+    ppOutput = hPutStrLn pipe
+    
+  , ppCurrent = \w -> handleHiddenWS w $ pp_active . pp_font 1
   , ppHidden = \w -> handleHiddenWS w $ pp_inactive
   , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
   , ppTitle = pp_font 2 . pp_unsafe 
@@ -253,12 +255,12 @@ prettyPrinter = def
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe $ concat $ L.intersperse " " [ "xmobar"
-                                                   , "-A", show $ sbpAlpha currentPalette
-                                                   , "-F", pp_surround "\"" $ sbpFg currentPalette
-                                                   , "-B", pp_surround "\"" $ sbpBg currentPalette
-                                                   , "~/.xmonad/xmobar.hs"
-                                                 ]
+  xmproc <- spawnPipe $ unwords [ "xmobar", "~/.xmonad/xmobar.hs" ]
+                                             --     , "-A", show $ sbpAlpha currentPalette
+                                             --      , "-F", pp_surround "\"" $ sbpFg currentPalette
+                                             --      , "-B", pp_surround "\"" $ sbpBg currentPalette
+                                             --    , "~/.xmonad/xmobar.hs"
+                                             --    ]
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
@@ -268,15 +270,11 @@ main = do
     
     , clickJustFocuses = False
     , focusFollowsMouse = True
---    , handleEventHook = fullscreenEventHook <+> docksEventHook
+    -- , handleEventHook = fullscreenEventHook <+> docksEventHook
     , handleEventHook = docksEventHook    
     , keys = myKeys
     , layoutHook = myLayoutHook
-    , logHook = dynamicLogWithPP prettyPrinter
-      {
-        ppOutput = hPutStrLn xmproc
-      }
---      >> fadeInactiveLogHook 0.9 
+    , logHook = dynamicLogWithPP $ myPP xmproc
     , manageHook = composeAll 
       [
         className =? "Gloobus-preview" --> doFloat

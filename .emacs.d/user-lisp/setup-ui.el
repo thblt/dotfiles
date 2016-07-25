@@ -34,10 +34,11 @@
 
 ;;
 
+(use-package hydra)
+
 (use-package neotree                    ; FS sidebar à la NERDTree
   :bind ("<f2>" . neotree-toggle)
   )
-
 
 (use-package windmove
   :init (windmove-default-keybindings)
