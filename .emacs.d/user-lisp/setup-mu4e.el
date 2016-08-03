@@ -50,17 +50,15 @@
   :ensure nil                 ; Comes with mu, not on a Emacs package repo
   :init (progn
           (require 'mu4e-contrib)
-          (setq mu4e-html2text-command 'mu4e-shr2text)
-          
-          (setq mu4e-split-view 'vertical
+          (setq mu4e-html2text-command 'mu4e-shr2text
 
+                mu4e-view-show-images t
+                mu4e-split-view 'vertical
+           
                 mu4e-maildir "~/.Mail/"
-
 
                 mu4e-get-mail-command "offlineimap"
                 mu4e-update-interval 60 ;; seconds
-
-                
                 
                 mu4e-sent-folder "/P1/sent-mail"
                 mu4e-drafts-folder "/P1/Drafts"
