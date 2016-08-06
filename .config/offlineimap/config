@@ -1,5 +1,5 @@
 [general]
-accounts = Namo, P1
+accounts = Namo,P1
 
 # offlineimap recommands /not/ using threading.
 # http://www.offlineimap.org/configuration/2016/01/29/why-i-m-not-using-maxconnctions.html
