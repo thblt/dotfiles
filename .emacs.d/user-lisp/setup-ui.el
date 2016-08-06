@@ -2,19 +2,15 @@
 
 ;; Themes
 
-(use-package tao-theme
-  :defer t
-  )
-
-(use-package spacemacs-theme
-  :defer t
-  )
-
 (use-package alect-themes
   :defer t
   )
 
-(load-theme 'alect-dark)
+(use-package zenburn-theme
+  :defer t
+  )
+
+(load-theme 'zenburn)
 
 ;; Fonts
 

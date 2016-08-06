@@ -2,9 +2,10 @@
 
 (use-package tex-site
   :ensure auctex
-  :init (add-hook 'LaTeX-mode-hook (progn
-                                     'turn-on-flyspell
-                                     'TeX-fold-mode
+  :init (add-hook 'LaTeX-mode-hook (lambda ()
+                                     (visual-line-mode t)
+                                     (turn-on-flyspell)
+                                     (TeX-fold-mode t)
                                      )
                   ) 
   :config (progn
@@ -16,7 +17,7 @@
                   TeX-view-program-selection '((output-pdf "MuPDF"))
                   )
             )
-)           
+  )           
 
 (eval-after-load 'reftex-vars
   '(progn

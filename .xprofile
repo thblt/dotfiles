@@ -22,4 +22,5 @@ if [ "xmonad" == "$1" ]; then
 	synapse -s &
 	udiskie &
 	~/.fehbg &
+	light-locker &
 fi

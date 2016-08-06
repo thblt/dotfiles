@@ -46,13 +46,4 @@
 (setq custom-file (concat user-emacs-directory "_customize.el"))
 (load custom-file)
 
-;; === Look and feel ===
-(add-hook 'focus-out-hook
-          (lambda ()
-            (save-some-buffers t)
-            )
-          ) ; Save everything on losing focus @TODO Make silent:
-            ; disable "(No files need saving)", autocreate directories
-            ; when needed.
-
 (provide 'init-defaults)
