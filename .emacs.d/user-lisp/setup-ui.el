@@ -19,8 +19,9 @@
 ;; Fonts
 
 (setq thblt/base-font-size 090)
-(when (string-prefix-p system-name "rudiger")
-  (setq thblt/base-font-size 110)
+(when (string-prefix-p  "rudiger" system-name)
+  (message "Yep")
+  (setq thblt/base-font-size 120)
   )
 
 (setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline")))

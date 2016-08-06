@@ -23,7 +23,3 @@ if [ "xmonad" == "$1" ]; then
 	udiskie &
 	~/.fehbg &
 fi
-
-#pass "(void)" # Force pass to unlock beforehand.
-# offlineimap -a Namo &
-# offlineimap -a P1 &
