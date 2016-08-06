@@ -47,15 +47,14 @@ workspacesKeys | myHostName == "anna" = macAzertyKeys
 myWorkspaces :: [ String ]
 myWorkspaces = map show [ 1 .. 9 :: Int ]
 
-myLayoutHook = toggleLayouts (noBorders Full) $
-               XLR.renamed [(XLR.Replace "BSP")] $
-                             dwmStyle shrinkText def
-                             . borderResize
---               . fullscreenFull                            
-                             . smartSpacing 4
-                             . avoidStruts
-                             . smartBorders
-                             $ emptyBSP
+myLayoutHook = toggleLayouts (avoidStruts Full) $
+               dwmStyle shrinkText def
+              . borderResize
+              . fullscreenFull                            
+              . smartSpacing 4
+              . avoidStruts
+              . smartBorders
+              $ emptyBSP
     
 --  ||| Tall 1 (3/100) (1/2) 
 --  ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
@@ -92,11 +91,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. controlMask , xK_b )  , sendMessage $ ModifySpacing $ (-) 4)
 --}
 --  , ((modMask .|. shiftMask , xK_m )    , sendMessage $ Toggle MIRROR)
-
-{-- I don't use these:
-, ((modMask, xK_comma ), sendMessage (IncMasterN 1)) -- %! Increment the number of windows in the master area
-  , ((modMask, xK_semicolon), sendMessage (IncMasterN (-1))) -- %! Deincrement the number of windows in the master area
---}
 
   -- Window management within layout  
   , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
@@ -238,9 +232,8 @@ myPP pipe = def
   , ppTitle = pp_font 2 . pp_unsafe 
   , ppSep = " "
   , ppLayout = \a -> case a of
-      "BSP" -> ""
       "Full" -> xmobarColor "red" (sbpBg currentPalette) "■"
-      _ -> xmobarColor "red" (sbpBg currentPalette) a
+      _ -> ""
   }
   where
     defaultLayout = "BSP" 

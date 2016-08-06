@@ -22,10 +22,10 @@ Config {
                              ] 10
         , Run Date "%H:%M" "date" 10
         --Run DateZone "%A %_d/%B/%Y %H:%M" "fr_FR.UTF_8" "Europe/Paris" "date" 10
-        , Run StdinReader
+        , Run UnsafeStdinReader
     ] 
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "  %StdinReader% }{ %battery%     <fn=1>%date%</fn> "
+    , template = "  %UnsafeStdinReader% }{ %battery%     <fn=1>%date%</fn> "
     , iconRoot = "/home/thblt/.xmonad/icons"
 }
