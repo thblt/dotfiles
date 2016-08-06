@@ -1,56 +1,23 @@
 URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=11
-! URxvt*foreground: white
-! URxvt*background: #333333
-! URxvt*color0:  #2E3436
-! URxvt*color1:  #a40000
-! URxvt*color2:  #4E9A06
-! URxvt*color3:  #C4A000
-! URxvt*color4:  #3465A4
-! URxvt*color5:  #75507B
-! URxvt*color6:  #ce5c00
-! URxvt*color7:  #babdb9
-! URxvt*color8:  #555753
-! URxvt*color9:  #EF2929
-! URxvt*color10: #8AE234
-! URxvt*color11: #FCE94F
-! URxvt*color12: #729FCF
-! URxvt*color13: #AD7FA8
-! URxvt*color14: #fcaf3e
-! URxvt*color15: #EEEEEC
-! URxvt*scrollBar: false
-
-URxvt*background: #2B2B2B
-URxvt*foreground: #DEDEDE
-
-URxvt*colorUL: #86a2b0
-
-! black
-URxvt*color0  : #2E3436
-URxvt*color8  : #555753
-! red
-URxvt*color1  : #CC0000
-URxvt*color9  : #EF2929
-! green
-URxvt*color2  : #4E9A06
-URxvt*color10 : #8AE234
-! yellow
-URxvt*color3  : #C4A000
-URxvt*color11 : #FCE94F
-! blue
-URxvt*color4  : #3465A4
-URxvt*color12 : #729FCF
-! magenta
-URxvt*color5  : #75507B
-URxvt*color13 : #AD7FA8
-! cyan
-URxvt*color6  : #06989A
-URxvt*color14 : #34E2E2
-! white
-URxvt*color7  : #D3D7CF
-URxvt*color15 : #EEEEEC
-
-URxvt*highlightColor: #33ccff
-URxvt*highlightTextColor: #333333
+URxvt*foreground: #ffffff
+URxvt*background: #333333
+URxvt*color0:  #2E3436
+URxvt*color1:  #a40000
+URxvt*color2:  #4E9A06
+URxvt*color3:  #C4A000
+URxvt*color4:  #3465A4
+URxvt*color5:  #75507B
+URxvt*color6:  #ce5c00
+URxvt*color7:  #babdb9
+URxvt*color8:  #555753
+URxvt*color9:  #EF2929
+URxvt*color10: #8AE234
+URxvt*color11: #FCE94F
+URxvt*color12: #729FCF
+URxvt*color13: #AD7FA8
+URxvt*color14: #fcaf3e
+URxvt*color15: #EEEEEC
+URxvt*scrollBar: false
 
 URxvt*scrollstyle: plain
 URxvt*scrollBar_right: true
@@ -330,5 +297,15 @@ URxvt*iso14755: False
 
 ! Turn on/off ISO 14755 5.2 mode (default enabled).
 ! URxvt*iso14755_52: boolean
+
+! --- ~/.Xresources ------------------------------------------------------------
+! ------------------------------------------------------------------------------
+! --- generated with 4bit Terminal Color Scheme Designer -----------------------
+! ------------------------------------------------------------------------------
+! --- http://ciembor.github.com/4bit -------------------------------------------
+! ------------------------------------------------------------------------------
+! Solarized color scheme for the X Window System
+!
+! http://ethanschoonover.com/solarized
 
 
