@@ -18,6 +18,9 @@ if [ "xmonad" == "$1" ]; then
         notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
     fi
          
+	# Cursor
+	xsetroot -cursor_name left_ptr
+
 	compton --config ~/.xmonad/compton.conf &
 	synapse -s &
 	udiskie &
