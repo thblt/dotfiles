@@ -1,7 +1,5 @@
 ;;; Code
 
-;;; === Email. A new, modern way of getting spam ===
-
 (defvar my-mu4e-account-alist
   '(("Namo"
      (mu4e-sent-folder "/Namo/Sent")
