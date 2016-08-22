@@ -1,6 +1,5 @@
 {-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeSynonymInstances #-} 
 
-import qualified Data.List as L
 import qualified Data.Map as M
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
