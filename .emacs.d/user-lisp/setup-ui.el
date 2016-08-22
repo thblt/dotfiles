@@ -20,7 +20,7 @@
   (setq thblt/base-font-size 120)
   )
 
-(setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline")))
+(setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline Nerd Font")))
 (set-face-attribute 'default t :height thblt/base-font-size)
 
 ;; UI elements
