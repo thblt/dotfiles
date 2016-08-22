@@ -1,35 +1,32 @@
-{-
-    This is a now a *heavily* modified version of the default configuration.
--}
-
-{-# LANGUAGE TemplateHaskell #-} 
+{-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeSynonymInstances #-} 
 
 import qualified Data.List as L
 import qualified Data.Map as M
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
-import System.IO (hPutStrLn)
+import System.IO
 import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
 import XMonad.Hooks.EwmhDesktops (ewmh)
-import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, ToggleStruts (ToggleStruts))
+import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
+import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Layout.BinarySpacePartition (emptyBSP, ResizeDirectional(..), SelectMoveNode(..), Rotate(Rotate))
 import XMonad.Layout.BorderResize (borderResize)
-import XMonad.Layout.DwmStyle (dwmStyle, shrinkText)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull, fullscreenSupport)
+import XMonad.Layout.IfMax
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
-import XMonad.Layout.ToggleLayouts (toggleLayouts, ToggleLayout (ToggleLayout))
+import XMonad.Layout.NoFrillsDecoration
 import qualified XMonad.Layout.Renamed as XLR
-import XMonad.Layout.Spacing (smartSpacing)
 import qualified XMonad.StackSet as XSS
+import XMonad.Layout.Spacing (smartSpacingWithEdge)
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionCustom)
-
-import XMonad.Actions.MouseResize
 
 -- Computer-dependent settings.
 
@@ -47,26 +44,39 @@ workspacesKeys | myHostName == "anna" = macAzertyKeys
 myWorkspaces :: [ String ]
 myWorkspaces = map show [ 1 .. 9 :: Int ]
 
-myLayoutHook = toggleLayouts (avoidStruts Full) $
-               dwmStyle shrinkText def
-              . borderResize
-              . fullscreenFull                            
-              . smartSpacing 4
-              . avoidStruts
-              . smartBorders
-              $ emptyBSP
-    
---  ||| Tall 1 (3/100) (1/2) 
---  ||| renamed "ThreeCol" (ThreeCol 1 (3/100) (1/2))
---  ||| Grid
---  where renamed n l = XLR.renamed [XLR.Replace n] l
+myHiddenWorkspaces = [ "NSP" ]
+
+data DecoTransformer = DECO deriving (Read, Show, Eq, Typeable)
+instance Transformer DecoTransformer Window where
+  transform _ x k = k (decoration x) (const x)
+    where
+      decoration = noFrillsDeco shrinkText def {
+        decoHeight = 4
+        , activeColor = activeColor
+        , activeTextColor = activeColor
+        , activeBorderColor = activeColor
+        , inactiveColor = inactiveColor
+        , inactiveTextColor = inactiveColor
+        , inactiveBorderColor = inactiveColor
+        }
+        where
+          activeColor = "#ff0000"
+          inactiveColor = "#aaaaaa"
+  
+myLayoutHook = smartBorders . avoidStruts $ mkToggle (FULL ?? DECO ?? EOT) $ 
+               borderResize
+               . fullscreenFull                            
+               . smartSpacingWithEdge 4
+               . smartBorders
+               $ emptyBSP
+
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
     -- Fundamentals
     ((modMask .|. shiftMask, xK_c), kill) -- Kill focused window
-  , ((modMask .|. shiftMask, xK_q     ), spawn "~/.xmonad/quit-xmonad.sh" ) -- Quit xmonad
+  , ((modMask .|. shiftMask, xK_q     ), spawn "/home/thblt/.xmonad/quit-xmonad.sh" ) -- Quit xmonad
   , ((modMask, xK_q     ), spawn $ unlines [
           "xmonad --recompile"
         , "if [ $? -eq 0 ]; then"
@@ -78,19 +88,17 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         ]
      )
 
+  , ((modMask, xK_Super_R), spawn "notify-send Bello")
+  
     -- Layout management
   , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
   , ((modMask .|. shiftMask , xK_space) , setLayout $ XMonad.layoutHook conf) -- Reset layouts
   , ((modMask               , xK_h )    , sendMessage Shrink) -- %! Shrink the master area
   , ((modMask               , xK_l )    , sendMessage Expand) -- %! Expand the master area
 
-  , ((modMask               , xK_f )    , sendMessage ToggleStruts)
-  , ((modMask .|. shiftMask , xK_f )    , sendMessage $ ToggleLayout)
-{-- Doesn't seem to work with smart spacing
-, ((modMask                 , xK_b )  , sendMessage $ ModifySpacing $ (+) 4)
-  , ((modMask .|. controlMask , xK_b )  , sendMessage $ ModifySpacing $ (-) 4)
---}
---  , ((modMask .|. shiftMask , xK_m )    , sendMessage $ Toggle MIRROR)
+  , ((modMask .|. shiftMask , xK_f )    , sendMessage ToggleStruts)
+  , ((modMask               , xK_f )    , sendMessage $ Toggle FULL)
+  , ((modMask               , xK_d )    , sendMessage $ Toggle DECO)
 
   -- Window management within layout  
   , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
@@ -121,6 +129,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask, xK_p ), spawn "synapse" )
   , ((modMask .|. shiftMask, xK_p), spawn "dmenu_run" )
   , ((modMask .|. shiftMask, xK_Return ), spawn $ terminal conf)
+  , ((modMask .|. controlMask .|. shiftMask, xK_Return ), spawn $ "emacsclient -cnd :0 -a ''")
   , ((modMask, xK_s ), scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e tmux-attach-or-new scratch")
 
     -- Misc actions
@@ -231,46 +240,44 @@ myPP pipe = def
   , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
   , ppTitle = pp_font 2 . pp_unsafe 
   , ppSep = " "
-  , ppLayout = \a -> case a of
-      "Full" -> xmobarColor "red" (sbpBg currentPalette) "■"
-      _ -> ""
+  , ppLayout =  \a -> case a of
+                        "Full" -> xmobarColor "red" (sbpBg currentPalette) "■"
+                        _ -> "" 
   }
   where
     defaultLayout = "BSP" 
-    handleHiddenWS w f | w `elem` hiddenWorkspaces = ""
+    handleHiddenWS w f | w `elem` myHiddenWorkspaces = ""
                        | otherwise = f w
-      where hiddenWorkspaces = [ "NSP" ]
---    makeIcon a l | a==l = pp_active $ pp_icon $ "layout_" ++ l
---                       | otherwise = pp_inactive $ pp_icon $ "layout_" ++ l
-
+                       
 {- And now to wrap it all up -}
 
 
 main :: IO ()
 main = do
-  xmproc <- spawnPipe $ unwords [ "xmobar", "~/.xmonad/xmobar.hs" ]
-                                             --     , "-A", show $ sbpAlpha currentPalette
-                                             --      , "-F", pp_surround "\"" $ sbpFg currentPalette
-                                             --      , "-B", pp_surround "\"" $ sbpBg currentPalette
-                                             --    , "~/.xmonad/xmobar.hs"
-                                             --    ]
+  logPipe <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+  
+  hSetBuffering logPipe LineBuffering
+
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
-      borderWidth = 1
-    , focusedBorderColor = "#000000"
+      borderWidth = 0
+    , focusedBorderColor = "#ff0000"
     , normalBorderColor = "#000000"
     
     , clickJustFocuses = False
-    , focusFollowsMouse = True
+    , focusFollowsMouse = False
     -- , handleEventHook = fullscreenEventHook <+> docksEventHook
     , handleEventHook = docksEventHook    
     , keys = myKeys
     , layoutHook = myLayoutHook
-    , logHook = dynamicLogWithPP $ myPP xmproc
+    , logHook = do
+        dynamicLogWithPP $ myPP logPipe
+        fadeInactiveLogHook 0.95
     , manageHook = composeAll 
       [
-        className =? "Gloobus-preview" --> doFloat
+        manageDocks
+      , className =? "Gloobus-preview" --> doFloat
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
 --      , fullscreenManageHook
         ]
