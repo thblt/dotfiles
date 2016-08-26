@@ -45,30 +45,32 @@ myWorkspaces = map show [ 1 .. 9 :: Int ]
 
 myHiddenWorkspaces = [ "NSP" ]
 
+-- I'm leaving this here for now, but it's not used anymore.
 data DecoTransformer = DECO deriving (Read, Show, Eq, Typeable)
 instance Transformer DecoTransformer Window where
-  transform _ x k = k (decoration x) (const x)
-    where
-      decoration = noFrillsDeco shrinkText def {
-        decoHeight = 4
-        , activeColor = activeColor
-        , activeTextColor = activeColor
-        , activeBorderColor = activeColor
-        , inactiveColor = inactiveColor
-        , inactiveTextColor = inactiveColor
-        , inactiveBorderColor = inactiveColor
-        }
-        where
-          activeColor = "#ff0000"
-          inactiveColor = "#aaaaaa"
-  
-myLayoutHook = smartBorders . avoidStruts $ mkToggle (FULL ?? DECO ?? EOT) $ 
-               borderResize
-               . fullscreenFull                            
-               . smartSpacingWithEdge 4
-               . smartBorders
-               $ emptyBSP
+  transform _ x k = k (myDecoration x) (const x)
 
+myDecoration = noFrillsDeco shrinkText def {
+  decoHeight = 4
+  , activeColor = activeColor
+  , activeTextColor = activeColor
+  , activeBorderColor = activeColor
+  , inactiveColor = inactiveColor
+  , inactiveTextColor = inactiveColor
+  , inactiveBorderColor = inactiveColor
+  }
+  where
+    activeColor = "#ff0000"
+    inactiveColor = "#aaaaaa"
+      
+
+myLayoutHook = smartBorders . avoidStruts $ mkToggle (FULL ?? EOT) $
+               ifMax 1 Full $
+               borderResize
+               . myDecoration
+               . smartSpacingWithEdge 4
+               . smartBorders $
+               emptyBSP
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -97,7 +99,6 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
 
   , ((modMask .|. shiftMask , xK_f )    , sendMessage ToggleStruts)
   , ((modMask               , xK_f )    , sendMessage $ Toggle FULL)
-  , ((modMask               , xK_d )    , sendMessage $ Toggle DECO)
 
   -- Window management within layout  
   , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
