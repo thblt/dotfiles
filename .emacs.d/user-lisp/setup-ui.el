@@ -16,7 +16,6 @@
 
 (setq thblt/base-font-size 090)
 (when (string-prefix-p  "rudiger" system-name)
-  (message "Yep")
   (setq thblt/base-font-size 120)
   )
 
