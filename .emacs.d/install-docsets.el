@@ -1,8 +1,10 @@
 (progn
+  (helm-dash-install-docset "Boost")
   (helm-dash-install-docset 'C)
   (helm-dash-install-docset 'C++)
   (helm-dash-install-docset 'CSS)
   (helm-dash-install-docset 'Compass)
+  (helm-dash-install-docset 'Emacs_Lisp)
   (helm-dash-install-docset 'HTML)
   (helm-dash-install-docset 'Haskell)
   (helm-dash-install-docset 'JavaScript)
