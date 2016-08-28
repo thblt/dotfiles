@@ -129,7 +129,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask, xK_p ), spawn "synapse" )
   , ((modMask .|. shiftMask, xK_p), spawn "dmenu_run" )
   , ((modMask .|. shiftMask, xK_Return ), spawn $ terminal conf)
-  , ((modMask .|. controlMask .|. shiftMask, xK_Return ), spawn $ "emacsclient -cnd :0 -a ''")
+  , ((modMask .|. controlMask .|. shiftMask, xK_Return ), spawn $ "emacsclient -ca ''")
   , ((modMask, xK_s ), scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e tmux-attach-or-new scratch")
 
     -- Misc actions
