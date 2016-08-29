@@ -13,6 +13,7 @@
 (use-package mu4e-maildirs-extension)
 (use-package mu4e
   :ensure nil                 ; Comes with mu, not on a Emacs package repo
+  :bind ( ("<f12>" . mu4e-quit) )
   :init (progn
           (require 'mu4e-contrib)
           (mu4e-maildirs-extension)
@@ -25,6 +26,31 @@
 
                 mu4e-view-show-images t
                 mu4e-split-view 'vertical
+                mu4e-hide-index-messages t
+
+                mu4e-use-fancy-chars t
+                mu4e-headers-attach-mark '("" . "")
+                mu4e-headers-encrypted-mark '("" . "")
+                mu4e-headers-list-mark '("" . "")
+                mu4e-headers-new-mark '("" . "")
+                mu4e-headers-read-mark '("" . "")
+                mu4e-headers-replied-mark '("" . "↩")
+                mu4e-headers-seen-mark '("" . "")
+                mu4e-headers-unseen-mark '("" . "")                
+                mu4e-headers-unread-mark '("" . "✱")
+                mu4e-headers-signed-mark '("" . "")
+
+                mu4e-headers-has-child-prefix '("+" . "└┬")
+                mu4e-headers-first-child-prefix '("|" . "├")
+
+                mu4e-headers-default-prefix '("" . "├")
+                
+                mu4e-headers-fields '(
+                                      (:date       . 11)
+                                      (:flags      . 3)
+                                      (:from       . 25)                                      
+                                      (:subject    . nil)
+                                      )
 
                 mu4e-context-policy 'pick-first
                 mu4e-compose-context-policy 'ask
@@ -72,7 +98,11 @@
                                   ("flag:flagged"
                                    "Flagged"                 ?f)
                                   ) )
+          (add-hook 'mu4e-view-mode-hook (visual-line-mode t))
           )
+  
   )
+
+(bind-key "<f12>" 'mu4e)
 
 (provide 'setup-mu4e)

@@ -1,4 +1,10 @@
-(require 'use-package)
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
+        powerline-default-separator 'arrow)
+  (spaceline-spacemacs-theme)
+  )
 
 (use-package diminish
   :config (progn
@@ -12,6 +18,9 @@
             (eval-after-load "company"
               '(diminish 'company-mode))
 
+            (eval-after-load 'linum-relative
+              '(diminish 'linum-relative-mode))
+            
             (eval-after-load 'flycheck
               '(diminish 'flycheck-mode))
             
@@ -38,4 +47,4 @@
             )
   )
 
-(provide 'setup-diminish)
+(provide 'setup-modeline)

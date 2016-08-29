@@ -11,11 +11,9 @@
 (require 'setup-editing)
 
 ;; General: common minor modes and utilities
-(require 'setup-diminish)
 (require 'setup-evil)
 (require 'setup-helm)
-(require 'setup-evil)
-(require 'setup-spaceline)
+(require 'setup-modeline)
 
 ;; Languagues and major modes
 (require 'setup-programming)

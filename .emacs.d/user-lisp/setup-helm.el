@@ -14,7 +14,7 @@
 
 (add-hook 'c-mode-common-hook
           (lambda ()
-            (setq-local helm-dash-docsets '("C" "C++" "Qt"))
+            (setq-local helm-dash-docsets '("Boost" "C" "C++" "Qt"))
             )
           )
 
