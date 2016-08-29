@@ -204,9 +204,6 @@ currentPalette =
   , sbpAlpha = floor $ 255 * 0.80
   }
 
-pp_default :: String -> String
-pp_default = xmobarColor (sbpFg currentPalette) (sbpBg currentPalette) 
-
 pp_active :: String -> String
 pp_active = xmobarColor (sbpAct currentPalette) (sbpBg currentPalette) 
 
@@ -219,17 +216,10 @@ pp_disabled = xmobarColor (sbpDis currentPalette) (sbpBg currentPalette)
 pp_font :: Int -> String -> String
 pp_font f s = "<fn=" ++ show f ++ ">" ++ s ++ "</fn>"
   
-pp_icon :: String -> String
-pp_icon f = "<icon=" ++ f ++ ".xbm/>"
-  
 pp_unsafe :: String -> String
 pp_unsafe "" = ""
 pp_unsafe s = "<raw=" ++ (show $ length s) ++ ":" ++ s ++ "/>"
-
-pp_surround :: String -> String -> String
-pp_surround _ "" = ""
-pp_surround a b = a ++ b ++ a
-
+  
 -- myPP :: PP
 myPP pipe = def
   {
@@ -256,8 +246,6 @@ main :: IO ()
 main = do
   logPipe <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   
-  hSetBuffering logPipe LineBuffering
-
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
