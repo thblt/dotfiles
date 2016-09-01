@@ -88,6 +88,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         , "fi"
         ]
      )
+  , ((modMask, xK_Escape), spawn "slock systemctl suspend")
 
   , ((modMask, xK_Super_R), spawn "notify-send Bello")
   
