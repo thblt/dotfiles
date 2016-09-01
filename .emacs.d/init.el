@@ -6,7 +6,6 @@
 
 ;; Fundamentals: defaults, look and feel, general editing
 (require 'init-defaults)
-(require 'init-platform)
 (require 'setup-ui)
 (require 'setup-editing)
 
