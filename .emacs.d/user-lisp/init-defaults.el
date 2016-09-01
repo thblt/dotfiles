@@ -12,11 +12,6 @@
  comment-empty-lines t      ; 
  reb-re-syntax 'string      ; String syntax for re-builder
 
- ;; Stuff for programming
- compile-command "wmake"    ; A small script which invokes the first
-                            ; build system it can find instructions
-                            ; for (in .dotfiles/bin)
- 
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
  browse-url-generic-args '("xdg-open")
@@ -33,17 +28,37 @@
  initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
  )
 
-;;; === Sanity ===
+;;; Sanity
 (fset 'yes-or-no-p 'y-or-n-p) ;; y/n instead of yes/no
 
-;; Autosave and backups in /tmp/ 
-(setq backup-directory-alist
-      `((".*" . ,temporary-file-directory)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
+(setq backup-directory-alist                  ; Autosave and backups in /tmp/ 
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t))
 
-;; Let Customize put its mess elsewhere
-(setq custom-file (concat user-emacs-directory "_customize.el"))
+      ;; Let Customize put its mess elsewhere
+      custom-file (concat user-emacs-directory "_customize.el")
+      )
 (load custom-file)
+
+;; OS-X specific settings
+(when (string= system-type 'darwin) 
+  ;; Don't use alt, cmd is meta
+  (setq mac-option-modifier 'nil
+        mac-command-modifier 'meta)
+
+  ; Fix weird Apple keymap.on full-size kbs.
+  (global-set-key (kbd "<help>") 'overwrite-mode)
+
+  ; Fix load-path for mu4e (not sure this is still needed)
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") 
+  (use-package exec-path-from-shell
+
+  ; Load PATH from shell in Cocoa
+    :init (exec-path-from-shell-initialize) 
+    )
+  )
+
+
 
 (provide 'init-defaults)
