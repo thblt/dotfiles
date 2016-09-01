@@ -12,6 +12,7 @@ import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts (ToggleStruts))
+import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Layout.BinarySpacePartition (emptyBSP, ResizeDirectional(..), SelectMoveNode(..), Rotate(Rotate))
 import XMonad.Layout.BorderResize (borderResize)
@@ -266,6 +267,7 @@ main = do
     , manageHook = composeAll 
       [
         manageDocks
+      , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
 --      , fullscreenManageHook
