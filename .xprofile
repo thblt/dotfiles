@@ -19,6 +19,7 @@ if [ "xmonad" == "$1" ]; then
     fi
          
 	compton --config ~/.xmonad/compton.conf &
+	eval $(keychain --eval)
 	keynav &
 	xautolock -time 5 -locker "slock systemctl suspend" &
 	synapse -s &
