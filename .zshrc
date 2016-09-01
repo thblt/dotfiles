@@ -17,7 +17,6 @@ alias ee="${EDITOR} --create-frame --no-wait" # Shorthand
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
-export SSH_AUTH_SOCK=~/.ssh/ssh-agent.socket
 
 # Misc aliases
 
