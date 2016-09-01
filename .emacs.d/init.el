@@ -28,6 +28,8 @@
 (require 'setup-webdev)
 (require 'setup-yaml)
 
+(require 'thblt-functions)
+
 (require 'server)
 (unless (server-running-p)
   (server-start)

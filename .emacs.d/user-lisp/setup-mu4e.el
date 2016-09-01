@@ -13,7 +13,14 @@
 (use-package mu4e-maildirs-extension)
 (use-package mu4e
   :ensure nil                 ; Comes with mu, not on a Emacs package repo
-  :bind ( ("<f12>" . mu4e-quit) )
+  :bind (("<f12>" . mu4e)
+         :map mu4e-headers-mode-map
+         ("<f12>" . mu4e-quit)
+         :map mu4e-main-mode-map
+         ("<f12>" . mu4e-quit)
+         :map mu4e-view-mode-map
+         ("<f12>" . mu4e-quit)
+         )
   :init (progn
           (require 'mu4e-contrib)
           (mu4e-maildirs-extension)
@@ -24,13 +31,15 @@
                 mu4e-update-interval 60 ;; seconds
                 message-send-mail-function 'smtpmail-send-it
 
-                mu4e-view-show-images t
-                mu4e-split-view 'vertical
+                mu4e-confirm-quit nil
                 mu4e-hide-index-messages t
+                mu4e-split-view 'vertical
+                mu4e-view-show-images t
 
                 mu4e-use-fancy-chars t
                 mu4e-headers-attach-mark '("" . "")
                 mu4e-headers-encrypted-mark '("" . "")
+                mu4e-headers-flagged-mark '("+" . "⚑")
                 mu4e-headers-list-mark '("" . "")
                 mu4e-headers-new-mark '("" . "")
                 mu4e-headers-read-mark '("" . "")
@@ -103,6 +112,5 @@
   
   )
 
-(bind-key "<f12>" 'mu4e)
 
 (provide 'setup-mu4e)

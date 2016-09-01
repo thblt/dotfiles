@@ -1,15 +1,9 @@
 (require 'use-package)
 
 ;; Themes
-
-(use-package alect-themes
-  :defer t
-  )
-
-(use-package zenburn-theme
-  :defer t
-  )
-
+(use-package alect-themes    :defer t)
+(use-package solarized-theme :defer t)
+(use-package zenburn-theme   :defer t)
 (load-theme 'zenburn)
 
 ;; Fonts
@@ -28,7 +22,11 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-;;
+(use-package helm
+  :init (helm-mode t)
+  :bind ( ("M-x" . helm-M-x)
+          ("C-x C-f" . helm-find-files))
+  )
 
 (use-package hydra)
 
