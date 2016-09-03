@@ -9,21 +9,22 @@ if [ "xmonad" == "$1" ]; then
     dunst -conf ~/.xmonad/dunstrc & 
 
     # Keyboard setup
-    numlockx on &
     if [ "anna" == `hostname` ]; then
        setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin -option caps:ctrl_modifier
     elif [ "rudiger" == `hostname` ]; then
         setxkbmap fr -option compose:menu -option caps:ctrl_modifier
+		numlockx on &
     else
         notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
     fi
          
-	# Cursor
-	xsetroot -cursor_name left_ptr
-
 	compton --config ~/.xmonad/compton.conf &
+	eval $(keychain --eval)
+	keynav &
+	xautolock -time 5 -locker "slock systemctl suspend" &
 	synapse -s &
 	udiskie &
+	xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
+	xsetroot -cursor_name left_ptr &
 	~/.fehbg &
-	light-locker &
 fi

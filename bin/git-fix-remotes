@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
 
-# Fix git remotes in git repositories
+# "Fix" git remotes in git repositories
 # so that push always use ssh, pull https
 # This will (of course) break on servers that
 # doesn't support both protocols, and is perfectly
 # useless unless the server allows unauthenticated
 # fetch over https.
 
+# Takes remote names as optional parameters. If none are
+# provided, works on everything.
+
+# Usage example:
+# git-fix-remotes
+# git-fix-remotes origin my-remote 
+
 from re import compile
 from subprocess import run, PIPE
+from sys import argv
 
 # The regexes are quite basic. They should work
 # for all (my) setups 
@@ -32,6 +40,7 @@ def ssh_user(host):
     return "git"
 
 def https2ssh(path):
+    # Takes an https url, and returns a ssh url. Or tries to.
     d = userrep_https.match(path).groups()
     return "{ssh_user}@{host}:{user}/{repo}".format(
         ssh_user = ssh_user(d[0]),
@@ -41,6 +50,7 @@ def https2ssh(path):
         
 
 def ssh2https(path):
+    # Takes a ssh url, and returns an https url. Or tries to.
     d = userrep_ssh.match(path).groups()
     return "https://{host}/{user}/{repo}".format(
         host=d[1],
@@ -52,21 +62,19 @@ def set_remote(name, url, push=False):
     print(" ".join(command))
     run(command)
 
-for name, urls in remotes.items():
+for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # The lines below are weird, but order matters here.
     # I'm not sure git *guarantees* the order protocols
     # are displayed with git remote -v, and we must modify
     # fetch *before* push, because changing fetch also
-    # changes psuh.
+    # changes push.  Therefore, we can't do
+    # `for protocol, url in remotes[name].items()` 
     for protocol in ["fetch", "push"]:
-        url = urls[protocol]
+        url = remotes[name][protocol]
         if protocol=="fetch" and not is_https(url):
             new = ssh2https(url)
             set_remote(name, new, False)
             urls["push"] = new
             
         elif protocol=="push" and is_https(url):
-            set_remote(name, https2ssh(url), True)
-
-
-    
+            set_remote(name, https2ssh(url), True)    

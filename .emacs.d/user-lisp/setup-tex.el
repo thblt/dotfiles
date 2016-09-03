@@ -13,9 +13,9 @@
                           TeX-parse-self t
                           TeX-engine 'xetex
                           )
-            (setq TeX-view-program-list '(("MuPDF" "mupdf %s.pdf"))
-                  TeX-view-program-selection '((output-pdf "MuPDF"))
-                  )
+;            (setq TeX-view-program-list '(TeX-view-program-list '("MuPDF" . "mupdf %s.pdf"))
+;                   TeX-view-program-selection '((output-pdf "Evince"))
+;                  )
             )
   )           
 

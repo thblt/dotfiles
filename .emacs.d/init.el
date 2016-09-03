@@ -6,7 +6,6 @@
 
 ;; Fundamentals: defaults, look and feel, general editing
 (require 'init-defaults)
-(require 'init-platform)
 (require 'setup-ui)
 (require 'setup-editing)
 
@@ -27,6 +26,8 @@
 (require 'setup-tex)
 (require 'setup-webdev)
 (require 'setup-yaml)
+
+(require 'thblt-functions)
 
 (require 'server)
 (unless (server-running-p)

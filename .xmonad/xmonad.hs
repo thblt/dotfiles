@@ -89,6 +89,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         , "fi"
         ]
      )
+  , ((modMask, xK_Escape), spawn "slock systemctl suspend")
 
   , ((modMask, xK_Super_R), spawn "notify-send Bello")
   
@@ -143,6 +144,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((0, xF86XK_AudioMute ), spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
   , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
+  , ((0, xF86XK_KbdBrightnessUp), spawn "kbdlight up 10%")
+  , ((0, xF86XK_KbdBrightnessDown), spawn "kbdlight down 10%")
 
     -- Directional navigation of windows
   , ((modMask,                 xK_Right), windowGo R False)

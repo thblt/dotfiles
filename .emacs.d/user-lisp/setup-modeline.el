@@ -14,6 +14,9 @@
             (diminish 'text-scale-mode)
             (diminish 'variable-pitch-mode)
             (diminish 'visual-line-mode)
+
+            (eval-after-load "autorevert"
+              '(diminish 'auto-revert-mode "↻"))
             
             (eval-after-load "company"
               '(diminish 'company-mode))
@@ -35,6 +38,9 @@
 
             (eval-after-load "smartparens"
               '(diminish 'smartparens-mode))
+
+            (eval-after-load "text-scale-mode"
+              '(diminish 'text-scale-mode))
             
             (eval-after-load "undo-tree"
               '(diminish 'undo-tree-mode))
