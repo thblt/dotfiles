@@ -21,6 +21,9 @@
             (eval-after-load "company"
               '(diminish 'company-mode))
 
+            (eval-after-load "help"
+              '(diminish 'helm-mode))
+            
             (eval-after-load 'linum-relative
               '(diminish 'linum-relative-mode))
             
