@@ -100,9 +100,15 @@
        
                 mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"
                                    "Global inbox"            ?i)
+
+                                  ("m:/Namo/emetis"
+                                   "emetis"         ?e)
+
+                                  ("m:/Namo/historiens-sante"
+                                   "historiens-sante" ?h)
                                   
-                                  ("flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX)"
-                                   "Unread messages"         ?v)
+                                  ("m:/Namo/theuth"
+                                   "theuth"         ?t)
                                   
                                   ("flag:flagged"
                                    "Flagged"                 ?f)
