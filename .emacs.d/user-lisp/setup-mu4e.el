@@ -76,9 +76,9 @@
                               ( mu4e-drafts-folder      . "/Namo/Drafts" )
                               ( mu4e-trash-folder       . "/Namo/Trash" )
                               ( smtpmail-local-domain   . "thb.lt" )
-                              ( smtpmail-smtp-server    . "smtp.sfr.fr" )
-                              ( smtpmail-stream-type    . starttls )
-                              ( smtpmail-smtp-service   . 25 ) ))
+                              ( smtpmail-smtp-server    . "namo.thb.lt" )
+                              ( smtpmail-stream-type    . tls )
+                              ( smtpmail-smtp-service   . 465 ) ))
                   
                    ,(make-mu4e-context
                      :name "P1"
