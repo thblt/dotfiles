@@ -21,7 +21,7 @@ if [ "xmonad" == "$1" ]; then
 	compton --config ~/.xmonad/compton.conf &
 	eval $(keychain --eval)
 	keynav &
-	xautolock -time 5 -locker "slock systemctl suspend" &
+	light-locker &
 	synapse -s &
 	udiskie &
 	xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
