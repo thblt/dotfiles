@@ -13,9 +13,9 @@
                           TeX-parse-self t
                           TeX-engine 'xetex
                           )
-;            (setq TeX-view-program-list '(TeX-view-program-list '("MuPDF" . "mupdf %s.pdf"))
-;                   TeX-view-program-selection '((output-pdf "Evince"))
-;                  )
+            (setq TeX-view-program-list '(("MuPDF" . "mupdf %s.pdf")))
+                  TeX-view-program-selection '((output-pdf "MuPDF"))
+                  )
             )
   )           
 
@@ -25,7 +25,7 @@
      (setq reftex-cite-format
            '((?\C-m . "\\cite[]{%l}")
              (?f . "\\footcite[][]{%l}")
-             (?t . "\\textcite[]{%l}")
+             (?t . "\\textcite[q]{%l}")
              (?p . "\\parencite[]{%l}")
              (?o . "\\citepr[]{%l}")
              (?n . "\\nocite{%l}")))))
