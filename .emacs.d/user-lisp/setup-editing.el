@@ -1,5 +1,9 @@
 (require 'use-package)
 
+;; Abbrev
+(add-hook 'text-mode-hook (lambda ()
+                            (abbrev-mode t) ) )
+
 (use-package aggressive-indent)
 (use-package anzu)                      ; Show matches count/current match # in mode line
 (use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
@@ -45,8 +49,6 @@
 (use-package yasnippet                  ; Snippets
   :init (yas-global-mode)
   )
-
-; Various hook for text-editing modes
 
 ; Save everything on losing focus @TODO Make silent:
 ; disable "(No files need saving)", autocreate directories

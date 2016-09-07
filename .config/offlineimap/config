@@ -4,11 +4,15 @@ accounts = Namo,P1
 # offlineimap recommands /not/ using threading.
 # http://www.offlineimap.org/configuration/2016/01/29/why-i-m-not-using-maxconnctions.html
 # and running separate instances instead.
-maxsyncaccounts = 3
+maxsyncaccounts = 1
 # maxconnections = 3
 pythonfile = ~/.config/offlineimap/lib.py
 
-# ui = MachineUI
+ui = basic
+
+[Account Gmail]
+localrepository = LocalGmail
+remoterepository = RemoteGmail
 
 [Account Namo]
 localrepository = LocalNamo
@@ -18,10 +22,19 @@ remoterepository = RemoteNamo
 localrepository = LocalP1
 remoterepository = RemoteP1
 
+[Repository LocalGmail]
+type = Maildir
+localfolders = ~/.Mail/Gmail
+
+[Repository RemoteGmail]
+type = Gmail
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+remoteuser = tpolge@gmail.com
+remotepasseval = get_netrc_pass("imap.gmail.com")
+
 [Repository LocalNamo]
 type = Maildir
 localfolders = ~/.Mail/Namo
-autorefresh = %(refresh_interval)s
 
 [Repository RemoteNamo]
 type = IMAP

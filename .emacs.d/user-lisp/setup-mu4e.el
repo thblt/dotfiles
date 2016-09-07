@@ -49,18 +49,28 @@
                 mu4e-headers-unread-mark '("" . "✱")
                 mu4e-headers-signed-mark '("" . "")
 
+                mu4e-headers-from-or-to-prefix '("" . "→ ")
+
                 mu4e-headers-has-child-prefix '("+" . "└┬")
                 mu4e-headers-first-child-prefix '("|" . "├")
 
                 mu4e-headers-default-prefix '("" . "├")
                 
                 mu4e-headers-fields '(
-                                      (:date       . 11)
                                       (:flags      . 3)
-                                      (:from       . 25)                                      
+                                      (:human-date       . 21)
+                                      (:from-or-to . 25)                                      
                                       (:subject    . nil)
                                       )
 
+                mu4e-user-mail-address-list '(
+                                              "thblt@thb.lt"
+                                              "thibault.polge@malix.univ-paris1.fr"
+                                              "thibault.polge@univ-paris1.fr"
+                                              "thibault@thb.lt"
+                                              "tpolge@gmail.com"
+                                              )
+                
                 mu4e-context-policy 'pick-first
                 mu4e-compose-context-policy 'ask
                 mu4e-contexts
@@ -76,9 +86,9 @@
                               ( mu4e-drafts-folder      . "/Namo/Drafts" )
                               ( mu4e-trash-folder       . "/Namo/Trash" )
                               ( smtpmail-local-domain   . "thb.lt" )
-                              ( smtpmail-smtp-server    . "smtp.sfr.fr" )
-                              ( smtpmail-stream-type    . starttls )
-                              ( smtpmail-smtp-service   . 25 ) ))
+                              ( smtpmail-smtp-server    . "namo.thb.lt" )
+                              ( smtpmail-stream-type    . tls )
+                              ( smtpmail-smtp-service   . 465 ) ))
                   
                    ,(make-mu4e-context
                      :name "P1"

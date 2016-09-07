@@ -5,7 +5,7 @@
     (set-face-attribute 'default t :height 110)
     (mapc 'disable-theme custom-enabled-themes)
     (load-theme 'leuven)
-    (variable-pitch-mode)
+    (variable-pitch-mode t)
     )
   )
 

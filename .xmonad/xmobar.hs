@@ -5,7 +5,7 @@ Config {
     , border = NoBorder -- BottomB
     , lowerOnStart = True
     , commands = [
-		Run Battery        [ "--template" , "Batt: <acstatus>"
+		Run BatteryP ["BAT0"]        [ "--template" , "Batt: <acstatus>"
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
@@ -21,7 +21,6 @@ Config {
                                        , "-i"	, "<fc=#006000>Charged</fc>"
                              ] 10
         , Run Date "%H:%M" "date" 10
-        --Run DateZone "%A %_d/%B/%Y %H:%M" "fr_FR.UTF_8" "Europe/Paris" "date" 10
         , Run UnsafeStdinReader
     ] 
     , sepChar = "%"

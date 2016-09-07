@@ -10,6 +10,8 @@
   :bind ("<f1>" . helm-dash-at-point)
   )
 
+(use-package helm-projectile)
+
 ;; Helm Dash mode hooks
 
 (add-hook 'c-mode-common-hook
