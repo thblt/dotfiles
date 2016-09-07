@@ -30,6 +30,9 @@
             (eval-after-load "flyspell"
               '(diminish 'flyspell-mode))
 
+            (eval-after-load "helm-mode"
+              '(diminish 'helm-mode))
+            
             (eval-after-load "magit"
               '(diminish 'magit-mode))
             
