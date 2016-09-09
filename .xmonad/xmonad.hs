@@ -1,6 +1,13 @@
 {-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeSynonymInstances #-} 
 
+
+import qualified Codec.Binary.UTF8.String as UTF8
+import Data.Int (Int32)
 import qualified Data.Map as M
+import qualified Data.Map.Strict as SM
+import Data.Maybe (isJust)
+import qualified DBus  
+import qualified DBus.Client as DBus
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
 import System.IO
@@ -8,12 +15,13 @@ import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
-import XMonad.Hooks.DynamicLog (dynamicLogWithPP, PP (..), xmobarColor)
+import XMonad.Hooks.DynamicLog (pprWindowSet, ppSort)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Hooks.SetWMName (setWMName)
+import XMonad.Hooks.UrgencyHook (readUrgents)
 import XMonad.Layout.BinarySpacePartition (emptyBSP, ResizeDirectional(..), SelectMoveNode(..), Rotate(Rotate))
 import XMonad.Layout.BorderResize (borderResize)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull, fullscreenSupport)
@@ -25,18 +33,22 @@ import XMonad.Layout.NoFrillsDecoration
 import qualified XMonad.Layout.Renamed as XLR
 import qualified XMonad.StackSet as XSS
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
+import XMonad.Util.NamedWindows (getName)
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.Scratchpad (scratchpadManageHook, scratchpadSpawnActionCustom)
+import XMonad.Util.WorkspaceCompare (getSortByIndex)
 
 -- Computer-dependent settings.
 
 [d| myHostName = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
 
 workspacesKeys :: [KeySym]
-workspacesKeys | myHostName == "anna" = macAzertyKeys
-               | otherwise = pcAzertyKeys
+workspacesKeys | myHostName == "anna"    = macAzertyKeys
+               | myHostName == "rudiger" = pcAzertyBeKeys
+               | otherwise               = pcAzertyKeys
   where
     pcAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0] -- From AzertyConfig
+    pcAzertyBeKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0] -- From AzertyConfig
     macAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0] -- From AzertyConfig
 
 -- XMonad.
@@ -179,76 +191,69 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   where
     shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
 
-{-
-XMobar configuration.  - For consistency, xmobar isn't fully configured
-through an external file, but also with command-line parameters. This
-allows to keep things such as color scheme in a single place, and I
-probably won't be using Xmobar outside of Xmonad.
--}
+{- DBus interface -}
 
-data StatusPalette = StatusPalette {
-  sbpBg :: String       -- Background color
-  , sbpBorder :: String -- Border color
-  , sbpFg :: String     -- Default foreground color
-  , sbpAct :: String    -- Activement element foreground color
-  , sbpInact ::  String -- 
-  , sbpDis :: String
-  , sbpAlpha :: Int
-  }
+getWellKnownName :: DBus.Client -> IO ()
+getWellKnownName dbus = do
+  DBus.requestName dbus (DBus.busName_ "org.xmonad.Log")
+                [DBus.nameAllowReplacement, DBus.nameReplaceExisting, DBus.nameDoNotQueue]
+  return ()
 
-currentPalette :: StatusPalette
-currentPalette =
-  StatusPalette { 
-  sbpBg = "#000000"
-  , sbpBorder = "#999999"
-  , sbpFg = "#ffffff"
-  , sbpAct = "#ccff33"
-  , sbpInact = "#cccccc"
-  , sbpDis = "#333333"
-  , sbpAlpha = floor $ 255 * 0.80
-  }
+dbusLogger :: DBus.Client -> X () 
+dbusLogger dbus = do
 
-pp_active :: String -> String
-pp_active = xmobarColor (sbpAct currentPalette) (sbpBg currentPalette) 
+  {- Note to future self: Would you need to get Xinerama to work (report
+     screen for each workspace) look at the code of
+     XMonad.Hooks.DynamicLog.pprWindowSetXinerama -}
 
-pp_inactive :: String -> String
-pp_inactive = xmobarColor (sbpInact currentPalette) (sbpBg currentPalette) 
+  winset <- gets windowset
+  sortws <- getSortByIndex
+--  urgents <- readUrgents
+
+  -- layout description
+  let ld = description . XSS.layout . XSS.workspace . XSS.current $ winset
   
-pp_disabled :: String -> String
-pp_disabled = xmobarColor (sbpDis currentPalette) (sbpBg currentPalette) 
+      -- workspace list
+      all_ws = sortws $ XSS.workspaces winset
+      -- this workspace
+      this_ws = XSS.currentTag winset
+      -- all visible
+      vis_ws = fmap (XSS.tag . XSS.workspace) (XSS.visible winset)
 
-pp_font :: Int -> String -> String
-pp_font f s = "<fn=" ++ show f ++ ">" ++ s ++ "</fn>"
+      workspaces = fmap (\ws -> let id = getWsName ws in
+                                  (id, -- Name
+                                   0:: Int32, -- screen id (xinerama, unimplemented)
+                                   -- XSS.screen ws,
+                                   id == this_ws, -- is current
+                                   id `elem` vis_ws, -- is visible but not current (xinerama, untested)
+                                   isJust (XSS.stack ws), -- contains windows
+                                   id `elem` myHiddenWorkspaces) -- is hidden
+                        ) all_ws
+
   
-pp_unsafe :: String -> String
-pp_unsafe "" = ""
-pp_unsafe s = "<raw=" ++ (show $ length s) ++ ":" ++ s ++ "/>"
+  -- window title
+  title <- maybe (return "") (fmap show . getName) . XSS.peek $ winset
   
--- myPP :: PP
-myPP pipe = def
-  {
-    ppOutput = hPutStrLn pipe
-    
-  , ppCurrent = \w -> handleHiddenWS w $ pp_active . pp_font 1
-  , ppHidden = \w -> handleHiddenWS w $ pp_inactive
-  , ppHiddenNoWindows = \w -> handleHiddenWS w $ const (pp_disabled "·")
-  , ppTitle = pp_font 2 . pp_unsafe 
-  , ppSep = " "
-  , ppLayout =  \a -> case a of
-                        "Full" -> xmobarColor "red" (sbpBg currentPalette) "■"
-                        _ -> "" 
-  }
-  where
-    defaultLayout = "BSP" 
-    handleHiddenWS w f | w `elem` myHiddenWorkspaces = ""
-                       | otherwise = f w
-                       
+  let signal = (DBus.signal (DBus.objectPath_ "/org/xmonad/Log") (DBus.interfaceName_ "org.xmonad.Log") (DBus.memberName_ "Update")) {
+        DBus.signalBody = [
+            DBus.toVariant ld,
+            DBus.toVariant workspaces,
+            DBus.toVariant title
+            ]
+        }
+  liftIO $ DBus.emit dbus signal
+    where
+      getWsName (XSS.Workspace t _ _) = t
+
+      
 {- And now to wrap it all up -}
-
 
 main :: IO ()
 main = do
-  logPipe <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+  dbus <- DBus.connectSession
+  getWellKnownName dbus
+--  logPipe <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+  logPipe <- spawnPipe "tee $XDG_RUNTIME_DIR/.xmonad.log"
   
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
@@ -264,7 +269,8 @@ main = do
     , keys = myKeys
     , layoutHook = myLayoutHook
     , logHook = do
-        dynamicLogWithPP $ myPP logPipe
+        dbusLogger dbus
+--        dynamicLogWithPP $ myPP dbus -- logPipe
         fadeInactiveLogHook 0.95
     , manageHook = composeAll 
       [
