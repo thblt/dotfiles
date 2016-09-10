@@ -75,7 +75,6 @@ myDecoration = noFrillsDeco shrinkText def {
   where
     activeColor = "#ff0000"
     inactiveColor = "#aaaaaa"
-      
 
 myLayoutHook = smartBorders . avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
@@ -223,7 +222,6 @@ dbusLogger dbus = do
       workspaces = fmap (\ws -> let id = getWsName ws in
                                   (id, -- Name
                                    0:: Int32, -- screen id (xinerama, unimplemented)
-                                   -- XSS.screen ws,
                                    id == this_ws, -- is current
                                    id `elem` vis_ws, -- is visible but not current (xinerama, untested)
                                    isJust (XSS.stack ws), -- contains windows
