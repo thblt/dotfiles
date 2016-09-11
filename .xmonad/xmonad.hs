@@ -1,36 +1,29 @@
 {-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeSynonymInstances #-} 
 
 
-import qualified Codec.Binary.UTF8.String as UTF8
 import Data.Int (Int32)
 import qualified Data.Map as M
-import qualified Data.Map.Strict as SM
 import Data.Maybe (isJust)
 import qualified DBus  
 import qualified DBus.Client as DBus
 import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
-import System.IO
 import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
-import XMonad.Hooks.DynamicLog (pprWindowSet, ppSort)
 import XMonad.Hooks.EwmhDesktops (ewmh)
 import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, manageDocks, ToggleStruts (ToggleStruts))
 import XMonad.Hooks.ManageHelpers (isDialog)
 import XMonad.Hooks.SetWMName (setWMName)
-import XMonad.Hooks.UrgencyHook (readUrgents)
 import XMonad.Layout.BinarySpacePartition (emptyBSP, ResizeDirectional(..), SelectMoveNode(..), Rotate(Rotate))
 import XMonad.Layout.BorderResize (borderResize)
-import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook, fullscreenFull, fullscreenSupport)
+import XMonad.Layout.Fullscreen (fullscreenSupport)
 import XMonad.Layout.IfMax
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.NoFrillsDecoration
-import qualified XMonad.Layout.Renamed as XLR
 import qualified XMonad.StackSet as XSS
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
 import XMonad.Util.NamedWindows (getName)
@@ -56,33 +49,29 @@ workspacesKeys | myHostName == "anna"    = macAzertyKeys
 myWorkspaces :: [ String ]
 myWorkspaces = map show [ 1 .. 9 :: Int ]
 
+myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
--- I'm leaving this here for now, but it's not used anymore.
-data DecoTransformer = DECO deriving (Read, Show, Eq, Typeable)
-instance Transformer DecoTransformer Window where
-  transform _ x k = k (myDecoration x) (const x)
-
-myDecoration = noFrillsDeco shrinkText def {
-  decoHeight = 4
-  , activeColor = activeColor
-  , activeTextColor = activeColor
-  , activeBorderColor = activeColor
-  , inactiveColor = inactiveColor
-  , inactiveTextColor = inactiveColor
-  , inactiveBorderColor = inactiveColor
-  }
-  where
-    activeColor = "#ff0000"
-    inactiveColor = "#aaaaaa"
-
-myLayoutHook = smartBorders . avoidStruts $ mkToggle (FULL ?? EOT) $
+myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
-               . smartSpacingWithEdge 4
-               . smartBorders $
+               . smartSpacingWithEdge 4 $
                emptyBSP
+  where
+    myDecoration = noFrillsDeco shrinkText def {
+      decoHeight = 4
+      , activeColor = activeColor
+      , activeTextColor = activeColor
+      , activeBorderColor = activeColor
+      , inactiveColor = inactiveColor
+      , inactiveTextColor = inactiveColor
+      , inactiveBorderColor = inactiveColor
+      }
+      where
+        activeColor = "#ff0000"
+        inactiveColor = "#aaaaaa"
+
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -250,20 +239,17 @@ main :: IO ()
 main = do
   dbus <- DBus.connectSession
   getWellKnownName dbus
---  logPipe <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-  logPipe <- spawnPipe "tee $XDG_RUNTIME_DIR/.xmonad.log"
-  
+
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
       borderWidth = 0
     , focusedBorderColor = "#ff0000"
     , normalBorderColor = "#000000"
-    
     , clickJustFocuses = False
     , focusFollowsMouse = False
-    -- , handleEventHook = fullscreenEventHook <+> docksEventHook
-    , handleEventHook = docksEventHook    
+    --    , handleEventHook = fullscreenEventHook <+> docksEventHook
+    -- , handleEventHook = docksEventHook    
     , keys = myKeys
     , layoutHook = myLayoutHook
     , logHook = do
@@ -272,11 +258,10 @@ main = do
         fadeInactiveLogHook 0.95
     , manageHook = composeAll 
       [
-        manageDocks
+      manageDocks
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
---      , fullscreenManageHook
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , startupHook = setWMName "LG3D"
