@@ -91,24 +91,20 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
      )
   , ((modMask, xK_Escape), spawn "slock systemctl suspend")
 
-  , ((modMask, xK_Super_R), spawn "notify-send Bello")
-  
     -- Layout management
   , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
   , ((modMask .|. shiftMask , xK_space) , setLayout $ XMonad.layoutHook conf) -- Reset layouts
-  , ((modMask               , xK_h )    , sendMessage Shrink) -- %! Shrink the master area
-  , ((modMask               , xK_l )    , sendMessage Expand) -- %! Expand the master area
+  , ((modMask                           , xK_h )    , sendMessage Shrink) -- %! Shrink the master area
+  , ((modMask                           , xK_l )    , sendMessage Expand) -- %! Expand the master area
 
-  , ((modMask .|. shiftMask , xK_f )    , sendMessage ToggleStruts)
-  , ((modMask               , xK_f )    , sendMessage $ Toggle FULL)
+  , ((modMask .|. shiftMask             , xK_f )    , sendMessage ToggleStruts)
+  , ((modMask                           , xK_f )    , sendMessage $ Toggle FULL)
 
   -- Window management within layout  
   , ((modMask .|. shiftMask,              xK_h ), sendMessage $ ExpandTowards L) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_j ), sendMessage $ ExpandTowards D) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_k ), sendMessage $ ExpandTowards U) -- BSP-Specific
   , ((modMask .|. shiftMask,              xK_l ), sendMessage $ ExpandTowards R) -- BSP-Specific
-
-  {-- I never used these:
   , ((modMask .|. controlMask,            xK_h ), sendMessage $ ShrinkFrom L) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_j ), sendMessage $ ShrinkFrom D) -- BSP-Specific
   , ((modMask .|. controlMask,            xK_k ), sendMessage $ ShrinkFrom U) -- BSP-Specific
@@ -142,7 +138,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((0, xF86XK_AudioLowerVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2-; " ++ shNotifyVolume )
   , ((0, xF86XK_AudioRaiseVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2+; " ++ shNotifyVolume)
   , ((0, xF86XK_AudioMute ), spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
-  , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" )
+  , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" ) 
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
   , ((0, xF86XK_KbdBrightnessUp), spawn "kbdlight up 10%")
   , ((0, xF86XK_KbdBrightnessDown), spawn "kbdlight down 10%")
