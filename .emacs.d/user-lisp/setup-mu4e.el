@@ -108,19 +108,22 @@
                                ( smtpmail-smtp-service   . 465 ) 
                    )))
        
-                mu4e-bookmarks `( ("m:/P1/INBOX OR m:/Namo/INBOX"
-                                   "Global inbox"            ?i)
-
-                                  ("m:/Namo/emetis"
-                                   "emetis"         ?e)
-
-                                  ("m:/Namo/historiens-sante"
-                                   "historiens-sante" ?h)
+                mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX)"
+                                   "Global inbox"            ?I)
                                   
-                                  ("m:/Namo/theuth"
-                                   "theuth"         ?t)
+                                  ("(flag:unread AND (m:/P1/INBOX OR m:Namo/INBOX))"
+                                   "Unread inbox"            ?i)
+
+                                  ("(m:/Namo/emetis)"
+                                   "emetis"                  ?e)
+
+                                  ("(m:/Namo/historiens-sante)"
+                                   "historiens-sante"        ?h)
                                   
-                                  ("flag:flagged"
+                                  ("(m:/Namo/theuth)"
+                                   "theuth"                  ?t)
+                                  
+                                  ("(flag:flagged)"
                                    "Flagged"                 ?f)
                                   ) )
           (add-hook 'mu4e-view-mode-hook (visual-line-mode t))
