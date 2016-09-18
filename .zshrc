@@ -20,10 +20,12 @@ alias grep='grep --color=auto'
 
 # Misc aliases
 
+alias bc="bc -l"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
+alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam" 
+# SSH host
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
-alias bc="bc -l"
 
 function mkcd() {
 if mkdir -p "$@"

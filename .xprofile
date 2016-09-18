@@ -20,6 +20,7 @@ if [ "xmonad" == "$1" ]; then
     fi
          
 	compton --config ~/.xmonad/compton.conf &
+    mv ~/.cozy.log ~/.cozy.log.old ; cozy-desktop sync > ~/.cozy.log &
 	eval $(keychain --eval)
 	keynav &
 	light-locker &
