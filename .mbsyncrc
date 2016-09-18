@@ -1,0 +1,43 @@
+IMAPAccount namo
+Host namo.thb.lt
+User thblt
+AuthMechs LOGIN
+PassCmd "netrc_pass namo.thb.lt"
+SSLType IMAPS
+
+ImapStore namo-remote
+Account namo
+
+MaildirStore namo-local
+Path ~/.Mail/Namo/
+Inbox ~/.Mail/Namo/INBOX
+
+Channel namo
+Master :namo-remote:
+Slave :namo-local:
+# Include everything
+Patterns *
+Create Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+IMAPAccount p1
+Host imap.univ-paris1.fr
+User tpolge
+AuthMechs LOGIN
+PassCmd "netrc_pass imap.univ-paris1.fr"
+SSLType IMAPS
+
+ImapStore p1-remote
+Account p1
+
+MaildirStore p1-local
+Path ~/.Mail/P1/
+Inbox ~/.Mail/P1/INBOX
+
+Channel p1
+Master :p1-remote:
+Slave :p1-local:
+Patterns *
+Create Both
+SyncState *
