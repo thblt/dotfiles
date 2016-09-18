@@ -3,5 +3,22 @@
     "global" : {
       "ui-type" : "essential"
     }
+  },
+  "data-sink" : {
+    "global" : {
+      "disabled-plugins" : [
+        "SynapseCalculatorPlugin",
+        "SynapseImgUrPlugin",
+        "SynapseLaunchpadPlugin",
+        "SynapseZeitgeistRelated",
+        "SynapseChromiumPlugin",
+        "SynapseGnomeBookmarksPlugin",
+        "SynapseSelectionPlugin",
+        "SynapseSshPlugin",
+        "SynapseZeitgeistPlugin",
+        "SynapseOpenSearchPlugin",
+        "SynapseFileOpPlugin"
+      ]
+    }
   }
 }
