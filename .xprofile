@@ -10,7 +10,7 @@ if [ "xmonad" == "$1" ]; then
 
     # Keyboard setup
     if [ "anna" == `hostname` ]; then
-       setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin -option caps:ctrl_modifier
+       setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
     elif [ "rudiger" == `hostname` ]; then
         setxkbmap be -option compose:menu
 		numlockx on &
@@ -20,6 +20,7 @@ if [ "xmonad" == "$1" ]; then
     fi
          
 	compton --config ~/.xmonad/compton.conf &
+    mv ~/.cozy.log ~/.cozy.log.old ; cozy-desktop sync > ~/.cozy.log &
 	eval $(keychain --eval)
 	keynav &
 	light-locker &
