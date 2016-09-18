@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: cl (common-lisp)
+# --
+#+BEGIN_SRC lisp
+$0
+#+END_SRC

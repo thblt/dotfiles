@@ -60,7 +60,13 @@
   )
 (use-package writeroom-mode)            ; Distraction-free mode
 (use-package yasnippet                  ; Snippets
+  :config (add-to-list 'yas-snippet-dirs "~./emacs.d/snippets/")
   :init (yas-global-mode)
+  )
+(use-package auto-yasnippet
+  :bind ( ("H-w" . aya-create)
+          ("H-y" . aya-open-line)
+          )
   )
 
 ; Save everything on losing focus @TODO Make silent:

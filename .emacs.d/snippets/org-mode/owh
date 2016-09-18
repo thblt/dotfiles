@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: owh (output-with-highlight)
+# --
+#+BEGIN_OWH
+$0
+#+END_SRC
