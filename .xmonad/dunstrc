@@ -1,5 +1,5 @@
 [global]
-    font = "Monospace 8"
+    font = "DejaVu Sans Mono for Powerline Nerd Font 8"
     allow_markup = yes
     format = "<b>%s %p</b>\n%b"
     sort = yes
@@ -32,16 +32,16 @@
     # context = mod4+s
 
 [urgency_low]
-    background = "#ffffff"
+    background = "#bbbbbb"
     foreground = "#000000"
     timeout = 5
 
 [urgency_normal]
-    background = "#94DBFF"
+    background = "#ffffff"
     foreground = "#000000"
     timeout = 10
 
 [urgency_critical]
-    background = "#ff9999"
+    background = "#ff9900"
     foreground = "#000000"
     timeout = 60
