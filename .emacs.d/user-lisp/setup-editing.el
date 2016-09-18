@@ -27,6 +27,15 @@
 (use-package nlinum ; More efficient line numbering, especially on large files with huge foldings (eg org)
   :config (nlinum-mode)
   )
+
+(eval-after-load "org"
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-indent-mode t)
+                             (visual-line-mode t)
+                             )
+            )
+  )
+
 (use-package rainbow-delimiters)        ; Colorize parentheses etc by depth.
 (use-package smart-tabs-mode
 ;;  :init (add-hook 'c-mode-common-hook (lambda ()
