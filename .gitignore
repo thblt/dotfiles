@@ -10,7 +10,6 @@
 .config/gtk-3.0/bookmarks
 .emacs.d/.org-id-locations
 .emacs.d/_customize.el
-.emacs.d/abbrev_defs
 .emacs.d/auto-save-list
 .emacs.d/elpa
 .emacs.d/eshell
