@@ -257,6 +257,7 @@ main = do
       manageDocks
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
+      , className =? "zbar"            --> doFloat
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
         ]
     , modMask = mod4Mask -- ``Windows'' key.
