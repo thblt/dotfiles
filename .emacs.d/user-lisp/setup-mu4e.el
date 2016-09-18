@@ -27,7 +27,7 @@
           (setq mu4e-html2text-command 'mu4e-shr2text
            
                 mu4e-maildir "~/.Mail/"
-                mu4e-get-mail-command "offlineimap"
+                mu4e-get-mail-command "mbsync -a"
                 mu4e-update-interval 60 ;; seconds
                 message-send-mail-function 'smtpmail-send-it
 
