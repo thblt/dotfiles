@@ -8,7 +8,9 @@
 *.un~
 .DS_Store
 .config/gtk-3.0/bookmarks
+.emacs.d/.mc-lists.el
 .emacs.d/.org-id-locations
+.emacs.d/.python-environments/
 .emacs.d/_customize.el
 .emacs.d/auto-save-list
 .emacs.d/elpa
@@ -16,7 +18,9 @@
 .emacs.d/games
 .emacs.d/ido.last
 .emacs.d/irony
+.emacs.d/network-security.data
 .emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
 .emacs.d/recentf
 .emacs.d/url
 .vim/bundle/**
