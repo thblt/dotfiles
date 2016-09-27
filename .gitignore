@@ -6,6 +6,7 @@
 *.pyenv
 *.swp
 *.un~
+./.emacs.d/abbrev_defs
 .DS_Store
 .config/gtk-3.0/bookmarks
 .emacs.d/.mc-lists.el
