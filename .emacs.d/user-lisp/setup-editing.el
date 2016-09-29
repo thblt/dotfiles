@@ -12,6 +12,7 @@
          ("C-=" . avy-goto-line)
          )
   )
+(use-package centered-cursor-mode)
 (use-package editorconfig               ; Normalized text style file format
   :init (add-hook 'prog-mode-hook (editorconfig-mode 1))
   (add-hook 'text-mode-hook (editorconfig-mode 1))
@@ -24,16 +25,25 @@
   :config (setq linum-relative-current-symbol ""
                 linum-relative-with-helm nil)
   )
+(use-package multiple-cursors)
 (use-package nlinum ; More efficient line numbering, especially on large files with huge foldings (eg org)
   :config (nlinum-mode)
   )
 
 (eval-after-load "org"
-  (add-hook 'org-mode-hook (lambda ()
-                             (org-indent-mode t)
-                             (visual-line-mode t)
+  (progn
+    (setq org-hide-leading-stars t
+          org-catch-invisible-edits t ; Avoid editing folded contents
+          org-hide-emphasis-markers t
+          org-src-fontify-natively t  ; Syntax highlighting in src blocks. Kind of a lighter MMM.
+          )
+    (add-hook 'org-mode-hook (lambda ()
+                               (org-indent-mode t)
+                               (visual-line-mode t)
+                               (flyspell-mode t)
                              )
-            )
+              )
+    )
   )
 
 (use-package rainbow-delimiters)        ; Colorize parentheses etc by depth.
@@ -47,9 +57,12 @@
 (use-package smartparens-config         ; Be smart with parentheses
   :ensure smartparens
   :init (progn
-          (smartparens-global-mode t)
+          (smartparens-global-mode )
           )
   )
+
+(use-package typo)
+
 (use-package undo-tree
 	     :config (diminish 'undo-tree-mode)
 	     )

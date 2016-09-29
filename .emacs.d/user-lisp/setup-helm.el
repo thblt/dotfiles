@@ -1,18 +1,39 @@
 (require 'use-package)
 
-(use-package helm
-  :bind ("C-x C-b" . helm-buffers-list)
+(use-package swiper
+  :init (ivy-mode)
+  :diminish (ivy-mode)
+  )
+ 
+ (use-package counsel
+   :bind (
+          ("M-x" . counsel-M-x)
+          ("C-x C-f" . counsel-find-file)
+          )
+   )
+ 
+(use-package counsel-projectile
+  :init (counsel-projectile-on)
+  )
+ 
+(use-package swiper
+  :bind (("C-s" . swiper))
   )
 
-(use-package helm-ag)  ; The silver searcher
-
-(use-package helm-dash ; Access Dash docsets through Helm.
-  :bind ("<f1>" . helm-dash-at-point)
-  )
-
-(use-package helm-projectile)
-
-;; Helm Dash mode hooks
+;; (use-package helm
+;;   :init (helm-mode t)
+;;   :bind (
+;;          ("M-x"   . helm-M-x)
+;;          ("C-x C-f" . helm-find-files)
+;;          )
+;;   )
+;; 
+;; (use-package helm-dash ; Access Dash docsets through Helm.
+;;   :bind ("<f1>" . helm-dash-at-point)
+;;   )
+;; 
+;; (use-package helm-projectile
+;;   )
 
 (add-hook 'c-mode-common-hook
           (lambda ()
@@ -44,9 +65,10 @@
             )
           )
 
-(add-hook 'python-mode-hook (lambda ()
-                              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
-                              ) 
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Python 2" "Python 3"))
+            ) 
           )
 
 (provide 'setup-helm)
