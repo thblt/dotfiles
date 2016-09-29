@@ -1,6 +1,5 @@
 {-# LANGUAGE MultiParamTypeClasses, TemplateHaskell, TypeSynonymInstances #-} 
 
-
 import Data.Int (Int32)
 import qualified Data.Map as M
 import Data.Maybe (isJust)
@@ -89,7 +88,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         , "fi"
         ]
      )
-  , ((modMask, xK_Escape), spawn "slock systemctl suspend")
+  , ((modMask, xK_Escape), spawn "light-locker-command --lock")
 
     -- Layout management
   , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
@@ -258,6 +257,7 @@ main = do
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
       , className =? "zbar"            --> doFloat
+      , className =? "Zeal"            --> doFloat 
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
         ]
     , modMask = mod4Mask -- ``Windows'' key.
