@@ -64,8 +64,13 @@
 (use-package typo)
 
 (use-package undo-tree
-	     :config (diminish 'undo-tree-mode)
-	     )
+  :config (progn (diminish 'undo-tree-mode)
+                 (setq
+                  undo-tree-auto-save-history t
+                  undo-tree-visualizer-diff t
+                  )
+                 )
+  )
 (use-package unfill                      ; Unfill
   :bind (
          ("M-Q" . unfill-paragraph)
