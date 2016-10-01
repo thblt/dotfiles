@@ -35,6 +35,7 @@
                 mu4e-confirm-quit nil
                 mu4e-hide-index-messages t
                 mu4e-split-view 'vertical
+                mu4e-headers-include-related t  ; Include related messages in threads
                 mu4e-view-show-images t
 
                 mu4e-use-fancy-chars t
