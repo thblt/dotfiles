@@ -31,7 +31,8 @@
                 mu4e-change-filenames-when-moving t  ; Required for mbsync
                 mu4e-update-interval 60 ;; seconds
                 message-send-mail-function 'smtpmail-send-it
-
+                mu4e-headers-auto-update t
+                
                 mu4e-confirm-quit nil
                 mu4e-hide-index-messages t
                 mu4e-split-view 'vertical
