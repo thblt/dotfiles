@@ -26,6 +26,8 @@
  inhibit-startup-screen t   ; Skip the startup screens
 
  initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
+
+ disabled-command-function nil ; Do not warn about "confusing" commands
  )
 
 ;;; Sanity
