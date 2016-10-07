@@ -118,7 +118,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask, xK_Tab ), windows XSS.focusUp ) -- Focus preview in stack 
   , ((modMask, xK_m ), windows XSS.focusMaster ) -- Focus master 
   , ((modMask, xK_Return), windows XSS.swapMaster) -- Swap current and master
-    
+
     -- floating layer support
   , ((modMask, xK_t     ), withFocused $ windows . XSS.sink) -- %! Push window back into tiling
     
@@ -256,6 +256,7 @@ main = do
       manageDocks
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
+      , className =? "Xdialog"         --> doFloat
       , className =? "zbar"            --> doFloat
       , className =? "Zeal"            --> doFloat 
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
