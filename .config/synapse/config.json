@@ -17,7 +17,8 @@
         "SynapseSshPlugin",
         "SynapseZeitgeistPlugin",
         "SynapseOpenSearchPlugin",
-        "SynapseFileOpPlugin"
+        "SynapseFileOpPlugin",
+        "SynapseSystemManagementPlugin"
       ]
     }
   }
