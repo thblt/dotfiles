@@ -1,1 +1,0 @@
-It *seems* to work by simply adding acpi_osi=Darwin to kernel parameters.

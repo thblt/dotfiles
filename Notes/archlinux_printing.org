@@ -1,5 +1,0 @@
-Install ghostscript manually.
-
-AUR packages:
- brother-dcp7060d
- samsung-unified-driver

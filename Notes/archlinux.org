@@ -1,0 +1,29 @@
+#+TITLE: Divers arch
+
+* Powerbutton
+
+/etc/systemd/logind.conf
+
+See https://wiki.archlinux.org/index.php/Power_management#ACPI_events
+
+* Network manager and wired connections
+
+Disable dhcpcd
+* Java anti-aliasing
+
+Add to /etc/environment
+
+_JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on'
+
+Other values for this setting can be found at https://wiki.archlinux.org/index.php/Java_Runtime_Environment_fonts#Anti-aliasing
+
+* Printing
+archlinux_printing.org
+Install ghostscript manually.
+
+AUR packages:
+ brother-dcp7060d
+ samsung-unified-driver
+* Fix Macbook Air resume
+It *seems* to work by simply adding acpi_osi=Darwin to kernel parameters.
+* Fix Radeon flickering on the Mac Pro
