@@ -1,22 +1,71 @@
-URxvt*font: xft:DejaVu Sans Mono for Powerline Nerd Font:pixelsize=11
-URxvt*foreground: #ffffff
-URxvt*background: #333333
-URxvt*color0:  #2E3436
-URxvt*color1:  #a40000
-URxvt*color2:  #4E9A06
-URxvt*color3:  #C4A000
-URxvt*color4:  #3465A4
-URxvt*color5:  #75507B
-URxvt*color6:  #ce5c00
-URxvt*color7:  #babdb9
-URxvt*color8:  #555753
-URxvt*color9:  #EF2929
-URxvt*color10: #8AE234
-URxvt*color11: #FCE94F
-URxvt*color12: #729FCF
-URxvt*color13: #AD7FA8
-URxvt*color14: #fcaf3e
-URxvt*color15: #EEEEEC
+#if HOST == rudiger
+#define FONT_SIZE 12
+#else
+#define FONT_SIZE 11
+#endif
+
+
+
+URxvt*font: xft:DejaVu Sans Mono for Powerline Nerd Font:pixelsize=FONT_SIZE
+URxvt*boldFont: xft:DejaVu Sans Mono for Powerline Nerd Font:style=Bold:pixelsize=FONT_SIZE
+
+! URxvt*foreground: #ffffff
+! URxvt*background: #333333
+! URxvt*color0:  #2E3436
+! URxvt*color1:  #a40000
+! URxvt*color2:  #4E9A06
+! URxvt*color3:  #C4A000
+! URxvt*color4:  #3465A4
+! URxvt*color5:  #75507B
+! URxvt*color6:  #ce5c00
+! URxvt*color7:  #babdb9
+! URxvt*color8:  #555753
+! URxvt*color9:  #EF2929
+! URxvt*color10: #8AE234
+! URxvt*color11: #FCE94F
+! URxvt*color12: #729FCF
+! URxvt*color13: #AD7FA8
+! URxvt*color14: #fcaf3e
+! URxvt*color15: #EEEEEC
+
+! special
+URxvt*foreground:   #c5c8c6
+URxvt*background:   #1d1f21
+URxvt*cursorColor:  #c5c8c6
+
+! black
+URxvt*color0:       #1d1f21
+URxvt*color8:       #969896
+
+! red
+URxvt*color1:       #cc6666
+URxvt*color9:       #cc6666
+
+! green
+URxvt*color2:       #b5bd68
+URxvt*color10:      #b5bd68
+
+! yellow
+URxvt*color3:       #f0c674
+URxvt*color11:      #f0c674
+
+! blue
+URxvt*color4:       #81a2be
+URxvt*color12:      #81a2be
+
+! magenta
+URxvt*color5:       #b294bb
+URxvt*color13:      #b294bb
+
+! cyan
+URxvt*color6:       #8abeb7
+URxvt*color14:      #8abeb7
+
+! white
+URxvt*color7:       #c5c8c6
+URxvt*color15:      #ffffff
+
+
 URxvt*scrollBar: false
 
 URxvt*scrollstyle: plain
