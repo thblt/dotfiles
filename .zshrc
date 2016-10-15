@@ -17,7 +17,6 @@ antigen bundle pip
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
-
 antigen theme agnoster
 
 antigen apply
