@@ -1,16 +1,27 @@
 # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
-# Run tmux if not already in it AND we're connected through SSH
-# [[ -z "$TMUX" ]] && [[ ! -z $SSH_CONNECTION  ]] && exec tmux
 
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-ZSH_THEME="agnoster"
-export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
-plugins=(brew fancy-ctrl-z git pip)
+# Install antigen if needed
+if [ ! -d "$HOME/.antigen" ]; then
+	git clone https://github.com/zsh-users/antigen.git $HOME/.antigen
+fi
+
+source ~/.antigen/antigen.zsh
+
+antigen use oh-my-zsh
+
+antigen bundle common-aliases
+antigen bundle fancy-ctrl-z
+antigen bundle git
+antigen bundle pip
+
+antigen theme agnoster
+
+antigen apply
 
 # Variables
 
+export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
 alias e="${EDITOR} --no-wait" # Shorthand 
 alias ee="${EDITOR} --create-frame --no-wait" # Shorthand 
@@ -29,7 +40,7 @@ alias k9="ssh thblt@k9.thb.lt"
 
 function mkcd() {
 if mkdir -p "$@"
-	then cd "$@"
+	then cd "$"@
 fi
 }
 
@@ -48,16 +59,6 @@ if command -v virtualenvwrapper.sh > /dev/null; then
 	export WORKON_HOME=~/.virtualenvs
 	source `which virtualenvwrapper.sh`
 fi
-
-# Load oh my zsh
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-	git clone https://github.com/robbyrussell/oh-my-zsh .oh-my-zsh
-fi
-	
-DISABLE_AUTO_UPDATE="true"
-source $ZSH/oh-my-zsh.sh
-
-# oh my zsh overrides. Must be *below* the source command
 
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
