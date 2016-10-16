@@ -71,7 +71,6 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
         activeColor = "#ff0000"
         inactiveColor = "#aaaaaa"
 
-
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
