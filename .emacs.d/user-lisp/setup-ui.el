@@ -28,6 +28,15 @@
          ("z"        . repeat)
          ("i"        . god-local-mode)
          )
+  :config
+  (defun my-update-cursor ()
+    (setq cursor-type (if (or god-local-mode buffer-read-only)
+                          'box
+                        'bar)))
+
+(add-hook 'god-mode-enabled-hook 'my-update-cursor)
+(add-hook 'god-mode-disabled-hook 'my-update-cursor)
+
   )
 
 (use-package hydra)
