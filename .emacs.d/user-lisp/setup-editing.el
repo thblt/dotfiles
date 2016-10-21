@@ -5,6 +5,9 @@
                             (abbrev-mode t) ) )
 
 (use-package aggressive-indent)
+(use-package auto-dictionary
+  :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
+  )
 (use-package anzu)                      ; Show matches count/current match # in mode line
 (use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
   :bind (("C-:" . avy-goto-char-timer)
