@@ -21,6 +21,14 @@ antigen theme agnoster
 
 antigen apply
 
+# Fixing some plugins
+
+unalias rm # common-aliases
+
+# Prefix-based history search with up and down arrow
+bindkey '^[[A' up-line-or-search                                                
+bindkey '^[[B' down-line-or-search]]]]
+
 # Variables
 
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
