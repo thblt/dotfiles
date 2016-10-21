@@ -17,6 +17,7 @@
 
 ;; General: common minor modes and utilities
 ;; (require 'setup-evil)
+(require 'setup-git)
 (require 'setup-helm)
 (require 'setup-modeline)
 
