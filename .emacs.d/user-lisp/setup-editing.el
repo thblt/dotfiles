@@ -63,6 +63,7 @@
 (use-package typo)
 
 (use-package undo-tree
+  :init (global-undo-tree-mode)
   :config (progn (diminish 'undo-tree-mode)
                  (setq
                   undo-tree-auto-save-history t
