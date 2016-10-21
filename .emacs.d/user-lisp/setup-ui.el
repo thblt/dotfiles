@@ -22,6 +22,14 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(use-package god-mode
+  :bind (("<escape>" . god-local-mode)
+         :map god-local-mode-map
+         ("z"        . repeat)
+         ("i"        . god-local-mode)
+         )
+  )
+
 (use-package hydra)
 
 (use-package neotree                    ; FS sidebar à la NERDTree
