@@ -11,7 +11,7 @@
                             ; on some syntaxes, see below)
  comment-empty-lines t      ; 
  reb-re-syntax 'string      ; String syntax for re-builder
-
+ 
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
  browse-url-generic-args '("xdg-open")
@@ -20,6 +20,7 @@
  ;; https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
  
  ;; General interface improvements
+ cursor-type 'bar           ; Nicer cursor
  vc-follow-symlinks t       ; Always follow symlinks to
                             ; version-controlled files.
  use-dialog-box nil         ; Always use the minibuffer for prompts
