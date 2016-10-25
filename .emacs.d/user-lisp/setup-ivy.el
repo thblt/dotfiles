@@ -1,6 +1,6 @@
 (require 'use-package)
 
-(use-package swiper
+(use-package ivy
   :init (ivy-mode)
   :diminish (ivy-mode)
   )
@@ -11,15 +11,15 @@
           ("C-x C-f" . counsel-find-file)
           )
    )
+
+(use-package swiper
+  :bind (("C-s" . swiper))  
+  )
  
 (use-package counsel-projectile
   :init (counsel-projectile-on)
   )
  
-(use-package swiper
-  :bind (("C-s" . swiper))
-  )
-
 ;; (use-package helm
 ;;   :init (helm-mode t)
 ;;   :bind (
@@ -71,4 +71,4 @@
             ) 
           )
 
-(provide 'setup-helm)
+(provide 'setup-ivy)

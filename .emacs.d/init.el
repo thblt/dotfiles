@@ -13,13 +13,13 @@
 ;; Fundamentals: defaults, look and feel, general editing
 (require 'init-defaults)
 (require 'setup-ui)
+(require 'setup-modeline)
 (require 'setup-editing)
 
 ;; General: common minor modes and utilities
-;; (require 'setup-evil)
+;; (require 'setup-evil) ;; Don't be evil
 (require 'setup-git)
-(require 'setup-helm)
-(require 'setup-modeline)
+(require 'setup-ivy)
 
 ;; Languagues and major modes
 (require 'setup-programming)
