@@ -1,28 +1,29 @@
 (use-package spaceline-config
   :ensure spaceline
   :config
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
-        powerline-default-separator   'wave)
+  (setq ;; spaceline-highlight-face-func 'spaceline-highlight-face-evil-state
+   powerline-default-separator   'wave
+   )
 
   ;; Segments
 
-  (spaceline-compile "not-main"
-                     '( ; Left
-                       (evil-state :face highlight-face)
-                       (projectile-root)
-                       (remote-host)
-                       (buffer-id)
-                       (which-function)
-                       (major-mode)
-                       (minor-modes :when active)
-                       )
-                     '( ; Right
-                       (version-control :when active)
-                       (battery :when active)
-                       )
-                     ) 
-  (spaceline-spacemacs-theme)
-  (spaceline-helm-mode)
+  ;; (spaceline-compile "not-main"
+  ;;                    '( ; Left
+  ;;                      (evil-state :face highlight-face)
+  ;;                      (projectile-root)
+  ;;                      (remote-host)
+  ;;                      (buffer-id)
+  ;;                      (which-function)
+  ;;                      (major-mode)
+  ;;                      (minor-modes :when active)
+  ;;                      )
+  ;;                    '( ; Right
+  ;;                      (version-control :when active)
+  ;;                      (battery :when active)
+  ;;                      )
+  ;;                    ) 
+  (spaceline-emacs-theme)
+;;  (spaceline-helm-mode)
   )
 
 (use-package diminish
