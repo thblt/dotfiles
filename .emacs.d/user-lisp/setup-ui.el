@@ -9,7 +9,6 @@
 (load-theme 'spacemacs-dark)
 
 ;; Fonts
-
 (setq thblt/base-font-size 090)
 (when (string-prefix-p  "rudiger" system-name)
   (setq thblt/base-font-size 120)
@@ -17,6 +16,15 @@
 
 (setq default-frame-alist '((font . "DejaVu Sans Mono for Powerline Nerd Font")))
 (set-face-attribute 'default t :height thblt/base-font-size)
+
+
+;; Smooth(er) scrolling
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)) ;; one line at a time
+      mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+      mouse-wheel-follow-mouse 't ;; scroll window under mouse
+    
+      scroll-step 1 ;; keyboard scroll one line at a time
+      )
 
 ;; UI elements
 
@@ -45,6 +53,10 @@
 
 (use-package neotree                    ; FS sidebar à la NERDTree
   :bind ("<f2>" . neotree-toggle)
+  )
+
+(use-package recentf
+  :init (recentf-mode)
   )
 
 (use-package windmove
