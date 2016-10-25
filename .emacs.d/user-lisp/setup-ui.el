@@ -1,10 +1,12 @@
 (require 'use-package)
 
 ;; Themes
-(use-package alect-themes    :defer t)
+(use-package monokai-theme   :defer t)
 (use-package solarized-theme :defer t)
+(use-package spacemacs-theme :defer t)
 (use-package zenburn-theme   :defer t)
-(load-theme 'leuven)
+
+(load-theme 'spacemacs-dark)
 
 ;; Fonts
 
