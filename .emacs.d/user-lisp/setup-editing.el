@@ -15,11 +15,15 @@
          ("C-=" . avy-goto-line)
          )
   )
+(use-package clipmon                    ; Interact with system clipboard
+  :init (clipmon-mode t)                ; Clipboard manager mode
+  )
 (use-package editorconfig               ; Normalized text style file format
   :init (add-hook 'prog-mode-hook (editorconfig-mode 1))
   (add-hook 'text-mode-hook (editorconfig-mode 1))
   )
 (use-package expand-region)             ; Expand region by semantic units
+(use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing)
 (use-package highlight-indentation)     ; Show indent level markers
 (use-package linum-relative             ; Relative line numbers
   :init (add-hook 'prog-mode-hook
