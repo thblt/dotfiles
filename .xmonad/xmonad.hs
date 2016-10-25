@@ -9,6 +9,7 @@ import Graphics.X11.ExtraTypes.XF86
 import Language.Haskell.TH
 import System.Posix.Unistd (getSystemID, SystemID (nodeName) )
 import XMonad
+import XMonad.Actions.CycleWS (nextWS, prevWS)
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import XMonad.Hooks.EwmhDesktops (ewmh)
@@ -173,6 +174,14 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   where
     shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
 
+myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
+    [
+      ((0, 10), const $ prevWS) -- Three-finger left swipe
+    , ((0, 11), const $ nextWS) -- Three finger right swipe
+    ]
+
+
 {- DBus interface -}
 
 getWellKnownName :: DBus.Client -> IO ()
@@ -245,10 +254,11 @@ main = do
     --    , handleEventHook = fullscreenEventHook <+> docksEventHook
     , handleEventHook = docksEventHook    
     , keys = myKeys
+    , mouseBindings = myMouseBindings
     , layoutHook = myLayoutHook
     , logHook = do
         dbusLogger dbus
---        dynamicLogWithPP $ myPP dbus -- logPipe
+--        dynamicLogWithPP$ myPP dbus -- logPipe
         fadeInactiveLogHook 0.95
     , manageHook = composeAll 
       [
