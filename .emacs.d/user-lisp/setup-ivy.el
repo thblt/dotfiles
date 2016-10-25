@@ -13,28 +13,13 @@
    )
 
 (use-package swiper
-  :bind (("C-s" . swiper))  
+  :bind (("C-s" . swiper))
   )
  
 (use-package counsel-projectile
   :init (counsel-projectile-on)
   )
  
-;; (use-package helm
-;;   :init (helm-mode t)
-;;   :bind (
-;;          ("M-x"   . helm-M-x)
-;;          ("C-x C-f" . helm-find-files)
-;;          )
-;;   )
-;; 
-;; (use-package helm-dash ; Access Dash docsets through Helm.
-;;   :bind ("<f1>" . helm-dash-at-point)
-;;   )
-;; 
-;; (use-package helm-projectile
-;;   )
-
 (add-hook 'c-mode-common-hook
           (lambda ()
             (setq-local helm-dash-docsets '("Boost" "C" "C++" "Qt"))
