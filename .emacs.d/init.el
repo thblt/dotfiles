@@ -19,7 +19,8 @@
 ;; General: common minor modes and utilities
 ;; (require 'setup-evil) ;; Don't be evil
 (require 'setup-git)
-(require 'setup-ivy)
+;;(require 'setup-ivy)
+(require 'setup-helm)
 
 ;; Languagues and major modes
 (require 'setup-programming)
