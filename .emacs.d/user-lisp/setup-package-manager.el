@@ -8,7 +8,7 @@
       package-archive-priorities '(
                                    ("melpa-stable" . 20)
                                    ("gnu"          . 15)
-                                   ("melpa"        . 10)
+                                   ("melpa"        . 100)
                                    ))
       ;; TODO This is an experiment: I'm not sure putting GNU above
       ;; Melpa unstable is a good idea: I don't know if GNU packages

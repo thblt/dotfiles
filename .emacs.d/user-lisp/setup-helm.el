@@ -1,25 +1,35 @@
 (require 'use-package)
 
-(use-package ivy
-  :config (setq ivy-use-virtual-buffers t)
-  :init (ivy-mode)
-  :diminish (ivy-mode)
-  )
-
-(use-package counsel
+(use-package helm
+  :init (helm-mode t)
   :bind (
-         ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
+         ("M-x" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
          )
   )
 
-(use-package swiper
-  :bind (("C-s" . swiper))
-  )
+(use-package swiper-helm)
 
-(use-package counsel-projectile
-  :init (counsel-projectile-on)
-  )
+(use-package helm-projectile)
+
+(use-package helm-dash
+     :bind (("<f1>" . helm-dash-at-point))
+     )
+
+;; (use-package counsel
+;;   :bind (
+;;          ("M-x" . counsel-M-x)
+;;          ("C-x C-f" . counsel-find-file)
+;;          )
+;;   )
+;; 
+;; (use-package swiper-helm
+;;   :bind (("C-s" . swiper))
+;;   )
+;; 
+;; (use-package counsel-projectile
+;;   :init (counsel-projectile-on)
+;;   )
 
 (add-hook 'c-mode-common-hook
           (lambda ()
@@ -57,4 +67,4 @@
             )
           )
 
-(provide 'setup-ivy)
+(provide 'setup-helm)
