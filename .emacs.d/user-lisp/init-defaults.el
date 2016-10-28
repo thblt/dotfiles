@@ -9,22 +9,25 @@
  tab-width 4                ; Set tab stops
  indent-tabs-mode nil       ; Default to spaces for indent (smart tabs
                             ; on some syntaxes, see below)
- comment-empty-lines t      ; 
+ comment-empty-lines t      ;
  reb-re-syntax 'string      ; String syntax for re-builder
- 
+
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
  browse-url-generic-args '("xdg-open")
  ;; setsid xdg-open prevents emacs from killing xdg-open before it
  ;; actually opened anything.  see
  ;; https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open
- 
+
  ;; General interface improvements
- cursor-type 'bar           ; Nicer cursor
- vc-follow-symlinks t       ; Always follow symlinks to
-                            ; version-controlled files.
- use-dialog-box nil         ; Always use the minibuffer for prompts
- inhibit-startup-screen t   ; Skip the startup screens
+ cursor-type 'bar               ; Nicer cursor
+ enable-recursive-minibuffers t ; Yeah recursion
+ inhibit-startup-screen t       ; Skip the startup screens
+ use-dialog-box nil             ; Always use the minibuffer for prompts
+ vc-follow-symlinks t           ; Always follow symlinks to
+                                ; version-controlled files.
+
+
 
  initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
 
@@ -34,7 +37,7 @@
 ;;; Sanity
 (fset 'yes-or-no-p 'y-or-n-p) ;; y/n instead of yes/no
 
-(setq backup-directory-alist                  ; Autosave and backups in /tmp/ 
+(setq backup-directory-alist                  ; Autosave and backups in /tmp/
       `((".*" . ,temporary-file-directory))
       auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t))
@@ -45,7 +48,7 @@
 (load custom-file)
 
 ;; OS-X specific settings
-(when (string= system-type 'darwin) 
+(when (string= system-type 'darwin)
   ;; Don't use alt, cmd is meta
   (setq mac-option-modifier 'nil
         mac-command-modifier 'meta)
@@ -54,14 +57,12 @@
   (global-set-key (kbd "<help>") 'overwrite-mode)
 
   ; Fix load-path for mu4e (not sure this is still needed)
-  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e") 
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
   (use-package exec-path-from-shell
 
   ; Load PATH from shell in Cocoa
-    :init (exec-path-from-shell-initialize) 
+    :init (exec-path-from-shell-initialize)
     )
   )
-
-
 
 (provide 'init-defaults)
