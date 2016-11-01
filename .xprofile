@@ -8,8 +8,11 @@ if [ "xmonad" == "$1" ]; then
     # Notification server first, so we can report errors
     dunst -conf ~/.xmonad/dunstrc & 
 
-    # Keyboard setup
+    # Input setup
     if [ "anna" == `hostname` ]; then
+       # Temporary workaround to get libinput-gestures to actually send mouse event
+	   xinput set-button-map "Virtual core XTEST pointer" 8 9 10 11 12 13 14 15 16 17 
+	   libinput-gestures-setup start
        setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
     elif [ "rudiger" == `hostname` ]; then
         setxkbmap be -option compose:menu
