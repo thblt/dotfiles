@@ -127,7 +127,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask, xK_p), spawn "dmenu_run" )
   , ((modMask .|. shiftMask, xK_Return ), spawn $ terminal conf)
   , ((modMask .|. controlMask .|. shiftMask, xK_Return ), spawn $ "emacsclient -ca ''")
-  , ((modMask, xK_s ), scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e tmux-attach-or-new scratch")
+  , ((modMask, xK_s ), scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
 
     -- Misc actions
   , ((modMask, xK_g), gotoMenu) -- Go to window
