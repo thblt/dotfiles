@@ -13,5 +13,6 @@ ln -s .dotfiles/.tmux.conf
 ln -s .dotfiles/.vim .
 ln -s .dotfiles/.xsessionrc .
 ln -s .dotfiles/.zshrc .
-ln -s .dotfiles/keynavrc .
+ln -s .dotfiles/.keynavrc .
+ln -s .dotfiles/.xmonad .
 ln -s .dotfiles/bin ./.bin
