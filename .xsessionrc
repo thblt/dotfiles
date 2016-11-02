@@ -3,32 +3,37 @@
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
 
+source ~/.profile
+
 echo "This is $1"
 
 # if [ "xmonad" == "$1" ]; then
 
-    # Notification server first, so we can report errors
-    dunst -conf ~/.xmonad/dunstrc & 
+# Notification server first, so we can report errors
+if [ ! -e /etc/debian_version ]; then
+	# Don't start Dunst manually on Debian: configure it at /etc/xdg/dunst/dunstrc
+	dunst -conf ~/.xmonad/dunstrc & 
+fi
 
-    # Input setup
-    if [ "anna" = `hostname` ]; then
-       setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
-    elif [ "rudiger" = `hostname` ]; then
-        setxkbmap be -option compose:menu
-		numlockx on &
-		ckb --background &
-    else
-        notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
-    fi
-         
-	compton --config ~/.xmonad/compton.conf &
-    mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
-	eval $(keychain --eval)
-	keynav &
-	light-locker &
-	synapse -s &
-	udiskie &
-	xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
-	xsetroot -cursor_name left_ptr &
-	~/.fehbg &
+# Input setup
+if [ "anna" = `hostname` ]; then
+	setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
+elif [ "rudiger" = `hostname` ]; then
+	setxkbmap be -option compose:menu
+	numlockx on &
+	ckb --background &
+else
+	notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
+fi
+
+compton --config ~/.xmonad/compton.conf &
+mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
+eval $(keychain --eval)
+keynav &
+light-locker &
+synapse -s &
+udiskie &
+xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
+xsetroot -cursor_name left_ptr &
+~/.fehbg &
 # fi
