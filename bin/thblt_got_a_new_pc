@@ -24,8 +24,6 @@ else
 	echo "Vundle seems already here, I skip this part."
 fi
 
-if [ ! -d ~/.oh-my-zsh ]; then
-	git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
-else
-	echo "Oh My Zsh seems already here, I skip this part."
+if [ ! -e ~/.emacs.d/_customize.el ]; then
+	echo "" > ~/.emacs.d/_customize.el
 fi

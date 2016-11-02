@@ -1,14 +1,16 @@
- apt install \
-	aptitude build-essential \
-	firmware-linux-free firmware-linux-nonfree \
-	dunst \
-	chromium chromium-l10n \
-	compton \
-	dbus-x11 \
-	emacs \
-	feh \
-	git \
-	firefox-esr firefox-esr-l10n-fr \
+apt install \
+    firmware-linux-free firmware-linux-nonfree \
+    smartmontools \
+    build-essential \
+    cups \
+    dunst \
+    chromium chromium-l10n \
+    compton \
+    dbus-x11 \
+    emacs \
+    feh \
+    git \
+    firefox-esr firefox-esr-l10n-fr \
     isync \
 	keychain \
 	keynav \
@@ -23,7 +25,7 @@
 	mu4e \
 	mupdf \
     network-manager \
-	rxvt-unicode \
+	rxvt-unicode-256color \
 	sudo \
 	synapse \
 	texlive \
@@ -36,5 +38,4 @@
 	zsh \
 	python-udiskie
 
-aptitude install ~pstandard # The debian base system utilies
 
