@@ -1,20 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
 
-if [ "xmonad" == "$1" ]; then
+echo "This is $1"
+
+# if [ "xmonad" == "$1" ]; then
 
     # Notification server first, so we can report errors
     dunst -conf ~/.xmonad/dunstrc & 
 
     # Input setup
-    if [ "anna" == `hostname` ]; then
-       # Temporary workaround to get libinput-gestures to actually send mouse event
-	   xinput set-button-map "Virtual core XTEST pointer" 8 9 10 11 12 13 14 15 16 17 
-	   libinput-gestures-setup start
+    if [ "anna" = `hostname` ]; then
        setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
-    elif [ "rudiger" == `hostname` ]; then
+    elif [ "rudiger" = `hostname` ]; then
         setxkbmap be -option compose:menu
 		numlockx on &
 		ckb --background &
@@ -32,4 +31,4 @@ if [ "xmonad" == "$1" ]; then
 	xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
 	xsetroot -cursor_name left_ptr &
 	~/.fehbg &
-fi
+# fi
