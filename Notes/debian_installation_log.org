@@ -1,0 +1,65 @@
+#+TITLE: Debian installation log
+#+AUTHOR: thblt
+
+Note to readers: Hi! You've just found a completely useless document.  This is my tutorial to install Debian the way I like it.  It won't be of any use to anyone else.
+
+* Base install
+
+Install Debian as usual.
+
+ - Mirror :: Accept to configure a mirror on the network.  ftp.[country].debian.org is fine.
+ - Popcon :: I usually decline.  Why is a different question.
+ - Groups :: Ignore all packages groups *except the last one*, which is called (in French @TODO), because I have *no f*ing idea* how to install it later.  It is the basic set of nice little system utilities (nano killall and stuff.).
+ - Clock :: Accept to set hardware clock to UTC, because that's How It's Done.
+
+* Post install
+
+** Upgrade
+
+ - Edit =/etc/apt/sources.list= (vi is installed):
+   - Remove cdrom lines (gg5dd)
+   - =%s/jessie/stretch/= (or whatever applies now.  You probably shouldn't stick with the current stable: unless the new stable is fresh and new, you'd better go for the next one.  There's gonna be trouble: this is install.  Better have problems once and for all with the current testing rather than with current stable and later, new stable.)
+   - =%s/main/main contrib non-free=
+ - =apt update=; =apt dist-upgrade=.  Coffee
+
+** Belong in the cool groups
+
+=usermod -aG sudo,adm,systemd-journal thblt=
+
+** Install all the cool stuff
+
+ - =apt install git=
+ - as =thblt=, =git clone= your dotfiles to =~/.dotfiles=.
+ - As root (you don't have sudo yet): =sh ~thblt/.dotfiles/bin/debian_base_install.sh=.  More coffee.  If you're on a slow connection, you may comment out texlive (but you're still going to get the gigabyte xmonad install)
+ - As yourself, run =~/.dotfiles/bin/symlink_dotfiles.sh=
+ - *Don't* =systemctl enable|start= anything, this is not ArchLinux.
+ - Run =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out.  (on Macs, it installs Homebrew)  (Some day I may merge my various post-install scripts)
+ - =chsh=, zsh is installed as =/usr/bin/zsh=.  The first zsh run will auto-install antigen which in turn will install its plugins, because of *magic* (and .zshrc)
+
+*Reboot* to start working in Xorg.  Remember that in Debian, sbin is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= work.
+
+** Configure various system bits
+
+Note: je regroupe les opérations par lieu, par par unités logiques.  La configuration des SSDs, par exemple, est éclatée entre plusieurs titres: ça va plus vite à configurer comme ça.
+
+*** Paramètres du noyau
+
+Edit =/etc/default/grub=:
+
+ - =libata.force=noncq= :: Évite les gels pénibles de SSD.
+ - =acpi_osi=Darwin= :: Supposé régler les problèmes d'hibernation.
+ 
+And run =update-grub=.
+
+Note: *never* try to edit files under =/boot/=: they will be erased at next grub update.
+
+
+
+
+
+*** Enable TRIM
+
+
+
+
+
