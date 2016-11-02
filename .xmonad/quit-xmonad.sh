@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script is used to properly quit/shutdown/etc when using XMonad
 # or any other standalone window manager.
@@ -14,9 +14,7 @@ wait_for_termination() {
     end=$(($SECONDS+$2))
     
 	while [ $SECONDS -lt $end ]; do
-#        wmctrl -l | grep "^$1\s"
 		if [[ -z `wmctrl -l | grep "^$1\s"` ]]; then
-##			notify-send -u low "Window <$1> was terminated.";
 			return 0;
 		fi
         sleep .05
@@ -33,11 +31,12 @@ for win in $(wmctrl -l | awk '{print $1}'); do
     fi
 done
 
+
 # Last sanity check
 if [[ -z `wmctrl -l` ]]; then
-#	killall xmonad-x86_64-linux
-	kill $PPID
+	# kill $PPID doesn't seem to work on Debian (?).  This works, but may be dangerous in a multi-user environment.
+	killall xmonad-x86_64-linux
 else
 	notify-send -u normal "Quit failed" "Relaunching termination script."
-    ~/.xmonad/quit-xmonad.sh 
+	~/.xmonad/quit-xmonad.sh 
 fi
