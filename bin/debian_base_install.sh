@@ -1,4 +1,6 @@
-sudo apt install \
+ apt install \
+	aptitude build-essential \
+	firmware-linux-free firmware-linux-nonfree \
 	dunst \
 	chromium chromium-l10n \
 	compton \
@@ -32,8 +34,7 @@ sudo apt install \
 	wmctrl \
 	xmonad \
 	zsh \
+	python-udiskie
 
+aptitude install ~pstandard # The debian base system utilies
 
-cd $HOME
-    
-git config --global core.excludesfile ~/.gitignore_global
