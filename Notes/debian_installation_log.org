@@ -9,7 +9,7 @@ Install Debian as usual.
 
  - Mirror :: Accept to configure a mirror on the network.  ftp.[country].debian.org is fine.
  - Popcon :: I usually decline.  Why is a different question.
- - Groups :: Ignore all packages groups *except the last one*, which is called (in French @TODO), because I have *no f*ing idea* how to install it later.  It is the basic set of nice little system utilities (nano killall and stuff.).
+ - Groups :: Ignore all packages groups *except the last one* (something like /Base system utilities/ or /Base Debian system/) , because I have *no f*ing idea* how to install it later.  It is the basic set of nice little system utilities (nano killall and stuff.).
  - Clock :: Accept to set hardware clock to UTC, because that's How It's Done.
 
 * Post install
@@ -24,7 +24,7 @@ Install Debian as usual.
 
 ** Belong in the cool groups
 
-=usermod -aG sudo,adm,systemd-journal thblt=
+ - =usermod -aG sudo,adm,systemd-journal thblt=
 
 ** Install all the cool stuff
 
@@ -33,14 +33,12 @@ Install Debian as usual.
  - As root (you don't have sudo yet): =sh ~thblt/.dotfiles/bin/debian_base_install.sh=.  More coffee.  If you're on a slow connection, you may comment out texlive (but you're still going to get the gigabyte xmonad install)
  - As yourself, run =~/.dotfiles/bin/symlink_dotfiles.sh=
  - *Don't* =systemctl enable|start= anything, this is not ArchLinux.
- - Run =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out.  (on Macs, it installs Homebrew)  (Some day I may merge my various post-install scripts)
+ - Run =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out (and also create an empty .emacs.d/_customize.el).  (on Macs, it also installs Homebrew)  (Some day I may merge my various post-install scripts)
  - =chsh=, zsh is installed as =/usr/bin/zsh=.  The first zsh run will auto-install antigen which in turn will install its plugins, because of *magic* (and .zshrc)
 
-*Reboot* to start working in Xorg.  Remember that in Debian, sbin is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= work.
+*Reboot* to start working in Xorg.  Remember that in Debian, =sbin= is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= works.
 
 ** Configure various system bits
-
-Note: je regroupe les opérations par lieu, par par unités logiques.  La configuration des SSDs, par exemple, est éclatée entre plusieurs titres: ça va plus vite à configurer comme ça.
 
 *** Paramètres du noyau
 
@@ -51,15 +49,21 @@ Edit =/etc/default/grub=:
  
 And run =update-grub=.
 
-Note: *never* try to edit files under =/boot/=: they will be erased at next grub update.
-
-
-
-
+Note: *never* edit files under =/boot/=: they will be erased at next grub update.
 
 *** Enable TRIM
 
+- In =etc/cryptab=, add the =discard= option.
+- In =/etc/lvm/lvm.conf=, set =issue_discards= to 1.
+- TODO See Debian page: there's a system service template
+- =sudo cp /usr/share/doc/util-linux/examples/fstrim.* /etc/systemd/system= (there should be two files: .service and .timer)
+- =systemctl enable fstrim.timer=
+- =sudo update-initramfs -u -k all=
+  
+** Configure higher-level stuff
 
+*** Dunst
 
+In ArchLinux, dunst must be run by the user in some initialization script.  In Debian, for some reasons, it is started by the system while launching dbus. My =.xsessionrc= takes care of not running dunst on Debian, all it's needed is simply to:
 
-
+ - Copy the contents of =~/.xmonad/dunstrc=  inside =/etc/xdg/dunst/dunstrc=.
