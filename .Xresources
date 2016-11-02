@@ -6,8 +6,8 @@
 
 
 
-URxvt*font: xft:DejaVu Sans Mono for Powerline Nerd Font:pixelsize=FONT_SIZE
-URxvt*boldFont: xft:DejaVu Sans Mono for Powerline Nerd Font:style=Bold:pixelsize=FONT_SIZE
+URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=FONT_SIZE
+URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=Bold:pixelsize=FONT_SIZE
 
 ! URxvt*foreground: #ffffff
 ! URxvt*background: #333333
