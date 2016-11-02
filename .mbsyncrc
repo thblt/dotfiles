@@ -1,9 +1,9 @@
 IMAPAccount namo
 Host namo.thb.lt
 User thblt
-AuthMechs LOGIN
+# AuthMechs LOGIN
 PassCmd "netrc_pass namo.thb.lt"
-SSLType IMAPS
+# SSLType IMAPS
 
 ImapStore namo-remote
 Account namo
@@ -24,9 +24,9 @@ SyncState *
 IMAPAccount p1
 Host imap.univ-paris1.fr
 User tpolge
-AuthMechs LOGIN
+#AuthMechs LOGIN
 PassCmd "netrc_pass imap.univ-paris1.fr"
-SSLType IMAPS
+#SSLType IMAPS
 
 ImapStore p1-remote
 Account p1
