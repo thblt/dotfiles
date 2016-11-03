@@ -7,6 +7,7 @@
 ;; (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
+(add-to-list 'custom-theme-load-path  (expand-file-name "user-lisp" user-emacs-directory))
 
 (require 'setup-package-manager)
 
@@ -19,8 +20,8 @@
 ;; General: common minor modes and utilities
 ;; (require 'setup-evil) ;; Don't be evil
 (require 'setup-git)
-;;(require 'setup-ivy)
-(require 'setup-helm)
+(require 'setup-ivy)
+;;(require 'setup-helm)
 
 ;; Languagues and major modes
 (require 'setup-programming)

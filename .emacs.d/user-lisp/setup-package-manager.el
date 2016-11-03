@@ -2,17 +2,21 @@
 
 (setq package-archives '(("gnu"          . "https://elpa.gnu.org/packages/")
                          ("melpa"        . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         )
+                         ("melpa-stable" . "https://stable.melpa.org/packages/"))
 
+      ;; Emacs25+ only.  TODO This is an experiment: I'm not sure
+      ;; putting GNU above Melpa unstable is a good idea: I don't know
+      ;; if GNU packages are recent enough.  We'll see if something
+      ;; breaks.
       package-archive-priorities '(
-                                   ("melpa-stable" . 20)
-                                   ("gnu"          . 15)
+                                   ("melpa-stable" . 1000)
+                                   ("gnu"          . 500)
                                    ("melpa"        . 100)
-                                   ))
-      ;; TODO This is an experiment: I'm not sure putting GNU above
-      ;; Melpa unstable is a good idea: I don't know if GNU packages
-      ;; are recent enough.  We'll see if something breaks.
+                                   )
+
+      ;; Isolate package directories for major Emacs version
+      package-user-dir (concat package-user-dir (number-to-string emacs-major-version))
+      )
 
 (package-initialize)
 

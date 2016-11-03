@@ -10,7 +10,9 @@
 
 (use-package swiper-helm)
 
-(use-package helm-projectile)
+(use-package helm-projectile
+  :init (helm-projectile-on)
+  )
 
 (use-package helm-dash
      :bind (("<f1>" . helm-dash-at-point))

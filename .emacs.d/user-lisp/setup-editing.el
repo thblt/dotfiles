@@ -23,7 +23,28 @@
   (add-hook 'text-mode-hook (editorconfig-mode 1))
   )
 (use-package expand-region)             ; Expand region by semantic units
-(use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing)
+;; (use-package focus)                  ; Dim outside thing at point (customize with M-x focus-mode-to-thing
+;; FIXME Focus breaks ivy! Reported:
+;; https://github.com/abo-abo/swiper/issues/755
+
+
+
+(use-package god-mode
+  :bind (("<escape>" . god-local-mode)
+         :map god-local-mode-map
+         ("z"        . repeat)
+         ("i"        . god-local-mode)
+         )
+  :config
+  (defun my-update-cursor ()
+    (setq cursor-type (if (or god-local-mode buffer-read-only)
+                          'box
+                        default-cursor-type)))
+
+(add-hook 'god-mode-enabled-hook 'my-update-cursor)
+(add-hook 'god-mode-disabled-hook 'my-update-cursor)
+)
+
 (use-package highlight-indentation)     ; Show indent level markers
 (use-package linum-relative             ; Relative line numbers
   :init (add-hook 'prog-mode-hook
