@@ -88,7 +88,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         , "fi"
         ]
      )
-  , ((modMask, xK_Escape), spawn "light-locker-command --lock")
+  , ((modMask, xK_Escape), spawn "dm-tool lock")
 
     -- Layout management
   , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
@@ -268,6 +268,8 @@ main = do
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
       , className =? "Xdialog"         --> doFloat
+      , className =? "Yad"             --> doFloat
+      , className =? "zenity"          --> doFloat            
       , className =? "zbar"            --> doFloat
       , className =? "Zeal"            --> doFloat 
       , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
