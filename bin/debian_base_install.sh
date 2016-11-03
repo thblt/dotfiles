@@ -12,8 +12,9 @@ apt install \
 	lightdm lightdm-gtk-greeter light-locker \
 	maildir-utils mu4e isync \
 	mupdf \
+    netselect-apt \
 	python-udiskie \
-	rxvt-unicode-256color \
+    rxvt-unicode-256color \
 	sudo \
 	texlive-full lyx \
 	tmux \
