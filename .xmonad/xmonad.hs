@@ -134,8 +134,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask, xK_g), bringMenu) -- Bring window
     
   -- Media keys
-  , ((0, xF86XK_AudioLowerVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2-; " ++ shNotifyVolume )
-  , ((0, xF86XK_AudioRaiseVolume ), spawn $ "amixer set Master unmute ; amixer set Master 2+; " ++ shNotifyVolume)
+  , ((0, xF86XK_AudioLowerVolume ), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume )
+  , ((0, xF86XK_AudioRaiseVolume ), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume)
   , ((0, xF86XK_AudioMute ), spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
   , ((0, xF86XK_MonBrightnessDown ), spawn "xbacklight -10" ) 
   , ((0, xF86XK_MonBrightnessUp ), spawn "xbacklight +10" )
