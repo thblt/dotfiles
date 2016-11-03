@@ -15,7 +15,7 @@ apt install \
 	python-udiskie \
 	rxvt-unicode-256color \
 	sudo \
-	texlive \
+	texlive-full lyx \
 	tmux \
 	wipe \
 	wmctrl \
