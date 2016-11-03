@@ -16,6 +16,9 @@
 .emacs.d/abbrev_defs
 .emacs.d/auto-save-list
 .emacs.d/elpa
+.emacs.d/elpa24
+.emacs.d/elpa25
+.emacs.d/elpa26
 .emacs.d/eshell
 .emacs.d/games
 .emacs.d/ido.last
