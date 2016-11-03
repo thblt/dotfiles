@@ -63,6 +63,20 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
 
 *** Dunst
 
-In ArchLinux, dunst must be run by the user in some initialization script.  In Debian, for some reasons, it is started by the system while launching dbus. My =.xsessionrc= takes care of not running dunst on Debian, all it's needed is simply to:
+In ArchLinux, dunst must be run by the user in some initialization script.  In Debian, for some reasons, it is started by the system while launching dbus. My =.xsessionrc= takes care of not running dunst on Debian.
 
- - Copy the contents of =~/.xmonad/dunstrc=  inside =/etc/xdg/dunst/dunstrc=.
+*** LightDM
+
+Edit =/etc/lightdm/lightdm.conf= and uncomment/set the following parameters:
+
+#+begin_src
+[Seat:*]
+pam-service=lightdm
+pam-autologin-service=lightdm-autologin
+greeter-hide-users=false
+autologin-user=thblt
+exit-on-failure=true
+#+end_src
+
+
+
