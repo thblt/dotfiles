@@ -1,4 +1,5 @@
 apt install \
+	alsa-base alsa-utils \
 	build-essential git \
 	chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx \
 	cups \
