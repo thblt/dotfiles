@@ -4,7 +4,7 @@ apt install \
 	cups \
 	emacs vim vim-gtk \
 	firmware-linux-free firmware-linux-nonfree smartmontools \
-	font-manager
+	font-manager \
 	keychain \
 	keynav \
 	libnotify-bin \
