@@ -32,8 +32,7 @@ Install Debian as usual.
  - as =thblt=, =git clone= your dotfiles to =~/.dotfiles=.
  - As root (you don't have sudo yet): =sh ~thblt/.dotfiles/bin/debian_base_install.sh=.  More coffee.  If you're on a slow connection, you may comment out texlive (but you're still going to get the gigabyte xmonad install)
  - As yourself, run =~/.dotfiles/bin/symlink_dotfiles.sh=
- - *Don't* =systemctl enable|start= anything, this is not ArchLinux.
- - Run =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out (and also create an empty .emacs.d/_customize.el).  (on Macs, it also installs Homebrew)  (Some day I may merge my various post-install scripts)
+ - As yourself, =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out (and also create an empty .emacs.d/_customize.el).  (on Macs, it also installs Homebrew)  (Some day I may merge my various post-install scripts)
  - =chsh=, zsh is installed as =/usr/bin/zsh=.  The first zsh run will auto-install antigen which in turn will install its plugins, because of *magic* (and .zshrc)
 
 *Reboot* to start working in Xorg.  Remember that in Debian, =sbin= is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= works.

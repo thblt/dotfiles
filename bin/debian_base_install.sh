@@ -1,41 +1,22 @@
 apt install \
-    firmware-linux-free firmware-linux-nonfree \
-    smartmontools \
-    build-essential \
-    cups \
-    dunst \
-    chromium chromium-l10n \
-    compton \
-    dbus-x11 \
-    emacs \
-    feh \
-    git \
-    firefox-esr firefox-esr-l10n-fr \
-    isync \
+	build-essential git \
+	chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx \
+	cups \
+	emacs vim vim-gtk \
+	firmware-linux-free firmware-linux-nonfree smartmontools \
+	font-manager
 	keychain \
 	keynav \
 	libnotify-bin \
-	libghc-dbus-dev \
-	libghc-xmonad-contrib-doc \
-	light-locker \
-	lightdm \
-	lightdm-gtk-greeter \
-	lynx \
-	maildir-utils \
-	mu4e \
+	lightdm lightdm-gtk-greeter light-locker \
+	maildir-utils mu4e isync \
 	mupdf \
-    network-manager \
+	python-udiskie \
 	rxvt-unicode-256color \
 	sudo \
-	synapse \
 	texlive \
 	tmux \
-	vim \
-	vim-gtk \
-    wipe \
+	wipe \
 	wmctrl \
-	xmonad \
+	xmonad libghc-xmonad-contrib-doc libghc-dbus-dev dunst compton synapse feh dbus-x11 \
 	zsh \
-	python-udiskie
-
-
