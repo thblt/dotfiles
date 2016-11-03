@@ -65,10 +65,10 @@ alias ..5="cd ../../../../.."
 
 # Virtualenvwrapper
 
-if command -v virtualenvwrapper.sh > /dev/null; then
-	export WORKON_HOME=~/.virtualenvs
-	source `which virtualenvwrapper.sh`
-fi
+
+export WORKON_HOME=~/.virtualenvs
+source `which virtualenvwrapper.sh` 2> /dev/null
+source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 2> /dev/null
 
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
