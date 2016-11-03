@@ -1,2 +1,0 @@
-source ~/.xprofile xmonad
-xmonad
