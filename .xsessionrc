@@ -21,11 +21,11 @@ elif [ "rudiger" = `hostname` ]; then
 	numlockx on &
 	ckb --background &
 else
-	notify-send -u critical ".xprofile" "Unknown computer, keyboard layout not set."
+	notify-send -u critical `basename "$0"` "Unknown computer, keyboard layout not set."
 fi
 
 compton --config ~/.xmonad/compton.conf &
-mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
+mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code/cozy-desktop/bin/cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
 eval $(keychain --eval)
 keynav &
 light-locker &
