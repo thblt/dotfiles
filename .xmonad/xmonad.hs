@@ -177,8 +177,10 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
 myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
     [
-      ((0, 10), const $ prevWS) -- Three-finger left swipe
-    , ((0, 11), const $ nextWS) -- Three finger right swipe
+      ((modMask, 1), \w -> focus w >> mouseMoveWindow w
+                                 >> windows XSS.shiftMaster)
+--    , ((0, 10), const $ prevWS) -- Three-finger left swipe
+--    , ((0, 11), const $ nextWS) -- Three finger right swipe
     ]
 
 
