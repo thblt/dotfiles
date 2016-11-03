@@ -1,18 +1,28 @@
-#!/bin/sh
+#!/bin/bash
 
-cd $HOME
+declare -a things=(
+    .Xresources
+    .bin
+    .emacs.d
+    .gitconfig
+    .gitignore_global
+    .gtkrc-2.0
+    .keynavrc
+    .mbsyncrc
+    .profile
+    .tmux.conf
+    .vim
+    .xmonad
+    .xsessionrc
+    .zshrc
+)
 
-ln -s .dotfiles/.Xresources .
-ln -s .dotfiles/.emacs.d .
-ln -s .dotfiles/.gitconfig .
-ln -s .dotfiles/.gitignore_global .
-ln -s .dotfiles/.gtkrc-2.0 .
-ln -s .dotfiles/.mbsyncrc .
-ln -s .dotfiles/.profile .
-ln -s .dotfiles/.tmux.conf
-ln -s .dotfiles/.vim .
-ln -s .dotfiles/.xsessionrc .
-ln -s .dotfiles/.zshrc .
-ln -s .dotfiles/.keynavrc .
-ln -s .dotfiles/.xmonad .
-ln -s .dotfiles/bin ./.bin
+for t in "${things[@]}"; do
+    ln -s .dotfiles/$t .
+done
+
+mkdir .config 2> /dev/null
+cd .config
+for t in `ls ../.dotfiles/.config`; do
+	ln -s ../.dotfiles/.config/$t .
+done
