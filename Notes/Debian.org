@@ -1,9 +1,10 @@
-#+TITLE: Debian installation log
+#+TITLE: Notes on Debian
 #+AUTHOR: thblt
 
 Note to readers: Hi! You've just found a completely useless document.  This is my tutorial to install Debian the way I like it.  It won't be of any use to anyone else.
 
-* Base install
+* Installing
+** Base install
 
 Install Debian as usual.
 
@@ -12,9 +13,9 @@ Install Debian as usual.
  - Groups :: Ignore all packages groups *except the last one* (something like /Base system utilities/ or /Base Debian system/) , because I have *no f*ing idea* how to install it later.  It is the basic set of nice little system utilities (nano killall and stuff.).
  - Clock :: Accept to set hardware clock to UTC, because that's How It's Done.
 
-* Post install
+** Post install
 
-** Upgrade
+*** Upgrade
 
  - Edit =/etc/apt/sources.list= (vi is installed):
    - Remove cdrom lines (gg5dd)
@@ -22,11 +23,11 @@ Install Debian as usual.
    - =%s/main/main contrib non-free=
  - =apt update=; =apt dist-upgrade=.  Coffee
 
-** Belong in the cool groups
+*** Belong in the cool groups
 
  - =usermod -aG sudo,adm,systemd-journal thblt=
 
-** Install all the cool stuff
+*** Install all the cool stuff
 
  - =apt install git=
  - as =thblt=, =git clone= your dotfiles to =~/.dotfiles=.
@@ -37,9 +38,9 @@ Install Debian as usual.
 
 *Reboot* to start working in Xorg.  Remember that in Debian, =sbin= is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= works.
 
-** Configure various system bits
+*** Configure various system bits
 
-*** Paramètres du noyau
+**** Paramètres du noyau
 
 Edit =/etc/default/grub=:
 
@@ -50,7 +51,7 @@ And run =update-grub=.
 
 Note: *never* edit files under =/boot/=: they will be erased at next grub update.
 
-*** Enable TRIM
+**** Enable TRIM
 
 - In =etc/cryptab=, add the =discard= option.
 - In =/etc/lvm/lvm.conf=, set =issue_discards= to 1.
@@ -59,17 +60,23 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
 - =systemctl enable fstrim.timer=
 - =sudo update-initramfs -u -k all=
   
-*** Laptop
+**** Laptop
+
+***** Wireless
 
 Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
 
-** Configure higher-level stuff
+***** Acpi
 
-*** Dunst
+=systemctl enable acpid= + reboot
+
+*** Configure higher-level stuff
+
+**** Dunst
 
 In ArchLinux, dunst must be run by the user in some initialization script.  In Debian, for some reasons, it is started by the system while launching dbus. My =.xsessionrc= takes care of not running dunst on Debian.
 
-*** LightDM
+**** LightDM
 
 Edit =/etc/lightdm/lightdm.conf= and uncomment/set the following parameters:
 
@@ -83,3 +90,4 @@ exit-on-failure=true
 #+end_src
 
 Note: je trouve lightdm plus stable avec =pam.service=lightdm= décommenté.  C'est peut-être de la /folk medicine/, mais si ça évite de s'emmerder...
+

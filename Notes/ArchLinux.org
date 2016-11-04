@@ -4,11 +4,18 @@
 
 /etc/systemd/logind.conf
 
-See https://wiki.archlinux.org/index.php/Power_management#ACPI_events
+See https://wiki.archlinux.org/index.php/Power_management#ACPI_events :
+
+#+begin_quote 
+  The specified action for each event can be one of ignore, poweroff, reboot, halt, suspend, hibernate, hybrid-sleep, lock or kexec. 
+#+end_quote
+
+Then =systemctl restart systemd-logind=
 
 * Network manager and wired connections
 
 Disable dhcpcd
+
 * Java anti-aliasing
 
 Add to /etc/environment
@@ -27,6 +34,9 @@ AUR packages:
 * Fix Macbook Air resume
 It *seems* to work by simply adding acpi_osi=Darwin to kernel parameters.
 * Fix Radeon flickering on the Mac Pro
+
+Il y a un sous dossier avec un script et un service pour le lancer. 
+
 * Macbook Air (and probably other apple devices) touchpad (multitouch)
 
  - *Don't* install =xf86-input-mtrack= neither the =-git= version.
