@@ -1,11 +1,14 @@
 #+TITLE: Notes on Debian
 #+AUTHOR: thblt
+#+PROPERTY: header-args :exports code
 
 Note to readers: Hi! You've just found a completely useless document.  This is my tutorial to install Debian the way I like it.  It won't be of any use to anyone else.
 
 * Base install
 
 Install Debian as usual.
+
+*Variante*: contrairement à ce que j'écris /infra/, dans /Groups/, ne pas accepter les utilitaires de base et faire une installation ultra-minimale.  Avec l'astuce pour ne pas installer les paquets recommandés dans /Post install/ (qui permet aussi de les supprimer automatiquement), ça permet d'avoir nettement moins de paquets d'origine mystérieuse, donc un système bcp plus clair et de savoir globalement quoi est installé et pourquoi.  À ce propos, cf. aussi =aptitude why [paquet]= mais il raconte souvent n'importe quoi.
 
  - Mirror :: Accept to configure a mirror on the network.  ftp.[country].debian.org is fine.
  - Popcon :: I usually decline.  Why is a different question.
@@ -14,6 +17,11 @@ Install Debian as usual.
 
 * Post install
 
+** Store base package list somewhere
+
+Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/initial-packages-list.txt=, ça servira plus tard en combinaison avec 
+=aptitude search '~i !~M'=
+
 ** Upgrade
 
  - Edit =/etc/apt/sources.list= (vi is installed):
@@ -21,6 +29,25 @@ Install Debian as usual.
    - =%s/jessie/stretch/= (or whatever applies now.  You probably shouldn't stick with the current stable: unless the new stable is fresh and new, you'd better go for the next one.  There's gonna be trouble: this is install.  Better have problems once and for all with the current testing rather than with current stable and later, new stable.)
    - =%s/main/main contrib non-free=
  - =apt update=; =apt dist-upgrade=.  Coffee
+
+then, 
+
+** Ne PAS installer automatiquement les paquets recommandés
+
+Par défaut, Debian installe les paquets suggérés ou recommandés.  Comme je suis fou je n'aime pas ça.  KISS, toussa toussa.
+
+[[https://askubuntu.com/questions/351085/how-to-remove-recommended-and-suggested-dependencies-of-uninstalled-packages][Cette réponse sur AskUbuntu]] semble fonctionner:
+
+ - Créer =/etc/apt/apt.conf.d/99_norecommends=
+ - Y coller:
+
+   #+begin_src 
+APT::Install-Recommends "false";
+APT::AutoRemove::RecommendsImportant "false";
+APT::AutoRemove::SuggestsImportant "false";
+   #+end_src
+
+Si c'est pas fait en début d'install, le prochain =apt autoremove= sera un massacre (et va très probablement tout casser, bien entendu).
 
 ** Belong in the cool groups
 
@@ -61,9 +88,10 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
   
 *** Laptop
 
-**** Wireless
+**** Wireless (wifi)
 
-Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
+Edit: =debian_base_install.sh devrait installer le driver
+Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
 
 **** Acpi
 
