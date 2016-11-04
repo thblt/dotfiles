@@ -88,7 +88,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
         , "fi"
         ]
      )
-  , ((modMask, xK_Escape), spawn "dm-tool lock")
+  , ((modMask, xK_Escape)               , spawn "dm-tool lock")
+  , ((modMask .|. shiftMask, xK_Escape) , spawn "dm-tool switch-to-greeter")  
 
     -- Layout management
   , ((modMask               , xK_space) , sendMessage NextLayout) -- Next layout
