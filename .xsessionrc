@@ -15,7 +15,7 @@ fi
 
 # Input setup
 if [ "anna" = `hostname` ]; then
-	setxkbmap -layout  "macintosh_vndr/fr" -option altwin:swap_lalt_lwin 
+	setxkbmap -layout  "macintosh_vndr/fr"
 elif [ "rudiger" = `hostname` ]; then
 	setxkbmap be -option compose:menu
 	numlockx on &
