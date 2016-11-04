@@ -4,6 +4,7 @@ apt install \
 	build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm \
 	chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx \
     libreoffice vlc \
+    scrot xsel \
 	cups \
     mc \
 	emacs vim vim-gtk \
