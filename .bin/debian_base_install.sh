@@ -91,7 +91,7 @@ fi
 
 
 
-# qt: qt5-default fournit qt et le configure comme installation par défaut pour qtchooser.
+
 
 echo
 echo "I'm about to install"
