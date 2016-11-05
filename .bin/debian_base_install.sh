@@ -7,7 +7,7 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add dnsutils psmisc sudo whois wipe
+add dnsutils powertop psmisc sudo whois wipe
 # Debian/APT utilities
 add apt-file aptitude netselect-apt
 # Shell
@@ -80,7 +80,7 @@ add texlive-full lyx \
 if [ "anna" = `hostname` ]; then
     echo "I'm running on Anna.  I'm assuming a MacBook Air 2011."
 	add acpid
-	add network-manager
+	add network-manager rfkill # TODO move to a "laptop" group
 	add task-laptop # Should have been installed automatically
 	add xserver-xorg-video-intel  
 	add firmware-brcm80211 # Wifi
@@ -88,8 +88,6 @@ fi
 if [ "rudiger" = `hostname` ]; then
     echo "I'm running on Rudiger.  I'm assuming a Mac Pro 2008."
 fi
-
-
 
 
 
