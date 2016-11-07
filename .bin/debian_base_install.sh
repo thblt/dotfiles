@@ -2,12 +2,16 @@ add() {
     packages="$packages $@"
 }
 
+remove() {
+    removed_packages="$removed_packages $@"
+}
+
 packages=""
 
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add dnsutils powertop psmisc sudo whois wipe
+add dnsutils file powertop psmisc sudo whois wipe
 # Debian/APT utilities
 add apt-file aptitude netselect-apt
 # Shell
@@ -18,6 +22,8 @@ add keychain
 add build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm
 # Printing!
 add cups
+add printer-driver-splix # For the Samsung
+add printer-driver-brlaser
 # Auto mounting
 add udiskie
 # Compression
@@ -51,7 +57,8 @@ add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 # Compositing manager
 add compton 
 # Misc DE utilities
-add dunst keynav feh scrot synapse wmctrl xsel
+add dunst feh scrot synapse wmctrl xsel
+remove keynav
 # Font manager and fonts
 add font-manager fonts-roboto
 
@@ -65,6 +72,8 @@ add rxvt-unicode-256color tmux
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx
 # Text-editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
+# ... with spell checking
+add aspell aspell-fr
 # Email client
 add maildir-utils mu4e isync
 # File managers
@@ -72,7 +81,8 @@ add mc
 # Media player
 add vlc
 # Bad office suite
-add libreoffice
+add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
+remove libreoffice
 
 # And the texlive monster and tex utilities
 add texlive-full lyx \
@@ -84,12 +94,11 @@ if [ "anna" = `hostname` ]; then
 	add task-laptop # Should have been installed automatically
 	add xserver-xorg-video-intel  
 	add firmware-brcm80211 # Wifi
+    # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 fi
 if [ "rudiger" = `hostname` ]; then
     echo "I'm running on Rudiger.  I'm assuming a Mac Pro 2008."
 fi
-
-
 
 echo
 echo "I'm about to install"
@@ -97,7 +106,13 @@ echo "--------------------"
 echo
 echo $packages
 echo
+echo "I'm about to remove and PURGE"
+echo "-----------------------------"
+echo $removed_packages
+echo
 echo "Please review the FULL output above and press enter"
 echo "to proceed or C-c to abort."
 read dummy
+
 apt install $packages
+apt autoremove --purge $removed_packages

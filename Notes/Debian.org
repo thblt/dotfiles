@@ -86,24 +86,13 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
 - =systemctl enable fstrim.timer=
 - =sudo update-initramfs -u -k all=
   
-*** Laptop
+*** Journal persistant
 
-**** Wireless (wifi)
+Teste =journalctl -b -1=.  Si ça répond =Specifying boot ID has no effect, no persistent journal was found=, les opérations à effectuer sont dans =/usr/share/doc/systemd/README.Debian.gz= (à lire avec =zless=).  Il faut simplement:
 
-Edit: =debian_base_install.sh devrait installer le driver
-Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
-
-**** Acpi
-
-=systemctl enable acpid= + reboot
-
-**** Apple keybard
-
-Edit or create =/etc/modprobe.d/hid_apple.conf and add
-
-#+begin_src 
-options hid_apple fnmode=2
-options hid_apple swap_opt_cmd=1
+#+begin_src
+mkdir -p /var/log/journal
+systemd-tmpfiles --create --prefix /var/log/journal
 #+end_src
 
 ** Configure higher-level stuff
@@ -126,4 +115,56 @@ exit-on-failure=true
 #+end_src
 
 Note: je trouve lightdm plus stable avec =pam.service=lightdm= décommenté.  C'est peut-être de la superstition, mais si ça évite de s'emmerder...
+** Laptop-specific
+
+debian_base_install ajoute des paquets à toute machine qui s'appelle "anna" spécifiquement dédiés au laptop.  Principalement le support acpi et network-manager
+
+*** Permettre à network manager de gérer les connexions filaires
+
+Deux fichiers sont à modifier
+
+**** =/etc/network/interfaces=
+
+TESTER SANS FAIRE ÇA
+Pas nécessaire, mais on peut supprimer toute référence aux ports Ethernet (les deux dernières lignes), je pense (de toutes façons ils ne sont pas nécessairement présents)
+
+**** =/etc/NetworkManager/NetworkManager.conf=
+
+Dans la section =[ifupdown]=, passer =managed= à =true=
+
+**** Wireless (wifi)
+
+Edit: =debian_base_install.sh devrait installer le driver
+Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
+
+**** Acpi
+
+=systemctl enable acpid= + reboot
+
+**** Apple keybard
+
+Edit or create =/etc/modprobe.d/hid_apple.conf and add
+
+#+begin_src 
+options hid_apple fnmode=2
+options hid_apple swap_opt_cmd=1
+#+end_src
+
+**** Powertop autotune
+
+Create =/etc/systemd/system/powertop-autotune.service=:
+
+#+begin_src 
+[Unit]
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/powertop --auto-tune
+
+[Install]
+WantedBy=multi-user.target
+#+end_src
+
+*Notice* on Debian, =powertop= is in sbin.
 
