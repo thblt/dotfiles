@@ -28,6 +28,7 @@
 
 (require 'setup-cfamily)
 (require 'setup-haskell)
+(require 'setup-lua)
 (require 'setup-markdown)
 (require 'setup-mu4e)
 (require 'setup-projectile)
