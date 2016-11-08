@@ -52,7 +52,12 @@
   :config (setq linum-relative-current-symbol ""
                 linum-relative-with-helm nil)
   )
-(use-package multiple-cursors)
+(use-package multiple-cursors
+  :init
+  (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
+  (add-hook 'text-mode-hook (lambda () (multiple-cursors-mode t)))
+  :bind (("C-S-c C-S-c" . mc/edit-lines))
+  )
 (use-package nlinum ; More efficient line numbering, especially on large files with huge foldings (eg org)
   :config (nlinum-mode)
   )
