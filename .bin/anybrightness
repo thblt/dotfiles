@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import operator, os, sys
+
+if len(sys.argv) != 3:
+   print("Usage: {0} path setting".format(sys.argv[0]))
+   print("Setting be like +10, -5, 35, 12%, =3%, =19, 5%, +25%")
+   exit(-1)
+
+do_set = lambda x, y: y
+do_increase = lambda x, y: x + y
+do_decrease = lambda x, y: x - y
+
+path = sys.argv[1]
+value = sys.argv[2]
+
+# Find the path
+
+for f in {"brightness", "max_brightness"}:
+   fp = os.path.join(path, f)
+   if not (os.path.exists(fp) and os.path.isfile(fp)):
+      print("Bad path: {0}".format(path))
+      exit(-1)
+   
+  
+# Get max_brightness:
+with open(os.path.join(path, "max_brightness"), "r") as mbf:
+   max_brightness = int(mbf.read())
+
+# And current brightness
+with open(os.path.join(path, "brightness"), "r") as mbf:
+   brightness = int(mbf.read())
+   
+# Compute percentage
+
+
+# Find what to do
+      
+op = do_set
+
+if value.startswith("+"):
+   op = do_increase
+   value = value[1:]
+elif value.startswith("-"):
+   op = do_decrease
+   value = value[1:]
+elif value.startswith("="):
+   value = value[1:]
+
+# Compute percentage
+   
+if value.endswith("%"):
+   value = max(1, int(int(value[:-1]) * (float(max_brightness)/100)))
+else:
+   value = int(value)
+
+# Write
+new_brightness = str(min(max_brightness, op(brightness, value)))
+with open(os.path.join(path, "brightness"), "w") as b:
+   b.write(new_brightness)
+
+print("{0}\t{1}\t{2}".format(brightness, max_brightness, new_brightness))
+
+

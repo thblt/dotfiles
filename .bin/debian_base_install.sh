@@ -11,7 +11,7 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add dnsutils file powertop psmisc sudo whois wipe
+add curl dnsutils file powertop psmisc sudo wget whois wipe
 # Debian/APT utilities
 add apt-file aptitude netselect-apt
 # Shell
@@ -57,21 +57,23 @@ add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 # Compositing manager
 add compton 
 # Misc DE utilities
-add dunst feh scrot synapse wmctrl xsel
+add dunst feh scrot suckless-tools synapse wmctrl xsel
 remove keynav
 # Font manager and fonts
 add font-manager fonts-roboto
 
 #
-# Desktop tools
+# Desktop (not necessarily X) tools
 #
 
 # Terminal emulator and multiplexer
 add rxvt-unicode-256color tmux
 # Browsers
-add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx
-# Text-editors (with CLI versions as well)
+add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx torbrowser-launcher 
+# Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
+# Text editor tools
+add stylish-haskell
 # ... with spell checking
 add aspell aspell-fr
 # Email client
@@ -85,7 +87,8 @@ add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 remove libreoffice
 
 # And the texlive monster and tex utilities
-add texlive-full lyx \
+add texlive-base texlive-lang-french texlive-xetex lyx
+remove texlive-full
 
 if [ "anna" = `hostname` ]; then
     echo "I'm running on Anna.  I'm assuming a MacBook Air 2011."
@@ -98,6 +101,12 @@ if [ "anna" = `hostname` ]; then
 fi
 if [ "rudiger" = `hostname` ]; then
     echo "I'm running on Rudiger.  I'm assuming a Mac Pro 2008."
+fi
+
+echo $1
+if [ $1 = "list" ]; then
+    echo $packages | tr " " "\n" | sort -u
+    exit 0
 fi
 
 echo

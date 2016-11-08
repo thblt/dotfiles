@@ -1,8 +1,5 @@
 {
   "ui" : {
-    "global" : {
-      "ui-type" : "essential"
-    },
     "shortcuts" : {
       "activate" : "<Super>p",
       "execute" : "Return",
@@ -24,6 +21,9 @@
       "paste" : "<Control>v",
       "alt-paste" : "<Shift>Insert",
       "exit" : "<Control>q"
+    },
+    "global" : {
+      "ui-type" : "essential"
     }
   },
   "data-sink" : {
