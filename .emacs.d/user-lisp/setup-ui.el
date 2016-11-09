@@ -1,9 +1,7 @@
 (require 'use-package)
 
 ;; Themes
-(use-package leuven-theme
-  :pin melpa
-  )
+(use-package leuven-theme)
 (use-package tao-theme :defer t)
 
 (load-theme 'leuven)
