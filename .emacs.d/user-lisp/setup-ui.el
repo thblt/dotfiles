@@ -34,6 +34,8 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+(use-package discover-my-major)
+
 (use-package hydra)
 
 (use-package recentf
