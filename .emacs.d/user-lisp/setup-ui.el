@@ -6,19 +6,18 @@
   )
 (use-package tao-theme :defer t)
 
-;; (require 'leuven-dark-theme)
-;; (enable-theme 'leuven-dark)
 (load-theme 'leuven)
 
+;; Disable all themes when loading a new one.
+(defadvice load-theme (before theme-dont-propagate activate)
+  (mapcar #'disable-theme custom-enabled-themes))
+
 ;; Fonts
-(setq thblt/base-font-size 090)
-(when (string-prefix-p  "rudiger" system-name)
-  (setq thblt/base-font-size 120)
-  )
-
-(setq default-frame-alist '((font . "DejaVu Sans Mono")))
-(set-face-attribute 'default t :height thblt/base-font-size)
-
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))
+(set-face-attribute 'default nil
+;;                    :font "DejaVu Sans Mono" ;; This breaks if Emacs is started as a daemon
+                    :height (if (string-prefix-p  "rudiger" system-name) 120 100)
+                    )
 
 ;; Smooth(er) scrolling
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)) ;; one line at a time
