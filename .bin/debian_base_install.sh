@@ -57,7 +57,7 @@ add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 # Compositing manager
 add compton 
 # Misc DE utilities
-add dunst feh scrot suckless-tools synapse wmctrl xsel
+add dunst feh scrot suckless-tools synapse wmctrl xsel zbar-tools
 remove keynav
 # Font manager and fonts
 add font-manager fonts-roboto
