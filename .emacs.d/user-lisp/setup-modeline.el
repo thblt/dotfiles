@@ -205,16 +205,7 @@
 
             (eval-after-load "face-remap"
               '(diminish 'text-scale-mode))
-            
-            (eval-after-load "undo-tree"
-              '(diminish 'undo-tree-mode))
-            
-            (eval-after-load "yas-minor-mode"
-              '(diminish 'yas-minor-mode))
-
-            (eval-after-load "yasnippet"
-              '(diminish 'yas-minor-mode))
-            )
+                        )
   )
 
 (provide 'setup-modeline)

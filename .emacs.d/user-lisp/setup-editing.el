@@ -21,12 +21,13 @@
 (use-package editorconfig               ; Normalized text style file format
   :init (add-hook 'prog-mode-hook (editorconfig-mode 1))
   (add-hook 'text-mode-hook (editorconfig-mode 1))
+  :diminish (editorconfig-mode)
   )
 (use-package expand-region)             ; Expand region by semantic units
-;; (use-package focus)                  ; Dim outside thing at point (customize with M-x focus-mode-to-thing
+;; (use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing
 ;; FIXME Focus breaks ivy! Reported:
 ;; https://github.com/abo-abo/swiper/issues/755
-
+;; FIXED, awaiting a release
 
 
 (use-package god-mode
@@ -97,12 +98,10 @@
 
 (use-package undo-tree
   :init (global-undo-tree-mode)
-  :config (progn (diminish 'undo-tree-mode)
-                 (setq
-                  undo-tree-auto-save-history t
-                  undo-tree-visualizer-diff t
-                  )
-                 )
+  :config (setq
+           undo-tree-auto-save-history t
+           undo-tree-visualizer-diff t
+           )
   )
 (use-package unfill                      ; Unfill
   :bind (

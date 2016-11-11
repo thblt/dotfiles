@@ -57,7 +57,7 @@ add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 add compton 
 # Misc desktop utilities
 add dunst feh gpa scrot suckless-tools synapse wmctrl xsel
-remove keynav
+add barcode qrencode zbar-tools
 # Font manager and fonts
 add font-manager fonts-roboto
 
@@ -83,11 +83,9 @@ add mc
 add vlc
 # Bad office suite
 add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
-remove libreoffice
 
 # And the texlive monster and tex utilities
 add texlive-base texlive-lang-french texlive-xetex lyx
-remove texlive-full
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
