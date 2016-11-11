@@ -101,6 +101,7 @@
   :config (setq
            undo-tree-auto-save-history t
            undo-tree-visualizer-diff t
+           undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest") ))
            )
   )
 (use-package unfill                      ; Unfill

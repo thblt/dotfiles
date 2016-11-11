@@ -115,6 +115,7 @@ set foldmethod=syntax                           "  Syntax-based folding
 set foldlevelstart=20                           "  All folds open by default
 set nowrap                                      "  Disable by default, reenable for specifics filetypes
 set undofile                                    "  Create undofiles
+set undodir=$HOME/.vim/undo
 set showmatch                                   "  Show matching brackets
 
 """ Indenting
