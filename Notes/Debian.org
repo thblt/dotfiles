@@ -8,29 +8,25 @@ Note to readers: Hi! You've just found a completely useless document.  This is m
 
 Install Debian as usual.
 
-*Variante*: contrairement à ce que j'écris /infra/, dans /Groups/, ne pas accepter les utilitaires de base et faire une installation ultra-minimale.  Avec l'astuce pour ne pas installer les paquets recommandés dans /Post install/ (qui permet aussi de les supprimer automatiquement), ça permet d'avoir nettement moins de paquets d'origine mystérieuse, donc un système bcp plus clair et de savoir globalement quoi est installé et pourquoi.  À ce propos, cf. aussi =aptitude why [paquet]= mais il raconte souvent n'importe quoi.
-
  - Mirror :: Accept to configure a mirror on the network.  ftp.[country].debian.org is fine.
  - Popcon :: I usually decline.  Why is a different question.
- - Groups :: Ignore all packages groups *except the last one* (something like /Base system utilities/ or /Base Debian system/) , because I have *no f*ing idea* how to install it later.  It is the basic set of nice little system utilities (nano killall and stuff.).
+ - Groups :: Aucun, *pas même* /Utilitaires usuels du système/.  Ce truc n'est pas un paquet, c'est une requête (=priority=important=, je crois).  Rien de ce que ça installe n'est nécessaire pour la suite des opérations.
  - Clock :: Accept to set hardware clock to UTC, because that's How It's Done.
 
 * Post install
 
 ** Store base package list somewhere
 
-Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/initial-packages-list.txt=, ça servira plus tard en combinaison avec 
-=aptitude search '~i !~M'=
+Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/debian-initial-`hostname`.txt=, ça servira plus tard en combinaison avec 
+=aptitude search '~i !~M'= (il y a un script pour ça dans mon =.bin=: =apt-what-have-I-installed=)
 
 ** Upgrade
 
  - Edit =/etc/apt/sources.list= (vi is installed):
-   - Remove cdrom lines (gg5dd)
+   - Remove cdrom lines (=gg6dd=)
    - =%s/jessie/stretch/= (or whatever applies now.  You probably shouldn't stick with the current stable: unless the new stable is fresh and new, you'd better go for the next one.  There's gonna be trouble: this is install.  Better have problems once and for all with the current testing rather than with current stable and later, new stable.)
    - =%s/main/main contrib non-free=
  - =apt update=; =apt dist-upgrade=.  Coffee
-
-then, 
 
 ** Ne PAS installer automatiquement les paquets recommandés
 
@@ -47,8 +43,6 @@ APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
    #+end_src
 
-Si c'est pas fait en début d'install, le prochain =apt autoremove= sera un massacre (et va très probablement tout casser, bien entendu).
-
 ** Belong in the cool groups
 
  - =usermod -aG sudo,adm,systemd-journal thblt=
@@ -57,9 +51,15 @@ Si c'est pas fait en début d'install, le prochain =apt autoremove= sera un mass
 
  - =apt install git=
  - as =thblt=, =git clone= your dotfiles to =~/.dotfiles=.
+
+*Note*: sur Rudiger, cette étape échoue avec problème de certificat.  En fait, le apt-autoremove précédent désinstalle =ca-certificates=.  Si ça fait ça, =apt-install ca-certificates=.
+
  - As root (you don't have sudo yet): =sh ~thblt/.dotfiles/bin/debian_base_install.sh=.  More coffee.  If you're on a slow connection, you may comment out texlive (but you're still going to get the gigabyte xmonad install)
+
  - As yourself, run =~/.dotfiles/bin/symlink_dotfiles.sh=
+
  - As yourself, =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out (and also create an empty .emacs.d/_customize.el).  (on Macs, it also installs Homebrew)  (Some day I may merge my various post-install scripts)
+
  - =chsh=, zsh is installed as =/usr/bin/zsh=.  The first zsh run will auto-install antigen which in turn will install its plugins, because of *magic* (and .zshrc)
 
 *Reboot* to start working in Xorg.  Remember that in Debian, =sbin= is not in user's path: =$ reboot= will fail with command not found, but =sudo reboot= or =# reboot= works.
@@ -72,17 +72,17 @@ Edit =/etc/default/grub=:
 
  - =libata.force=noncq= :: Évite les gels pénibles de SSD.
  - =acpi_osi=Darwin= :: Supposé régler les problèmes d'hibernation.
- 
+ - Plus bas, configure =GRUB-GFXMODE=
+
 And run =update-grub=.
 
 Note: *never* edit files under =/boot/=: they will be erased at next grub update.
 
 *** Enable TRIM
 
-- In =etc/cryptab=, add the =discard= option.
+- In =etc/cryptab=, add the =discard= option (=luks,discard= --- pas d'espace)
 - In =/etc/lvm/lvm.conf=, set =issue_discards= to 1.
-- TODO See Debian page: there's a system service template
-- =sudo cp /usr/share/doc/util-linux/examples/fstrim.* /etc/systemd/system= (there should be two files: .service and .timer)
+- =cp /usr/share/doc/util-linux/examples/fstrim.* /etc/systemd/system= (there should be two files: .service and .timer)
 - =systemctl enable fstrim.timer=
 - =sudo update-initramfs -u -k all=
   
@@ -115,6 +115,7 @@ exit-on-failure=true
 #+end_src
 
 Note: je trouve lightdm plus stable avec =pam.service=lightdm= décommenté.  C'est peut-être de la superstition, mais si ça évite de s'emmerder...
+
 ** Laptop-specific
 
 debian_base_install ajoute des paquets à toute machine qui s'appelle "anna" spécifiquement dédiés au laptop.  Principalement le support acpi et network-manager
@@ -134,7 +135,7 @@ Dans la section =[ifupdown]=, passer =managed= à =true=
 
 **** Wireless (wifi)
 
-Edit: =debian_base_install.sh devrait installer le driver
+Edit: =debian_base_install.sh= devrait installer le driver
 Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suffire à faire fonctionner le chip wifi.  Je n'ai pas regardé pour le bluetooth.  Si besoin, =sudo modprobe brcmsmac=.
 
 **** Acpi
@@ -143,7 +144,7 @@ Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suff
 
 **** Apple keybard
 
-Edit or create =/etc/modprobe.d/hid_apple.conf and add
+Edit or create =/etc/modprobe.d/hid_apple.conf= and add
 
 #+begin_src 
 options hid_apple fnmode=2
@@ -168,3 +169,6 @@ WantedBy=multi-user.target
 
 *Notice* on Debian, =powertop= is in sbin.
 
+* Troubleshooting
+
+** No video on Rudiger or unsupported mode
