@@ -1,3 +1,5 @@
+#!/bin/sh
+
 add() {
     packages="$packages $@"
 }
@@ -11,16 +13,15 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add file less powertop psmisc rsync sudo wipe
+add file less man-db powertop psmisc rsync sudo wipe
 # Networking fundamentals
 add ca-certificates curl dnsutils lynx wget whois
 # Debian/APT utilities
-add apt-file aptitude netselect-apt
+add apt-file aptitude debian-keyring netselect-apt
+#                     ^ Need this to verify release ISOs
 # Shell and terminal multiplexing
 add fish tmux zsh
-#   ^ Better out of the box than zsh.  Cool for root or new users.
-# Auto mounting
-add udiskie
+#   ^ Better out of the box than zsh, cool for root or new users.
 # Compression
 add zip unzip
 
@@ -44,6 +45,7 @@ add fbset
 add xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
      mesa-utils mesa-va-drivers mesa-vdpau-drivers \
 	 libgl1-mesa-dri
+
 add xfonts-base # XMonad decorations fail without this.
 add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on GTK2 apps
 add desktop-base # Wallpaper and Plymouth themes
@@ -51,7 +53,8 @@ add desktop-base # Wallpaper and Plymouth themes
 add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 add compton 
 # Display manager & session locker
-add lightdm-gtk-greeter light-locker \
+add lightdm-gtk-greeter light-locker \ 
+add policykit-1 # LightDM depends on this to handle shutdown/reboot/etc   
 # Dbus
 add dbus-x11
 # Notification system
@@ -65,7 +68,7 @@ add printer-driver-brlaser
 # add printer-driver-splix # For the Samsung - doesn't work
 
 # Misc desktop utilities
-add feh scrot suckless-tools synapse wmctrl xsel
+add feh scrot suckless-tools synapse udiskie wmctrl xsel
 # Font manager and fonts
 add font-manager fonts-roboto
 

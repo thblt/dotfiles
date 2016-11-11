@@ -210,11 +210,11 @@ EndSection
 | Paquet     | État | Notes                                               |
 |------------+------+-----------------------------------------------------|
 | Chromium   | OK   | La version dans Jessie est la même que dans Stretch |
-| Emacs 24.5 | OK   | Dans Jessie, dans backports                         |
+| Emacs 24.5 | OK   | Backports                                           |
 | Emacs 25   | OK?  | Facile et rapide à compiler, normalement            |
 | Firefox    | ???  | Pas dans Backports                                  |
-| GHC        | ???  |                                                     |
-|            |      |                                                     |
+| GHC        | OK   | Backports                                           |
+| Tmux       | OK   | Backports                                           |
 |            |      |                                                     |
 |            |      |                                                     |
 |            |      |                                                     |

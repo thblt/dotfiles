@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd $HOME
+
 declare -a things=(
     .Xresources
     .bin
