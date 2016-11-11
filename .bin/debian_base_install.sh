@@ -11,11 +11,11 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add curl dnsutils file powertop psmisc sudo wget whois wipe
+add curl dnsutils fbset file less powertop psmisc sudo wget whois wipe
 # Debian/APT utilities
 add apt-file aptitude netselect-apt
 # Shell
-add zsh
+add fish zsh
 # Encryption keys management
 add keychain
 # Stuff for programming
@@ -28,7 +28,6 @@ add printer-driver-brlaser
 add udiskie
 # Compression
 add zip unzip
-# Non essential stuff
 
 #
 # Desktop environment
@@ -56,8 +55,8 @@ add alsa-base alsa-utils
 add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 # Compositing manager
 add compton 
-# Misc DE utilities
-add dunst feh scrot suckless-tools synapse wmctrl xsel
+# Misc desktop utilities
+add dunst feh gpa scrot suckless-tools synapse wmctrl xsel
 remove keynav
 # Font manager and fonts
 add font-manager fonts-roboto
@@ -91,20 +90,19 @@ add texlive-base texlive-lang-french texlive-xetex lyx
 remove texlive-full
 
 if [ "anna" = `hostname` ]; then
-    echo "I'm running on Anna.  I'm assuming a MacBook Air 2011."
+    >&2 echo "I'm running on Anna."
 	add acpid
 	add network-manager rfkill # TODO move to a "laptop" group
 	add task-laptop # Should have been installed automatically
 	add xserver-xorg-video-intel  
 	add firmware-brcm80211 # Wifi
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
-fi
-if [ "rudiger" = `hostname` ]; then
-    echo "I'm running on Rudiger.  I'm assuming a Mac Pro 2008."
+elif [ "rudiger" = `hostname` ]; then
+    >&2 echo "I'm running on Rudiger."
+	add xserver-xorg-video-radeon
 fi
 
-echo $1
-if [ $1 = "list" ]; then
+if [ "$1" = "list" ]; then
     echo $packages | tr " " "\n" | sort -u
     exit 0
 fi
