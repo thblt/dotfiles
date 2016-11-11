@@ -2,7 +2,7 @@
 #+AUTHOR: thblt
 #+PROPERTY: header-args :exports code
 
-Note to readers: Hi! You've just found a completely useless document.  This is my tutorial to install Debian the way I like it.  It won't be of any use to anyone else.
+Note to readers: Hi! You've just found a completely useless document.  These are notes on how to install Debian the way I like it.  It won't be of any use to anyone else.
 
 * Base install
 
@@ -172,3 +172,56 @@ WantedBy=multi-user.target
 * Troubleshooting
 
 ** No video on Rudiger or unsupported mode
+
+Create =/etc/X11/xorg.conf.d/10-monitor.conf= (=mkdir= if needed) with the following contents:
+
+#+begin_src 
+Section "Device"
+	Identifier	"Card0"
+	Driver		"radeon"
+	BusId		"2:0:0"
+	Option		"ColorTiling" "on"
+	Option		"ColorTiling2D" "on"
+	Option		"DRI" "3"
+	Option		"TearFree" "on"
+	Option		"AccelMethod" "glamor"
+	Option    	"EnablePageFlip" "on"
+EndSection
+
+Section "dri"
+ 	Mode 0666
+EndSection
+ 
+Section "Monitor"
+	Identifier "Main"
+ 	Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
+EndSection
+# 
+Section "Screen"
+ 	Identifier "Screen0"
+    Device "Card0"
+  	Monitor "Main"
+  	#Modes "2560x1440"
+EndSection
+#+end_src
+
+* Note: quels paquets faudrait-il avoir à jour pour pouvoir utiliser =stable=?
+
+| Paquet     | État | Notes                                               |
+|------------+------+-----------------------------------------------------|
+| Chromium   | OK   | La version dans Jessie est la même que dans Stretch |
+| Emacs 24.5 | OK   | Dans Jessie, dans backports                         |
+| Emacs 25   | OK?  | Facile et rapide à compiler, normalement            |
+| Firefox    | ???  | Pas dans Backports                                  |
+| GHC        | ???  |                                                     |
+|            |      |                                                     |
+|            |      |                                                     |
+|            |      |                                                     |
+|            |      |                                                     |
+
+
+- Chromium
+- Emacs
+- Firefox
+- Tmux
+- Xmonad[-contrib]

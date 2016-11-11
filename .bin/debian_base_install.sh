@@ -11,53 +11,61 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add curl dnsutils fbset file less powertop psmisc sudo wget whois wipe
+add file less powertop psmisc rsync sudo wipe
+# Networking fundamentals
+add ca-certificates curl dnsutils lynx wget whois
 # Debian/APT utilities
 add apt-file aptitude netselect-apt
-# Shell
-add fish zsh
-# Encryption keys management
-add keychain
-# Stuff for programming
-add build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm
-# Printing!
-add cups
-add printer-driver-splix # For the Samsung
-add printer-driver-brlaser
+# Shell and terminal multiplexing
+add fish tmux zsh
+#   ^ Better out of the box than zsh.  Cool for root or new users.
 # Auto mounting
 add udiskie
 # Compression
 add zip unzip
 
+###############################################################
+# At this point, the base system is complete.                 #
+# Need to run this in a server? Wrap everything below in a if #
+###############################################################
+
+# Base programming
+add build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm
+
+
 #
 # Desktop environment
 # 
+
+# Tools for computers with an attached keyboard and screen
+add fbset 
 
 # Xorg
 add xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
      mesa-utils mesa-va-drivers mesa-vdpau-drivers \
 	 libgl1-mesa-dri
 add xfonts-base # XMonad decorations fail without this.
-
 add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on GTK2 apps
-
 add desktop-base # Wallpaper and Plymouth themes
-
+# Window and compositing manager
+add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
+add compton 
 # Display manager & session locker
 add lightdm-gtk-greeter light-locker \
 # Dbus
 add dbus-x11
 # Notification system
-add libnotify-bin
-# Make some noise!
+add dunst libnotify-bin
+# Audio
 add alsa-base alsa-utils
-# Window manager
-add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
-# Compositing manager
-add compton 
+
+# Printing
+add cups
+add printer-driver-brlaser
+# add printer-driver-splix # For the Samsung - doesn't work
+
 # Misc desktop utilities
-add dunst feh gpa scrot suckless-tools synapse wmctrl xsel
-add barcode qrencode zbar-tools
+add feh scrot suckless-tools synapse wmctrl xsel
 # Font manager and fonts
 add font-manager fonts-roboto
 
@@ -65,15 +73,15 @@ add font-manager fonts-roboto
 # Desktop (not necessarily X) tools
 #
 
-# Terminal emulator and multiplexer
-add rxvt-unicode-256color tmux
+# Terminal emulator
+add rxvt-unicode-256color
 # Browsers
-add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr lynx torbrowser-launcher 
+add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher 
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
 # Text editor tools
 add stylish-haskell
-# ... with spell checking
+# Spell checking
 add aspell aspell-fr
 # Email client
 add maildir-utils mu4e isync
@@ -81,11 +89,15 @@ add maildir-utils mu4e isync
 add mc
 # Media player
 add vlc
+# Crypto
+add gpa keychain
 # Bad office suite
 add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
-
-# And the texlive monster and tex utilities
+# The texlive monster and tex utilities
 add texlive-base texlive-lang-french texlive-xetex lyx
+# Misc
+add barcode qrencode zbar-tools
+
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
