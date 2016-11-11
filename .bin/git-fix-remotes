@@ -14,54 +14,40 @@
 # git-fix-remotes
 # git-fix-remotes origin my-remote 
 
-from re import compile
+import re
 from subprocess import run, PIPE
 from sys import argv
+from urllib.parse import urlparse
 
 # The regexes are quite basic. They should work
 # for all (my) setups 
-splitter = compile(r"([-\w]+)\t(.+)\s\((\w+)\)")
-userrep_ssh = compile(r"([\w]+)@([-.\w]+):([-\w]+)/([-\w]+)")
-userrep_https = compile(r"https://(.+)/([\w]+)/([\w]+)")
 
-remotes = run(["git", "remote", "-v"], stdout=PIPE, timeout=10, universal_newlines=True).stdout.split("\n")
-remotes = [splitter.match(r) for r in remotes if r]
+splitter = re.compile(r"([-\w]+)\t(.+)\s\((\w+)\)")
 
-remotes = { r.groups()[0]: { s.groups()[2]: s.groups()[1] for s in remotes if s.groups()[0] == r.groups()[0] } for r in remotes}
+def get_remotes():
+    remotes = run(["git", "remote", "-v"], stdout=PIPE, timeout=10, universal_newlines=True).stdout.split("\n")
+    remotes = [splitter.match(r) for r in remotes if r]
 
-def is_https(path):
-    return path.startswith("https://")
+    remotes = { r.groups()[0]: { s.groups()[2]: s.groups()[1] for s in remotes if s.groups()[0] == r.groups()[0] } for r in remotes}
+    return remotes
 
-def ssh_user(host):
-    # A fascinating function indeed!
-    # I assume some hosting providers may have a different ssh
-    # username. If such evil occurs, it will be taken care of
-    # in this very place, with a well put if clause.
-    return "git"
-
-def https2ssh(path):
+def https2ssh(url):
     # Takes an https url, and returns a ssh url. Or tries to.
-    d = userrep_https.match(path).groups()
-    return "{ssh_user}@{host}:{user}/{repo}".format(
-        ssh_user = ssh_user(d[0]),
-        host = d[0],
-        user = d[1],
-        repo = d[2])
-        
+    return "ssh://git@{netloc}:{path}.git".format(netloc = url.netloc, path=url.path)
 
-def ssh2https(path):
+def ssh2https(url):
     # Takes a ssh url, and returns an https url. Or tries to.
-    d = userrep_ssh.match(path).groups()
-    return "https://{host}/{user}/{repo}".format(
-        host=d[1],
-        user=d[2],
-        repo=d[3])
+    path = url.path[:-4] if url.path.endswith(".git") else url.path
+    netloc = url.netloc[url.netloc.index("@")+1:] if "@" in url.netloc else url.netloc
+    return "https://{netloc}{path}".format(netloc=netloc, path=path)
 
 def set_remote(name, url, push=False):
     command = [word for word in ["git", "remote", "set-url", "--push" if push else "", name, url] if word]
     print(" ".join(command))
+    
     run(command)
 
+remotes = get_remotes()
 for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # The lines below are weird, but order matters here.
     # I'm not sure git *guarantees* the order protocols
@@ -70,11 +56,13 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # changes push.  Therefore, we can't do
     # `for protocol, url in remotes[name].items()` 
     for protocol in ["fetch", "push"]:
-        url = remotes[name][protocol]
-        if protocol=="fetch" and not is_https(url):
+        url = urlparse(remotes[name][protocol])
+        if protocol=="fetch" and not "https" == url.scheme:
             new = ssh2https(url)
             set_remote(name, new, False)
-            urls["push"] = new
+            remotes = get_remotes()
             
-        elif protocol=="push" and is_https(url):
+        elif protocol=="push" and "https" == url.scheme:
             set_remote(name, https2ssh(url), True)    
+
+        
