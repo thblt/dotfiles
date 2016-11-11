@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono');
+
+* {
+    border: 0;
+    margin: 0;
+    line-height: 1;
+    font-weight: normal;
+}
+
+body {
+    background: black;
+    color: white;
+    font-family: "Roboto Condensed";
+    -moz-column-count: 4;
+    -webkit-column-count: 4;    
+    margin: 1em;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Roboto');
+pre, code {
+    font-family: "Roboto Mono";
+}
+
+h1.title,
+span.section-number-2,
+span.section-number-3,
+#postamble
+    {
+        display: none;
+    }
+
+table {
+    padding : 1em;
+}
+
+table tr:first-child,
+table td:first-child {
+    border-left: 0;
+    padding-left : 0;
+    margin: 0;
+}
+
+/* 
+ *This is where the shortcuts are 
+ */
+table tr td:first-child code {
+    display: inline-block;
+    color: #77aaff;
+    background-color: #333333;
+    padding: .1em;
+    margin: 0 .1em;
+    border: thin solid black;
+    border-radius : .25em;
+}
+
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    line-height: 5;
+}
+
+ul li {
+    display: block;
+    margin : 1em 0;
+    background: #222222;
+    padding: .5em 2em .5em 1em;
+    border-left: 1em solid #444;
+    border-top-left-radius: .5em;
+}
+
+.outline-2 {
+    margin: .5em .5em 1.5em .5em;
+}
+
+h2 {
+    font-size: large;
+    display: block;
+    text-align: center;
+    margin-bottom: .5em;
+    padding: .25em;
+    color: #ff0000;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 0px 0px 5px  white;
+}
+
+
+
+h2:before,
+h2:after {
+    content: "★";
+    margin: 0 1em;
+    color: red;
+    text-shadow: 0px 0px 5px  red;
+}
+
+h3 {
+    width: auto;
+    font-size: medium;
+
+    color: #AAAAAA;
+    margin-left: auto;
+    margin-right: auto;    
+    width: auto;
+    margin: .5em 0;
+    padding: .25em 0;
+    text-align: center;
+    text-transform: uppercase;
+}

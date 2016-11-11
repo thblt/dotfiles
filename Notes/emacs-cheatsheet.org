@@ -1,0 +1,110 @@
+#+TITLE: Emacs cheatsheet
+#+AUTHOR: Thibault Polge
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="emacs-cheatsheet.css" />
+#+OPTIONS: toc:nil
+
+* Command multipliers
+
+
+| =C--= =M--=           | ~negative-argument~  |
+| =C-[0-9]+= =M-[0-9]+= | ~digit-argument~     |
+| =C-u=                | ~universal-argument~ |
+
+* Moving around
+
+| =C-f=   | ~forward-char~           |
+| =C-b=   | ~backward-char~          |
+| =M-f=   | ~forward-word~           |
+| =M-b=   | ~backward-word~          |
+| =C-n=   | ~next-line~              |
+| =C-p=   | ~previous-line~          |
+| =C-a=   | ~move-beginning-of-line~ |
+| =C-e=   | ~move-end-of-line~       |
+| =M-e=   | ~forward-sentence~       |
+| =M-a=   | ~backward-sentence~      |
+| =M-<=   | ~beginning-of-buffer~    |
+| =M->=   | ~end-of-buffer~          |
+| =M-g c= | ~goto-char~              |
+
+* Killing and yanking
+
+** Killing
+
+| =C-d=     | ~delete-char~             |
+| =Del=     | ~delete-backward-char~    |
+| =M-d=     | ~kill-word~               |
+| =M-del=   | ~backward-kill-word~      |
+| =C-k=     | ~kill-line~               |
+| =M-k=     | ~kill-sentence~           |
+| =C-x Del= | ~backward-kill-sentence~  |
+| =C-w=     | ~kill-region~             |
+|         | ~kill-paragraph~          |
+|         | ~backward-kill-paragraph~ |
+
+** Saving to kill-ring
+
+| =M-w=     | ~kill-ring-save~          |
+
+** Yanking
+
+| =C-y=     | ~yank~                    |
+| =M-y=     | ~yank-pop~                |
+
+* Marks and regions
+
+| =C-space= =C-@= | ~set-mark-command~        |
+| =C-x C-x=      | ~exchange-point-and-mark~ |
+| =M-h=          | ~mark-paragraph~          |
+| =C-x C-p=      | ~mark-page~               |
+| =C-x h=        | ~mark-whole-buffer~       |
+
+* Editing goodies
+
+| =C-t=     | ~transpose-chars~      |
+| =M-t=     | ~transpose-words~      |
+| =C-x C-t= | ~transpose-lines~      |
+|         | ~transpose-sentences~  |
+|         | ~transpose-paragraphs~ |
+| =M-c=     | ~capitalize-word~      |
+| =M-u=     | ~upcase-word~          |
+| =M-l=     | ~downcase-word~        |
+
+* Searching
+
+| =C-s=     | ~isearch-forward~         |
+| =C-r=     | ~isearch-backward~        |
+| =C-s C-w= | ~isearch-yank-word~       |
+| =C-s C-y= | ~isearch-yank-line~       |
+| =C-s M-y= | ~isearch-yank-kill~       |
+| =C-s C-s= | ~isearch-repeat-forward~  |
+| =C-s C-r= | ~isearch-repeat-backward~ |
+| =C-M-s=   | ~isearch-forward-regexp~  |
+| =C-M-r=   | ~isearch-backward-regexp~ |
+| =M-s w=   | ~isearch-forward-word~    |
+
+** At a search prompt
+   
+| =Enter= | ~isearch-exit~ |
+
+* Replacing
+
+| =M-%=   | ~query-replace~        |
+| =C-M-%= | ~query-replace-regexp~ |
+|       |                      |
+
+** At replace prompt
+
+| =C-r= | Enter recursive edit            |
+| =C-w= | Delete match and recursive edit |
+| =^=   | Go back to previous match       |
+| =E=   | Edit replacement string         |
+
+* Macros
+
+| =C-x (= =<f3>= | ~kmacro-start-macro~         |
+| =C-x )= =<f4>= | ~kmacro-end-macro~           |
+| =C-x e=      | ~kmacro-end-and-call-macro~  |
+| =C-x C-k r=  | ~apply-macro-to-region-line~ |
+
+ - To loop a macro, call it with 0 as a numeric argument. This should be longer.
+
