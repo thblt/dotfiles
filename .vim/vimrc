@@ -4,61 +4,61 @@ call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'                 " Vundle itself
 
-Plugin 'kien/ctrlp.vim'                    " Fuzzy search
-Plugin 'mileszs/ack.vim'                   " Ack
-Plugin 'tpope/vim-fugitive'                " Git integration
+"Plugin 'kien/ctrlp.vim'                    " Fuzzy search
+"Plugin 'mileszs/ack.vim'                   " Ack
+"Plugin 'tpope/vim-fugitive'                " Git integration
 " Look and feel
 Plugin 'vim-airline/vim-airline'           " Status line
 Plugin 'vim-airline/vim-airline-themes'    " Airline themes
-Plugin 'junegunn/goyo.vim'                 " 'Zenroom' mode
-Plugin 'junegunn/limelight.vim'            " With Goyo : fade contents outside the current paragraph
+"Plugin 'junegunn/goyo.vim'                 " 'Zenroom' mode
+"Plugin 'junegunn/limelight.vim'            " With Goyo : fade contents outside the current paragraph
 Plugin 'mhinz/vim-startify'                " Startup screen with recent files
 Plugin 'nanotech/jellybeans.vim'           " Jellybeans theme
-Plugin 'nathanaelkane/vim-indent-guides'   " Indentation guides
-Plugin 'scrooloose/nerdtree'               " Dir/file browsing
+"Plugin 'nathanaelkane/vim-indent-guides'   " Indentation guides
+"Plugin 'scrooloose/nerdtree'               " Dir/file browsing
 " Editing
-Plugin 'Lokaltog/vim-easymotion'           " Improved motion commands
+"Plugin 'Lokaltog/vim-easymotion'           " Improved motion commands
 Plugin 'Raimondi/delimitMate'              " Autocompletion for quotes, parens…
-Plugin 'chrisbra/NrrwRgn'                  " Narrow region à la Emacs
-Plugin 'danro/rename.vim'                  " Rename on disk
+"Plugin 'chrisbra/NrrwRgn'                  " Narrow region à la Emacs
+"Plugin 'danro/rename.vim'                  " Rename on disk
 Plugin 'godlygeek/tabular'                 " For tabularization. Required by plasticboy/markdown
-Plugin 'jceb/vim-orgmode'                  " Emacs' org-mode clone
+"Plugin 'jceb/vim-orgmode'                  " Emacs' org-mode clone
 Plugin 'kien/rainbow_parentheses.vim'      " Different colors for nested ({[etc
-Plugin 'plasticboy/vim-markdown'           " Improved markdown handling
+"Plugin 'plasticboy/vim-markdown'           " Improved markdown handling
 Plugin 'sjl/gundo.vim'                     " Undo tree
-Plugin 'tpope/vim-abolish'                 " working with variants of a word
-Plugin 'tpope/vim-speeddating'             " c-a c-x for dates
-Plugin 'vim-scripts/YankRing.vim'          " Yank registers manipulation
+"Plugin 'tpope/vim-abolish'                 " working with variants of a word
+"Plugin 'tpope/vim-speeddating'             " c-a c-x for dates
+"Plugin 'vim-scripts/YankRing.vim'          " Yank registers manipulation
 " Programming
-Plugin 'majutsushi/tagbar.git'             " tags bar
-Plugin 'rhysd/vim-clang-format'            " Interface to clang_format
-Plugin 'scrooloose/nerdcommenter'          " For comments
+"Plugin 'majutsushi/tagbar.git'             " tags bar
+"Plugin 'rhysd/vim-clang-format'            " Interface to clang_format
+"Plugin 'scrooloose/nerdcommenter'          " For comments
 "Plugin 'scrooloose/syntastic'              " Syntax checking
-Plugin 'tpope/vim-projectionist'           " Mostly for 'alternate' files (.c/.h etc)
+"Plugin 'tpope/vim-projectionist'           " Mostly for 'alternate' files (.c/.h etc)
 Plugin 'tpope/vim-repeat'                  " Improved dot (allows repeating plugin actions. Transparent)
-Plugin 'tpope/vim-surround'                " Edit surroundings
+"Plugin 'tpope/vim-surround'                " Edit surroundings
 " (Programming) languages
 " -- C++
-Plugin 'octol/vim-cpp-enhanced-highlight'  " Improved highlighting for C++
+"Plugin 'octol/vim-cpp-enhanced-highlight'  " Improved highlighting for C++
 " -- Haskell
-Plugin 'Shougo/vimproc.vim'                " Required by ghcmod-vim
-Plugin 'Twinside/vim-hoogle'               " Hoogle search
-Plugin 'eagletmt/ghcmod-vim'               " ghc-mod lint and check
-Plugin 'eagletmt/neco-ghc'                 " ghc completion provider
-Plugin 'neovimhaskell/haskell-vim'         " Syntax and indentation
+"Plugin 'Shougo/vimproc.vim'                " Required by ghcmod-vim
+"Plugin 'Twinside/vim-hoogle'               " Hoogle search
+"Plugin 'eagletmt/ghcmod-vim'               " ghc-mod lint and check
+"Plugin 'eagletmt/neco-ghc'                 " ghc completion provider
+"Plugin 'neovimhaskell/haskell-vim'         " Syntax and indentation
 " -- Jade
-Plugin 'digitaltoad/vim-jade'              " Jade templates
+"Plugin 'digitaltoad/vim-jade'              " Jade templates
 " -- Python
-Plugin 'tmhedberg/SimpylFold'              " Folding for Python
+"Plugin 'tmhedberg/SimpylFold'              " Folding for Python
 " -- XML/SGML/HTML/etc
-Plugin 'mattn/emmet-vim'                   " Emmet
+"Plugin 'mattn/emmet-vim'                   " Emmet
 " Documentation
-Plugin 'mrtazz/DoxygenToolkit.vim'         " Doxygen
+"Plugin 'mrtazz/DoxygenToolkit.vim'         " Doxygen
 " Snippets and completion
 if v:version >= 704
-	Plugin 'ervandew/supertab'             " Tab for everything
-	Plugin 'SirVer/ultisnips'              " Snippets
-	Plugin 'honza/vim-snippets'            " Default snippets for UltiSnips
+"	Plugin 'ervandew/supertab'             " Tab for everything
+"	Plugin 'SirVer/ultisnips'              " Snippets
+"	Plugin 'honza/vim-snippets'            " Default snippets for UltiSnips
 "	Plugin 'Valloric/YouCompleteMe'        " Completion
 endif
 "Plugin 'dhruvasagar/vim-table-mode'        "  Table editor
