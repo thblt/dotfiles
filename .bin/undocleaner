@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Clean orphan Vim undo files (\.(.*)\.un~ with no matching \1)
+# Clean orphan Vim/Emacs undo files
 # There's a buggy bash oneliner for that, but it doesn't seem to work
 # so well. Here it is in Python, much less elegant, but easier to
 # understand, thus safer (hey, it *deletes* files)
@@ -8,9 +8,9 @@
 # This *may* behave weirdly if there are undo files for undo files, like
 # '..something.un~.un~'. But the very existence of such files would be weird. 
 
-import argparse, os, sys
+import argparse, fnmatch, os, sys
 
-def clean(path, recursive):
+def clean(path, recursive, exclude=[], orphans_only=True):
 	global totalSeen, totalRm
 	#verbose("Entering {0}".format (path))
 	try:
@@ -23,17 +23,22 @@ def clean(path, recursive):
 			canonical = os.path.join(path, f) 
 			if os.path.isdir(canonical):
 				if recursive:
-					clean(canonical, True)
+                                        if [p for p in exclude if p==os.path.realpath(canonical)]:
+                                                verbose("SKIPPING\t{0}".format(canonical))
+                                        else:
+					        clean(canonical, True, exclude, orphans_only)
 			elif os.path.isfile(canonical):
 				if (f.endswith(".un~") or f.endswith(".~undo-tree~")) and f.startswith("."): # A *bit* more efficient than a regex
 					totalSeen+=1
-					main = os.path.join(path, f[1:-4])
-					if not (os.path.exists(main) and os.path.isfile(main)):
-						os.remove(canonical)
-						totalRm += 1
-						message("Deleted \t{0}".format(canonical))
-					else:
-						verbose("Not orphaned \t{0}".format(canonical))
+					main = os.path.join(path, f[1:f.rfind(".")])
+                                        orphaned = not os.path.exists(main)
+                                        delete = (not orphans_only) or orphaned
+                                        if delete:
+				                os.remove(canonical)
+					        totalRm += 1
+						message("Deleted ({0})\t{1}".format("orphan    " if orphaned else "NON orphan", canonical))
+                                        else:
+                                                verbose("Not orphaned \t{0}".format(canonical))
 		except:
 			message ("! Can't access \t{0} (check permissions and retry)".format(canonical))
 			
@@ -43,32 +48,41 @@ parser = argparse.ArgumentParser(description='Delete orphan Vim undo files')
 parser.add_argument('paths', metavar='PATH', type=str, nargs='+',
                    help='Paths to scan')
 parser.add_argument('-r', action="store_true", dest="recursive", help="Recursive mode")
+parser.add_argument('-a', action="store_false", dest="orphans_only", default=True, help="Delete every undo file found, even if not orphaned")
+parser.add_argument('-x', action="append", dest="exclude", help="Directories not to recurse into (accepts wildcards, can be repeated)")
+parser.add_argument('--yes', action="store_true", dest="iknowwhatimdoing", help=argparse.SUPPRESS)
 verbosity = parser.add_mutually_exclusive_group(required=False)
+
 verbosity.add_argument('-q', dest="quiet", action="store_true", help="Be quiet")
 verbosity.add_argument('-v', dest="verbose", action="store_true", help="Be verbose")
 
-result = parser.parse_args()
+args = parser.parse_args()
 
-if result.quiet:
-	def message(msg): # And there are even *weirder* ways to do that!
-		pass
-else:
-	def message(msg):
-		print(msg)
+msgon = lambda x: sys.stdout.write(x+"\n")
+msgoff = lambda x: 0
 
-if result.verbose:
-	def verbose(msg):
-		print(msg)
-else:
-	def verbose(msg):
-		pass
+message = msgoff if args.quiet else msgon
+verbose = msgon if args.verbose else msgoff
 
+if args.recursive and not (args.orphans_only or args.iknowwhatimdoing):
+        print("-r and --all will recurse *everywhere*, including potentially into ~/.vim/undo and ~/.emacs.d/undo-forest.")
+        print("If you're sure that's what you want to do, then add --yes to command line.")
+        exit(-1)
+        
 totalSeen = 0
 totalRm = 0
 
-for p in result.paths:
+missing_exclude = [x for x in args.exclude if not os.path.exists(x)]
+if missing_exclude:
+        message("The following excluded path(s) don't exist:")
+        message("\t" + "\n\t".join(missing_exclude))
+        message("Aborting.")
+        exit(-1)
+exclude = [os.path.realpath(x) for x in args.exclude]
+        
+for p in args.paths:
 	if os.path.isdir(p):
-		clean(p, result.recursive)
+		clean(p, args.recursive, exclude=exclude, orphans_only=args.orphans_only)
 	else:
 		message("Not a directory \t{0}".format(p))
 
