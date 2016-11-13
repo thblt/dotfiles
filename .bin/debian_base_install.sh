@@ -32,7 +32,10 @@ add zip unzip
 
 # Base programming
 add build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm
-
+# Some deps
+add cmake libclang-dev sqlite3
+#                      ^ for helm-dash/counsel-dash 
+#   ^-----^ emacs irony-mode
 
 #
 # Desktop environment
@@ -100,7 +103,7 @@ add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 add texlive-base texlive-lang-french texlive-xetex lyx
 # Misc
 add barcode qrencode zbar-tools
-
+add qalculate-gtk
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."

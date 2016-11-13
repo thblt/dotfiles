@@ -50,7 +50,7 @@ alias k9="ssh thblt@k9.thb.lt"
 
 function mkcd() {
 if mkdir -p "$@"
-	then cd "$"@
+	then cd "$@"
 fi
 }
 

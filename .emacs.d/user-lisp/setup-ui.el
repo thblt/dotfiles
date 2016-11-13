@@ -2,13 +2,28 @@
 
 ;; Themes
 (use-package leuven-theme)
-(use-package tao-theme :defer t)
+(use-package tao-theme
+  :defer t
+  :config (custom-theme-set-faces
+           'tao-yin 
+           
+           '(flycheck-error ((t (:underline (:color "red" :style wave)))))
+           '(flycheck-warning ((t :weight bold (:underline (:color "yellow" :style wave)))))
+           )
+  )
 
 (load-theme 'leuven)
 
 ;; Disable all themes when loading a new one.
 (defadvice load-theme (before theme-dont-propagate activate)
   (mapcar #'disable-theme custom-enabled-themes))
+
+;; Identify face at point
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
 ;; Fonts
 (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))

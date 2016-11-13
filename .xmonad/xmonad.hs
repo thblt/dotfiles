@@ -65,7 +65,7 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
-               . smartSpacingWithEdge 4 $
+               . smartSpacingWithEdge 2 $
                emptyBSP
   where
     myDecoration = noFrillsDeco shrinkText def {
@@ -244,7 +244,7 @@ main = do
     , logHook = do
 --        dbusLogger dbus
 --        dynamicLogWithPP$ myPP dbus -- logPipe
-        fadeInactiveLogHook 0.95
+        fadeInactiveLogHook 0.98
     , manageHook = composeAll
       [
       manageDocks

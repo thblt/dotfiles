@@ -21,6 +21,14 @@
   :init (counsel-projectile-on)
   )
 
+(use-package counsel-dash
+  :bind ("<f1>" . counsel-dash-at-point)
+  :config (defun counsel-dash-at-point ()
+            (interactive)
+            (counsel-dash (thing-at-point 'symbol))
+            )
+  )
+
 (add-hook 'c-mode-common-hook
           (lambda ()
             (setq-local helm-dash-docsets '("Boost" "C" "C++" "Qt"))
