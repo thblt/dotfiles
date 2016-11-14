@@ -32,6 +32,7 @@ import           XMonad.Layout.Fullscreen            (fullscreenSupport)
 import           XMonad.Layout.IfMax
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
+import           XMonad.Layout.NoBorders             (withBorder)
 import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Layout.Spacing               (smartSpacingWithEdge)
 import qualified XMonad.StackSet                     as XSS
@@ -65,21 +66,22 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
-               . smartSpacingWithEdge 2 $
+               . smartSpacingWithEdge 2 
+               . withBorder 1 $
                emptyBSP
   where
     myDecoration = noFrillsDeco shrinkText def {
       decoHeight = 4
-      , activeColor = activeColor
-      , activeTextColor = activeColor
-      , activeBorderColor = activeColor
-      , inactiveColor = inactiveColor
-      , inactiveTextColor = inactiveColor
-      , inactiveBorderColor = inactiveColor
+      , activeColor = myActiveColor
+      , activeTextColor = myActiveColor
+      , activeBorderColor = myActiveColor
+      , inactiveColor = myInactiveColor
+      , inactiveTextColor = myInactiveColor
+      , inactiveBorderColor = myInactiveColor
       }
-      where
-        activeColor = "#ff0000"
-        inactiveColor = "#aaaaaa"
+
+myActiveColor = "#ff0000"
+myInactiveColor = "#aaaaaa"
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -91,7 +93,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask,                              xK_Escape),               spawn "dm-tool lock")
   , ((modMask .|. shiftMask,                xK_Escape),               spawn "dm-tool switch-to-greeter")
   -- Layout management
---, ((modMask,                              xK_space),                sendMessage NextLayout)
+  , ((modMask,                              xK_space),                sendMessage NextLayout)
   , ((modMask .|. shiftMask,                xK_space),                setLayout $ XMonad.layoutHook conf) -- Reset
   , ((modMask,                              xK_h),                    sendMessage Shrink)
   , ((modMask,                              xK_l),                    sendMessage Expand)
@@ -231,9 +233,9 @@ main = do
   xmonad . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
-      borderWidth = 0
-    , focusedBorderColor = "#ff0000"
-    , normalBorderColor = "#000000"
+      borderWidth = 0 -- Borders are added in the layout hook
+    , focusedBorderColor = myActiveColor
+    , normalBorderColor = myInactiveColor
     , clickJustFocuses = False
     , focusFollowsMouse = False
     --    , handleEventHook = fullscreenEventHook <+> docksEventHook
