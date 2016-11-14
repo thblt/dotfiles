@@ -73,7 +73,7 @@ add printer-driver-brlaser
 # Misc desktop utilities
 add feh scrot suckless-tools synapse udiskie wmctrl xsel
 # Font manager and fonts
-add font-manager fonts-roboto
+add font-manager fonts-dejavu fonts-roboto
 
 #
 # Desktop (not necessarily X) tools
@@ -137,5 +137,5 @@ echo "Please review the FULL output above and press enter"
 echo "to proceed or C-c to abort."
 read dummy
 
-apt install $packages
 apt autoremove --purge $removed_packages
+apt install $packages
