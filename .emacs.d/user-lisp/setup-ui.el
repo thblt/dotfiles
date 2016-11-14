@@ -5,10 +5,10 @@
 (use-package tao-theme
   :defer t
   :config (custom-theme-set-faces
-           'tao-yin 
+           'tao-yin
            
            '(flycheck-error ((t (:underline (:color "red" :style wave)))))
-           '(flycheck-warning ((t :weight bold (:underline (:color "yellow" :style wave)))))
+           '(flycheck-warning ((t (:underline (:color "orange" :style wave)))))
            )
   )
 

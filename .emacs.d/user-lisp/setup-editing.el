@@ -24,7 +24,7 @@
   :diminish (editorconfig-mode)
   )
 (use-package expand-region)             ; Expand region by semantic units
-;; (use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing
+(use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing
 ;; FIXME Focus breaks ivy! Reported:
 ;; https://github.com/abo-abo/swiper/issues/755
 ;; FIXED, awaiting a release

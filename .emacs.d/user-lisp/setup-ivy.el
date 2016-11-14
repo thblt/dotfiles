@@ -23,15 +23,25 @@
 
 (use-package counsel-dash
   :bind ("<f1>" . counsel-dash-at-point)
-  :config (defun counsel-dash-at-point ()
+  :config
+  (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
+  (defun counsel-dash-at-point ()
             (interactive)
             (counsel-dash (thing-at-point 'symbol))
             )
   )
 
-(add-hook 'c-mode-common-hook
+(mapc 'mk-helm-hooks thblt/dash-docsets-hooks-alist)
+
+(add-hook 'c-mode-hook
           (lambda ()
-            (setq-local helm-dash-docsets '("Boost" "C" "C++" "Qt"))
+            (setq-local helm-dash-docsets '("C"))
+            )
+          )
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
             )
           )
 
