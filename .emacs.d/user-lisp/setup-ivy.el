@@ -31,8 +31,6 @@
             )
   )
 
-(mapc 'mk-helm-hooks thblt/dash-docsets-hooks-alist)
-
 (add-hook 'c-mode-hook
           (lambda ()
             (setq-local helm-dash-docsets '("C"))

@@ -11,8 +11,6 @@ body {
     background: black;
     color: white;
     font-family: "Roboto Condensed";
-    -moz-column-count: 4;
-    -webkit-column-count: 4;    
     margin: 1em;
 }
 
@@ -31,6 +29,7 @@ span.section-number-3,
 
 table {
     padding : 1em;
+    margin: 1em;
 }
 
 table tr:first-child,
@@ -46,11 +45,12 @@ table td:first-child {
 table tr td:first-child code {
     display: inline-block;
     color: #77aaff;
-    background-color: #333333;
+    background-color: black;
     padding: .1em;
-    margin: 0 .1em;
+    margin: .1em;
     border: thin solid black;
     border-radius : .25em;
+    font-size: small;
 }
 
 
@@ -63,26 +63,47 @@ ul {
 ul li {
     display: block;
     margin : 1em 0;
-    background: #222222;
+    background: #111111;
     padding: .5em 2em .5em 1em;
-    border-left: 1em solid #444;
-    border-top-left-radius: .5em;
+    margin: 0em;
+    border-left: 1em solid #7af;
+    border-top: thin solid #444444;
+//    border-top-left-radius: .5em;
+}
+
+#content {
+    text-align: center;
 }
 
 .outline-2 {
-    margin: .5em .5em 1.5em .5em;
+    display: inline-block;
+    width: 20em;
+    margin: 1em;
+    vertical-align: top;
 }
+
+. outline-text-2 {
+    background: #222222;
+    border: thin solid #444444;
+    border-radius: .5em;
+    box-shadow: inset 0px 0px 5px #000000;
+
+}
+
+    
 
 h2 {
     font-size: large;
     display: block;
     text-align: center;
     margin-bottom: .5em;
-    padding: .25em;
-    color: #ff0000;
+    padding: .5em .25em;
+    background: black;
     color: white;
     text-transform: uppercase;
     text-shadow: 0px 0px 5px  white;
+    border-top-left-radius: .5em;
+    border-top-right-radius: .5em;    
 }
 
 
@@ -98,13 +119,11 @@ h2:after {
 h3 {
     width: auto;
     font-size: medium;
-
     color: #AAAAAA;
     margin-left: auto;
     margin-right: auto;    
-    width: auto;
+
     margin: .5em 0;
     padding: .25em 0;
-    text-align: center;
     text-transform: uppercase;
 }

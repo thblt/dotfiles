@@ -103,6 +103,7 @@
            undo-tree-visualizer-diff t
            undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest") ))
            )
+  :diminish (undo-tree-mode)
   )
 (use-package unfill                      ; Unfill
   :bind (
@@ -113,6 +114,7 @@
 (use-package yasnippet                  ; Snippets
   :config (add-to-list 'yas-snippet-dirs "~./emacs.d/snippets/")
   :init (yas-global-mode)
+  :diminish (yas-minor-mode)
   )
 (use-package auto-yasnippet
   :bind ( ("H-w" . aya-create)

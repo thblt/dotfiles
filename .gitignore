@@ -29,6 +29,7 @@
 .emacs.d/recentf
 .emacs.d/url
 .vim/bundle/**
+.vim/undo/**
 .xmonad/xmonad
 .xmonad/xmonad-x86_64-linux
 .xmonad/xmonad.errors

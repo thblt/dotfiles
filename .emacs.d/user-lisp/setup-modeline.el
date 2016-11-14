@@ -176,9 +176,6 @@
             (diminish 'variable-pitch-mode)
             (diminish 'visual-line-mode)
 
-            (eval-after-load "anzu"
-              '(diminish 'anzu-mode))
-            
             (eval-after-load "autorevert"
               '(diminish 'auto-revert-mode "↻"))
             
@@ -197,12 +194,6 @@
             (eval-after-load "org"
               '(diminish 'org-indent-mode))
             
-            (eval-after-load "projectile"
-              '(diminish 'projectile-mode))
-
-            (eval-after-load "smartparens"
-              '(diminish 'smartparens-mode))
-
             (eval-after-load "face-remap"
               '(diminish 'text-scale-mode))
                         )
