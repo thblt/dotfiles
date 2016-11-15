@@ -62,6 +62,10 @@ myWorkspaces = map show [ 1 .. 9 :: Int ]
 myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
+myActiveColor = "#ff0000"
+myInactiveColor = "#aaaaaa"
+
+
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
@@ -79,9 +83,6 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
       , inactiveTextColor = myInactiveColor
       , inactiveBorderColor = myInactiveColor
       }
-
-myActiveColor = "#ff0000"
-myInactiveColor = "#aaaaaa"
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
