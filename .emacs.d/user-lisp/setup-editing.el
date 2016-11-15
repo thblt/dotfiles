@@ -92,6 +92,7 @@
   :init (progn
           (smartparens-global-mode )
           )
+  :diminish (smartparens-mode)
   )
 
 (use-package typo)

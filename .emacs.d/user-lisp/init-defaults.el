@@ -1,16 +1,13 @@
 (setq-default
-
- ;; Modeline
- column-number-mode t       ; Column number in modeline
- line-number-mode t         ; Line - - -
-
  ;; Indentation and general editing
  major-mode 'text-mode      ; Don't use fundamental mode for general text: it has no hooks.
  tab-width 4                ; Set tab stops
  indent-tabs-mode nil       ; Default to spaces for indent (smart tabs
-                            ; on some syntaxes, see below)
+                            ; on some syntaxes)
  comment-empty-lines t      ;
- reb-re-syntax 'string      ; String syntax for re-builder
+ reb-re-syntax 'string      ; String syntax for re-builder.  See
+                            ; advice at
+                            ; <https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder>
 
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
@@ -26,8 +23,6 @@
  use-dialog-box nil             ; Always use the minibuffer for prompts
  vc-follow-symlinks t           ; Always follow symlinks to
                                 ; version-controlled files.
-
-
 
  initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
 

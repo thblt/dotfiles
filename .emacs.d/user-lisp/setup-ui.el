@@ -6,7 +6,7 @@
   :defer t
   :config (custom-theme-set-faces
            'tao-yin
-           
+           '(font-lock-function-name-face ((t (:background "#444444" :foreground "white"))))
            '(flycheck-error ((t (:underline (:color "red" :style wave)))))
            '(flycheck-warning ((t (:underline (:color "orange" :style wave)))))
            )
@@ -27,7 +27,7 @@
 
 ;; Fonts
 (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))
-(set-face-attribute 'default nil
+(set-face-attribute 'defauylt nil
 ;;                  :font "DejaVu Sans Mono" ;; This breaks when Emacs is started as a daemon
                     :height (if (string-prefix-p  "rudiger" system-name) 120 100)
                     )
