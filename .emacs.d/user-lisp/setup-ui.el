@@ -27,7 +27,7 @@
 
 ;; Fonts
 (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))
-(set-face-attribute 'defauylt nil
+(set-face-attribute 'default nil
 ;;                  :font "DejaVu Sans Mono" ;; This breaks when Emacs is started as a daemon
                     :height (if (string-prefix-p  "rudiger" system-name) 120 100)
                     )

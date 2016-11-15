@@ -7,7 +7,7 @@
 ;; (package-initialize)
 
 (add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
-(add-to-list 'custom-theme-load-path  (expand-file-name "user-lisp" user-emacs-directory))
+(add-to-list 'custom-theme-load-path (expand-file-name "user-lisp" user-emacs-directory))
 
 (require 'setup-package-manager)
 
