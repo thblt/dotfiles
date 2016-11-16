@@ -15,7 +15,7 @@
                                    )
 
       ;; Isolate package directories for major Emacs version
-      package-user-dir (concat package-user-dir (number-to-string emacs-major-version))
+      package-user-dir (concat user-emacs-directory "/elpa" (number-to-string emacs-major-version))
       )
 
 (package-initialize)

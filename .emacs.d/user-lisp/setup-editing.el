@@ -102,7 +102,7 @@
   :config (setq
            undo-tree-auto-save-history t
            undo-tree-visualizer-diff t
-           undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest") ))
+           undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory  "/undo-forest" (number-to-string emacs-major-version))))
            )
   :diminish (undo-tree-mode)
   )

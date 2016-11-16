@@ -1,9 +1,9 @@
 (require 'use-package)
 
 ;; Themes
-(use-package leuven-theme)
+(use-package leuven-theme
+  :defer t)
 (use-package tao-theme
-  :defer t
   :config (custom-theme-set-faces
            'tao-yin
            '(font-lock-function-name-face ((t (:background "#444444" :foreground "white"))))
@@ -12,7 +12,7 @@
            )
   )
 
-(load-theme 'leuven)
+(load-theme 'tao-yin)
 
 ;; Disable all themes when loading a new one.
 (defadvice load-theme (before theme-dont-propagate activate)
