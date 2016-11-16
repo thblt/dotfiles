@@ -70,7 +70,7 @@ add cups
 add printer-driver-brlaser
 # add printer-driver-splix # For the Samsung - doesn't work
 
-# Misc desktop utilities
+# Misc X-desktop utilities
 add feh scrot suckless-tools synapse udiskie wmctrl xsel
 # Font manager and fonts
 add font-manager fonts-dejavu fonts-roboto
@@ -92,7 +92,7 @@ add aspell aspell-fr
 # Email client
 add maildir-utils mu4e isync
 # File managers
-add mc
+add mc pcmanfm
 # Media player
 add vlc
 # Crypto
