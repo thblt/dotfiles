@@ -5,6 +5,8 @@
 import           Data.Int                            (Int32)
 import qualified Data.Map                            as M
 import           Data.Maybe                          (isJust)
+import           Data.Word
+import Data.Int
 import qualified DBus
 import qualified DBus.Client                         as DBus
 import           Graphics.X11.ExtraTypes.XF86
@@ -65,25 +67,34 @@ myHiddenWorkspaces = [ "NSP" ]
 myActiveColor = "#ff0000"
 myInactiveColor = "#aaaaaa"
 
+data MySpacing = MySpacing {
+  myGaps :: Int,
+  myBorderSize :: Int,
+  myDecoHeight :: Int
+  }
+
+mySpacing :: MySpacing
+mySpacing | myHostName == "rudiger" = MySpacing 4 2 4 
+          | otherwise = MySpacing 2 1 2
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
-               . smartSpacingWithEdge (if myHostName == "rudiger" then 4 else 1)
-               . withBorder 1 $
+               . smartSpacingWithEdge (myGaps mySpacing)
+               . withBorder (fromIntegral $ myBorderSize mySpacing) $
                emptyBSP
   where
-    myDecoration = id
-        {-- myDecoratio' = noFrillsDeco shrinkText def {
-          decoHeight = 4
-          , activeColor = myActiveColor
-          , activeTextColor = myActiveColor
-          , activeBorderColor = myActiveColor
-          , inactiveColor = myInactiveColor
-          , inactiveTextColor = myInactiveColor
-          , inactiveBorderColor = myInactiveColor
-          } --}
+--    myDecoration | False = id
+    myDecoration = noFrillsDeco shrinkText def {
+      decoHeight = (fromIntegral $ myDecoHeight mySpacing)
+      , activeColor = myActiveColor
+      , activeTextColor = myActiveColor
+      , activeBorderColor = myActiveColor
+      , inactiveColor = myInactiveColor
+      , inactiveTextColor = myInactiveColor
+      , inactiveBorderColor = myInactiveColor
+      }
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
