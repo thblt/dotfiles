@@ -6,7 +6,6 @@
 (use-package tao-theme
   :config (custom-theme-set-faces
            'tao-yin
-           '(font-lock-function-name-face ((t (:background "#444444" :foreground "white"))))
            '(flycheck-error ((t (:underline (:color "red" :style wave)))))
            '(flycheck-warning ((t (:underline (:color "orange" :style wave)))))
            )
