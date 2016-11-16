@@ -13,9 +13,9 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add file less man-db powertop psmisc rsync sudo wipe
+add file less man-db powertop psmisc sudo wipe
 # Networking fundamentals
-add ca-certificates curl dnsutils lynx wget whois
+add ca-certificates curl dnsutils lynx rsync wget whois
 # Debian/APT utilities
 add apt-file aptitude debian-keyring netselect-apt
 #                     ^ Need this to verify release ISOs
