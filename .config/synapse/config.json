@@ -23,7 +23,7 @@
       "exit" : "<Control>q"
     },
     "global" : {
-      "ui-type" : "essential"
+      "ui-type" : "default"
     }
   },
   "data-sink" : {
