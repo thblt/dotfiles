@@ -2,11 +2,9 @@
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-import           Data.Int                            (Int32)
+import           Data.Int
 import qualified Data.Map                            as M
 import           Data.Maybe                          (isJust)
-import           Data.Word
-import Data.Int
 import qualified DBus
 import qualified DBus.Client                         as DBus
 import           Graphics.X11.ExtraTypes.XF86
@@ -14,7 +12,7 @@ import           Language.Haskell.TH
 import           System.Posix.Unistd                 (SystemID (nodeName),
                                                       getSystemID)
 import           XMonad
-import           XMonad.Actions.CycleWS              (nextWS, prevWS)
+--import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 import           XMonad.Actions.Navigation2D
 import           XMonad.Actions.WindowBringer        (bringMenu, gotoMenu)
 import           XMonad.Hooks.EwmhDesktops           (ewmh)
@@ -28,6 +26,7 @@ import           XMonad.Hooks.SetWMName              (setWMName)
 import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       Rotate (Rotate),
                                                       SelectMoveNode (..),
+                                                      TreeBalance (..),
                                                       emptyBSP)
 import           XMonad.Layout.BorderResize          (borderResize)
 import           XMonad.Layout.Fullscreen            (fullscreenSupport)
@@ -65,7 +64,7 @@ myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
 myActiveColor = "#ff0000"
-myInactiveColor = "#aaaaaa"
+myInactiveColor = "#000000"
 
 data MySpacing = MySpacing {
   myGaps :: Int,
@@ -75,7 +74,7 @@ data MySpacing = MySpacing {
 
 mySpacing :: MySpacing
 mySpacing | myHostName == "rudiger" = MySpacing 4 2 4 
-          | otherwise = MySpacing 2 1 2
+          | otherwise = MySpacing 1 1 0
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
@@ -85,16 +84,16 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                . withBorder (fromIntegral $ myBorderSize mySpacing) $
                emptyBSP
   where
---    myDecoration | False = id
-    myDecoration = noFrillsDeco shrinkText def {
-      decoHeight = (fromIntegral $ myDecoHeight mySpacing)
-      , activeColor = myActiveColor
-      , activeTextColor = myActiveColor
-      , activeBorderColor = myActiveColor
-      , inactiveColor = myInactiveColor
-      , inactiveTextColor = myInactiveColor
-      , inactiveBorderColor = myInactiveColor
-      }
+    myDecoration = id
+    -- myDecoration = noFrillsDeco shrinkText def {
+    --   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
+    --   , activeColor = myActiveColor
+    --   , activeTextColor = myActiveColor
+    --   , activeBorderColor = myActiveColor
+    --   , inactiveColor = myInactiveColor
+    --   , inactiveTextColor = myInactiveColor
+    --   , inactiveBorderColor = myInactiveColor
+    --   }
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -112,6 +111,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask,                              xK_l),                    sendMessage Expand)
   , ((modMask .|. shiftMask,                xK_f),                    sendMessage ToggleStruts)
   , ((modMask,                              xK_f),                    sendMessage $ Toggle FULL)
+--, ((modMask,                              xK_equal),                sendMessage $ IncMasterN 1)
+--, ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))  
   -- BSP-specific
   , ((modMask .|. shiftMask,                xK_h),                    sendMessage $ ExpandTowards L)
   , ((modMask .|. shiftMask,                xK_j),                    sendMessage $ ExpandTowards D)
@@ -157,6 +158,9 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Left ),                windowSwap L False)
   , ((modMask .|. shiftMask,                xK_Up   ),                windowSwap U False)
   , ((modMask .|. shiftMask,                xK_Down ),                windowSwap D False)
+
+  , ((modMask, xK_equal), sendMessage Balance)
+  , ((modMask, xK_d), sendMessage Equalize)  
   ] 
   ++
   -- workspace switching
