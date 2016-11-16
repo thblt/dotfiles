@@ -70,19 +70,20 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
-               . smartSpacingWithEdge 2 
+               . smartSpacingWithEdge (if myHostName == "rudiger" then 4 else 1)
                . withBorder 1 $
                emptyBSP
   where
-    myDecoration = noFrillsDeco shrinkText def {
-      decoHeight = 4
-      , activeColor = myActiveColor
-      , activeTextColor = myActiveColor
-      , activeBorderColor = myActiveColor
-      , inactiveColor = myInactiveColor
-      , inactiveTextColor = myInactiveColor
-      , inactiveBorderColor = myInactiveColor
-      }
+    myDecoration = id
+        {-- myDecoratio' = noFrillsDeco shrinkText def {
+          decoHeight = 4
+          , activeColor = myActiveColor
+          , activeTextColor = myActiveColor
+          , activeBorderColor = myActiveColor
+          , inactiveColor = myInactiveColor
+          , inactiveTextColor = myInactiveColor
+          , inactiveBorderColor = myInactiveColor
+          } --}
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
@@ -116,7 +117,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Tab),                  windows XSS.focusUp)
   , ((modMask,                              xK_Return),               windows XSS.swapMaster)
   , ((modMask,                              xK_t),                    withFocused $ windows . XSS.sink)
-  , ((modMask,                              xK_p),                    spawn "synapse" )
+--, ((modMask,                              xK_p),                    spawn "synapse" )
   , ((modMask .|. shiftMask,                xK_p),                    spawn "dmenu_run")
   , ((modMask .|. shiftMask,                xK_Return),               spawn $ terminal conf)
   , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "emacsclient -ca ''")
