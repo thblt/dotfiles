@@ -42,7 +42,9 @@ add cmake libclang-dev sqlite3
 # 
 
 # Tools for computers with an attached keyboard and screen
-add fbset 
+add fbset
+# Filesystems (exfat is pointless outside the desktop)
+add exfat-fuse exfat-utils
 
 # Xorg
 add xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
@@ -92,7 +94,7 @@ add aspell aspell-fr
 # Email client
 add maildir-utils mu4e isync
 # File managers
-add mc pcmanfm
+add mc
 # Media player
 add vlc
 # Crypto
