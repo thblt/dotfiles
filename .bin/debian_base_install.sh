@@ -32,6 +32,7 @@ add zip unzip
 
 #
 # Base programming
+# Diff tools are in desktop tools
 #
 
 add build-essential
@@ -42,7 +43,7 @@ add cmake
 # Debuggers
 add gdb lldb
 # Haskell
-add ghc
+add ghc stylish-haskell
 # Javascript
 add nodejs npm
 # C-family
@@ -104,8 +105,8 @@ add rxvt-unicode-256color
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher 
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
-# Text editor tools
-add stylish-haskell
+# Text editing tools
+add meld
 # Spell checking
 add aspell aspell-fr
 # Email client
