@@ -8,13 +8,14 @@
 (use-package auto-dictionary
   :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
   )
-(use-package anzu)                      ; Show matches count/current match # in mode line
+(use-package anzu)                      ; Show matches count/current match # in mode line. Note: doesn't work with Swiper.
 (use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
   :bind (("C-:" . avy-goto-char-timer)
          ("C-M-:" . avy-goto-char-timer)
          ("C-=" . avy-goto-line)
          )
   )
+
 (use-package clipmon                    ; Interact with system clipboard
   :init (clipmon-mode t)                ; Clipboard manager mode
   )
@@ -25,10 +26,6 @@
   )
 (use-package expand-region)             ; Expand region by semantic units
 (use-package focus)                     ; Dim outside thing at point (customize with M-x focus-mode-to-thing
-;; FIXME Focus breaks ivy! Reported:
-;; https://github.com/abo-abo/swiper/issues/755
-;; FIXED, awaiting a release
-
 
 (use-package god-mode
   :bind (("<escape>" . god-local-mode)
@@ -47,12 +44,23 @@
 )
 
 (use-package highlight-indentation)     ; Show indent level markers
+
 (use-package linum-relative             ; Relative line numbers
   :init (add-hook 'prog-mode-hook
-                  'linum-on)
+                  (lambda ()
+                    (linum-relative-mode)
+                    ))
   :config (setq linum-relative-current-symbol ""
                 linum-relative-with-helm nil)
   )
+(set-face-attribute 'linum nil
+                    :inherit 'default
+                    :underline nil
+                    :weight 'normal
+                    )
+
+;; Nlinum is below
+
 (use-package multiple-cursors
   :init
   (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
