@@ -1,4 +1,4 @@
-(helm-dash-install-docset "Boost")
+(helm-dash-install-docset 'Boost)
 (helm-dash-install-docset 'C)
 (helm-dash-install-docset 'C++)
 (helm-dash-install-docset 'CSS)
