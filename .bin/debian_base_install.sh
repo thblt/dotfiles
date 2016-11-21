@@ -30,12 +30,29 @@ add zip unzip
 # Need to run this in a server? Wrap everything below in a if #
 ###############################################################
 
+#
 # Base programming
-add build-essential git python-setuptools python-pip python python3 virtualenvwrapper nodejs npm
+#
+
+add build-essential
+# Version control
+add git
+# Building
+add cmake
+# Debuggers
+add gdb lldb
+# Haskell
+add ghc
+# Javascript
+add nodejs npm
+# C-family
+add clang clang-format
+# Python
+add python-setuptools python-pip python python3 virtualenvwrapper
 # Some deps
-add cmake libclang-dev sqlite3
-#                      ^ for helm-dash/counsel-dash 
-#   ^-----^ emacs irony-mode
+add libclang-dev sqlite3
+#                ^ for helm-dash/counsel-dash 
+#   ^ for emacs irony-mode (also needs cmake)
 
 #
 # Desktop environment
