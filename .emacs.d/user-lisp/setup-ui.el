@@ -11,7 +11,7 @@
            )
   )
 
-(load-theme 'tao-yin)
+(load-theme 'tao-yang)
 
 ;; Disable all themes when loading a new one.
 (defadvice load-theme (before theme-dont-propagate activate)

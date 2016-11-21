@@ -9,6 +9,8 @@
                             ; advice at
                             ; <https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder>
 
+ path-to-ctags "/usr/bin/ctags"
+ 
  browse-url-browser-function 'browse-url-generic
  browse-url-generic-program "setsid"
  browse-url-generic-args '("xdg-open")

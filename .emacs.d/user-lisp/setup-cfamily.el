@@ -3,7 +3,9 @@
 (use-package clang-format)              ; Interface to clang-format
 (use-package company-c-headers)         ; Completion provider for C header file
 (use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
-(use-package irony)
+(use-package irony
+  :diminish irony-mode
+  )
 (use-package flycheck-irony)
 (use-package company-irony)
 
@@ -21,13 +23,13 @@
 ;;  (define-key irony-mode-map [remap complete-symbol]
 ;;    'irony-completion-at-point-async))
 ;;(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-;;(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
 (add-hook 'c-mode-common-hook
           (lambda ()
             (local-set-key (kbd "C-c o") 'ff-find-other-file)
             (irony-mode t)
-            (irony-cdb--autodetect-compile-options)
             )
           )
 
