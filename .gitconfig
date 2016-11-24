@@ -5,3 +5,7 @@
 	email = thibault@thb.lt
 [core]
 	excludesfile = /home/thblt/.gitignore_global
+[merge]
+	tool = meld
+[diff]
+	tool = meld
