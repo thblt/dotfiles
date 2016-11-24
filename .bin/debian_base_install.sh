@@ -13,7 +13,7 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add file less man-db powertop psmisc sudo wipe
+add file less man-db powertop psmisc rename sudo wipe
 # Networking fundamentals
 add ca-certificates curl dnsutils lynx rsync wget whois
 # Debian/APT utilities
@@ -26,7 +26,7 @@ add fish tmux zsh
 add zip unzip
 
 ###############################################################
-# At this point, the base system is complete.                 #
+# At this point, the base system is usable interactively.     #
 # Need to run this in a server? Wrap everything below in a if #
 ###############################################################
 
@@ -36,14 +36,15 @@ add zip unzip
 #
 
 add build-essential
-# Version control
-add git
-# Building
-add cmake
+# General programming tools
+add cmake exuberant-ctags git
+# Language-specific build systems are with their language.
 # Debuggers
 add gdb lldb
 # Haskell
-add ghc stylish-haskell
+add cabal-install ghc stylish-haskell
+# Java (?)
+add openjdk-8-jdk
 # Javascript
 add nodejs npm
 # C-family
@@ -112,7 +113,7 @@ add aspell aspell-fr
 # Email client
 add maildir-utils mu4e isync
 # File managers
-add mc
+add mc pcmanfm
 # Media player
 add vlc
 # Crypto
