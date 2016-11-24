@@ -6,6 +6,8 @@
   :diminish (ivy-mode)
   )
 
+(use-package ivy-hydra)
+
 (use-package counsel
   :bind (
          ("M-x" . counsel-M-x)

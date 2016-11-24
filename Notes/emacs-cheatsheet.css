@@ -29,7 +29,6 @@ span.section-number-3,
 
 table {
     padding : 1em;
-    margin: 1em;
 }
 
 table tr:first-child,
@@ -63,12 +62,12 @@ ul {
 ul li {
     display: block;
     margin : 1em 0;
-    background: #111111;
+    background: #222222;
     padding: .5em 2em .5em 1em;
     margin: 0em;
     border-left: 1em solid #7af;
     border-top: thin solid #444444;
-//    border-top-left-radius: .5em;
+    text-align: left;
 }
 
 #content {

@@ -86,11 +86,15 @@
    
 | =Enter= | ~isearch-exit~ |
 
+** Swiper
+
+| =M-q= | ~swiper-query-replace~ |
+| =C-o= | ~hydra-ivy/body~       |
+
 * Replacing
 
 | =M-%=   | ~query-replace~        |
 | =C-M-%= | ~query-replace-regexp~ |
-|       |                      |
 
 ** At replace prompt
 
@@ -106,5 +110,12 @@
 | =C-x e=      | ~kmacro-end-and-call-macro~  |
 | =C-x C-k r=  | ~apply-macro-to-region-line~ |
 
- - To loop a macro, call it with 0 as a numeric argument. This should be longer.
+ - To loop a macro until error or end of buffer, call it with 0 as a numeric argument.
+
+* Debugging
+
+** CPU/RAM Usage
+
+|  | ~profiler-start~ |
+|  | ~profiler-report~ |
 

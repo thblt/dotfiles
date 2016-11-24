@@ -5,9 +5,13 @@
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;; (package-initialize)
+;;; Code:
 
 (add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
 (add-to-list 'custom-theme-load-path (expand-file-name "user-lisp" user-emacs-directory))
+
+(add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+(add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
 
 (require 'setup-package-manager)
 
@@ -18,7 +22,8 @@
 (require 'setup-editing)
 
 ;; General: common minor modes and utilities
-;; (require 'setup-evil) ;; Don't be evil
+;; (require 'setup-evil); Dont be evil
+(require 'setup-god)
 (require 'setup-git)
 (require 'setup-ivy)
 ;;(require 'setup-helm)
