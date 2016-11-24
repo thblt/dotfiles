@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.profile
+
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
 
@@ -10,7 +12,7 @@ if [ ! -e /etc/debian_version ]; then
 	# Don't start Dunst manually on Debian: configure it at /etc/xdg/dunst/dunstrc
 	dunst &
 else
-	echo "This is Debian, not starting Dunst"
+	echo "This is Debian, not starting some stuff"
 fi
 
 # Input setup
