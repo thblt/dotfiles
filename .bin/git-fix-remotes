@@ -12,7 +12,7 @@
 
 # Usage example:
 # git-fix-remotes
-# git-fix-remotes origin my-remote 
+# git-fix-remotes origin my-remote
 
 import re
 from subprocess import run, PIPE
@@ -20,7 +20,7 @@ from sys import argv
 from urllib.parse import urlparse
 
 # The regexes are quite basic. They should work
-# for all (my) setups 
+# for all (my) setups
 
 splitter = re.compile(r"([-\w]+)\t(.+)\s\((\w+)\)")
 
@@ -44,7 +44,7 @@ def ssh2https(url):
 def set_remote(name, url, push=False):
     command = [word for word in ["git", "remote", "set-url", "--push" if push else "", name, url] if word]
     print(" ".join(command))
-    
+
     run(command)
 
 remotes = get_remotes()
@@ -54,15 +54,15 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # are displayed with git remote -v, and we must modify
     # fetch *before* push, because changing fetch also
     # changes push.  Therefore, we can't do
-    # `for protocol, url in remotes[name].items()` 
+    # `for protocol, url in remotes[name].items()`
     for protocol in ["fetch", "push"]:
         url = urlparse(remotes[name][protocol])
+        if not url.netloc:
+            print("Skipping {0} ({1}): can't understand URL {2}.  This may be a git-style ssh URL.".format(name, protocol, remotes[name][protocol]))
         if protocol=="fetch" and not "https" == url.scheme:
             new = ssh2https(url)
-            set_remote(name, new, False)
             remotes = get_remotes()
-            
-        elif protocol=="push" and "https" == url.scheme:
-            set_remote(name, https2ssh(url), True)    
 
-        
+        elif protocol=="push" and "https" == url.scheme:
+            pass
+            #set_remote(name, https2ssh(url), True)
