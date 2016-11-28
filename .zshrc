@@ -33,6 +33,7 @@ bindkey '^[[B' down-line-or-search
 
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
+alias bc="bc -l"
 alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITOR} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
