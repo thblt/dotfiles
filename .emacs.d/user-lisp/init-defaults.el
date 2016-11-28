@@ -9,6 +9,10 @@
                             ; advice at
                             ; <https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder>
 
+ ;; ispell
+ ispell-silently-savep t    ; Don't ask before saving modified dict
+ 
+ ;; Programs
  path-to-ctags "/usr/bin/ctags"
  
  browse-url-browser-function 'browse-url-generic
