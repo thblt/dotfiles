@@ -33,6 +33,7 @@ AUR packages:
  samsung-unified-driver
 * Fix Macbook Air resume
 It *seems* to work by simply adding acpi_osi=Darwin to kernel parameters.
+Non ça marche pas
 * Fix Radeon flickering on the Mac Pro
 
 Il y a un sous dossier avec un script et un service pour le lancer. 
