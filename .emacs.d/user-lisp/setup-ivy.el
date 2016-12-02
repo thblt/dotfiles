@@ -1,7 +1,7 @@
 (require 'use-package)
 
 (use-package ivy
-  :config (setq ivy-use-virtual-buffers t)
+;;  :config (setq ivy-use-virtual-buffers t)
   :init (ivy-mode)
   :diminish (ivy-mode)
   )
@@ -19,9 +19,9 @@
   :bind (("C-s" . swiper))
   )
 
-(use-package counsel-projectile
-  :init (counsel-projectile-on)
-  )
+;; (use-package counsel-projectile
+;;    :init (counsel-projectile-on)
+;;    )
 
 (use-package counsel-dash
   :bind ("<f1>" . counsel-dash-at-point)
