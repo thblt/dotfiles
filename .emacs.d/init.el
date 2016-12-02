@@ -7,11 +7,13 @@
 ;; (package-initialize)
 ;;; Code:
 
-(add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
-(add-to-list 'custom-theme-load-path (expand-file-name "user-lisp" user-emacs-directory))
+(progn
+  (add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
+  (add-to-list 'custom-theme-load-path (expand-file-name "user-lisp" user-emacs-directory))
 
-(add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
-(add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+  (add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+  (add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs"))
+
 
 (require 'setup-package-manager)
 
@@ -28,17 +30,21 @@
 (require 'setup-ivy)
 ;;(require 'setup-helm)
 
-;; Languagues and major modes
-(require 'setup-programming)
+;; Prose modes
+(require 'setup-org)
+(require 'setup-tex)
 
+;; General programming
+(require 'setup-programming)
+(require 'setup-projectile)
+
+;; Languagues and major modes
 (require 'setup-cfamily)
 (require 'setup-haskell)
 (require 'setup-lua)
 (require 'setup-markdown)
 (require 'setup-mu4e)
-(require 'setup-projectile)
 (require 'setup-python)
-(require 'setup-tex)
 (require 'setup-webdev)
 (require 'setup-yaml)
 
