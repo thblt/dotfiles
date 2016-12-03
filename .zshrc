@@ -32,8 +32,13 @@ alias o=xdg-open
 export GREP_COLOR=31
 alias grep='grep --color=auto'
 
-# Misc aliases
+# Git aliases
+alias g=git
+alias ga="git add"
+alias gc="git commit"
+alias grm="git rm"
 
+# Misc aliases
 alias bc="bc -l"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam" 
