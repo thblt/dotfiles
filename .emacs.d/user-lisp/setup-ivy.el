@@ -4,6 +4,7 @@
 ;;  :config (setq ivy-use-virtual-buffers t)
   :init (ivy-mode)
   :diminish (ivy-mode)
+  :pin melpa-stable ;; @FIXME Unpin when Emacs25 is stable enough
   )
 
 (use-package ivy-hydra)
