@@ -8,22 +8,13 @@ fi
 
 source ~/.antigen/antigen.zsh
 
-antigen use oh-my-zsh
-
-antigen bundle common-aliases
-antigen bundle fancy-ctrl-z
-antigen bundle git
-antigen bundle pip
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
+antigen use oh-my-zsh
 antigen theme agnoster
 
 antigen apply
-
-# Fixing some plugins
-
-unalias rm # common-aliases
 
 # Prefix-based history search with up and down arrow
 bindkey '^[[A' up-line-or-search                                                
