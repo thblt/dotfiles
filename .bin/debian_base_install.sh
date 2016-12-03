@@ -13,7 +13,7 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add file less man-db powertop psmisc rename sudo wipe
+add file less man-db powertop psmisc rename sudo time wipe
 # Networking fundamentals
 add ca-certificates curl dnsutils lynx rsync wget whois
 # Debian/APT utilities
@@ -37,7 +37,7 @@ add zip unzip
 
 add build-essential
 # General programming tools
-add cmake exuberant-ctags git
+add cmake exuberant-ctags git gpp
 # Language-specific build systems are with their language.
 # Debuggers
 add gdb lldb
@@ -103,7 +103,7 @@ add font-manager fonts-dejavu fonts-roboto
 # Terminal emulator
 add rxvt-unicode-256color
 # Browsers
-add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher 
+add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher uzbl 
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
 # Text editing tools
