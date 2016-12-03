@@ -31,7 +31,7 @@ mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code
 eval $(keychain --eval)
 keynav &
 light-locker &
-GTK_THEME=Adwaita:dark synapse -s &
+synapse -s &
 udiskie &
 xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
 xsetroot -cursor_name left_ptr &
