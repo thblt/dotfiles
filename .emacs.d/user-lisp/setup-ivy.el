@@ -1,28 +1,32 @@
 (require 'use-package)
 
 (use-package ivy
-;;  :config (setq ivy-use-virtual-buffers t)
+  :config (setq ivy-use-virtual-buffers t)
   :init (ivy-mode)
   :diminish (ivy-mode)
-  :pin melpa-stable ;; @FIXME Unpin when Emacs25 is stable enough
+  :pin "melpa-stable" ;; @FIXME
   )
 
-(use-package ivy-hydra)
+(use-package ivy-hydra
+  :pin melpa-stable ;; @FIXME
+  )
 
 (use-package counsel
   :bind (
          ("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file)
          )
+  :pin melpa-stable ;; @FIXME  
   )
 
 (use-package swiper
+  :pin melpa-stable  ;; @FIXME    
   :bind (("C-s" . swiper))
   )
 
-;; (use-package counsel-projectile
-;;    :init (counsel-projectile-on)
-;;    )
+;;(use-package counsel-projectile
+;;  :init (counsel-projectile-on)
+;;  )
 
 (use-package counsel-dash
   :bind ("<f1>" . counsel-dash-at-point)
@@ -32,6 +36,7 @@
             (interactive)
             (counsel-dash (thing-at-point 'symbol))
             )
+  :pin melpa-stable  ;; @FIXME    
   )
 
 (add-hook 'c-mode-hook
