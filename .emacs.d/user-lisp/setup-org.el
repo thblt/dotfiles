@@ -1,9 +1,5 @@
 ;;; Code:
 
-;;(use-package org-bullets
-;;  :init (add-hook org-mode-hook 'org-bullets-mode t)
-;;  )
-
 (eval-after-load "org"
   (progn
     (setq org-catch-invisible-edits t ; Avoid editing folded contents

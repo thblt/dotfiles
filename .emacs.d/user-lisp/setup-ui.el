@@ -4,11 +4,7 @@
 (use-package leuven-theme
   :defer t)
 (use-package tao-theme
-  :config (custom-theme-set-faces
-           'tao-yin
-           '(flycheck-error ((t (:underline (:color "red" :style wave)))))
-           '(flycheck-warning ((t (:underline (:color "orange" :style wave)))))
-           )
+  :defer t
   )
 
 (load-theme 'eziam-light)
