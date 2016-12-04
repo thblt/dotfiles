@@ -48,6 +48,7 @@ def set_remote(name, url, push=False):
     run(command)
 
 remotes = get_remotes()
+
 for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # The lines below are weird, but order matters here.
     # I'm not sure git *guarantees* the order protocols
@@ -58,7 +59,7 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
     for protocol in ["fetch", "push"]:
         url = urlparse(remotes[name][protocol])
         if not url.netloc:
-            print("Skipping {0} ({1}): can't understand URL {2}.  This may be a git-style ssh URL.".format(name, protocol, remotes[name][protocol]))
+            print("Skipping {0} ({1}): can't understand {2} (this may be a git-style ssh URL)".format(name, protocol, remotes[name][protocol]))
         if protocol=="fetch" and not "https" == url.scheme:
             new = ssh2https(url)
             remotes = get_remotes()
