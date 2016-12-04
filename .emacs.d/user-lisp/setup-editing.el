@@ -61,6 +61,7 @@
 (use-package rainbow-delimiters)        ; Colorize parentheses etc by depth.
 (use-package rainbow-mode  ; Preview colors codes and functions like "#ff0000", rgb(128,12,127)
   :diminish (rainbow-mode)
+  :init (add-hook 'prog-mode-hook 'rainbow-mode t)
   )
 (use-package smart-tabs-mode
 ;;  :init (add-hook 'c-mode-common-hook (lambda ()
