@@ -1,5 +1,9 @@
 ;;; Code:
 
+(use-package toc-org
+  :init (add-hook 'org-mode-hook 'toc-org-enable)
+  )
+
 (eval-after-load "org"
   (progn
     (setq org-catch-invisible-edits t ; Avoid editing folded contents
