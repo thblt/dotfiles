@@ -64,5 +64,4 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
             remotes = get_remotes()
 
         elif protocol=="push" and "https" == url.scheme:
-            pass
-            #set_remote(name, https2ssh(url), True)
+            set_remote(name, https2ssh(url), True)
