@@ -35,7 +35,7 @@ add zip unzip
 # Diff tools are in desktop tools
 #
 
-add build-essential
+add build-essential checkinstall
 # General programming tools
 add cmake exuberant-ctags git gpp
 # Language-specific build systems are with their language.
@@ -50,7 +50,7 @@ add nodejs npm
 # C-family
 add clang clang-format
 # Python
-add python-setuptools python-pip python python3 virtualenvwrapper
+add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
 # Some deps
 add libclang-dev sqlite3
 #                ^ for helm-dash/counsel-dash 
