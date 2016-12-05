@@ -23,7 +23,7 @@ add apt-file aptitude debian-keyring netselect-apt
 add fish tmux zsh
 #   ^ Better out of the box than zsh, cool for root or new users.
 # Compression
-add zip unzip
+add unrar zip unzip
 
 ###############################################################
 # At this point, the base system is usable interactively.     #
@@ -125,6 +125,7 @@ add texlive-base texlive-lang-french texlive-xetex lyx
 # Misc
 add barcode qrencode zbar-tools
 add qalculate-gtk
+add transmission
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
