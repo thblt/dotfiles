@@ -42,7 +42,7 @@ add cmake exuberant-ctags git gpp
 # Debuggers
 add gdb lldb
 # Haskell
-add cabal-install ghc stylish-haskell
+add cabal-install haskell-stack ghc ghc-mod stylish-haskell
 # Java (?)
 add openjdk-8-jdk
 # Javascript
