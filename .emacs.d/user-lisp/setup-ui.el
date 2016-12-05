@@ -7,7 +7,7 @@
   :defer t
   )
 
-(load-theme 'eziam-light)
+(load-theme 'eziam-light t)
 
 ;; Disable all themes when loading a new one.
 (defadvice load-theme (before theme-dont-propagate activate)
