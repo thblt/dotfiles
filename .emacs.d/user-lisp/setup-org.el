@@ -1,5 +1,7 @@
 ;;; Code:
 
+(use-package org-bullets)
+
 (use-package toc-org
   :init (add-hook 'org-mode-hook 'toc-org-enable)
   )
