@@ -33,7 +33,8 @@ keynav &
 light-locker &
 synapse -s &
 udiskie &
-xrdb merge ~/.Xresources # LightDM does it, nodm doesn't 
+xrdb merge ~/.Xresources # LightDM does it, nodm doesn't
+xmodmap .Xmodmap.`hostname`
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
 # fi

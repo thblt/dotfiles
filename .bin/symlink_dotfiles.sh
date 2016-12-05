@@ -14,13 +14,18 @@ declare -a things=(
     .profile
     .tmux.conf
     .vim
+    .Xmodmap.`hostname`
     .xmonad
     .xsessionrc
     .zshrc
 )
 
 for t in "${things[@]}"; do
-    ln -s .dotfiles/$t .
+    if [ -e .dotfiles/$t ]; then
+        ln -s .dotfiles/$t .
+    else
+        echo "No source file \"$t\", skipping."
+    fi
 done
 
 mkdir .config 2> /dev/null
