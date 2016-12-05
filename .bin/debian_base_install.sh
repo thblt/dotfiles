@@ -53,12 +53,12 @@ add clang clang-format
 add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
 # Some deps
 add libclang-dev sqlite3
-#                ^ for helm-dash/counsel-dash 
+#                ^ for helm-dash/counsel-dash
 #   ^ for emacs irony-mode (also needs cmake)
 
 #
 # Desktop environment
-# 
+#
 
 # Tools for computers with an attached keyboard and screen
 add fbset
@@ -75,10 +75,10 @@ add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on G
 add desktop-base # Wallpaper and Plymouth themes
 # Window and compositing manager
 add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
-add compton 
+add compton
 # Display manager & session locker
-add lightdm-gtk-greeter light-locker \ 
-add policykit-1 # LightDM depends on this to handle shutdown/reboot/etc   
+add lightdm-gtk-greeter light-locker
+add policykit-1 # LightDM depends on this to handle shutdown/reboot/etc
 # Dbus
 add dbus-x11
 # Notification system
@@ -103,7 +103,7 @@ add font-manager fonts-dejavu fonts-roboto
 # Terminal emulator
 add rxvt-unicode-256color
 # Browsers
-add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher 
+add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
 # Text editing tools
@@ -131,12 +131,13 @@ if [ "anna" = `hostname` ]; then
 	add acpid
 	add network-manager rfkill # TODO move to a "laptop" group
 	add task-laptop # Should have been installed automatically
-	add xserver-xorg-video-intel  
+	add xserver-xorg-video-intel
 	add firmware-brcm80211 # Wifi
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 elif [ "rudiger" = `hostname` ]; then
     >&2 echo "I'm running on Rudiger."
 	add xserver-xorg-video-radeon
+    add numlockx
 fi
 
 if [ "$1" = "list" ]; then
