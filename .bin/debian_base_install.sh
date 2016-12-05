@@ -103,7 +103,7 @@ add font-manager fonts-dejavu fonts-roboto
 # Terminal emulator
 add rxvt-unicode-256color
 # Browsers
-add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher uzbl 
+add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher 
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
 # Text editing tools
