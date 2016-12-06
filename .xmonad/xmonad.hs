@@ -39,7 +39,7 @@ import           XMonad.Layout.Spacing               (smartSpacingWithEdge)
 import qualified XMonad.StackSet                     as XSS
 import           XMonad.Util.NamedWindows            (getName)
 import           XMonad.Util.Run                     (spawnPipe)
-import           XMonad.Util.Scratchpad              (scratchpadManageHook, scratchpadSpawnActionCustom)
+import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare        (getSortByIndex)
 
 -- Computer-dependent settings.
@@ -73,7 +73,7 @@ data MySpacing = MySpacing {
   }
 
 mySpacing :: MySpacing
-mySpacing | myHostName == "rudiger" = MySpacing 4 2 4 
+mySpacing | myHostName == "rudiger" = MySpacing 4 2 4
           | otherwise = MySpacing 1 1 0
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
@@ -95,13 +95,25 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
     --   , inactiveBorderColor = myInactiveColor
     --   }
 
+
+myScratchpads :: [NamedScratchpad]
+myScratchpads = [
+  NS "term" "urxvt -title urxvt_scratchpad_1545645 -e ~/.xmonad/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
+  (customFloating rect),
+
+  NS "web" "surf" (className =? "Surf")
+    (customFloating rect)
+  ]
+  where ratio = 12
+        rect = XSS.RationalRect (1/ratio) (1/ratio) ((ratio-2)/ratio) ((ratio-2)/ratio)
+
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   [
     -- General
     ((modMask .|. shiftMask,                xK_c),                    kill)
   , ((modMask .|. shiftMask,                xK_q),                    spawn "/home/thblt/.xmonad/quit-xmonad.sh")
-  , ((modMask,                              xK_q),                    spawn "/home/thblt/.xmonad/recompile-xmonad.sh") 
+  , ((modMask,                              xK_q),                    spawn "/home/thblt/.xmonad/recompile-xmonad.sh")
   , ((modMask,                              xK_Escape),               spawn "dm-tool lock")
   , ((modMask .|. shiftMask,                xK_Escape),               spawn "dm-tool switch-to-greeter")
   -- Layout management
@@ -112,7 +124,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_f),                    sendMessage ToggleStruts)
   , ((modMask,                              xK_f),                    sendMessage $ Toggle FULL)
 --, ((modMask,                              xK_equal),                sendMessage $ IncMasterN 1)
---, ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))  
+--, ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))
   -- BSP-specific
   , ((modMask .|. shiftMask,                xK_h),                    sendMessage $ ExpandTowards L)
   , ((modMask .|. shiftMask,                xK_j),                    sendMessage $ ExpandTowards D)
@@ -133,7 +145,9 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_p),                    spawn "dmenu_run")
   , ((modMask .|. shiftMask,                xK_Return),               spawn $ terminal conf)
   , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "emacsclient -ca ''")
-  , ((modMask,                              xK_s),                    scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
+--, ((modMask,                              xK_s),                    scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
+  , ((modMask,                              xK_s),                    namedScratchpadAction myScratchpads "term")
+  , ((modMask,                              xK_w),                    namedScratchpadAction myScratchpads "web")
   , ((modMask,                              xK_g),                    gotoMenu)
   , ((modMask .|. shiftMask,                xK_g),                    bringMenu)
   , ((0,                                    xF86XK_AudioLowerVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume)
@@ -142,7 +156,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((0,                                    xF86XK_MonBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1")
   , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1")
   , ((0 .|. shiftMask,                      xF86XK_MonBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1")
-  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1")  
+  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1")
   , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1" )
   , ((0,                                    xF86XK_KbdBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%")
   , ((0,                                    xF86XK_KbdBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")
@@ -160,8 +174,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Down ),                windowSwap D False)
 
   , ((modMask, xK_equal), sendMessage Balance)
-  , ((modMask, xK_d), sendMessage Equalize)  
-  ] 
+  , ((modMask, xK_d), sendMessage Equalize)
+  ]
   ++
   -- workspace switching
   [((m .|. modMask, k), windows $ f i)
@@ -273,8 +287,7 @@ main = do
       , className =? "Yad"             --> doFloat
       , className =? "zenity"          --> doFloat
       , className =? "zbar"            --> doFloat
-      , className =? "Zeal"            --> doFloat
-      , scratchpadManageHook $ XSS.RationalRect 0.1 0.1 0.8 0.8
+      , namedScratchpadManageHook myScratchpads
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , startupHook = setWMName "LG3D"
