@@ -25,14 +25,13 @@
           (require 'mu4e-contrib)
           (mu4e-maildirs-extension)
           (setq mu4e-html2text-command 'mu4e-shr2text
-           
                 mu4e-maildir "~/.Mail/"
                 mu4e-get-mail-command "mbsync -a"
                 mu4e-change-filenames-when-moving t  ; Required for mbsync
                 mu4e-update-interval 60 ;; seconds
                 message-send-mail-function 'smtpmail-send-it
                 mu4e-headers-auto-update t
-                
+
                 mu4e-confirm-quit nil
                 mu4e-hide-index-messages t
                 mu4e-split-view 'vertical
@@ -48,7 +47,7 @@
                 mu4e-headers-read-mark '("" . "")
                 mu4e-headers-replied-mark '("" . "↩")
                 mu4e-headers-seen-mark '("" . "")
-                mu4e-headers-unseen-mark '("" . "")                
+                mu4e-headers-unseen-mark '("" . "")
                 mu4e-headers-unread-mark '("" . "✱")
                 mu4e-headers-signed-mark '("" . "")
 
@@ -58,12 +57,12 @@
                 mu4e-headers-first-child-prefix '("|" . "├")
 
                 mu4e-headers-default-prefix '("" . "├")
-                
+
                 mu4e-headers-fields '(
-                                      (:flags      . 3)
-                                      (:human-date       . 21)
-                                      (:from-or-to . 25)                                      
-                                      (:subject    . nil)
+                                      (:flags          . 3)
+                                      (:human-date     . 21)
+                                      (:from-or-to     . 25)
+                                      (:thread-subject . nil)
                                       )
 
                 mu4e-user-mail-address-list '(
@@ -73,7 +72,6 @@
                                               "thibault@thb.lt"
                                               "tpolge@gmail.com"
                                               )
-                
                 mu4e-context-policy 'pick-first
                 mu4e-compose-context-policy 'ask
                 mu4e-contexts
@@ -92,7 +90,7 @@
                               ( smtpmail-smtp-server    . "namo.thb.lt" )
                               ( smtpmail-stream-type    . tls )
                               ( smtpmail-smtp-service   . 465 ) ))
-                  
+
                    ,(make-mu4e-context
                      :name "P1"
                      :enter-func (lambda () (mu4e-message "P1"))
@@ -108,31 +106,29 @@
                                ( smtpmail-smtp-server    . "smtp.univ-paris1.fr" )
                                ( smtpmail-smtp-user      . "tpolge" )
                                ( smtpmail-stream-type    . tls )
-                               ( smtpmail-smtp-service   . 465 ) 
+                               ( smtpmail-smtp-service   . 465 )
                    )))
-       
+
                 mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX)"
-                                   "Global inbox"            ?I)
-                                  
+                                   "Global inbox"            ?i)
+
                                   ("(flag:unread AND (m:/P1/INBOX OR m:Namo/INBOX))"
-                                   "Unread inbox"            ?i)
+                                   "Unread inbox"            ?I)
 
                                   ("(m:/Namo/emetis)"
                                    "emetis"                  ?e)
 
                                   ("(m:/Namo/historiens-sante)"
                                    "historiens-sante"        ?h)
-                                  
+
                                   ("(m:/Namo/theuth)"
                                    "theuth"                  ?t)
-                                  
+
                                   ("(flag:flagged)"
                                    "Flagged"                 ?f)
                                   ) )
           (add-hook 'mu4e-view-mode-hook (visual-line-mode t))
           )
-  
   )
-
 
 (provide 'setup-mu4e)
