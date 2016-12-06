@@ -1,4 +1,4 @@
-# Don't do anything if not running interactively
+ # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
 # Install antigen if needed
@@ -33,9 +33,9 @@ export GREP_COLOR=31
 alias grep='grep --color=auto'
 
 # Git aliases
-alias g=git
 alias ga="git add"
 alias gc="git commit"
+alias gd="git diff"
 alias grm="git rm"
 
 #Pipe aliass
