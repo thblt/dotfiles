@@ -55,8 +55,8 @@ def git_status(path):
     try:
         out = git(path, ["status"])
     except:
-        print("Fatal error running 'git status' for '{0}' - aborting.".format(path))
-        exit(-1)
+        print(bcolors.FAIL + "WARNING\t" + bcolors.ENDC + "'git status' for '{0}' failed.".format(path))
+        return
 
     for line in [line.strip() for line in out.split("\n")]:
         if line.startswith("On branch "):
@@ -97,12 +97,19 @@ if __name__ == "__main__":
     if len(argv) > 1:
         paths = argv[1:]
     else:
-        with open(expanduser("~/.git-mega-status")) as f:
+        with open(expanduser("~/.cig")) as f:
             paths = [p.strip() for p in f.readlines() if p.strip() != ""]
 
     repos = []
     for p in map(expanduser, paths):
-        repos.append(git_status(p))
+        repo = git_status(p)
+        if repo:
+            repos.append(repo)
+
+    if not len(repos):
+       exit(0)
+
+    # Print the table
 
     max_path_length = 0
     max_branch_length = 0

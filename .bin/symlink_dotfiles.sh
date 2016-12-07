@@ -5,6 +5,7 @@ cd $HOME
 declare -a things=(
     .Xresources
     .bin
+	.cig	
     .emacs.d
     .gitconfig
     .gitignore_global
