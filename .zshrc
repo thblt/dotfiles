@@ -37,6 +37,7 @@ alias ga="git add"
 alias gc="git commit"
 alias gd="git diff"
 alias grm="git rm"
+alias cigar="find ~ -type d -name .git -exec cig {} +"
 
 #Pipe aliass
 alias -g H='| head'
