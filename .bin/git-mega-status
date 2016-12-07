@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+
+from subprocess import call, check_output, CalledProcessError, DEVNULL
+from os import environ as env
+from os.path import abspath, basename, dirname, expanduser, split as path_split
+from sys import argv, stderr, stdin, stdout
+
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+class Repo(object):
+    def __init__(self, path):
+        self.path = path
+        self.error = False
+        self.branch = "None"
+        self.modified = False
+        self.untracked = False
+        self.ahead = False
+        self.behind = False
+
+home_dir = expanduser("~")
+def compact_user(path):
+    """ Does the opposite of expanduser() """
+    path = abspath(path)
+    if path.startswith(home_dir):
+        path = "~" + path[len(home_dir):]
+    return path
+
+def git(path, command):
+    ret = check_output(["git", "--git-dir", path+"/.git", "--work-tree", path] + command, stderr=DEVNULL)
+    return ret.decode("utf-8")
+
+def git_status(path):
+
+    if basename(path) == ".git":
+        path = dirname(path)
+
+    repo = Repo(compact_user(path))
+
+    try:
+        git(path, ["remote", "update"])
+    except CalledProcessError:
+        # This will fail if:
+        #  - The remote can't be reached.
+        #  - Git needs to interact with the user (to ask for a password)
+        repo.error = True
+
+    try:
+        out = git(path, ["status"])
+    except:
+        print("Fatal error running 'git status' for '{0}' - aborting.".format(path))
+        exit(-1)
+
+    for line in [line.strip() for line in out.split("\n")]:
+        if line.startswith("On branch "):
+            repo.branch = line[10:]
+        if line.startswith("Your branch is ahead"):
+            repo.ahead = True
+        elif line.startswith("Your branch is behind"):
+            repo.behind = True
+        elif line.startswith("Your branch and '") and line.endswith("' have diverged,"):
+            repo.ahead = True
+            repo.behind = True
+        if line == "Untracked files:":
+            repo.untracked = True
+        if line == "Changes not staged for commit:" or line == "Changes to be committed:":
+            repo.modified = True
+
+    return repo
+
+def warn_if(cond, msg, color=bcolors.WARNING):
+    if cond:
+        stdout.write(color + msg + bcolors.ENDC)
+        return len(msg)
+    else:
+        return 0
+
+
+def table_split(lengths, first, middle, last):
+    out = first
+    for i in range(0, len(lengths)):
+        out += "─"*lengths[i]
+        out += last if (i == len(lengths)-1) else middle
+    print(out)
+
+if __name__ == "__main__":
+    env["LANG"] = "C"
+    env["GIT_TERMINAL_PROMPT"] = "0"
+
+    if len(argv) > 1:
+        paths = argv[1:]
+    else:
+        with open(expanduser("~/.git-mega-status")) as f:
+            paths = [p.strip() for p in f.readlines() if p.strip() != ""]
+
+    repos = []
+    for p in map(expanduser, paths):
+        repos.append(git_status(p))
+
+    max_path_length = 0
+    max_branch_length = 0
+
+    for repo in repos:
+        if len(repo.path) > max_path_length:
+            max_path_length = len(repo.path)
+        if len(repo.branch) > max_branch_length:
+            max_branch_length = len(repo.branch)
+
+    local_status_length = len(" uncommitted untracked ")
+    remote_status_length = len(" Ahead behind ")
+
+    table_lengths = [max_path_length+2, max_branch_length+2, local_status_length, remote_status_length]
+
+    table_split(table_lengths, "╭", "┬", "╮")
+
+    has_errors = False
+    for i in range(0, len(repos)):
+        repo = repos[i]
+        last = (i == len(repos)-1)
+
+        has_errors = has_errors or repo.error
+
+        dn, bn = path_split(repo.path)
+
+        # Path
+        stdout.write("│ ")
+        stdout.write(dn + "/" + (bcolors.FAIL if repo.error else "") +  bcolors.BOLD + bn + bcolors.ENDC)
+        stdout.write(" "*(max_path_length - len(repo.path)))
+        stdout.write(" │ ")
+
+        # Branch
+        stdout.write(repo.branch)
+        stdout.write(" "*(max_branch_length - len(repo.branch)))
+        stdout.write(" │")
+
+        charcount = 0
+        charcount += warn_if(repo.modified, " Uncommitted")
+        charcount += warn_if(repo.untracked, " Untracked")
+        stdout.write(" "*(local_status_length-charcount))
+        stdout.write("│")
+
+        charcount = 0
+        charcount += warn_if(repo.ahead, " Ahead")
+        charcount += warn_if(repo.behind, " Behind")
+        stdout.write(" "*(remote_status_length-charcount))
+        stdout.write("│\n")
+
+        table_split(table_lengths,
+                    "╰" if last else "├",
+                    "┴" if last else "┼",
+                    "╯" if last else "┤")
+
+    if has_errors:
+        print("  It has been impossible to 'remote update'")
+        print("  the repositories whose name is in "+bcolors.FAIL+"red"+bcolors.ENDC+".")
