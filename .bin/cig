@@ -20,8 +20,9 @@ class Repo(object):
         self.path = path
         self.error = False
         self.branch = "None"
+        self.staged = False
         self.modified = False
-        self.untracked = False
+        self.new = False
         self.ahead = False
         self.behind = False
 
@@ -69,18 +70,19 @@ def git_status(path):
             repo.ahead = True
             repo.behind = True
         if line == "Untracked files:":
-            repo.untracked = True
-        if line == "Changes not staged for commit:" or line == "Changes to be committed:":
+            repo.new = True
+        if line == "Changes not staged for commit:":
             repo.modified = True
+        if line == "Changes to be committed:":
+            repo.staged = True
 
     return repo
 
 def warn_if(cond, msg, color=bcolors.WARNING):
     if cond:
         stdout.write(color + msg + bcolors.ENDC)
-        return len(msg)
     else:
-        return 0
+        stdout.write(" "*len(msg))
 
 
 def table_split(lengths, first, middle, last):
@@ -120,7 +122,7 @@ if __name__ == "__main__":
         if len(repo.branch) > max_branch_length:
             max_branch_length = len(repo.branch)
 
-    local_status_length = len(" uncommitted untracked ")
+    local_status_length = len(" Staged New modified ")
     remote_status_length = len(" Ahead behind ")
 
     table_lengths = [max_path_length+2, max_branch_length+2, local_status_length, remote_status_length]
@@ -147,17 +149,14 @@ if __name__ == "__main__":
         stdout.write(" "*(max_branch_length - len(repo.branch)))
         stdout.write(" │")
 
-        charcount = 0
-        charcount += warn_if(repo.modified, " Uncommitted")
-        charcount += warn_if(repo.untracked, " Untracked")
-        stdout.write(" "*(local_status_length-charcount))
-        stdout.write("│")
+        warn_if(repo.new, " New")
+        warn_if(repo.modified, " Modified")
+        warn_if(repo.staged, " Staged")
+        stdout.write(" │")
 
-        charcount = 0
-        charcount += warn_if(repo.ahead, " Ahead")
-        charcount += warn_if(repo.behind, " Behind")
-        stdout.write(" "*(remote_status_length-charcount))
-        stdout.write("│\n")
+        warn_if(repo.ahead, " Ahead")
+        warn_if(repo.behind, " Behind")
+        stdout.write(" │\n")
 
         table_split(table_lengths,
                     "╰" if last else "├",
