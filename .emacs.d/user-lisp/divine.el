@@ -1,5 +1,7 @@
-(require 'package)
+;;; divine --- another modal system for Emacs
 
+;;; Commentary:
+;;
 ;; oooooooooo.    o8o              ooooo ooooo      ooo oooooooooooo 
 ;; `888'   `Y8b   `"'              `888' `888b.     `8' `888'     `8 
 ;;  888      888 oooo  oooo    ooo  888   8 `88b.    8   888         
@@ -29,30 +31,71 @@
 ;;
 ;;  - Text units are understood the Emacs way.  We don't even try to
 ;;    emulate Vim's understanding of what a word, a sentence... is.
-                                                                  
-(use-package god-mode
-  :bind (("<escape>" . god-local-mode)
-         :map god-local-mode-map
-         ("^" . beginning-of-line)
-         ("$" . end-of-line)         
-         ("z" . repeat)
-         ("i" . god-local-mode)
-         )
-  
-  :config (progn
-            (defun my-update-cursor ()
-              (setq cursor-type (if (or god-local-mode buffer-read-only)
-                                    'box
-                                  default-cursor-type)))
 
-            (add-hook 'god-mode-enabled-hook 'my-update-cursor)
-            (add-hook 'god-mode-disabled-hook 'my-update-cursor)
-            )
+;;; Code:
+
+(defun divine-yank (begin end))
+
+(defun divine-with-region (f ls)
+  "If a region is active, then immediatly call f on it, then deactivate it.  Else,
+  call divine-text-object with ls as the magic \"line as region\"
+  shortcut\""
+  (when (use-region-p)
+    (funcall f (region-beginning region-end))
+    )
   )
 
-(require 'god-mode)
-(require 'hydra)
-(require 'thingatpt)
+(while t
+  (read-char)
+  )
 
+(use-package ryo-modal
+  :commands ryo-modal-mode
+  :bind ("<escape>" . ryo-modal-mode)
+  :config
+  (ryo-modal-keys
+   ("0" "M-0")
+   ("1" "M-1")
+   ("2" "M-2")
+   ("3" "M-3")
+   ("4" "M-4")
+   ("5" "M-5")
+   ("6" "M-6")
+   ("7" "M-7")
+   ("8" "M-8")
+   ("9" "M-9")
+   ("^" beginning-of-line)
+   ("$" end-of-line)
+
+   ;; First row
+   ("a" identity nil)
+   ("z" repeat)
+   ("h" backward-char)   
+   ("j" next-line)
+   ("k" previous-line)
+   ("l" forward-char)
+   ("gn" end-of-visual-line)
+   )
+  )
+
+;; (use-package god-mode
+;;   :bind (("<escape>" . god-local-mode)
+;;          :map god-local-mode-map
+;;          ("^" . beginning-of-line)
+;;          ("$" . end-of-line)         
+;;          ("z" . repeat)
+;;          ("i" . god-local-mode)
+;;          )
+;;   
+;;   :config (progn
+;;             (defun my-update-cursor ()
+;;               (setq cursor-type (if (or god-local-mode buffer-read-only)
+;;                                     'box
+;;                                   default-cursor-type)))
+;; 
+;;             (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+;;             (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+;;             )
+;;   )
 
 (provide 'setup-god)

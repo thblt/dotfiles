@@ -25,7 +25,6 @@
 
 ;; General: common minor modes and utilities
 ;; (require 'setup-evil); Dont be evil
-(require 'setup-god)
 (require 'setup-git)
 (require 'setup-ivy)
 ;;(require 'setup-helm)
