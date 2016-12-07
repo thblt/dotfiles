@@ -40,17 +40,22 @@ add build-essential checkinstall
 add cmake exuberant-ctags git gpp
 # Language-specific build systems are with their language.
 # Debuggers
+# Language-specific debuggers are with their language.
 add gdb lldb
+# C-family
+add clang clang-format
+# Go
+add golang
 # Haskell
 add cabal-install haskell-stack ghc ghc-mod stylish-haskell
 # Java (?)
 add openjdk-8-jdk
 # Javascript
 add nodejs npm
-# C-family
-add clang clang-format
 # Python
 add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
+# Rust
+add rustc
 # Some deps
 add libclang-dev sqlite3
 #                ^ for helm-dash/counsel-dash
