@@ -96,8 +96,8 @@ add cups
 add printer-driver-brlaser
 # add printer-driver-splix # For the Samsung - doesn't work
 
-# Misc X-desktop utilities
-add feh scrot suckless-tools synapse udiskie wmctrl xsel
+# Misc desktop utilities
+add feh scrot suckless-tools synapse udiskie wmctrl xsel zenity
 # Font manager and fonts
 add font-manager fonts-dejavu fonts-roboto
 
@@ -111,6 +111,8 @@ add rxvt-unicode-256color
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
 # Text editors (with CLI versions as well)
 add emacs24 emacs25 vim vim-gtk
+# These are the dependencies of Emacs pdf-tools
+add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev libz-dev
 # Text editing tools
 add meld
 # Spell checking
