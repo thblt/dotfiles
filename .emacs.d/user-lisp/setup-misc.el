@@ -1,5 +1,3 @@
-(use-package pdf-tools
-  :init (pdf-tools-install)
-  )
+(use-package pdf-tools)
 
-(provide setup-misc)
+(provide 'setup-misc)
