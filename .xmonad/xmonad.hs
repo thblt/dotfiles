@@ -145,7 +145,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
 --, ((modMask,                              xK_p),                    spawn "synapse" )
   , ((modMask .|. shiftMask,                xK_p),                    spawn "dmenu_run")
   , ((modMask .|. shiftMask,                xK_Return),               spawn $ terminal conf)
-  , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "emacsclient -ca ''")
+  , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "~/.xmonad/emacsclient-with-feedback")
 --, ((modMask,                              xK_s),                    scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
   , ((modMask,                              xK_s),                    namedScratchpadAction myScratchpads "term")
   , ((modMask,                              xK_w),                    namedScratchpadAction myScratchpads "web")
@@ -285,11 +285,12 @@ main = do
       , placeHook $ withGaps (16,0,16,0) (smart (0.5,0.5))
       , manageDocks
       , isDialog --> doFloat
-      , className =? "Gloobus-preview" --> doFloat
-      , className =? "Xdialog"         --> doFloat
-      , className =? "Yad"             --> doFloat
-      , className =? "zenity"          --> doFloat
-      , className =? "zbar"            --> doFloat
+      , className =? "Gloobus-preview"    --> doFloat
+      , title =? "Invoking Emacs daemon…" --> doFloat      
+      , className =? "Xdialog"            --> doFloat
+      , className =? "Yad"                --> doFloat
+      , className =? "zenity"             --> doFloat
+      , className =? "zbar"               --> doFloat
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , startupHook = setWMName "LG3D"

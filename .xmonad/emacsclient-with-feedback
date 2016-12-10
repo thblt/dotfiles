@@ -1,0 +1,7 @@
+#!/bin/bash
+
+emacsclient -c
+if [[ $? != 0 ]]; then
+    urxvt -title "Invoking Emacs daemon…" -e emacs --daemon
+    emacsclient -c
+fi
