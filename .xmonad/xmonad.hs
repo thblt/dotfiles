@@ -22,6 +22,7 @@ import           XMonad.Hooks.ManageDocks            (ToggleStruts (ToggleStruts
                                                       docksEventHook,
                                                       manageDocks)
 import           XMonad.Hooks.ManageHelpers          (isDialog)
+import           XMonad.Hooks.Place                  (placeHook, withGaps, smart)
 import           XMonad.Hooks.SetWMName              (setWMName)
 import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       Rotate (Rotate),
@@ -37,9 +38,9 @@ import           XMonad.Layout.NoBorders             (withBorder)
 import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Layout.Spacing               (smartSpacingWithEdge)
 import qualified XMonad.StackSet                     as XSS
+import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.NamedWindows            (getName)
 import           XMonad.Util.Run                     (spawnPipe)
-import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.WorkspaceCompare        (getSortByIndex)
 
 -- Computer-dependent settings.
@@ -67,7 +68,7 @@ myActiveColor = "#ff0000"
 myInactiveColor = "#000000"
 
 data MySpacing = MySpacing {
-  myGaps :: Int,
+  myGaps       :: Int,
   myBorderSize :: Int,
   myDecoHeight :: Int
   }
@@ -280,14 +281,15 @@ main = do
         fadeInactiveLogHook 0.98
     , manageHook = composeAll
       [
-      manageDocks
+        namedScratchpadManageHook myScratchpads
+      , placeHook $ withGaps (16,0,16,0) (smart (0.5,0.5))
+      , manageDocks
       , isDialog --> doFloat
       , className =? "Gloobus-preview" --> doFloat
       , className =? "Xdialog"         --> doFloat
       , className =? "Yad"             --> doFloat
       , className =? "zenity"          --> doFloat
       , className =? "zbar"            --> doFloat
-      , namedScratchpadManageHook myScratchpads
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , startupHook = setWMName "LG3D"
