@@ -60,6 +60,7 @@ parser.add_argument('-a',
 parser.add_argument('-x',
                     action="append",
                     dest="exclude",
+                    default=[],
                     help="Directories not to recurse into (can be repeated)")
 parser.add_argument('--yes',
                     action="store_true",
