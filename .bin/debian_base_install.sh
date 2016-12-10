@@ -35,9 +35,10 @@ add unrar zip unzip
 # Diff tools are in desktop tools
 #
 
-add build-essential checkinstall
 # General programming tools
-add cmake exuberant-ctags git gpp
+add autoconf automake cmake exuberant-ctags git gpp
+# Debian-specific
+add build-essential checkinstall
 # Language-specific build systems are with their language.
 # Debuggers
 # Language-specific debuggers are with their language.
