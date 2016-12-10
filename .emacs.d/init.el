@@ -22,6 +22,7 @@
 (require 'setup-ui)
 (require 'setup-modeline)
 (require 'setup-editing)
+(require 'setup-misc)
 
 ;; General: common minor modes and utilities
 ;; (require 'setup-evil); Dont be evil
