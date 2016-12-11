@@ -1,7 +1,7 @@
 ;;; Code:
 
-(use-package org
-  :ensure nil
+(use-package org-plus-contrib
+  :pin org
   :init  (progn
            (setq org-catch-invisible-edits t ; Avoid editing folded contents
                  org-hide-leading-stars t
@@ -12,10 +12,7 @@
                                       (flyspell-mode t)
                                       (org-indent-mode t)
                                       (visual-line-mode t)
-                                      )
-                     )
-           )
-  )
+                                      ))))
 
 (use-package ox-reveal)
 
