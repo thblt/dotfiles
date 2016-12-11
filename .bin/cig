@@ -42,6 +42,7 @@ def git_status(path):
 
     repo = Repo(compact_user(path))
 
+    print("Gathering status for {0}…".format(compact_user(path)))
     try:
         git(path, ["remote", "update"])
     except CalledProcessError:
