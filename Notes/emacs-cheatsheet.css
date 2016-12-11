@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Roboto+Mono');
-
+@import url('https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans+Condensed:300,700|Open+Sans:400,700');
 * {
     border: 0;
     margin: 0;
@@ -8,15 +7,13 @@
 }
 
 body {
-    background: black;
-    color: white;
-    font-family: "Roboto Condensed";
+    background: #aaa;
+    font-family: "Open Sans";
     margin: 1em;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Inconsolata|Roboto');
 pre, code {
-    font-family: "Roboto Mono";
+    font-family: "Inconsolata";
 }
 
 h1.title,
@@ -29,6 +26,8 @@ span.section-number-3,
 
 table {
     padding : 1em;
+    margin: 1em;
+    color: #444444;
 }
 
 table tr:first-child,
@@ -43,13 +42,11 @@ table td:first-child {
  */
 table tr td:first-child code {
     display: inline-block;
-    color: #77aaff;
-    background-color: black;
-    padding: .1em;
-    margin: .1em;
-    border: thin solid black;
+    color: black;
+    background-color: #eee;
+    padding: 0 .25em;
+    border: thin solid #ddd;
     border-radius : .25em;
-    font-size: small;
 }
 
 
@@ -59,14 +56,18 @@ ul {
     line-height: 5;
 }
 
+ul {
+    margin: 1em;
+    border: thin solid #444;
+    border-bottom: 0;
+}
+
 ul li {
     display: block;
-    margin : 1em 0;
-    background: #222222;
     padding: .5em 2em .5em 1em;
-    margin: 0em;
+    background: #eef;
     border-left: 1em solid #7af;
-    border-top: thin solid #444444;
+    border-bottom: thin solid #444444;
     text-align: left;
 }
 
@@ -75,54 +76,51 @@ ul li {
 }
 
 .outline-2 {
+    background: white;
     display: inline-block;
-    width: 20em;
-    margin: 1em;
+    width: 22em;
+    margin: .5em;
     vertical-align: top;
+    border-radius: .25em;
+    overflow: hidden;
+    box-shadow: 0 5px 5px #444;
 }
 
 . outline-text-2 {
-    background: #222222;
     border: thin solid #444444;
-    border-radius: .5em;
     box-shadow: inset 0px 0px 5px #000000;
-
 }
 
-    
+h2, h3 {
+    font-family: "Open Sans Condensed";
+}
 
 h2 {
-    font-size: large;
+    font-size: 100%;
     display: block;
-    text-align: center;
-    margin-bottom: .5em;
-    padding: .5em .25em;
-    background: black;
-    color: white;
     text-transform: uppercase;
-    text-shadow: 0px 0px 5px  white;
-    border-top-left-radius: .5em;
-    border-top-right-radius: .5em;    
+    font-weight: bold;
+    padding : 1em;
+    color: black;
+    border-bottom : thin solid black;
+    background: #ccc;
+    margin-bottom: 1em;
+    box-shadow: 0 -5px 5px rgba(0,0,0,.1) inset;    
 }
 
-
-
-h2:before,
-h2:after {
-    content: "★";
-    margin: 0 1em;
-    color: red;
-    text-shadow: 0px 0px 5px  red;
-}
 
 h3 {
     width: auto;
-    font-size: medium;
-    color: #AAAAAA;
+    font-size: small;
+    color: black;
     margin-left: auto;
     margin-right: auto;    
-
     margin: .5em 0;
     padding: .25em 0;
     text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 1em;
+}
+h3:before, h3:after {
+    content: " ★ "
 }
