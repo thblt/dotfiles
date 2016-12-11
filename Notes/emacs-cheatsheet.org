@@ -6,9 +6,8 @@
 * Command multipliers
 
 
-| =C--= =M--=           | ~negative-argument~  |
-| =C-[0-9]+= =M-[0-9]+= | ~digit-argument~     |
-| =C-u=                | ~universal-argument~ |
+| =C--= =M--= | ~negative-argument~  |
+| =C-u=     | ~universal-argument~ |
 
 * Moving around
 
@@ -26,6 +25,40 @@
 | =M->=   | ~end-of-buffer~          |
 | =M-g c= | ~goto-char~              |
 
+* Moving around (semantic)
+
+| =C-M-f= | ~forward-sexp~      |
+| =C-M-b= | ~backward-sexp~     |
+| =C-M-d= | ~down-list~         |
+| =C-M-u= | ~up-list~           |
+| =C-M-n= | ~forward-list~      |
+| =C-M-p= | ~backward-list~     |
+| =M-}=   | ~forward-paragraph~ |
+
+* Scrolling
+
+** Up and down
+
+| =M-<=     |   |
+| =M->=     |   |
+| =C-v=     |   |
+| =M-v=     |   |
+| =C-M-v=   |   |
+| =C-M-S-v= |   |
+
+** Left and right
+
+| =C-x <=, =C-<left>=  |   |
+| =C-x >=, =C-<prior>= |   |
+
+* Marks and regions
+
+| =C-space= =C-@= | ~set-mark-command~        |
+| =C-x C-x=      | ~exchange-point-and-mark~ |
+| =M-h=          | ~mark-paragraph~          |
+| =C-x C-p=      | ~mark-page~               |
+| =C-x h=        | ~mark-whole-buffer~       |
+
 * Killing and yanking
 
 ** Killing
@@ -41,6 +74,10 @@
 |         | ~kill-paragraph~          |
 |         | ~backward-kill-paragraph~ |
 
+** Killing semantic units
+
+| =C-M-k= | ~kill-sexp~ |
+
 ** Saving to kill-ring
 
 | =M-w=     | ~kill-ring-save~          |
@@ -50,13 +87,12 @@
 | =C-y=     | ~yank~                    |
 | =M-y=     | ~yank-pop~                |
 
-* Marks and regions
+* Bookmarks and registers
 
-| =C-space= =C-@= | ~set-mark-command~        |
-| =C-x C-x=      | ~exchange-point-and-mark~ |
-| =M-h=          | ~mark-paragraph~          |
-| =C-x C-p=      | ~mark-page~               |
-| =C-x h=        | ~mark-whole-buffer~       |
+| =C-x r m= | Set a bookmark   |
+| =C-x r l= | List bookmarks   |
+| =C-x r b= | Jump to bookmark |
+|         |                  |
 
 * Editing goodies
 
@@ -119,3 +155,7 @@
 |  | ~profiler-start~ |
 |  | ~profiler-report~ |
 
+* Misc
+
+ * ~subword-mode~ and ~superword-mode~ treat =snake_case= and =CamelCase=, respectively, as distinct words.  ~glasses-mode~ visually separates CamelCased words: =Camel_Cased=.
+ * See ~paragraph-indent-minor-mode~ (p. )
