@@ -1,7 +1,7 @@
 ;;; Code:
 
-(use-package org-plus-contrib
-  :pin org
+(use-package org
+  :ensure nil
   :init  (progn
            (setq org-catch-invisible-edits t ; Avoid editing folded contents
                  org-hide-leading-stars t
