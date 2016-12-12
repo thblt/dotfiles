@@ -50,6 +50,7 @@
                 mu4e-headers-unseen-mark '("" . "")
                 mu4e-headers-unread-mark '("" . "✱")
                 mu4e-headers-signed-mark '("" . "")
+                mu4e-headers-trashed-mark '("T" . "T")
 
                 mu4e-headers-from-or-to-prefix '("" . "→ ")
 
