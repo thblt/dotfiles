@@ -160,13 +160,13 @@ echo "--------------------"
 echo
 echo $packages
 echo
-echo "I'm about to remove and PURGE"
-echo "-----------------------------"
+echo "I'm about to mark as automatically installed
+echo "--------------------------------------------"
 echo $removed_packages
 echo
 echo "Please review the FULL output above and press enter"
 echo "to proceed or C-c to abort."
 read dummy
 
-apt autoremove --purge $removed_packages
+apt-mark auto $removed_packages
 apt install $packages
