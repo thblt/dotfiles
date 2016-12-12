@@ -48,7 +48,7 @@ add clang clang-format
 # Go
 add golang
 # Haskell
-add cabal-install haskell-stack ghc ghc-mod stylish-haskell
+add cabal-install haskell-stack ghc ghc-mod hlint stylish-haskell
 # Java (?)
 add openjdk-8-jdk
 # Javascript
@@ -132,6 +132,7 @@ add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 add texlive-base texlive-lang-french texlive-xetex lyx
 # Misc
 add barcode qrencode zbar-tools
+add pandoc
 add qalculate-gtk
 add transmission
 
