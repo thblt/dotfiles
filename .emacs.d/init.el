@@ -20,20 +20,19 @@
 ;; Fundamentals: defaults, look and feel, general editing
 (require 'init-defaults)
 (require 'setup-ui)
-(require 'setup-modeline)
+;;(require 'setup-modeline)
 (require 'setup-editing)
 (require 'setup-misc)
 
 ;; General: common minor modes and utilities
-;; (require 'setup-evil); Dont be evil
 (require 'setup-git)
 (require 'setup-ivy)
 
-;; Prose modes
+;; Writing prose
 (require 'setup-org)
 (require 'setup-tex)
 
-;; General programming
+;; Writing code
 (require 'setup-programming)
 (require 'setup-projectile)
 
@@ -46,8 +45,6 @@
 (require 'setup-python)
 (require 'setup-webdev)
 (require 'setup-yaml)
-
-(require 'thblt-functions)
 
 (require 'server)
 (unless (server-running-p)
