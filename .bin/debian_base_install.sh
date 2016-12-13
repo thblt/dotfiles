@@ -161,7 +161,7 @@ echo "--------------------"
 echo
 echo $packages
 echo
-echo "I'm about to mark as automatically installed
+echo "I'm about to mark as automatically installed"
 echo "--------------------------------------------"
 echo $removed_packages
 echo
