@@ -7,13 +7,13 @@
 ;; (package-initialize)
 ;;; Code:
 
+;; Local load path
 (progn
   (add-to-list 'load-path (expand-file-name "user-lisp" user-emacs-directory))
   (add-to-list 'custom-theme-load-path (expand-file-name "user-lisp" user-emacs-directory))
 
   (add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
   (add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs"))
-
 
 (require 'setup-package-manager)
 
@@ -28,7 +28,6 @@
 ;; (require 'setup-evil); Dont be evil
 (require 'setup-git)
 (require 'setup-ivy)
-;;(require 'setup-helm)
 
 ;; Prose modes
 (require 'setup-org)

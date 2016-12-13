@@ -10,8 +10,12 @@
 (load-theme 'eziam-light t)
 
 ;; Disable all themes when loading a new one.
+;; Notice: this will break smart-mode-line, which uses separate themes for the modeline.
 (defadvice load-theme (before theme-dont-propagate activate)
   (mapcar #'disable-theme custom-enabled-themes))
+
+;; No right fringe
+(set-fringe-mode '(1 . 0))
 
 (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
 (tool-bar-mode -1)

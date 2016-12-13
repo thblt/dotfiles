@@ -2,9 +2,8 @@
  ;; Indentation and general editing
  major-mode 'text-mode      ; Don't use fundamental mode for general text: it has no hooks.
  tab-width 4                ; Set tab stops
- indent-tabs-mode nil       ; Default to spaces for indent (smart tabs
-                            ; on some syntaxes)
- comment-empty-lines t      ;
+ indent-tabs-mode nil       ; Default to spaces for indent
+ comment-empty-lines nil    ;
  reb-re-syntax 'string      ; String syntax for re-builder.  See
                             ; advice at
                             ; <https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder>

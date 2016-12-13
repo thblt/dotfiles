@@ -1,7 +1,7 @@
 ;;; Code:
 
 (use-package org
-  :ensure nil
+  :pin org
   :init  (progn
            (setq org-catch-invisible-edits t ; Avoid editing folded contents
                  org-hide-leading-stars t
@@ -14,11 +14,9 @@
                                       (visual-line-mode t)
                                       ))))
 
-(use-package ox-reveal)
+; (use-package ox-reveal)
 
 (use-package toc-org
-  :init (add-hook 'org-mode-hook 'toc-org-enable)
-  )
-
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
 
 (provide 'setup-org)

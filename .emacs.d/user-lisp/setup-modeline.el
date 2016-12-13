@@ -1,17 +1,19 @@
-(use-package powerline
-  :config (setq powerline-default-separator 'wave)
-  )
+;; (use-package powerline
+;;   :config (setq powerline-default-separator 'wave)
+;;   )
 
-(use-package spaceline-config
-  :ensure spaceline
-  :config (progn
-            (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-            (spaceline-toggle-evil-state-on)
-            (spaceline-toggle-flycheck-error-off)
-            (spaceline-toggle-flycheck-warning-off)
-            (spaceline-emacs-theme)
-            )
-  )
+(use-package smart-mode-line)
+
+;; (use-package spaceline-config
+;;   :ensure spaceline
+;;   :config (progn
+;;             (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+;;             (spaceline-toggle-evil-state-on)
+;;             (spaceline-toggle-flycheck-error-off)
+;;             (spaceline-toggle-flycheck-warning-off)
+;;             (spaceline-emacs-theme)
+;;             )
+;;   )
 
 (use-package diminish
   :config (progn
