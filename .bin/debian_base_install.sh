@@ -100,7 +100,7 @@ add printer-driver-brlaser
 # Misc desktop utilities
 add feh scrot suckless-tools synapse udiskie wmctrl xsel zenity
 # Font manager and fonts
-add font-manager fonts-dejavu fonts-roboto
+add font-manager fonts-dejavu fonts-roboto fonts-symbola
 
 #
 # Desktop (not necessarily X) tools
