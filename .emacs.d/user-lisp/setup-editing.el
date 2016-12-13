@@ -33,11 +33,9 @@
 (use-package linum-relative             ; Relative line numbers
   :init (add-hook 'prog-mode-hook
                   (lambda ()
-                    (linum-relative-mode)
+                    (linum-relative-toggle)
                     ))
-  :config (setq linum-relative-current-symbol ""
-                linum-relative-with-helm nil)
-  )
+  :config (setq linum-relative-current-symbol ""))
 (set-face-attribute 'linum t
                     :inherit 'default
                     :underline nil
