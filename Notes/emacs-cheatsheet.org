@@ -1,39 +1,61 @@
 #+TITLE: Emacs cheatsheet
 #+AUTHOR: Thibault Polge
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="emacs-cheatsheet.css" />
-#+OPTIONS: toc:nil
+#+OPTIONS: num:nil toc:1
 
 * Command multipliers
 
 
-| =C--= =M--= | ~negative-argument~  |
-| =C-u=     | ~universal-argument~ |
+| =C--= =M--=             | Negative argument  |
+| =C-u=                 | Universal argument |
+
+#+begin_hint
+  *Digit argument* is =M= or =C= followed by any number.
+#+end_hint
 
 * Moving around
 
-| =C-f=   | ~forward-char~           |
-| =C-b=   | ~backward-char~          |
-| =M-f=   | ~forward-word~           |
-| =M-b=   | ~backward-word~          |
-| =C-n=   | ~next-line~              |
-| =C-p=   | ~previous-line~          |
-| =C-a=   | ~move-beginning-of-line~ |
-| =C-e=   | ~move-end-of-line~       |
-| =M-e=   | ~forward-sentence~       |
-| =M-a=   | ~backward-sentence~      |
-| =M-<=   | ~beginning-of-buffer~    |
-| =M->=   | ~end-of-buffer~          |
-| =M-g c= | ~goto-char~              |
+|     |   |                             |
+|-----+---+-----------------------------|
+| =C-f= | → | Char                        |
+| =C-b= | ← | Char                        |
+|-----+---+-----------------------------|
+| =M-f= | → | Word                        |
+| =M-b= | ← | Word                        |
+|-----+---+-----------------------------|
+| =C-n= | ↓ | Line                        |
+| =C-p= | ↑ | Line                        |
+| =C-a= | ⇤ | Line                        |
+| =M-m= | ⇤ | Line (first non-whitespace) |
+| =C-e= | ⇥ | Line                        |
+|-----+---+-----------------------------|
+| =M-e= | → | Sentence                    |
+| =M-a= | ← | Sentence                    |
+|-----+---+-----------------------------|
+| =M-<= | ⇱ | Buffer                      |
+| =M->= | ⇲ | Buffer                      |
+
+** Go to
+
+| =M-g c= | nth character  |
+| =M-g g= | Line           |
+| =M-g n= | Next error     |
+| =M-g p= | Previous error |
 
 * Moving around (semantic)
 
-| =C-M-f= | ~forward-sexp~      |
-| =C-M-b= | ~backward-sexp~     |
-| =C-M-d= | ~down-list~         |
-| =C-M-u= | ~up-list~           |
-| =C-M-n= | ~forward-list~      |
-| =C-M-p= | ~backward-list~     |
-| =M-}=   | ~forward-paragraph~ |
+|       |   |           |
+|-------+---+-----------|
+| =C-M-f= | → | Sexp      |
+| =C-M-b= | ← | Sexp      |
+|-------+---+-----------|
+| =C-M-d= | ↓ | List      |
+| =C-M-u= | ↑ | List      |
+| =C-M-n= | → | List      |
+| =C-M-p= | ← | List      |
+|-------+---+-----------|
+| =M-}=   | → | Paragraph |
+| =M-{=   | ← | Paragraph |
 
 * Scrolling
 
@@ -53,26 +75,30 @@
 
 * Marks and regions
 
-| =C-space= =C-@= | ~set-mark-command~        |
-| =C-x C-x=      | ~exchange-point-and-mark~ |
-| =M-h=          | ~mark-paragraph~          |
-| =C-x C-p=      | ~mark-page~               |
-| =C-x h=        | ~mark-whole-buffer~       |
+| =C-space= =C-@= | Set mark                |
+| =C-x C-x=     | Exchange point and mark |
+| =M-h=         | Mark paragraph          |
+| =C-x C-p=     | Mark page               |
+| =C-x h=       | Mark all buffer
 
 * Killing and yanking
 
 ** Killing
 
-| =C-d=     | ~delete-char~             |
-| =Del=     | ~delete-backward-char~    |
-| =M-d=     | ~kill-word~               |
-| =M-del=   | ~backward-kill-word~      |
-| =C-k=     | ~kill-line~               |
-| =M-k=     | ~kill-sentence~           |
-| =C-x Del= | ~backward-kill-sentence~  |
-| =C-w=     | ~kill-region~             |
-|         | ~kill-paragraph~          |
-|         | ~backward-kill-paragraph~ |
+
+|---------+---+----------|
+| =C-d=     |   | Char     |
+| =Del=     | ← | Char     |
+|---------+---+----------|
+| =M-d=     |   | Word     |
+| =M-del=   | ← | Word     |
+|---------+---+----------|
+| =C-k=     |   | Line     |
+|---------+---+----------|
+| =M-k=     |   | Sentence |
+| =C-x Del= | ← | Sentence |
+|---------+---+----------|
+| =C-w=     |   | Region   |
 
 ** Killing semantic units
 
@@ -89,21 +115,39 @@
 
 * Bookmarks and registers
 
+** Bookmarks
+
 | =C-x r m= | Set a bookmark   |
 | =C-x r l= | List bookmarks   |
 | =C-x r b= | Jump to bookmark |
-|         |                  |
+
+** Registers
+
+| =C-x r n=   | Store number                 |
+| =C-x r s=   | Store region                 |
+| =C-x r SPC= | Store point                  |
+| =C-x r +=   | Increment number in register |
+| =C-x r j=   | Jump to register             |
+| =C-x r i=   | Insert contents of register  |
+| =C-x r f=   | Store frameset               |
+| =C-x r w=   | Store window configuration   |
+
+
 
 * Editing goodies
 
-| =C-t=     | ~transpose-chars~      |
-| =M-t=     | ~transpose-words~      |
-| =C-x C-t= | ~transpose-lines~      |
-|         | ~transpose-sentences~  |
-|         | ~transpose-paragraphs~ |
-| =M-c=     | ~capitalize-word~      |
-| =M-u=     | ~upcase-word~          |
-| =M-l=     | ~downcase-word~        |
+** Transposition
+
+| =C-t=     | Chars           |
+| =M-t=     | Words           |
+| =C-M-t=   | Sexps           |
+| =C-x C-t= | Lines           |
+
+** Case
+
+| =M-c=     | Capitalize word |
+| =M-u=     | Convert word to uppercase
+| =M-l=     | Convert word to lowercase |
 
 * Searching
 
@@ -118,8 +162,8 @@
 | =C-M-r=   | ~isearch-backward-regexp~ |
 | =M-s w=   | ~isearch-forward-word~    |
 
-** At a search prompt
-   
+** At search prompt
+
 | =Enter= | ~isearch-exit~ |
 
 ** Swiper
@@ -146,16 +190,34 @@
 | =C-x e=      | ~kmacro-end-and-call-macro~  |
 | =C-x C-k r=  | ~apply-macro-to-region-line~ |
 
- - To loop a macro until error or end of buffer, call it with 0 as a numeric argument.
+#+begin_hint
+To loop a macro until error or end of buffer, call it with 0 as a numeric argument.
+#+end_hint
+
 
 * Debugging
 
 ** CPU/RAM Usage
 
-|  | ~profiler-start~ |
-|  | ~profiler-report~ |
+  | ∅  | ~profiler-start~  |
+  | ∅  | ~profiler-report~ |
+
+** Weird errors
+
+| ∅ | ~toggle-debug-on-error~ |
+| ∅ | ~toggle-debug-on-quit~  |
+
+#+begin_hint
+  To rescue a unresponsive Emacs, =kill -s USR2 [pid]= or =killall -s USR2 emacs=.
+#+end_hint
+
+
+
 
 * Misc
 
- * ~subword-mode~ and ~superword-mode~ treat =snake_case= and =CamelCase=, respectively, as distinct words.  ~glasses-mode~ visually separates CamelCased words: =Camel_Cased=.
- * See ~paragraph-indent-minor-mode~ (p. )
+#+begin_hint
+Paragraph
+ * ~subword-mode~ and ~superword-mode~ treat =snake_case= and =CamelCase=, respectively, as distinct words.  ~glasses-mode~ /visually/ separates CamelCased words: =Camel_Cased=.
+ * See ~paragraph-indent-minor-mode~
+#+end_hint

@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans+Condensed:300,700|Open+Sans:400,700');
-* {
+
+*,
+html{
     border: 0;
     margin: 0;
+    padding : 0;
     line-height: 1;
     font-weight: normal;
 }
@@ -9,25 +12,52 @@
 body {
     background: #aaa;
     font-family: "Open Sans";
-    margin: 1em;
+    -moz-column-width: 22em;
+    -webkit-column-width: 22em;
+    column-width: 22em;
+    padding: 1em;
 }
 
 pre, code {
     font-family: "Inconsolata";
 }
 
+#table-of-contents {
+    display: block;
+    background: #444;
+    width: 100%;
+    border-bottom: thin solid black;
+    text-align: left;
+    display: none;
+}
 h1.title,
+h2,
 span.section-number-2,
 span.section-number-3,
+span.section-number-4,
 #postamble
     {
         display: none;
     }
 
 table {
-    padding : 1em;
-    margin: 1em;
+    margin : 1em;
     color: #444444;
+    width: 100%;
+
+}
+
+table thead {
+    display: none;
+}
+
+table tbody > tr:last-child > td {
+    padding-bottom: .5em;
+}
+
+table tbody + tbody > tr:first-child > td {
+    border-top : thin solid #aaa;
+    padding-top: .5em;
 }
 
 table tr:first-child,
@@ -37,38 +67,59 @@ table td:first-child {
     margin: 0;
 }
 
-/* 
- *This is where the shortcuts are 
+table tr td  {
+    padding: 0 .25em;
+    white-space: nowrap;
+    width: 1%;
+}
+
+table tr td:last-child {
+    white-space: normal;
+    width: auto;
+}
+
+/*
+ *This is where the shortcuts/keybindings are
  */
+table tr td:first-child {
+    width:6em;
+}
+
 table tr td:first-child code {
     display: inline-block;
     color: black;
     background-color: #eee;
     padding: 0 .25em;
+    margin: 1px 0;
     border: thin solid #ddd;
     border-radius : .25em;
 }
 
 
-ul {
-    list-style-type: none;
-    padding: 0;
-    line-height: 5;
-}
-
-ul {
+.hint {
     margin: 1em;
-    border: thin solid #444;
     border-bottom: 0;
+    display: block;
+    text-align: left;
+    font-size: small;
+    box-shadow: 0 0 3px rgba(0,0,0,.5) inset;
+    border: thin solid rgba(0,0,0,.5);
+    background: #DDE;
+}
+.hint ul {
+    list-style-type: none;
 }
 
-ul li {
-    display: block;
-    padding: .5em 2em .5em 1em;
-    background: #eef;
-    border-left: 1em solid #7af;
-    border-bottom: thin solid #444444;
-    text-align: left;
+.hint p, .hint li {
+    padding: .25em .5em;
+    border-style: solid;
+    border-color: rgba(0,0,0,.2);
+    border-width: 0 0 thin 0;
+
+}
+
+.hint *:last-child {
+    border-width: 0;
 }
 
 #content {
@@ -76,14 +127,15 @@ ul li {
 }
 
 .outline-2 {
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
     background: white;
-    display: inline-block;
-    width: 22em;
-    margin: .5em;
+    margin: 0 0 1em 1em;
     vertical-align: top;
     border-radius: .25em;
     overflow: hidden;
-    box-shadow: 0 5px 5px #444;
+    box-shadow: 0 1px 5px #444;
 }
 
 . outline-text-2 {
@@ -100,27 +152,23 @@ h2 {
     display: block;
     text-transform: uppercase;
     font-weight: bold;
-    padding : 1em;
-    color: black;
-    border-bottom : thin solid black;
-    background: #ccc;
+    padding : .5em 1em;
+    color: white;;
+    background: #444;
     margin-bottom: 1em;
-    box-shadow: 0 -5px 5px rgba(0,0,0,.1) inset;    
 }
 
 
 h3 {
-    width: auto;
     font-size: small;
-    color: black;
-    margin-left: auto;
-    margin-right: auto;    
-    margin: .5em 0;
-    padding: .25em 0;
-    text-transform: uppercase;
     font-weight: bold;
-    margin-top: 1em;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+    color: #000088;
+    letter-spacing: .1em;
 }
-h3:before, h3:after {
-    content: " ★ "
+h4:before,
+h4:after {
+    content: " ★ ";
 }

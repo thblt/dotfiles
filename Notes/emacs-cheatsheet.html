@@ -3,23 +3,30 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+<!-- 2016-12-13 mar. 19:20 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs cheatsheet</title>
-<!-- 2016-12-12 lun. 00:14 -->
-<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Thibault Polge" />
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Thibault Polge" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
-  .title  { text-align: center; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
   .todo   { font-family: monospace; color: red; }
-  .done   { color: green; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
   .tag    { background-color: #eee; font-family: monospace;
             padding: 2px; font-size: 80%; font-weight: normal; }
   .timestamp { color: #bebebe; }
   .timestamp-kwd { color: #5f9ea0; }
-  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
-  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
-  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
   .underline { text-decoration: underline; }
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
@@ -46,27 +53,110 @@
     border: 1px solid black;
   }
   pre.src:hover:before { display: inline;}
-  pre.src-sh:before    { content: 'sh'; }
-  pre.src-bash:before  { content: 'sh'; }
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
   pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
-  pre.src-R:before     { content: 'R'; }
-  pre.src-perl:before  { content: 'Perl'; }
-  pre.src-java:before  { content: 'Java'; }
-  pre.src-sql:before   { content: 'SQL'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
 
   table { border-collapse:collapse; }
   caption.t-above { caption-side: top; }
   caption.t-bottom { caption-side: bottom; }
   td, th { vertical-align:top;  }
-  th.right  { text-align: center;  }
-  th.left   { text-align: center;   }
-  th.center { text-align: center; }
-  td.right  { text-align: right;  }
-  td.left   { text-align: left;   }
-  td.center { text-align: center; }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
   dt { font-weight: bold; }
-  .footpara:nth-child(2) { display: inline; }
-  .footpara { display: block; }
+  .footpara { display: inline; }
   .footdef  { margin-bottom: 1em; }
   .figure { padding: 1em; }
   .figure p { text-align: center; }
@@ -86,6 +176,7 @@
     { font-size: 10px; font-weight: bold; white-space: nowrap; }
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="emacs-cheatsheet.css" />
@@ -139,751 +230,196 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Emacs cheatsheet</h1>
-
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Command multipliers</h2>
-<div class="outline-text-2" id="text-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C--</code> <code>M--</code></td>
-<td class="left"><code>negative-argument</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-u</code></td>
-<td class="left"><code>universal-argument</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Moving around</h2>
-<div class="outline-text-2" id="text-2">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-f</code></td>
-<td class="left"><code>forward-char</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-b</code></td>
-<td class="left"><code>backward-char</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-f</code></td>
-<td class="left"><code>forward-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-b</code></td>
-<td class="left"><code>backward-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-n</code></td>
-<td class="left"><code>next-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-p</code></td>
-<td class="left"><code>previous-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-a</code></td>
-<td class="left"><code>move-beginning-of-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-e</code></td>
-<td class="left"><code>move-end-of-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-e</code></td>
-<td class="left"><code>forward-sentence</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-a</code></td>
-<td class="left"><code>backward-sentence</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-&lt;</code></td>
-<td class="left"><code>beginning-of-buffer</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-&gt;</code></td>
-<td class="left"><code>end-of-buffer</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-g c</code></td>
-<td class="left"><code>goto-char</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Moving around (semantic)</h2>
-<div class="outline-text-2" id="text-3">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-M-f</code></td>
-<td class="left"><code>forward-sexp</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-b</code></td>
-<td class="left"><code>backward-sexp</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-d</code></td>
-<td class="left"><code>down-list</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-u</code></td>
-<td class="left"><code>up-list</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-n</code></td>
-<td class="left"><code>forward-list</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-p</code></td>
-<td class="left"><code>backward-list</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-}</code></td>
-<td class="left"><code>forward-paragraph</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Scrolling</h2>
-<div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Up and down</h3>
-<div class="outline-text-3" id="text-4-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>M-&lt;</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>M-&gt;</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-v</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>M-v</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-v</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-S-v</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Left and right</h3>
-<div class="outline-text-3" id="text-4-2">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-x &lt;</code>, <code>C-&lt;left&gt;</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x &gt;</code>, <code>C-&lt;prior&gt;</code></td>
-<td class="left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Marks and regions</h2>
-<div class="outline-text-2" id="text-5">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-space</code> <code>C-@</code></td>
-<td class="left"><code>set-mark-command</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x C-x</code></td>
-<td class="left"><code>exchange-point-and-mark</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-h</code></td>
-<td class="left"><code>mark-paragraph</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x C-p</code></td>
-<td class="left"><code>mark-page</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x h</code></td>
-<td class="left"><code>mark-whole-buffer</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> Killing and yanking</h2>
-<div class="outline-text-2" id="text-6">
-</div><div id="outline-container-sec-6-1" class="outline-3">
-<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Killing</h3>
-<div class="outline-text-3" id="text-6-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-d</code></td>
-<td class="left"><code>delete-char</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>Del</code></td>
-<td class="left"><code>delete-backward-char</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-d</code></td>
-<td class="left"><code>kill-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-del</code></td>
-<td class="left"><code>backward-kill-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-k</code></td>
-<td class="left"><code>kill-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-k</code></td>
-<td class="left"><code>kill-sentence</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x Del</code></td>
-<td class="left"><code>backward-kill-sentence</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-w</code></td>
-<td class="left"><code>kill-region</code></td>
-</tr>
-
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>kill-paragraph</code></td>
-</tr>
-
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>backward-kill-paragraph</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-6-2" class="outline-3">
-<h3 id="sec-6-2"><span class="section-number-3">6.2</span> Killing semantic units</h3>
-<div class="outline-text-3" id="text-6-2">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-M-k</code></td>
-<td class="left"><code>kill-sexp</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-6-3" class="outline-3">
-<h3 id="sec-6-3"><span class="section-number-3">6.3</span> Saving to kill-ring</h3>
-<div class="outline-text-3" id="text-6-3">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>M-w</code></td>
-<td class="left"><code>kill-ring-save</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-6-4" class="outline-3">
-<h3 id="sec-6-4"><span class="section-number-3">6.4</span> Yanking</h3>
-<div class="outline-text-3" id="text-6-4">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-y</code></td>
-<td class="left"><code>yank</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-y</code></td>
-<td class="left"><code>yank-pop</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> Bookmarks and registers</h2>
-<div class="outline-text-2" id="text-7">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-x r m</code></td>
-<td class="left">Set a bookmark</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x r l</code></td>
-<td class="left">List bookmarks</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x r b</code></td>
-<td class="left">Jump to bookmark</td>
-</tr>
-
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> Editing goodies</h2>
-<div class="outline-text-2" id="text-8">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-t</code></td>
-<td class="left"><code>transpose-chars</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-t</code></td>
-<td class="left"><code>transpose-words</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x C-t</code></td>
-<td class="left"><code>transpose-lines</code></td>
-</tr>
-
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>transpose-sentences</code></td>
-</tr>
-
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>transpose-paragraphs</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-c</code></td>
-<td class="left"><code>capitalize-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-u</code></td>
-<td class="left"><code>upcase-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-l</code></td>
-<td class="left"><code>downcase-word</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> Searching</h2>
-<div class="outline-text-2" id="text-9">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-s</code></td>
-<td class="left"><code>isearch-forward</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-r</code></td>
-<td class="left"><code>isearch-backward</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-s C-w</code></td>
-<td class="left"><code>isearch-yank-word</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-s C-y</code></td>
-<td class="left"><code>isearch-yank-line</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-s M-y</code></td>
-<td class="left"><code>isearch-yank-kill</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-s C-s</code></td>
-<td class="left"><code>isearch-repeat-forward</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-s C-r</code></td>
-<td class="left"><code>isearch-repeat-backward</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-s</code></td>
-<td class="left"><code>isearch-forward-regexp</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-r</code></td>
-<td class="left"><code>isearch-backward-regexp</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>M-s w</code></td>
-<td class="left"><code>isearch-forward-word</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<div id="outline-container-sec-9-1" class="outline-3">
-<h3 id="sec-9-1"><span class="section-number-3">9.1</span> At a search prompt</h3>
-<div class="outline-text-3" id="text-9-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>Enter</code></td>
-<td class="left"><code>isearch-exit</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<div id="outline-container-sec-9-2" class="outline-3">
-<h3 id="sec-9-2"><span class="section-number-3">9.2</span> Swiper</h3>
-<div class="outline-text-3" id="text-9-2">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>M-q</code></td>
-<td class="left"><code>swiper-query-replace</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-o</code></td>
-<td class="left"><code>hydra-ivy/body</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-10" class="outline-2">
-<h2 id="sec-10"><span class="section-number-2">10</span> Replacing</h2>
-<div class="outline-text-2" id="text-10">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>M-%</code></td>
-<td class="left"><code>query-replace</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-M-%</code></td>
-<td class="left"><code>query-replace-regexp</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<div id="outline-container-sec-10-1" class="outline-3">
-<h3 id="sec-10-1"><span class="section-number-3">10.1</span> At replace prompt</h3>
-<div class="outline-text-3" id="text-10-1">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-r</code></td>
-<td class="left">Enter recursive edit</td>
-</tr>
-
-<tr>
-<td class="left"><code>C-w</code></td>
-<td class="left">Delete match and recursive edit</td>
-</tr>
-
-<tr>
-<td class="left"><code>^</code></td>
-<td class="left">Go back to previous match</td>
-</tr>
-
-<tr>
-<td class="left"><code>E</code></td>
-<td class="left">Edit replacement string</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-11" class="outline-2">
-<h2 id="sec-11"><span class="section-number-2">11</span> Macros</h2>
-<div class="outline-text-2" id="text-11">
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left"><code>C-x (</code> <code>&lt;f3&gt;</code></td>
-<td class="left"><code>kmacro-start-macro</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x )</code> <code>&lt;f4&gt;</code></td>
-<td class="left"><code>kmacro-end-macro</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x e</code></td>
-<td class="left"><code>kmacro-end-and-call-macro</code></td>
-</tr>
-
-<tr>
-<td class="left"><code>C-x C-k r</code></td>
-<td class="left"><code>apply-macro-to-region-line</code></td>
-</tr>
-</tbody>
-</table>
-
-<ul class="org-ul">
-<li>To loop a macro until error or end of buffer, call it with 0 as a numeric argument.
-</li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org8ac4483">Command multipliers</a></li>
+<li><a href="#org7c13f37">Moving around</a></li>
+<li><a href="#org8177b91">Moving around (semantic)</a></li>
+<li><a href="#org72b4b65">Scrolling</a></li>
+<li><a href="#org3e10b97">Marks and regions</a></li>
+<li><a href="#org14b4033">Killing and yanking</a></li>
+<li><a href="#org1879d08">Bookmarks and registers</a></li>
+<li><a href="#org413399d">Editing goodies</a></li>
+<li><a href="#orga39c349">Searching</a></li>
+<li><a href="#orgf21bfff">Replacing</a></li>
+<li><a href="#org8371949">Macros</a></li>
+<li><a href="#org01d5e9b">Debugging</a></li>
+<li><a href="#org7fead72">Misc</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-sec-12" class="outline-2">
-<h2 id="sec-12"><span class="section-number-2">12</span> Debugging</h2>
-<div class="outline-text-2" id="text-12">
-</div><div id="outline-container-sec-12-1" class="outline-3">
-<h3 id="sec-12-1"><span class="section-number-3">12.1</span> CPU/RAM Usage</h3>
-<div class="outline-text-3" id="text-12-1">
+<div id="outline-container-org8ac4483" class="outline-2">
+<h2 id="org8ac4483">Command multipliers</h2>
+<div class="outline-text-2" id="text-org8ac4483">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <tbody>
 <tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>profiler-start</code></td>
+<td class="org-left"><code>C--</code> <code>M--</code></td>
+<td class="org-left">Negative argument</td>
 </tr>
 
 <tr>
-<td class="left">&#xa0;</td>
-<td class="left"><code>profiler-report</code></td>
+<td class="org-left"><code>C-u</code></td>
+<td class="org-left">Universal argument</td>
+</tr>
+</tbody>
+</table>
+
+<div class="hint">
+<p>
+<b>Digit argument</b> is <code>M</code> or <code>C</code> followed by any number.
+</p>
+
+</div>
+</div>
+</div>
+
+<div id="outline-container-org7c13f37" class="outline-2">
+<h2 id="org7c13f37">Moving around</h2>
+<div class="outline-text-2" id="text-org7c13f37">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>C-f</code></td>
+<td class="org-left">→</td>
+<td class="org-left">Char</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-b</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Char</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>M-f</code></td>
+<td class="org-left">→</td>
+<td class="org-left">Word</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-b</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Word</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>C-n</code></td>
+<td class="org-left">↓</td>
+<td class="org-left">Line</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-p</code></td>
+<td class="org-left">↑</td>
+<td class="org-left">Line</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-a</code></td>
+<td class="org-left">⇤</td>
+<td class="org-left">Line</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-m</code></td>
+<td class="org-left">⇤</td>
+<td class="org-left">Line (first non-whitespace)</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-e</code></td>
+<td class="org-left">⇥</td>
+<td class="org-left">Line</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>M-e</code></td>
+<td class="org-left">→</td>
+<td class="org-left">Sentence</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-a</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Sentence</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>M-&lt;</code></td>
+<td class="org-left">⇱</td>
+<td class="org-left">Buffer</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-&gt;</code></td>
+<td class="org-left">⇲</td>
+<td class="org-left">Buffer</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org55152c1" class="outline-3">
+<h3 id="org55152c1">Go to</h3>
+<div class="outline-text-3" id="text-org55152c1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-g c</code></td>
+<td class="org-left">nth character</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-g g</code></td>
+<td class="org-left">Line</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-g n</code></td>
+<td class="org-left">Next error</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-g p</code></td>
+<td class="org-left">Previous error</td>
 </tr>
 </tbody>
 </table>
@@ -891,22 +427,808 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-sec-13" class="outline-2">
-<h2 id="sec-13"><span class="section-number-2">13</span> Misc</h2>
-<div class="outline-text-2" id="text-13">
+<div id="outline-container-org8177b91" class="outline-2">
+<h2 id="org8177b91">Moving around (semantic)</h2>
+<div class="outline-text-2" id="text-org8177b91">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>C-M-f</code></td>
+<td class="org-left">→</td>
+<td class="org-left">Sexp</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-b</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Sexp</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>C-M-d</code></td>
+<td class="org-left">↓</td>
+<td class="org-left">List</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-u</code></td>
+<td class="org-left">↑</td>
+<td class="org-left">List</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-n</code></td>
+<td class="org-left">→</td>
+<td class="org-left">List</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-p</code></td>
+<td class="org-left">←</td>
+<td class="org-left">List</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>M-}</code></td>
+<td class="org-left">→</td>
+<td class="org-left">Paragraph</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-{</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Paragraph</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org72b4b65" class="outline-2">
+<h2 id="org72b4b65">Scrolling</h2>
+<div class="outline-text-2" id="text-org72b4b65">
+</div><div id="outline-container-org28ad9da" class="outline-3">
+<h3 id="org28ad9da">Up and down</h3>
+<div class="outline-text-3" id="text-org28ad9da">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-&lt;</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-&gt;</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-v</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-v</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-v</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-S-v</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgebf020a" class="outline-3">
+<h3 id="orgebf020a">Left and right</h3>
+<div class="outline-text-3" id="text-orgebf020a">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-x &lt;</code>, <code>C-&lt;left&gt;</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x &gt;</code>, <code>C-&lt;prior&gt;</code></td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3e10b97" class="outline-2">
+<h2 id="org3e10b97">Marks and regions</h2>
+<div class="outline-text-2" id="text-org3e10b97">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-space</code> <code>C-@</code></td>
+<td class="org-left">Set mark</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x C-x</code></td>
+<td class="org-left">Exchange point and mark</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-h</code></td>
+<td class="org-left">Mark paragraph</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x C-p</code></td>
+<td class="org-left">Mark page</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x h</code></td>
+<td class="org-left">Mark all buffer</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org14b4033" class="outline-2">
+<h2 id="org14b4033">Killing and yanking</h2>
+<div class="outline-text-2" id="text-org14b4033">
+</div><div id="outline-container-orge502ecb" class="outline-3">
+<h3 id="orge502ecb">Killing</h3>
+<div class="outline-text-3" id="text-orge502ecb">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left"><code>C-d</code></th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Char</th>
+</tr>
+
+<tr>
+<th scope="col" class="org-left"><code>Del</code></th>
+<th scope="col" class="org-left">←</th>
+<th scope="col" class="org-left">Char</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>M-d</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Word</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-del</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Word</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>C-k</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Line</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>M-k</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Sentence</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x Del</code></td>
+<td class="org-left">←</td>
+<td class="org-left">Sentence</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><code>C-w</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Region</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org15ad16c" class="outline-3">
+<h3 id="org15ad16c">Killing semantic units</h3>
+<div class="outline-text-3" id="text-org15ad16c">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-M-k</code></td>
+<td class="org-left"><code>kill-sexp</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org29b88f8" class="outline-3">
+<h3 id="org29b88f8">Saving to kill-ring</h3>
+<div class="outline-text-3" id="text-org29b88f8">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-w</code></td>
+<td class="org-left"><code>kill-ring-save</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org65c28f8" class="outline-3">
+<h3 id="org65c28f8">Yanking</h3>
+<div class="outline-text-3" id="text-org65c28f8">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-y</code></td>
+<td class="org-left"><code>yank</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-y</code></td>
+<td class="org-left"><code>yank-pop</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1879d08" class="outline-2">
+<h2 id="org1879d08">Bookmarks and registers</h2>
+<div class="outline-text-2" id="text-org1879d08">
+</div><div id="outline-container-org05c7ad1" class="outline-3">
+<h3 id="org05c7ad1">Bookmarks</h3>
+<div class="outline-text-3" id="text-org05c7ad1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-x r m</code></td>
+<td class="org-left">Set a bookmark</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r l</code></td>
+<td class="org-left">List bookmarks</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r b</code></td>
+<td class="org-left">Jump to bookmark</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgfd155a5" class="outline-3">
+<h3 id="orgfd155a5">Registers</h3>
+<div class="outline-text-3" id="text-orgfd155a5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-x r n</code></td>
+<td class="org-left">Store number</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r s</code></td>
+<td class="org-left">Store region</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r SPC</code></td>
+<td class="org-left">Store point</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r +</code></td>
+<td class="org-left">Increment number in register</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r j</code></td>
+<td class="org-left">Jump to register</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r i</code></td>
+<td class="org-left">Insert contents of register</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r f</code></td>
+<td class="org-left">Store frameset</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x r w</code></td>
+<td class="org-left">Store window configuration</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-org413399d" class="outline-2">
+<h2 id="org413399d">Editing goodies</h2>
+<div class="outline-text-2" id="text-org413399d">
+</div><div id="outline-container-org9f028bf" class="outline-3">
+<h3 id="org9f028bf">Transposition</h3>
+<div class="outline-text-3" id="text-org9f028bf">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-t</code></td>
+<td class="org-left">Chars</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-t</code></td>
+<td class="org-left">Words</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-t</code></td>
+<td class="org-left">Sexps</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x C-t</code></td>
+<td class="org-left">Lines</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgd543268" class="outline-3">
+<h3 id="orgd543268">Case</h3>
+<div class="outline-text-3" id="text-orgd543268">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-c</code></td>
+<td class="org-left"><code>capitalize-word</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-u</code></td>
+<td class="org-left"><code>upcase-word</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-l</code></td>
+<td class="org-left"><code>downcase-word</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga39c349" class="outline-2">
+<h2 id="orga39c349">Searching</h2>
+<div class="outline-text-2" id="text-orga39c349">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-s</code></td>
+<td class="org-left"><code>isearch-forward</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-r</code></td>
+<td class="org-left"><code>isearch-backward</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-s C-w</code></td>
+<td class="org-left"><code>isearch-yank-word</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-s C-y</code></td>
+<td class="org-left"><code>isearch-yank-line</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-s M-y</code></td>
+<td class="org-left"><code>isearch-yank-kill</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-s C-s</code></td>
+<td class="org-left"><code>isearch-repeat-forward</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-s C-r</code></td>
+<td class="org-left"><code>isearch-repeat-backward</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-s</code></td>
+<td class="org-left"><code>isearch-forward-regexp</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-r</code></td>
+<td class="org-left"><code>isearch-backward-regexp</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>M-s w</code></td>
+<td class="org-left"><code>isearch-forward-word</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-org3c5a661" class="outline-3">
+<h3 id="org3c5a661">At search prompt</h3>
+<div class="outline-text-3" id="text-org3c5a661">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>Enter</code></td>
+<td class="org-left"><code>isearch-exit</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orga09d058" class="outline-3">
+<h3 id="orga09d058">Swiper</h3>
+<div class="outline-text-3" id="text-orga09d058">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-q</code></td>
+<td class="org-left"><code>swiper-query-replace</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-o</code></td>
+<td class="org-left"><code>hydra-ivy/body</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf21bfff" class="outline-2">
+<h2 id="orgf21bfff">Replacing</h2>
+<div class="outline-text-2" id="text-orgf21bfff">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>M-%</code></td>
+<td class="org-left"><code>query-replace</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-M-%</code></td>
+<td class="org-left"><code>query-replace-regexp</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div id="outline-container-orga1ddef1" class="outline-3">
+<h3 id="orga1ddef1">At replace prompt</h3>
+<div class="outline-text-3" id="text-orga1ddef1">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-r</code></td>
+<td class="org-left">Enter recursive edit</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-w</code></td>
+<td class="org-left">Delete match and recursive edit</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>^</code></td>
+<td class="org-left">Go back to previous match</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>E</code></td>
+<td class="org-left">Edit replacement string</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org8371949" class="outline-2">
+<h2 id="org8371949">Macros</h2>
+<div class="outline-text-2" id="text-org8371949">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>C-x (</code> <code>&lt;f3&gt;</code></td>
+<td class="org-left"><code>kmacro-start-macro</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x )</code> <code>&lt;f4&gt;</code></td>
+<td class="org-left"><code>kmacro-end-macro</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x e</code></td>
+<td class="org-left"><code>kmacro-end-and-call-macro</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>C-x C-k r</code></td>
+<td class="org-left"><code>apply-macro-to-region-line</code></td>
+</tr>
+</tbody>
+</table>
+
+<div class="hint">
+<p>
+To loop a macro until error or end of buffer, call it with 0 as a numeric argument.
+</p>
+
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org01d5e9b" class="outline-2">
+<h2 id="org01d5e9b">Debugging</h2>
+<div class="outline-text-2" id="text-org01d5e9b">
+</div><div id="outline-container-org73b0c2c" class="outline-3">
+<h3 id="org73b0c2c">CPU/RAM Usage</h3>
+<div class="outline-text-3" id="text-org73b0c2c">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">∅</td>
+<td class="org-left"><code>profiler-start</code></td>
+</tr>
+
+<tr>
+<td class="org-left">∅</td>
+<td class="org-left"><code>profiler-report</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orge8fb4d2" class="outline-3">
+<h3 id="orge8fb4d2">Weird errors</h3>
+<div class="outline-text-3" id="text-orge8fb4d2">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">∅</td>
+<td class="org-left"><code>toggle-debug-on-error</code></td>
+</tr>
+
+<tr>
+<td class="org-left">∅</td>
+<td class="org-left"><code>toggle-debug-on-quit</code></td>
+</tr>
+</tbody>
+</table>
+
+<div class="hint">
+<p>
+To rescue a unresponsive Emacs, <code>kill -s USR2 [pid]</code> or <code>killall -s USR2 emacs</code>.
+</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-org7fead72" class="outline-2">
+<h2 id="org7fead72">Misc</h2>
+<div class="outline-text-2" id="text-org7fead72">
+<div class="hint">
+<p>
+Paragraph
+</p>
 <ul class="org-ul">
-<li><code>subword-mode</code> and <code>superword-mode</code> treat <code>snake_case</code> and <code>CamelCase</code>, respectively, as distinct words.  <code>glasses-mode</code> visually separates CamelCased words: <code>Camel_Cased</code>.
-</li>
-<li>See <code>paragraph-indent-minor-mode</code> (p. )
-</li>
+<li><code>subword-mode</code> and <code>superword-mode</code> treat <code>snake_case</code> and <code>CamelCase</code>, respectively, as distinct words.  <code>glasses-mode</code> <i>visually</i> separates CamelCased words: <code>Camel_Cased</code>.</li>
+<li>See <code>paragraph-indent-minor-mode</code></li>
 </ul>
+
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Thibault Polge</p>
-<p class="date">Created: 2016-12-12 lun. 00:14</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
+<p class="date">Created: 2016-12-13 mar. 19:20</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
