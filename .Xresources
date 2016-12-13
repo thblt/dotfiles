@@ -4,8 +4,10 @@
 #define FONT_SIZE 13
 #endif
 
-URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=FONT_SIZE
-URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=Bold:pixelsize=FONT_SIZE
+URxvt*font: xft:DejaVu Sans Mono for Powerline:pixelsize=FONT_SIZE, \
+            xft:Symbola:pixelsize=FONT_SIZE:antialias=true:hinting=slight 
+URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=Bold:pixelsize=FONT_SIZE, \
+                xft:Symbola:pixelsize=FONT_SIZE:antialias=true:hinting=slight 
 
 ! special
 URxvt*foreground:   #c5c8c6
