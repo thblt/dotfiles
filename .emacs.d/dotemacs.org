@@ -35,11 +35,16 @@ This is my Emacs configuration.
 
 ** Personal information
 
+#+begin_src emacs-lisp
+  (setq user-full-name    . "Thibault Polge"
+        user-mail-address . "thibault@thb.lt")
+#+end_src
+
 ** Package sources and locations
 
 Some of the packages I use are outside of standard =load-path=, so we add their locations.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
 (add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
 #+end_src
@@ -924,7 +929,6 @@ This section deals with tools which don't edit anything.
                                    (when msg
                                      (mu4e-message-maildir-matches msg "^/Namo/")))
                      :vars '( ( user-mail-address	     . "thibault@thb.lt" )
-                              ( user-full-name	         . "Thibault Polge" )
                               ( mu4e-sent-folder        . "/Namo/Sent" )
                               ( mu4e-drafts-folder      . "/Namo/Drafts" )
                               ( mu4e-trash-folder       . "/Namo/Trash" )
@@ -940,7 +944,6 @@ This section deals with tools which don't edit anything.
                                    (when msg
                                      (mu4e-message-maildir-matches msg "^/P1/")))
                      :vars '(  ( user-mail-address	     . "thibault.polge@univ-paris1.fr"  )
-                               ( user-full-name	         . "Thibault Polge" )
                                ( mu4e-sent-folder        . "/P1/sent-mail" )
                                ( mu4e-drafts-folder      . "/P1/Drafts" )
                                ( mu4e-trash-folder       . "/P1/Trash" )
