@@ -15,6 +15,7 @@
 .emacs.d/_customize.el
 .emacs.d/abbrev_defs
 .emacs.d/auto-save-list
+.emacs.d/dotemacs.el*
 .emacs.d/elpa
 .emacs.d/elpa*
 .emacs.d/eshell

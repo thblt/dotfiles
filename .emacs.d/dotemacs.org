@@ -1,0 +1,1009 @@
+#+TITLE: Emacs configuration
+
+This is my Emacs configuration.
+
+* Contents :TOC:
+ - [[#fundamentals][Fundamentals]]
+   - [[#personal-information][Personal information]]
+   - [[#package-sources-and-locations][Package sources and locations]]
+   - [[#utility-packages][Utility packages]]
+   - [[#general-defaults][General defaults]]
+   - [[#user-interface][User interface]]
+   - [[#macos][MacOS]]
+ - [[#editing-text][Editing text]]
+   - [[#customizations][Customizations]]
+   - [[#minor-modes][Minor modes]]
+ - [[#writing-prose][Writing prose]]
+   - [[#common-settings-and-minor-modes][Common settings and minor modes]]
+   - [[#major-modes][Major modes]]
+ - [[#writing-code][Writing code]]
+   - [[#settings][Settings]]
+   - [[#minor-modes-1][Minor modes]]
+   - [[#project-management][Project management]]
+   - [[#programming-languages][Programming languages]]
+   - [[#build-systems][Build systems]]
+   - [[#misc-syntaxes][Misc syntaxes]]
+ - [[#tools][Tools]]
+   - [[#ebib][Ebib]]
+   - [[#magit-and-git][Magit and git]]
+   - [[#mu4e][Mu4e]]
+   - [[#pdf-tools][PDF Tools]]
+   - [[#regular-expression-builder][Regular expression builder]]
+ - [[#conclusion][Conclusion]]
+
+* Fundamentals
+
+** Personal information
+
+** Package sources and locations
+
+Some of the packages I use are outside of standard =load-path=, so we add their locations.
+
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+(add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+#+end_src
+
+Then we configure package sources on the network.
+
+#+begin_src emacs-lisp
+(require 'package)
+
+(setq package-archives '(("gnu"          . "https://elpa.gnu.org/packages/")
+                         ("melpa"        . "https://melpa.org/packages/")
+                         ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ("org"          . "http://orgmode.org/elpa/"))
+
+      ;; Emacs25+ only.  TODO This is an experiment: I'm not sure
+      ;; putting GNU above Melpa unstable is a good idea: I don't know
+      ;; if GNU packages are recent enough.  We'll see if something
+      ;; breaks.
+      package-archive-priorities '(
+                                   ("org"          . 1001)
+                                   ("melpa-stable" . 1000)
+                                   ("gnu"          . 500)
+                                   ("melpa"        . 100)
+                                   )
+
+      ;; Isolate package directories for major Emacs version
+      package-user-dir (concat user-emacs-directory "/elpa" (number-to-string emacs-major-version))
+      )
+#+end_src
+
+And finally we initialize the package system, load package list if absent and install [[https://github.com/jwiegley/use-package][use-package]] if it's not already there.
+
+#+begin_src emacs-lisp
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(eval-and-compile
+  (package-install 'use-package)
+  (require 'use-package)
+  (setq use-package-always-ensure t
+	use-package-verbose t
+	)
+  )
+#+end_src
+
+** Utility packages
+
+These packages have no visible effects, but are used through the configuration.
+
+*** Hydra
+
+#+begin_src emacs-lisp
+  (use-package hydra)
+#+end_src
+
+** General defaults
+
+Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fundamental has no hooks and is really hard to customize.
+
+#+begin_src emacs-lisp
+  (setq-default major-mode 'text-mode)
+#+end_src
+
+Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
+
+#+begin_src emacs-lisp
+(setq backup-directory-alist                  ; Autosave and backups in /tmp/
+      `((".*" . ,temporary-file-directory))
+      auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t))
+
+      ;; Let Customize put its mess elsewhere
+      custom-file (concat user-emacs-directory "_customize.el"))
+
+(load custom-file)
+#+end_src
+
+Use system's default browser. Using =setsid xdg-open= prevents Emacs from killing xdg-open before it actually opened anything. See [[https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open][here]].
+
+#+begin_src emacs-lisp
+(setq-default
+ browse-url-browser-function 'browse-url-generic
+ browse-url-generic-program "setsid"
+ browse-url-generic-args '("xdg-open"))
+#+end_src
+
+
+** User interface
+
+*** UI defaults
+
+#+begin_src emacs-lisp
+(setq
+ cursor-type 'bar               ; Nicer cursor
+ enable-recursive-minibuffers t ; Yeah recursion
+ inhibit-startup-screen t       ; Skip the startup screens
+ use-dialog-box nil
+ vc-follow-symlinks t
+
+
+ initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
+
+ disabled-command-function nil)
+#+end_src
+
+Never use the "safe" ~yes-or-no~ function:
+
+#+begin_src emacs-lisp
+(fset 'yes-or-no-p 'y-or-n-p)
+#+end_src
+
+Don't show the menu bar, unless this is MacOS.  Never show toolbar or scrollbars.
+
+#+begin_src emacs-lisp
+(unless (string= 'system-type 'darwin) (menu-bar-mode -1))
+
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+#+end_src
+
+I don't use the right fringe
+
+#+begin_src emacs-lisp
+(set-fringe-mode '(1 . 0))
+#+end_src
+
+Mouse wheel scrolling makes big jumps by default, let's make it smoother.
+
+#+begin_src emacs-lisp
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)) ;; one line at a time
+      mouse-wheel-progressive-speed nil ;; don't accelerate scrolling
+      mouse-wheel-follow-mouse 't ;; scroll window under mouse
+
+      scroll-step 1 ;; keyboard scroll one line at a time
+      )
+#+end_src
+
+*** Fonts and themes
+
+Configure the default font:
+
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))
+(set-face-attribute 'default nil
+;;                  :font "DejaVu Sans Mono" ;; This breaks when Emacs is started as a daemon
+                    :height (if (string-prefix-p  "rudiger" system-name) 120 100)
+                    )
+#+end_src
+
+And load the default theme: [[https://github.com/thblt/eziam-theme-emacs][Eziam]].
+
+#+begin_src emacs-lisp
+(load-theme 'eziam-light t)
+#+end_src
+
+By default, multiple themes can be loaded at the same time.  Nobody wants this (although it's required by smart-mode-line)
+
+#+begin_src emacs-lisp
+(defadvice load-theme (before theme-dont-propagate activate)
+  (mapcar #'disable-theme custom-enabled-themes))
+#+end_src
+
+*** Ivy
+
+Ivy is completely initialized /here/, including Ivy integration for other packages.
+
+#+begin_src emacs-lisp
+(use-package ivy
+  :config (setq ivy-use-virtual-buffers t)
+  :init (ivy-mode)
+  :diminish (ivy-mode)
+  )
+
+(use-package ivy-hydra
+  )
+
+(use-package counsel
+  :bind (
+         ("M-i"     . counsel-imenu)
+         ("M-x"     . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         )
+  )
+
+(use-package swiper
+  :bind (("C-s" . swiper))
+  )
+
+(use-package counsel-projectile
+  :init (counsel-projectile-on)
+  )
+
+(use-package counsel-dash
+  :bind ("<f1>" . counsel-dash-at-point)
+  :config
+  (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
+  (defun counsel-dash-at-point ()
+            (interactive)
+            (counsel-dash (thing-at-point 'symbol))
+            )
+  )
+
+(add-hook 'c-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("C"))
+            )
+          )
+
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
+            )
+          )
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Emacs Lisp"))
+            )
+          )
+
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Haskell"))
+            )
+          )
+
+(add-hook 'html-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("HTML"))
+            )
+          )
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("JavaScript"))
+            )
+          )
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (setq-local helm-dash-docsets '("Python 2" "Python 3"))
+            )
+          )
+#+end_src
+
+*** Recentf
+
+#+begin_src emacs-lisp
+(use-package recentf
+  :init (recentf-mode)
+  )
+#+end_src
+
+*** Customization helper
+
+#+begin_src emacs-lisp
+  ;; Identify face at point
+  (defun what-face (pos)
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos))))
+#+end_src
+
+
+** MacOS
+
+Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
+
+#+begin_src emacs-lisp
+(when (string= system-type 'darwin)
+  ;; Don't use alt, cmd is meta
+  (setq mac-option-modifier 'nil
+        mac-command-modifier 'meta)
+
+  ; Fix weird Apple keymap.on full-size kbs.
+  (global-set-key (kbd "<help>") 'overwrite-mode)
+
+  ; Fix load-path for mu4e (not sure this is still needed)
+  (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+  (use-package exec-path-from-shell
+
+  ; Load PATH from shell in Cocoa
+    :init (exec-path-from-shell-initialize)))
+#+end_src
+
+* Editing text
+
+** Customizations
+
+*** Autosave when losing focus
+
+#+begin_src emacs-lisp
+(add-hook 'focus-out-hook
+          (lambda ()
+            (save-some-buffers t)))
+#+end_src
+
+*** Delete trailing whitespace when saving
+
+#+begin_src emacs-lisp
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+*** Diff files before marking a buffer modified
+
+Ignore modification-time-only changes in files, i.e. ones that don't really change the contents.  This happens often with switching between different VC buffers.  Code comes from [[http://stackoverflow.com/a/29556894][this StackOverflow question]].
+
+#+begin_src emacs-lisp
+(defun update-buffer-modtime-if-byte-identical ()
+  (let* ((size      (buffer-size))
+         (byte-size (position-bytes size))
+         (filename  buffer-file-name))
+    (when (and byte-size (<= size 1000000))
+      (let* ((attributes (file-attributes filename))
+             (file-size  (nth 7 attributes)))
+        (when (and file-size
+                   (= file-size byte-size)
+                   (string= (buffer-substring-no-properties 1 (1+ size))
+                            (with-temp-buffer
+                              (insert-file-contents filename)
+                              (buffer-string))))
+          (set-visited-file-modtime (nth 5 attributes))
+          t)))))
+
+(defun verify-visited-file-modtime--ignore-byte-identical (original &optional buffer)
+  (or (funcall original buffer)
+      (with-current-buffer buffer
+        (update-buffer-modtime-if-byte-identical))))
+(advice-add 'verify-visited-file-modtime :around #'verify-visited-file-modtime--ignore-byte-identical)
+
+(defun ask-user-about-supersession-threat--ignore-byte-identical (original &rest arguments)
+  (unless (update-buffer-modtime-if-byte-identical)
+    (apply original arguments)))
+(advice-add 'ask-user-about-supersession-threat :around #'ask-user-about-supersession-threat--ignore-byte-identical)
+
+#+end_src
+
+** Minor modes
+
+*** Avy
+
+#+begin_src emacs-lisp
+(use-package avy                        ; Jump, move and copy everywhere (similar to Vim-EasyMotion)
+  :bind (("C-:" . avy-goto-char-timer)
+         ("C-M-:" . avy-goto-char-timer)
+         ("C-=" . avy-goto-line)))
+#+end_src
+
+*** Expand-region
+
+#+begin_src emacs-lisp
+(use-package expand-region)
+#+end_src
+
+*** iy-goto-char
+
+Emulates Vim's =f=, =F=, =t= and =T=.
+
+#+begin_src emacs-lisp
+  (use-package iy-go-to-char
+    :bind (("C-c f" . iy-go-to-char)
+           ("C-c F" . iy-go-to-char-key-backward)
+           ("C-c t" . iy-go-up-to-char)
+           ("C-c T" . iy-go-up-to-char-backward)
+           ("C-c ;" . iy-go-to-or-up-to-continue)
+           ("C-c ," . iy-go-to-or-up-to-continue-backward)))
+#+end_src
+
+
+*** Move text
+
+Move lines of text with =M-<up>= and =M-<down>=.
+
+#+begin_src emacs-lisp
+(use-package move-text
+  :init (move-text-default-bindings)
+  )
+#+end_src
+
+*** Multiple cursors
+
+#+begin_src emacs-lisp
+(use-package multiple-cursors
+  :init
+  (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
+  (add-hook 'text-mode-hook (lambda () (multiple-cursors-mode t)))
+  :bind (("C-S-c C-S-c" . mc/edit-lines)))
+#+end_src
+
+*** Nlinum
+
+More efficient line numbering, especially on large files with huge foldings (eg org)
+
+#+begin_src emacs-lisp
+(use-package nlinum
+  :config (nlinum-mode)
+  )
+#+end_src
+
+*** Smartparens
+
+#+begin_src emacs-lisp
+(use-package smartparens-config         ; Be smart with parentheses
+  :ensure smartparens
+  :init (smartparens-global-mode)
+  :config (progn
+            (sp-pair "“" "”")
+            (sp-pair "«" "»")
+            (sp-local-pair 'org-mode "/" "/")
+            (sp-local-pair 'org-mode "*" "*")
+            )
+  :diminish (smartparens-mode))
+#+end_src
+
+*** Undo-tree
+
+#+begin_src emacs-lisp
+(use-package undo-tree
+  :init (global-undo-tree-mode)
+  :config (setq
+           undo-tree-auto-save-history t
+           undo-tree-visualizer-diff t
+           undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest" (number-to-string emacs-major-version))))
+           )
+  :diminish (undo-tree-mode))
+#+end_src
+
+*** Yasnippet
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :init (yas-global-mode)
+    :config (add-to-list 'yas-snippet-dirs "~./emacs.d/snippets/")
+    :diminish (yas-minor-mode)
+    )
+#+end_src
+
+Auto-yasnippet is a cool package for creating disposable snippets on the fly.
+
+#+begin_src emacs-lisp
+  (use-package auto-yasnippet
+    :bind ( ("H-w" . aya-create)
+            ("H-y" . aya-open-line)))
+#+end_src
+
+* Writing prose
+
+This section deals with two things:
+
+ 1. Major modes dedicated to writing prose, as opposed to code or configuration.
+ 2. Non-code bits in code/configuration files: comments and integrated documentation.
+
+** Common settings and minor modes
+
+*** Abbrev
+
+#+begin_src emacs-lisp
+  (use-package abbrev
+    :ensure nil
+    :init (add-hook 'text-mode-hook (lambda () (abbrev-mode t)))
+    :diminish (abbrev-mode))
+#+end_src
+
+*** Focus
+
+#+begin_src emacs-lisp
+  (use-package focus)
+#+end_src
+
+*** Unfill
+
+#+begin_src emacs-lisp
+  (use-package unfill
+    :bind (
+           ("M-Q" . unfill-paragraph)))
+#+end_src
+
+*** Spell checking
+
+#+begin_src emacs-lisp
+  (setq ispell-silently-savep t)
+
+  (use-package flyspell
+    :ensure nil
+    :diminish flyspell-mode)
+#+end_src
+
+Auto-dictionary mode:
+
+#+begin_src emacs-lisp
+  (use-package auto-dictionary
+    :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
+    )
+#+end_src
+
+*** Visual line mode
+
+#+begin_src emacs-lisp
+    (use-package visual-line-mode
+      :ensure nil
+      :diminish (visual-line-mode))
+#+end_src
+
+
+*** Writeroom
+
+#+begin_src emacs-lisp
+  (use-package writeroom-mode ; Distraction-free mode
+    :config (defhydra hydra-writeroom-width ()
+              "width"
+              ("-" writeroom-decrease-width "decrease")
+              ("=" writeroom-increase-width "increase")))
+#+end_src
+
+** Major modes
+*** AucTex
+
+#+begin_src emacs-lisp
+  (use-package tex-site
+    :ensure auctex ;; FIXME shouldn't this be nil?
+    :init (add-hook 'LaTeX-mode-hook (lambda ()
+                                       (visual-line-mode t)
+                                       (turn-on-flyspell)
+                                       (TeX-fold-mode t)
+                                       )
+                    )
+    :config (progn
+              (setq-default TeX-save-query nil      ; Autosave
+                            TeX-parse-self t
+                            TeX-engine 'xetex)))
+  (eval-after-load 'reftex-vars
+    '(progn
+       ;; (also some other reftex-related customizations)
+       (setq reftex-cite-format
+             '((?\C-m . "\\cite[]{%l}")
+               (?f . "\\footcite[][]{%l}")
+               (?t . "\\textcite[q]{%l}")
+               (?p . "\\parencite[]{%l}")
+               (?o . "\\citepr[]{%l}")
+               (?n . "\\nocite{%l}")))))
+
+  (use-package company-auctex)            ; Completion provider for AucTeX
+#+end_src
+
+*** Markdown
+
+We just load the mode.
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode)
+#+end_src
+
+*** Org-mode
+
+#+begin_src emacs-lisp
+(use-package org
+  :ensure nil
+  :init (progn
+          (setq org-catch-invisible-edits t ; Avoid editing folded contents
+                org-hide-leading-stars t
+                org-hide-emphasis-markers t
+                org-src-fontify-natively t  ; Syntax highlighting in src blocks.
+                )
+          (add-hook 'org-mode-hook (lambda ()
+                                     (flyspell-mode t)
+                                     (org-indent-mode t)
+                                     (visual-line-mode t)
+                                     )))
+  :diminish org-indent-mode)
+
+(use-package toc-org
+  :init (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+
+* Writing code
+
+** Settings
+
+*** Basic settings
+
+#+begin_src emacs-lisp
+(setq comment-empty-lines nil
+ compile-command "wmake"
+ tab-width 4
+ indent-tabs-mode nil)
+#+end_src
+
+*** Mappings
+
+Nothing fancy: F5 to compile, F8 to ~ffap~.
+
+#+begin_src emacs-lisp
+(define-key prog-mode-map (kbd "<f5>") compile)
+(define-key prog-mode-map (kbd "<f8>") 'ffap)
+#+end_src
+
+
+** Minor modes
+
+*** Company
+
+#+begin_src emacs-lisp
+(use-package company
+  :init (add-hook 'prog-mode-hook 'company-mode)
+  :diminish company-mode
+  )
+#+end_src
+
+*** Editorconfig
+
+#+begin_src emacs-lisp
+(use-package editorconfig               ; Normalized text style file format
+  :init (add-hook 'prog-mode-hook (editorconfig-mode 1))
+  (add-hook 'text-mode-hook (editorconfig-mode 1))
+  :diminish (editorconfig-mode)
+  )
+#+end_src
+
+*** Evil Nerd Commenter
+
+A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre/comment-dwim-2][~comment-dwim2~]], it can't alternate between commenting and commenting /out/ (adding the comment delimiter at the start or the end of the line).
+
+#+begin_src emacs-lisp
+(use-package evil-nerd-commenter
+  :bind (("M-;"   . evilnc-comment-or-uncomment-lines)
+         ("C-M-;" . evilnc-comment-or-uncomment-paragraphs)
+         ("C-c l" . evilnc-quick-comment-or-uncomment-to-the-line)
+         ("C-c c" . evilnc-copy-and-comment-lines)
+         ("C-c p" . evilnc-comment-or-uncomment-paragraphs)))
+#+end_src
+
+*** Flycheck
+
+#+begin_src emacs-lisp
+(use-package flycheck
+  :init (add-hook 'prog-mode-hook 'flycheck-mode)
+  :diminish flycheck-mode
+  )
+#+end_src
+
+*** Rainbow delimiters
+
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters)
+#+end_src
+
+*** Rainbow mode
+
+Similar to Atom's Pigments plugin or something.
+
+#+begin_src emacs-lisp
+(use-package rainbow-mode
+  :init (add-hook 'prog-mode-hook (rainbow-mode))
+  :diminish (rainbow-mode))
+#+end_src
+
+** Project management
+
+#+begin_src emacs-lisp
+(use-package projectile
+  :init (projectile-global-mode)
+  :config (setq projectile-globally-ignored-file-suffixes (append '(
+                                                               ".un~"
+                                                               ".~undo-tree~"
+                                                               )
+                                                                  projectile-globally-ignored-files))
+  :diminish (projectile-mode))
+#+end_src
+
+** Programming languages
+*** C/C++
+
+#+begin_src emacs-lisp
+(use-package clang-format)              ; Interface to clang-format
+(use-package company-c-headers)         ; Completion provider for C header file
+(use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
+(use-package irony
+  :diminish irony-mode
+  )
+(use-package flycheck-irony)
+(use-package company-irony)
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+
+;; From irony docs
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+;; (defun my-irony-mode-hook ()
+;;  (define-key irony-mode-map [remap completion-at-point]
+;;    'irony-completion-at-point-async)
+;;  (define-key irony-mode-map [remap complete-symbol]
+;;    'irony-completion-at-point-async))
+;;(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (local-set-key (kbd "C-c o") 'ff-find-other-file)
+            (irony-mode t)))
+#+end_src
+
+*** Haskell
+
+#+begin_src emacs-lisp
+(use-package haskell-mode)
+(use-package company-ghc                ; Completion provider for Haskell
+  :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
+  )
+(use-package flycheck-haskell           ; Haskell provider for Flycheck
+  :init '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)
+  )
+(use-package hayoo
+  :bind (
+		 :map haskell-mode-map
+			  ("<f1>" . hayoo-query)))
+#+end_src
+
+*** Lua
+
+#+begin_src emacs-lisp
+(use-package lua-mode)
+#+end_src
+
+*** Python
+
+#+begin_src emacs-lisp
+  (use-package company-jedi
+    :config (add-hook 'python-mode-hook (progn
+                                          (add-to-list 'company-backends 'company-jedi))))
+
+  (use-package flycheck-pyflakes)
+#+end_src
+
+*** Web development
+
+#+begin_src emacs-lisp
+(use-package emmet-mode)
+(use-package haml-mode)
+(use-package less-css-mode)
+(use-package scss-mode
+  :init (add-to-list 'auto-mode-alist '("\\.css\\'" . scss-mode)))
+(use-package skewer-mode)
+(use-package web-mode
+  :init (progn
+          (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+          (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))))
+#+end_src
+
+** Build systems
+*** CMake
+
+#+begin_src emacs-lisp
+(use-package cmake-mode)
+#+end_src
+
+** Misc syntaxes
+
+*** Yaml
+
+#+begin_src emacs-lisp
+(provide 'setup-yaml)
+#+end_src
+
+* Tools
+
+This section deals with tools which don't edit anything.
+
+** Ebib
+
+#+begin_src emacs-lisp
+(use-package ebib
+  :config (setq ebib-bibtex-dialect 'biblatex)
+  )
+#+end_src
+
+** Magit and git
+
+#+begin_src emacs-lisp
+(use-package magit
+  :bind ( ("C-x g" . magit-status) )
+  )
+
+(use-package git-timemachine)
+#+end_src
+
+** Mu4e
+
+#+begin_src emacs-lisp
+(defun mu4e-message-maildir-matches (msg rx)
+  (when rx
+    (if (listp rx)
+        ;; if rx is a list, try each one for a match
+        (or (mu4e-message-maildir-matches msg (car rx))
+            (mu4e-message-maildir-matches msg (cdr rx)))
+      ;; not a list, check rx
+      (string-match rx (mu4e-message-field msg :maildir)))))
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package mu4e-maildirs-extension)
+(use-package mu4e
+  :ensure nil                 ; Comes with mu, not on a Emacs package repo
+  :bind (("<f12>" . mu4e)
+         :map mu4e-headers-mode-map
+         ("<f12>" . mu4e-quit)
+         :map mu4e-main-mode-map
+         ("<f12>" . mu4e-quit)
+         :map mu4e-view-mode-map
+         ("<f12>" . mu4e-quit)
+         )
+  :config (progn
+          (require 'mu4e-contrib)
+          (mu4e-maildirs-extension)
+          (setq mu4e-html2text-command 'mu4e-shr2text
+                mu4e-maildir "~/.Mail/"
+                mu4e-get-mail-command "mbsync -a"
+                mu4e-change-filenames-when-moving t  ; Required for mbsync
+                mu4e-update-interval 60 ;; seconds
+                message-send-mail-function 'smtpmail-send-it
+                mu4e-headers-auto-update t
+
+                mu4e-confirm-quit nil
+                mu4e-hide-index-messages t
+                mu4e-split-view 'vertical
+                mu4e-headers-include-related t  ; Include related messages in threads
+                mu4e-view-show-images t
+
+                mu4e-use-fancy-chars t
+                mu4e-headers-attach-mark '("" . "")
+                mu4e-headers-encrypted-mark '("" . "")
+                mu4e-headers-flagged-mark '("+" . "⚑")
+                mu4e-headers-list-mark '("" . "")
+                mu4e-headers-new-mark '("" . "")
+                mu4e-headers-read-mark '("" . "")
+                mu4e-headers-replied-mark '("" . "↩")
+                mu4e-headers-seen-mark '("" . "")
+                mu4e-headers-unseen-mark '("" . "")
+                mu4e-headers-unread-mark '("" . "✱")
+                mu4e-headers-signed-mark '("" . "")
+                mu4e-headers-trashed-mark '("T" . "T")
+
+                mu4e-headers-from-or-to-prefix '("" . "→ ")
+
+                mu4e-headers-has-child-prefix '("+" . "└┬")
+                mu4e-headers-first-child-prefix '("|" . "├")
+
+                mu4e-headers-default-prefix '("" . "├")
+
+                mu4e-headers-fields '(
+                                      (:flags          . 3)
+                                      (:human-date     . 21)
+                                      (:from-or-to     . 25)
+                                      (:thread-subject . nil)
+                                      )
+
+                mu4e-user-mail-address-list '(
+                                              "thblt@thb.lt"
+                                              "thibault.polge@malix.univ-paris1.fr"
+                                              "thibault.polge@univ-paris1.fr"
+                                              "thibault@thb.lt"
+                                              "tpolge@gmail.com"
+                                              )
+                mu4e-context-policy 'pick-first
+                mu4e-compose-context-policy 'ask
+                mu4e-contexts
+                `( ,(make-mu4e-context
+                     :name "Namo"
+                     :enter-func (lambda () (mu4e-message "Namo"))
+                     :match-func (lambda (msg)
+                                   (when msg
+                                     (mu4e-message-maildir-matches msg "^/Namo/")))
+                     :vars '( ( user-mail-address	     . "thibault@thb.lt" )
+                              ( user-full-name	         . "Thibault Polge" )
+                              ( mu4e-sent-folder        . "/Namo/Sent" )
+                              ( mu4e-drafts-folder      . "/Namo/Drafts" )
+                              ( mu4e-trash-folder       . "/Namo/Trash" )
+                              ( smtpmail-local-domain   . "thb.lt" )
+                              ( smtpmail-smtp-server    . "namo.thb.lt" )
+                              ( smtpmail-stream-type    . tls )
+                              ( smtpmail-smtp-service   . 465 ) ))
+
+                   ,(make-mu4e-context
+                     :name "P1"
+                     :enter-func (lambda () (mu4e-message "P1"))
+                     :match-func (lambda (msg)
+                                   (when msg
+                                     (mu4e-message-maildir-matches msg "^/P1/")))
+                     :vars '(  ( user-mail-address	     . "thibault.polge@univ-paris1.fr"  )
+                               ( user-full-name	         . "Thibault Polge" )
+                               ( mu4e-sent-folder        . "/P1/sent-mail" )
+                               ( mu4e-drafts-folder      . "/P1/Drafts" )
+                               ( mu4e-trash-folder       . "/P1/Trash" )
+                               ( smtpmail-local-domain   . "univ-paris1.fr" )
+                               ( smtpmail-smtp-server    . "smtp.univ-paris1.fr" )
+                               ( smtpmail-smtp-user      . "tpolge" )
+                               ( smtpmail-stream-type    . tls )
+                               ( smtpmail-smtp-service   . 465 )
+                   )))
+
+                mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX)"
+                                   "Global inbox"            ?i)
+
+                                  ("(flag:unread AND (m:/P1/INBOX OR m:Namo/INBOX))"
+                                   "Unread inbox"            ?I)
+
+                                  ("(m:/Namo/emetis)"
+                                   "emetis"                  ?e)
+
+                                  ("(m:/Namo/historiens-sante)"
+                                   "historiens-sante"        ?h)
+
+                                  ("(m:/Namo/theuth)"
+                                   "theuth"                  ?t)
+
+                                  ("(flag:flagged)"
+                                   "Flagged"                 ?f)
+                                  ) )
+          (add-hook 'mu4e-view-mode-hook (visual-line-mode t))
+          )
+  )
+#+end_src
+
+** PDF Tools
+
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :init (pdf-tools-install)
+  )
+#+end_src
+
+** Regular expression builder
+
+We use the =string= syntax, as advised on [[https://www.masteringemacs.org/article/re-builder-interactive-regexp-builder][this Mastering Emacs' article]].
+
+#+begin_src emacs-lisp
+(setq reb-re-syntax 'string)
+#+end_src
+
+* Conclusion
+
+We should have started (or crashed) by now.  It's time to run the server!
+
+#+begin_src emacs-lisp
+(require 'server)
+(unless (server-running-p)
+  (server-start)
+  )
+#+end_src
+
+And share SpongeBob's enthusiasm towards the world:
+
+#+begin_src emacs-lisp
+(defun startup-echo-area-message ()
+  "I'm ready!")
+#+end_src
