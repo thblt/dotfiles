@@ -7,13 +7,14 @@ This is my Emacs configuration.
  - [[#fundamentals][Fundamentals]]
    - [[#personal-information][Personal information]]
    - [[#package-sources-and-locations][Package sources and locations]]
-   - [[#utility-packages][Utility packages]]
    - [[#general-defaults][General defaults]]
    - [[#user-interface][User interface]]
    - [[#macos][MacOS]]
  - [[#editing-text][Editing text]]
-   - [[#customizations][Customizations]]
+   - [[#spell-checking][Spell checking]]
+   - [[#moving-around][Moving around]]
    - [[#minor-modes][Minor modes]]
+   - [[#customizations][Customizations]]
  - [[#writing-prose][Writing prose]]
    - [[#common-settings-and-minor-modes][Common settings and minor modes]]
    - [[#major-modes][Major modes]]
@@ -93,16 +94,6 @@ And finally we initialize the package system, load package list if absent and in
     )
 #+end_src
 
-** Utility packages
-
-These packages have no visible effects, but are used through the configuration.
-
-*** Hydra
-
-#+begin_src emacs-lisp
-  (use-package hydra)
-#+end_src
-
 ** General defaults
 
 Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fundamental has no hooks and is really hard to customize.
@@ -136,16 +127,23 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 
 ** User interface
 
-*** UI defaults
+*** Keybindings
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+#+end_src
+
+*** TODO UI defaults
+
+TODO: =cursor-type= doesn't work.
 
 #+begin_src emacs-lisp
   (setq
-   cursor-type 'bar               ; Nicer cursor
-   enable-recursive-minibuffers t ; Yeah recursion
-   inhibit-startup-screen t       ; Skip the startup screens
+   cursor-type 'bar
+   enable-recursive-minibuffers t
+   inhibit-startup-screen t
    use-dialog-box nil
    vc-follow-symlinks t
-
 
    initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
 
@@ -209,9 +207,13 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
     (mapcar #'disable-theme custom-enabled-themes))
 #+end_src
 
-*** Ivy
+*** Hydra
 
-Ivy is completely initialized /here/, including Ivy integration for other packages.
+#+begin_src emacs-lisp
+  (use-package hydra)
+#+end_src
+
+*** Ivy
 
 #+begin_src emacs-lisp
   (use-package ivy
@@ -233,70 +235,6 @@ Ivy is completely initialized /here/, including Ivy integration for other packag
 
   (use-package swiper
     :bind (("C-x s" . swiper))
-    )
-
-  (use-package counsel-projectile
-    :init (counsel-projectile-on)
-    )
-
-  (use-package counsel-dash
-    :bind ("<f1>" . counsel-dash-at-point)
-    :config
-    (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
-    (defun counsel-dash-at-point ()
-              (interactive)
-              (counsel-dash (thing-at-point 'symbol))
-              )
-    )
-
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("C"))
-              )
-            )
-
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
-              )
-            )
-
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Emacs Lisp"))
-              )
-            )
-
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Haskell"))
-              )
-            )
-
-  (add-hook 'html-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("HTML"))
-              )
-            )
-
-  (add-hook 'js-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("JavaScript"))
-              )
-            )
-
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
-              )
-            )
-#+end_src
-
-*** Recentf
-
-#+begin_src emacs-lisp
-  (use-package recentf
-    :init (recentf-mode)
     )
 #+end_src
 
@@ -334,6 +272,165 @@ Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
 #+end_src
 
 * Editing text
+
+** Spell checking
+
+Use =aspell= instead of =ispell=:
+
+#+begin_src emacs-lisp
+  (setq ispell-program-name "aspell")
+#+end_src
+
+Don't ask before saving custom dict:
+
+#+begin_src emacs-lisp
+  (setq ispell-silently-savep t)
+#+end_src
+
+On the fly spellchecking with Falsely:
+
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :ensure nil
+    :init
+    (add-hook 'conf-mode-hook (lambda () (flyspell-prog-mode)))
+    (add-hook 'prog-mode-hook (lambda () (flyspell-prog-mode)))
+    (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
+
+    :diminish flyspell-mode)
+#+end_src
+
+Correct words using Ivy instead of default method:
+
+#+begin_src emacs-lisp
+  (use-package flyspell-correct-ivy
+    :after flyspell-correct  ;; M-o doesnt work without  this
+    :bind (:map flyspell-mode-map (
+                                   ("C-;" . flyspell-correct-previous-word-generic))))
+#+end_src
+
+Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + doesn't work with org-mode.
+
+#+begin_src emacs-lisp
+(use-package auto-dictionary
+  ;;  :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
+)
+#+end_src
+
+** Moving around
+*** Avy
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :bind (("C-:" . avy-goto-char-timer)
+           ("C-M-:" . avy-goto-char-timer)
+           ("C-=" . avy-goto-line)))
+#+end_src
+
+*** iy-goto-char
+
+Emulates Vim's =f=, =F=, =t= and =T=.
+
+#+begin_src emacs-lisp
+  (use-package iy-go-to-char
+    :bind (("C-c f" . iy-go-to-char)
+           ("C-c F" . iy-go-to-char-key-backward)
+           ("C-c t" . iy-go-up-to-char)
+           ("C-c T" . iy-go-up-to-char-backward)
+           ("C-c ;" . iy-go-to-or-up-to-continue)
+           ("C-c ," . iy-go-to-or-up-to-continue-backward)))
+#+end_src
+
+** Minor modes
+*** Expand-region
+
+#+begin_src emacs-lisp
+  (use-package expand-region)
+#+end_src
+
+*** Move text
+
+Move lines of text with =M-<up>= and =M-<down>=.
+
+#+begin_src emacs-lisp
+  (use-package move-text
+    :init (move-text-default-bindings)
+    )
+#+end_src
+
+*** Multiple cursors
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :init
+    (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
+    (add-hook 'text-mode-hook (lambda () (multiple-cursors-mode t)))
+    :bind (("C-S-c C-S-c" . mc/edit-lines)))
+#+end_src
+
+*** Nlinum
+
+More efficient line numbering, especially on large files with huge foldings (eg org)
+
+#+begin_src emacs-lisp
+  (use-package nlinum
+    :config (nlinum-mode)
+    )
+#+end_src
+
+*** Recentf
+
+#+begin_src emacs-lisp
+  (use-package recentf
+    :init (recentf-mode)
+    )
+#+end_src
+
+*** Smartparens
+
+#+begin_src emacs-lisp
+  (use-package smartparens-config         ; Be smart with parentheses
+    :ensure smartparens
+    :init (smartparens-global-mode)
+    :config (progn
+              (sp-pair "“" "”")
+              (sp-pair "«" "»")
+              (sp-local-pair 'org-mode "/" "/")
+              (sp-local-pair 'org-mode "*" "*")
+              )
+    :diminish (smartparens-mode))
+#+end_src
+
+*** Undo-tree
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :init (global-undo-tree-mode)
+    :config (setq
+             undo-tree-auto-save-history t
+             undo-tree-visualizer-diff t
+             undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest" (number-to-string emacs-major-version))))
+             )
+    :diminish (undo-tree-mode))
+#+end_src
+
+*** Yasnippet
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :init (yas-global-mode)
+    :config (add-to-list 'yas-snippet-dirs "~./emacs.d/snippets/")
+    :diminish (yas-minor-mode)
+    )
+#+end_src
+
+Auto-yasnippet is a cool package for creating disposable snippets on the fly.
+
+#+begin_src emacs-lisp
+  (use-package auto-yasnippet
+    :bind ( ("H-w" . aya-create)
+            ("H-y" . aya-open-line)))
+#+end_src
 
 ** Customizations
 
@@ -385,112 +482,6 @@ Ignore modification-time-only changes in files, i.e. ones that don't really chan
 
 #+end_src
 
-** Minor modes
-*** Avy
-
-#+begin_src emacs-lisp
-  (use-package avy
-    :bind (("C-:" . avy-goto-char-timer)
-           ("C-M-:" . avy-goto-char-timer)
-           ("C-=" . avy-goto-line)))
-#+end_src
-
-*** Expand-region
-
-#+begin_src emacs-lisp
-  (use-package expand-region)
-#+end_src
-
-*** iy-goto-char
-
-Emulates Vim's =f=, =F=, =t= and =T=.
-
-#+begin_src emacs-lisp
-  (use-package iy-go-to-char
-    :bind (("C-c f" . iy-go-to-char)
-           ("C-c F" . iy-go-to-char-key-backward)
-           ("C-c t" . iy-go-up-to-char)
-           ("C-c T" . iy-go-up-to-char-backward)
-           ("C-c ;" . iy-go-to-or-up-to-continue)
-           ("C-c ," . iy-go-to-or-up-to-continue-backward)))
-#+end_src
-
-*** Move text
-
-Move lines of text with =M-<up>= and =M-<down>=.
-
-#+begin_src emacs-lisp
-  (use-package move-text
-    :init (move-text-default-bindings)
-    )
-#+end_src
-
-*** Multiple cursors
-
-#+begin_src emacs-lisp
-  (use-package multiple-cursors
-    :init
-    (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
-    (add-hook 'text-mode-hook (lambda () (multiple-cursors-mode t)))
-    :bind (("C-S-c C-S-c" . mc/edit-lines)))
-#+end_src
-
-*** Nlinum
-
-More efficient line numbering, especially on large files with huge foldings (eg org)
-
-#+begin_src emacs-lisp
-  (use-package nlinum
-    :config (nlinum-mode)
-    )
-#+end_src
-
-*** Smartparens
-
-#+begin_src emacs-lisp
-  (use-package smartparens-config         ; Be smart with parentheses
-    :ensure smartparens
-    :init (smartparens-global-mode)
-    :config (progn
-              (sp-pair "“" "”")
-              (sp-pair "«" "»")
-              (sp-local-pair 'org-mode "/" "/")
-              (sp-local-pair 'org-mode "*" "*")
-              )
-    :diminish (smartparens-mode))
-#+end_src
-
-*** Undo-tree
-
-#+begin_src emacs-lisp
-  (use-package undo-tree
-    :init (global-undo-tree-mode)
-    :config (setq
-             undo-tree-auto-save-history t
-             undo-tree-visualizer-diff t
-             undo-tree-history-directory-alist `(("." . ,(concat user-emacs-directory "/undo-forest" (number-to-string emacs-major-version))))
-             )
-    :diminish (undo-tree-mode))
-#+end_src
-
-*** Yasnippet
-
-#+begin_src emacs-lisp
-  (use-package yasnippet
-    :init (yas-global-mode)
-    :config (add-to-list 'yas-snippet-dirs "~./emacs.d/snippets/")
-    :diminish (yas-minor-mode)
-    )
-#+end_src
-
-Auto-yasnippet is a cool package for creating disposable snippets on the fly.
-
-#+begin_src emacs-lisp
-  (use-package auto-yasnippet
-    :bind ( ("H-w" . aya-create)
-            ("H-y" . aya-open-line)))
-#+end_src
-
 * Writing prose
 
 This section deals with two things:
@@ -499,7 +490,6 @@ This section deals with two things:
  2. Non-code bits in code/configuration files: comments and integrated documentation.
 
 ** Common settings and minor modes
-
 *** Abbrev
 
 #+begin_src emacs-lisp
@@ -521,24 +511,6 @@ This section deals with two things:
   (use-package unfill
     :bind (
            ("M-Q" . unfill-paragraph)))
-#+end_src
-
-*** Spell checking
-
-#+begin_src emacs-lisp
-  (setq ispell-silently-savep t)
-
-  (use-package flyspell
-    :ensure nil
-    :diminish flyspell-mode)
-#+end_src
-
-Auto-dictionary mode:
-
-#+begin_src emacs-lisp
-  (use-package auto-dictionary
-    :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
-    )
 #+end_src
 
 *** Visual line mode
@@ -567,7 +539,6 @@ Auto-dictionary mode:
     :ensure auctex ;; FIXME shouldn't this be nil?
     :init (add-hook 'LaTeX-mode-hook (lambda ()
                                        (visual-line-mode t)
-                                       (turn-on-flyspell)
                                        (TeX-fold-mode t)
                                        )
                     )
@@ -600,24 +571,26 @@ We just load the mode.
 *** Org-mode
 
 #+begin_src emacs-lisp
-(use-package org
-  :ensure nil
-  :init (progn
-          (setq org-catch-invisible-edits t ; Avoid editing folded contents
-                org-hide-leading-stars t
-                org-hide-emphasis-markers t
-                org-src-fontify-natively t  ; Syntax highlighting in src blocks.
-                )
-          (add-hook 'org-mode-hook (lambda ()
-                                     (flyspell-mode t)
-                                     (org-indent-mode t)
-                                     (visual-line-mode t)
-                                     )))
-  :diminish org-indent-mode)
+  (use-package org
+    :ensure nil
+    :init (progn
+            (setq org-catch-invisible-edits t ; Avoid editing folded contents
+                  org-hide-leading-stars t
+                  org-hide-emphasis-markers t
+                  org-imenu-depth 6
+                  org-src-fontify-natively t  ; Syntax highlighting in src blocks.
+                  )
+            (add-hook 'org-mode-hook (lambda ()
+                                       (org-indent-mode t)
+                                       (visual-line-mode t)
+                                       )))
+    :diminish org-indent-mode)
 
-(use-package toc-org
-  :init (add-hook 'org-mode-hook 'toc-org-enable))
+  (use-package toc-org
+    :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
+
+We don't want Flyspell correcting code blocks
 
 * Writing code
 
@@ -626,10 +599,10 @@ We just load the mode.
 *** Basic settings
 
 #+begin_src emacs-lisp
-(setq comment-empty-lines nil
- compile-command "wmake"
- tab-width 4
- indent-tabs-mode nil)
+  (setq comment-empty-lines nil
+        compile-command "wmake"
+        tab-width 4
+        indent-tabs-mode nil)
 #+end_src
 
 *** Mappings
@@ -650,6 +623,62 @@ Nothing fancy: F5 to compile, F8 to ~ffap~.
   :init (add-hook 'prog-mode-hook 'company-mode)
   :diminish company-mode
   )
+#+end_src
+
+*** Counsel-dash
+
+#+begin_src emacs-lisp
+  (use-package counsel-dash
+    :bind ("<f1>" . counsel-dash-at-point)
+    :config
+    (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
+    (defun counsel-dash-at-point ()
+      (interactive)
+      (counsel-dash (thing-at-point 'symbol))
+      )
+    )
+
+  (add-hook 'c-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("C"))
+              )
+            )
+
+  (add-hook 'c++-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
+              )
+            )
+
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("Emacs Lisp"))
+              )
+            )
+
+  (add-hook 'haskell-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("Haskell"))
+              )
+            )
+
+  (add-hook 'html-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("HTML"))
+              )
+            )
+
+  (add-hook 'js-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("JavaScript"))
+              )
+            )
+
+  (add-hook 'python-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
+              )
+            )
 #+end_src
 
 *** Editorconfig
@@ -713,40 +742,43 @@ Similar to Atom's Pigments plugin or something.
   :diminish (projectile-mode))
 #+end_src
 
+With Ivy integration:
+
+#+begin_src emacs-lisp
+  (use-package counsel-projectile
+    :init (counsel-projectile-on))
+#+end_src
+
+
 ** Programming languages
 *** C/C++
 
 #+begin_src emacs-lisp
-(use-package clang-format)              ; Interface to clang-format
-(use-package company-c-headers)         ; Completion provider for C header file
-(use-package cpputils-cmake)            ; Automatic configuration for Flycheck/Company/etc for CMake projects
-(use-package irony
-  :diminish irony-mode
-  )
-(use-package flycheck-irony)
-(use-package company-irony)
+  (use-package clang-format)
+  (use-package company-c-headers)
+  (use-package cpputils-cmake)
+  (use-package irony
+    :init
+    (add-hook 'c-mode-common-hook 'irony-mode)
+    (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-(eval-after-load 'company
-  '(add-to-list 'company-backends 'company-irony))
-(eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+    (use-package flycheck-irony
+      :init
+      (eval-after-load 'flycheck
+        '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
 
-;; From irony docs
-;; replace the `completion-at-point' and `complete-symbol' bindings in
-;; irony-mode's buffers by irony-mode's function
-;; (defun my-irony-mode-hook ()
-;;  (define-key irony-mode-map [remap completion-at-point]
-;;    'irony-completion-at-point-async)
-;;  (define-key irony-mode-map [remap complete-symbol]
-;;    'irony-completion-at-point-async))
-;;(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+    (use-package company-irony
+      :init
+      (eval-after-load 'company
+        '(add-to-list 'company-backends 'company-irony)))
 
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+    :diminish irony-mode)
 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (local-set-key (kbd "C-c o") 'ff-find-other-file)
-            (irony-mode t)))
+
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (local-set-key (kbd "C-c o") 'ff-find-other-file)))
 #+end_src
 
 *** Haskell
@@ -810,7 +842,7 @@ Similar to Atom's Pigments plugin or something.
 
 ** Misc syntaxes
 
-*** Yaml
+*** YAML
 
 #+begin_src emacs-lisp
 (provide 'setup-yaml)
@@ -971,6 +1003,13 @@ This section deals with tools which don't edit anything.
           (add-hook 'mu4e-view-mode-hook (visual-line-mode t))
           )
   )
+#+end_src
+
+Compose messages with org tables and org lists.
+
+#+begin_src emacs-lisp
+(add-hook 'message-mode-hook 'turn-on-orgtbl)
+(add-hook 'message-mode-hook 'turn-on-orgstruct++)
 #+end_src
 
 ** PDF Tools
