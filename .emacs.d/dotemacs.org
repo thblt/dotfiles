@@ -36,8 +36,8 @@ This is my Emacs configuration.
 ** Personal information
 
 #+begin_src emacs-lisp
-  (setq user-full-name    . "Thibault Polge"
-        user-mail-address . "thibault@thb.lt")
+  (setq user-full-name    "Thibault Polge"
+        user-mail-address "thibault@thb.lt")
 #+end_src
 
 ** Package sources and locations
