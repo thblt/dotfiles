@@ -232,7 +232,7 @@ Ivy is completely initialized /here/, including Ivy integration for other packag
     )
 
   (use-package swiper
-    :bind (("C-s" . swiper))
+    :bind (("C-x s" . swiper))
     )
 
   (use-package counsel-projectile
