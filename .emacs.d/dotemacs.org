@@ -134,7 +134,7 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+end_src
 
-*** TODO UI defaults
+*** UI defaults
 
 TODO: =cursor-type= doesn't work.
 
@@ -318,14 +318,13 @@ Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + d
 )
 #+end_src
 
-** “Modal” editing
+** TODO “Modal” editing
 
 Selected is a package which allows to create specific bindings when region is active:
 
 #+begin_src emacs-lisp
   (use-package selected)
 #+end_src
-
 
 ** Moving around
 *** Avy
