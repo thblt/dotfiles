@@ -352,6 +352,15 @@ Emulates Vim's =f=, =F=, =t= and =T=.
 #+end_src
 
 ** Minor modes
+
+*** Auto-revert-mode
+
+#+begin_src emacs-lisp
+  (eval-after-load 'autorevert
+    '(diminish 'auto-revert-mode "ARev")
+  )
+#+end_src
+
 *** Expand-region
 
 #+begin_src emacs-lisp
@@ -523,12 +532,12 @@ This section deals with two things:
            ("M-Q" . unfill-paragraph)))
 #+end_src
 
-*** Visual line mode
+*** Wordwrap/visual line
 
 #+begin_src emacs-lisp
-    (use-package visual-line-mode
-      :ensure nil
-      :diminish (visual-line-mode))
+  (eval-after-load 'simple
+    '(diminish 'visual-line-mode)
+    )
 #+end_src
 
 *** Writeroom
@@ -593,8 +602,11 @@ We just load the mode.
             (add-hook 'org-mode-hook (lambda ()
                                        (org-indent-mode t)
                                        (visual-line-mode t)
-                                       )))
-    :diminish org-indent-mode)
+                                       ))))
+
+  (eval-after-load 'org-indent
+    '(diminish 'org-indent-mode)
+    )
 
   (use-package toc-org
     :init (add-hook 'org-mode-hook 'toc-org-enable))
