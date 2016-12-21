@@ -139,7 +139,7 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 TODO: =cursor-type= doesn't work.
 
 #+begin_src emacs-lisp
-  (setq
+  (setq-default
    cursor-type 'bar
    enable-recursive-minibuffers t
    inhibit-startup-screen t
@@ -204,8 +204,8 @@ And load the default theme: [[https://github.com/thblt/eziam-theme-emacs][Eziam]
 By default, multiple themes can be loaded at the same time.  Nobody wants this (although it's required by smart-mode-line)
 
 #+begin_src emacs-lisp
-  (defadvice load-theme (before theme-dont-propagate activate)
-    (mapcar #'disable-theme custom-enabled-themes))
+;;  (defadvice load-theme (before theme-dont-propagate activate)
+;;    (mapcar #'disable-theme custom-enabled-themes))
 #+end_src
 
 *** Hydra
@@ -806,17 +806,17 @@ With Ivy integration:
 *** Haskell
 
 #+begin_src emacs-lisp
-(use-package haskell-mode)
-(use-package company-ghc                ; Completion provider for Haskell
-  :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
-  )
-(use-package flycheck-haskell           ; Haskell provider for Flycheck
-  :init '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)
-  )
-(use-package hayoo
-  :bind (
-		 :map haskell-mode-map
-			  ("<f1>" . hayoo-query)))
+  (use-package haskell-mode)
+  (use-package company-ghc                ; Completion provider for Haskell
+    :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
+    )
+  (use-package flycheck-haskell           ; Haskell provider for Flycheck
+    :init '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)
+    )
+  (use-package hayoo
+    :after haskell-mode
+    :bind (:map haskell-mode-map
+                ("<f1>" . hayoo-query)))
 #+end_src
 
 *** Lua
