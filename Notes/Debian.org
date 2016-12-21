@@ -17,7 +17,7 @@ Install Debian as usual.
 
 ** Store base package list somewhere
 
-Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/debian-initial-`hostname`.txt=, ça servira plus tard en combinaison avec 
+Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/debian-initial-`hostname`.txt=, ça servira plus tard en combinaison avec
 =aptitude search '~i !~M'= (il y a un script pour ça dans mon =.bin=: =apt-what-have-I-installed=)
 
 ** Upgrade
@@ -37,7 +37,7 @@ Par défaut, Debian installe les paquets suggérés ou recommandés.  Comme je s
  - Créer =/etc/apt/apt.conf.d/99_norecommends=
  - Y coller:
 
-   #+begin_src 
+   #+begin_src
 APT::Install-Recommends "false";
 APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
@@ -85,7 +85,7 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
 - =cp /usr/share/doc/util-linux/examples/fstrim.* /etc/systemd/system= (there should be two files: .service and .timer)
 - =systemctl enable fstrim.timer=
 - =sudo update-initramfs -u -k all=
-  
+
 *** Journal persistant
 
 Teste =journalctl -b -1=.  Si ça répond =Specifying boot ID has no effect, no persistent journal was found=, les opérations à effectuer sont dans =/usr/share/doc/systemd/README.Debian.gz= (à lire avec =zless=).  Il faut simplement:
@@ -146,7 +146,7 @@ Pour anna (MacBook Air 2011), =apt-get install firmware-brcm80211:= devrait suff
 
 Edit or create =/etc/modprobe.d/hid_apple.conf= and add
 
-#+begin_src 
+#+begin_src
 options hid_apple fnmode=2
 options hid_apple swap_opt_cmd=1
 #+end_src
@@ -155,7 +155,7 @@ options hid_apple swap_opt_cmd=1
 
 Create =/etc/systemd/system/powertop-autotune.service=:
 
-#+begin_src 
+#+begin_src
 [Unit]
 Description=Powertop tunings
 
@@ -175,7 +175,7 @@ WantedBy=multi-user.target
 
 Create =/etc/X11/xorg.conf.d/10-monitor.conf= (=mkdir= if needed) with the following contents:
 
-#+begin_src 
+#+begin_src
 Section "Device"
 	Identifier	"Card0"
 	Driver		"radeon"
@@ -191,12 +191,12 @@ EndSection
 Section "dri"
  	Mode 0666
 EndSection
- 
+
 Section "Monitor"
 	Identifier "Main"
  	Modeline "2560x1440_60.00"  312.25  2560 2752 3024 3488  1440 1443 1448 1493 -hsync +vsync
 EndSection
-# 
+#
 Section "Screen"
  	Identifier "Screen0"
     Device "Card0"
@@ -207,18 +207,14 @@ EndSection
 
 * Note: quels paquets faudrait-il avoir à jour pour pouvoir utiliser =stable=?
 
-| Paquet     | État | Notes                                               |
-|------------+------+-----------------------------------------------------|
-| Chromium   | OK   | La version dans Jessie est la même que dans Stretch |
-| Emacs 24.5 | OK   | Backports                                           |
-| Emacs 25   | OK?  | Facile et rapide à compiler, normalement            |
-| Firefox    | ???  | Pas dans Backports                                  |
-| GHC        | OK   | Backports                                           |
-| Tmux       | OK   | Backports                                           |
-|            |      |                                                     |
-|            |      |                                                     |
-|            |      |                                                     |
-
+| Paquet     | État | Notes                                                  |
+|------------+------+--------------------------------------------------------|
+| Chromium   | OK   | La version dans Jessie est la même que dans Stretch    |
+| Emacs 24.5 | OK   | Backports                                              |
+| Emacs 25   | OK?  | Facile et rapide à compiler, normalement               |
+| Firefox    | ???  | Pas dans Backports, mais Mozilla a une distrib binaire |
+| GHC        | OK   | Backports                                              |
+| Tmux       | OK   | Backports                                              |
 
 - Chromium
 - Emacs
