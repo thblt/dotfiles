@@ -18,7 +18,7 @@ antigen theme agnoster
 antigen apply
 
 # Prefix-based history search with up and down arrow
-bindkey '^[[A' up-line-or-search                                                
+bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
 # Variables
@@ -56,7 +56,7 @@ alias -g P="2>&1| pygmentize -l pytb"
 # Misc aliases
 alias bc="bc -l"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
-alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam" 
+alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
 # SSH host
 alias namo="ssh thblt@namo.thb.lt"
 alias k9="ssh thblt@k9.thb.lt"
@@ -78,10 +78,30 @@ alias ..5="cd ../../../../.."
 
 # Virtualenvwrapper
 
-
 export WORKON_HOME=~/.virtualenvs
 source `which virtualenvwrapper.sh` 2> /dev/null
 source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 2> /dev/null
+
+# Allow to recall aborted command
+# From <https://www.topbug.net/blog/2016/10/03/restore-the-previously-canceled-command-in-zsh/>
+function zle-line-init {
+  # Your other zle-line-init configuration ...
+
+  # Store the last non-empty aborted line in MY_LINE_ABORTED
+  if [[ -n $ZLE_LINE_ABORTED ]]; then
+    MY_LINE_ABORTED="$ZLE_LINE_ABORTED"
+  fi
+
+  # Restore aborted line on the first undo.
+  if [[ -n $MY_LINE_ABORTED ]]; then
+    local savebuf="$BUFFER" savecur="$CURSOR"
+    BUFFER="$MY_LINE_ABORTED"
+    CURSOR="$#BUFFER"
+    zle split-undo
+    BUFFER="$savebuf" CURSOR="$savecur"
+  fi
+}
+zle -N zle-line-init
 
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
