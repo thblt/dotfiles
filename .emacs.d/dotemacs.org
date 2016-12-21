@@ -23,8 +23,8 @@ This is my Emacs configuration.
    - [[#settings][Settings]]
    - [[#minor-modes-1][Minor modes]]
    - [[#project-management][Project management]]
-   - [[#programming-languages][Programming languages]]
    - [[#build-systems][Build systems]]
+   - [[#programming-languages][Programming languages]]
    - [[#misc-syntaxes][Misc syntaxes]]
  - [[#tools][Tools]]
    - [[#ebib][Ebib]]
@@ -770,6 +770,12 @@ With Ivy integration:
     :init (counsel-projectile-on))
 #+end_src
 
+** Build systems
+*** CMake
+
+#+begin_src emacs-lisp
+(use-package cmake-mode)
+#+end_src
 
 ** Programming languages
 *** C/C++
@@ -804,14 +810,35 @@ With Ivy integration:
 
 *** Haskell
 
+Haskell-mode provides complete basic Haskell support:
+
 #+begin_src emacs-lisp
   (use-package haskell-mode)
+#+end_src
+
+Intero mode is a “complete interactive development program for Haskell”:
+
+#+begin_src emacs-lisp
+  (use-package intero
+    :after haskell-mode
+    :init (add-hook 'haskell-mode-hook 'intero-mode))
+#+end_src
+
+Intero doesn't require any further company/flycheck integration.  Thus, what follows is not required anymore:
+
+#+begin_src :tangle=no
   (use-package company-ghc                ; Completion provider for Haskell
     :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
     )
+
   (use-package flycheck-haskell           ; Haskell provider for Flycheck
     :init '(add-hook 'flycheck-mode-hook #'flycheck-haskell-setup)
     )
+#+end_src
+
+Quick access to Hayoo, temporarily disabled as well:
+
+#+begin_src emacs-lisp :tangle=no
   (use-package hayoo
     :after haskell-mode
     :bind (:map haskell-mode-map
@@ -852,13 +879,6 @@ With Ivy integration:
           (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
           (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))))
-#+end_src
-
-** Build systems
-*** CMake
-
-#+begin_src emacs-lisp
-(use-package cmake-mode)
 #+end_src
 
 ** Misc syntaxes
