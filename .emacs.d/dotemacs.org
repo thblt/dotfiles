@@ -12,6 +12,7 @@ This is my Emacs configuration.
    - [[#macos][MacOS]]
  - [[#editing-text][Editing text]]
    - [[#spell-checking][Spell checking]]
+   - [[#modal-editing][“Modal” editing]]
    - [[#moving-around][Moving around]]
    - [[#minor-modes][Minor modes]]
    - [[#customizations][Customizations]]
@@ -234,7 +235,7 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
     )
 
   (use-package swiper
-    :bind (("C-x s" . swiper))
+    :bind (("C-S-s" . swiper))
     )
 #+end_src
 
@@ -316,6 +317,15 @@ Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + d
   ;;  :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
 )
 #+end_src
+
+** “Modal” editing
+
+Selected is a package which allows to create specific bindings when region is active:
+
+#+begin_src emacs-lisp
+  (use-package selected)
+#+end_src
+
 
 ** Moving around
 *** Avy
