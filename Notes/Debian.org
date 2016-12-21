@@ -37,11 +37,11 @@ Par défaut, Debian installe les paquets suggérés ou recommandés.  Comme je s
  - Créer =/etc/apt/apt.conf.d/99_norecommends=
  - Y coller:
 
-   #+begin_src
+#+begin_src
 APT::Install-Recommends "false";
 APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
-   #+end_src
+#+end_src
 
 ** Belong in the cool groups
 
