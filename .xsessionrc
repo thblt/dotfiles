@@ -9,7 +9,7 @@ source ~/.profile
 
 # Notification server first, so we can report errors
 if [ ! -e /etc/debian_version ]; then
-	# Don't start Dunst manually on Debian: configure it at /etc/xdg/dunst/dunstrc
+	# Don't start Dunst manually on Debian
 	dunst &
 else
 	echo "This is Debian, not starting some stuff"
