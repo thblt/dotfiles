@@ -97,6 +97,19 @@ systemd-tmpfiles --create --prefix /var/log/journal
 
 ** Configure higher-level stuff
 
+*** Tout le monde déteste Numéricable/SFR
+
+Pour régler les problèmes de DNS menteur de Numéricable/SFR, ces lignes dans =/etc/hosts/= devraient suffire:
+
+#+begin_src
+# Numéricable je te hais
+127.0.0.1   host.does.not.exist.numericable.fr
+127.0.0.1   host.does.not.exist.numericable.com
+127.0.0.1   host.does.not.exist
+#+end_src
+
+Il y en a même trop, mais ça marche au moins.
+
 *** Dunst
 
 In ArchLinux, dunst must be run by the user in some initialization script.  In Debian, for some reasons, it is started by the system while launching dbus. My =.xsessionrc= takes care of not running dunst on Debian.
