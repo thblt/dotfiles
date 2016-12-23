@@ -74,8 +74,8 @@ data MySpacing = MySpacing {
   }
 
 mySpacing :: MySpacing
-mySpacing | myHostName == "rudiger" = MySpacing 4 2 4
-          | otherwise = MySpacing 1 1 0
+mySpacing | myHostName == "rudiger" = MySpacing 0 2 0
+          | otherwise = MySpacing 1 1 4
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
@@ -85,16 +85,16 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                . withBorder (fromIntegral $ myBorderSize mySpacing) $
                emptyBSP
   where
-    myDecoration = id
-    -- myDecoration = noFrillsDeco shrinkText def {
-    --   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
-    --   , activeColor = myActiveColor
-    --   , activeTextColor = myActiveColor
-    --   , activeBorderColor = myActiveColor
-    --   , inactiveColor = myInactiveColor
-    --   , inactiveTextColor = myInactiveColor
-    --   , inactiveBorderColor = myInactiveColor
-    --   }
+    -- myDecoration = id
+    myDecoration = noFrillsDeco shrinkText def {
+      decoHeight = (fromIntegral $ myDecoHeight mySpacing)
+      , activeColor = myActiveColor
+      , activeTextColor = myActiveColor
+      , activeBorderColor = myActiveColor
+      , inactiveColor = myInactiveColor
+      , inactiveTextColor = myInactiveColor
+      , inactiveBorderColor = myInactiveColor
+      }
 
 
 myScratchpads :: [NamedScratchpad]
@@ -286,7 +286,7 @@ main = do
       , manageDocks
       , isDialog --> doFloat
       , className =? "Gloobus-preview"    --> doFloat
-      , title =? "Invoking Emacs daemon…" --> doFloat      
+      , title =? "Invoking Emacs daemon…" --> doFloat
       , className =? "Xdialog"            --> doFloat
       , className =? "Yad"                --> doFloat
       , className =? "zenity"             --> doFloat
