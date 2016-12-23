@@ -1,3 +1,33 @@
+#################
+###### OVH ######
+#################
+
+IMAPAccount ovh
+Host ssl0.ovh.net
+User thibault@thb.lt
+AuthMechs LOGIN
+PassCmd "~/.bin/netrc_pass ssl0.ovh.net"
+SSLType IMAPS
+
+ImapStore ovh-remote
+Account ovh
+
+MaildirStore ovh-local
+Path ~/.Mail/OVH/
+Inbox ~/.Mail/OVH/Inbox
+
+Channel ovh
+Master :ovh-remote:
+Slave :ovh-local:
+Patterns * %
+Create Both
+SyncState *
+Sync All
+
+##################
+###### NAMO ######
+##################
+
 IMAPAccount namo
 Host namo.thb.lt
 User thblt
@@ -15,11 +45,13 @@ Inbox ~/.Mail/Namo/INBOX
 Channel namo
 Master :namo-remote:
 Slave :namo-local:
-# Include everything
 Patterns *
 Create Both
-# Save the synchronization state files in the relevant directory
 SyncState *
+
+################
+###### P1 ######
+################
 
 IMAPAccount p1
 Host imap.univ-paris1.fr
