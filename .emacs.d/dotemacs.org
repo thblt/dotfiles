@@ -161,8 +161,8 @@ And load the default theme: [[https://github.com/thblt/eziam-theme-emacs][Eziam]
 By default, multiple themes can be loaded at the same time.  Nobody wants this (although it's required by smart-mode-line)
 
 #+begin_src emacs-lisp
-;;  (defadvice load-theme (before theme-dont-propagate activate)
-;;    (mapcar #'disable-theme custom-enabled-themes))
+  (defadvice load-theme (before theme-dont-propagate activate)
+    (mapcar #'disable-theme custom-enabled-themes))
 #+end_src
 
 *** Hydra
@@ -254,14 +254,12 @@ Don't ask before saving custom dict:
   (setq ispell-silently-savep t)
 #+end_src
 
-On the fly spellchecking with Falsely:
+On the fly spellchecking with Flyspell:
 
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
     :init
-    (add-hook 'conf-mode-hook (lambda () (flyspell-prog-mode)))
-    (add-hook 'prog-mode-hook (lambda () (flyspell-prog-mode)))
     (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
     :diminish flyspell-mode)
@@ -271,7 +269,7 @@ Correct words using Ivy instead of default method:
 
 #+begin_src emacs-lisp
   (use-package flyspell-correct-ivy
-    :after flyspell-correct  ;; M-o doesnt work without  this
+    :after flyspell-correct  ;; M-o doesnt work without this
     :bind (:map flyspell-mode-map (
                                    ("C-;" . flyspell-correct-previous-word-generic))))
 #+end_src
