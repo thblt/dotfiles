@@ -85,16 +85,16 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                . withBorder (fromIntegral $ myBorderSize mySpacing) $
                emptyBSP
   where
-    -- myDecoration = id
-    myDecoration = noFrillsDeco shrinkText def {
-      decoHeight = (fromIntegral $ myDecoHeight mySpacing)
-      , activeColor = myActiveColor
-      , activeTextColor = myActiveColor
-      , activeBorderColor = myActiveColor
-      , inactiveColor = myInactiveColor
-      , inactiveTextColor = myInactiveColor
-      , inactiveBorderColor = myInactiveColor
-      }
+    myDecoration = id
+    -- myDecoration = noFrillsDeco shrinkText def {
+    --   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
+    --   , activeColor = myActiveColor
+    --   , activeTextColor = myActiveColor
+      -- , activeBorderColor = myActiveColor
+      -- , inactiveColor = myInactiveColor
+      -- , inactiveTextColor = myInactiveColor
+      -- , inactiveBorderColor = myInactiveColor
+      -- }
 
 
 myScratchpads :: [NamedScratchpad]
