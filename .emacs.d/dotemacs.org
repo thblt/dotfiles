@@ -35,7 +35,6 @@ This is my Emacs configuration.
  - [[#conclusion][Conclusion]]
 
 * Fundamentals
-
 ** Personal information
 
 #+begin_src emacs-lisp
@@ -54,12 +53,14 @@ Some of the packages I use are outside of standard =load-path=, so we add their 
 
 ** General defaults
 
+*** Default major mode
 Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fundamental has no hooks and is really hard to customize.
 
 #+begin_src emacs-lisp
   (setq-default major-mode 'text-mode)
 #+end_src
 
+*** Backup directories
 Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
 
 #+begin_src emacs-lisp
@@ -74,6 +75,8 @@ Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customi
   (load custom-file)
 #+end_src
 
+*** Browser
+
 Use system's default browser. Using =setsid xdg-open= prevents Emacs from killing xdg-open before it actually opened anything. See [[https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open][here]].
 
 #+begin_src emacs-lisp
@@ -81,6 +84,12 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
    browse-url-browser-function 'browse-url-generic
    browse-url-generic-program "setsid"
    browse-url-generic-args '("xdg-open"))
+#+end_src
+
+*** Don't lose system clipboard
+
+#+begin_src emacs-lisp
+  (setq save-interprogram-paste-before-kill t)
 #+end_src
 
 ** User interface
@@ -102,8 +111,6 @@ TODO: =cursor-type= doesn't work.
    inhibit-startup-screen t
    use-dialog-box nil
    vc-follow-symlinks t
-
-   initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n"
 
    disabled-command-function nil)
 #+end_src
@@ -215,7 +222,6 @@ From Emacs Wiki
 #+begin_src emacs-lisp
 
 #+end_src
-
 
 ** MacOS
 
@@ -348,16 +354,6 @@ Move lines of text with =M-<up>= and =M-<down>=.
     (add-hook 'prog-mode-hook (lambda () (multiple-cursors-mode t)))
     (add-hook 'text-mode-hook (lambda () (multiple-cursors-mode t)))
     :bind (("C-S-c C-S-c" . mc/edit-lines)))
-#+end_src
-
-*** Nlinum
-
-More efficient line numbering, especially on large files with huge foldings (eg org)
-
-#+begin_src emacs-lisp
-  (use-package nlinum
-    :config (nlinum-mode)
-    )
 #+end_src
 
 *** Recentf
@@ -575,16 +571,16 @@ We just load the mode.
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
-org-ref for bibliographies:
-
-#+begin_src emacs-lisp
-  (use-package org-ref)
-#+end_src
-
 htmlize is required for fontifying exported HTML:
 
 #+begin_src emacs-lisp
   (use-package htmlize)
+#+end_src
+
+TODOs and calendar
+
+#+begin_src emacs-lisp
+  (setq org-agenda-files (list "~/Documents/NOTES.org"))
 #+end_src
 
 * Writing code
@@ -594,10 +590,12 @@ htmlize is required for fontifying exported HTML:
 *** Basic settings
 
 #+begin_src emacs-lisp
-  (setq comment-empty-lines nil
-        compile-command "wmake"
-        tab-width 4
-        indent-tabs-mode nil)
+  (setq-default comment-empty-lines nil
+	        compile-command "wmake"
+	        tab-width 2
+	        c-basic-offset 2
+	        cperl-indent-level 2
+	        indent-tabs-mode nil)
 #+end_src
 
 *** Mappings
@@ -607,6 +605,28 @@ Nothing fancy: F5 to compile, F8 to ~ffap~.
 #+begin_src emacs-lisp
 (global-set-key (kbd "<f5>") 'compile)
 (global-set-key (kbd "<f8>") 'ffap)
+#+end_src
+
+*** Line numbering
+**** Nlinum
+
+More efficient line numbering, especially on large files with huge foldings (eg org)
+
+#+begin_src emacs-lisp :tangle no
+  (use-package nlinum
+    :init (add-hook 'prog-mode-hook 'nlinum-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'linum-mode)
+#+end_src
+
+
+**** Linum-relative
+
+#+begin_src emacs-lisp :tangle no
+    (use-package linum-relative
+      :init (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+end_src
 
 ** Minor modes
@@ -702,10 +722,17 @@ A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre
 *** Flycheck
 
 #+begin_src emacs-lisp
-(use-package flycheck
-  :init (add-hook 'prog-mode-hook 'flycheck-mode)
-  :diminish flycheck-mode
-  )
+  (use-package flycheck
+    :init (add-hook 'prog-mode-hook 'flycheck-mode)
+    :diminish flycheck-mode
+    )
+#+end_src
+
+*** Highlight-indent-guides
+
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-))
 #+end_src
 
 *** Rainbow delimiters
@@ -792,15 +819,17 @@ Haskell-mode provides complete basic Haskell support:
 
 Intero mode is a “complete interactive development program for Haskell”:
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package intero
     :after haskell-mode
     :init (add-hook 'haskell-mode-hook 'intero-mode))
 #+end_src
 
+Intero doesn't provide linting.
+
 Intero doesn't require any further company/flycheck integration.  Thus, what follows is not required anymore:
 
-#+begin_src :tangle no
+#+begin_src emacs-lisp :tangle no
   (use-package company-ghc                ; Completion provider for Haskell
     :init (add-to-list 'company-backends '(company-ghc :with company-dabbrev-code))
     )
@@ -810,9 +839,9 @@ Intero doesn't require any further company/flycheck integration.  Thus, what fol
     )
 #+end_src
 
-Quick access to Hayoo, temporarily disabled as well:
+Hayoo:
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package hayoo
     :after haskell-mode
     :bind (:map haskell-mode-map
@@ -827,7 +856,7 @@ Quick access to Hayoo, temporarily disabled as well:
 
 *** Python
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package company-jedi
     :config (add-hook 'python-mode-hook (progn
                                           (add-to-list 'company-backends 'company-jedi))))
@@ -1068,6 +1097,12 @@ We should have started (or crashed) by now.  It's time to run the server!
 (unless (server-running-p)
   (server-start)
   )
+#+end_src
+
+We now set the initial contents of the scratch buffer.  This makes it easy to notice that something went wrong (this may not be obvious in daemon mode)
+
+#+begin_src emacs-lisp
+  (setq initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n\n")
 #+end_src
 
 And share SpongeBob's enthusiasm towards the world:
