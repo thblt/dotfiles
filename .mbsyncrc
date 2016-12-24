@@ -23,6 +23,7 @@ Patterns * %
 Create Both
 SyncState *
 Sync All
+Expunge Both
 
 ##################
 ###### NAMO ######
@@ -73,3 +74,4 @@ Slave :p1-local:
 Patterns *
 Create Both
 SyncState *
+Expunge Both
