@@ -12,25 +12,54 @@
 #
 # TODO: May some day handle scons, setup.py, cabal...
 
-import multiprocessing, os, sys
-from os.path import join as path_join, exists as path_exists, isdir, isfile
 
-path = os.getcwd() if len(sys.argv)==1 else sys.argv[1]
-remainder = 1
-while remainder:
-    print(path)
-    # Looking for CMake out of source
-    if isfile(path_join(path, "CMakeLists.txt")) and isdir(path_join(path, "build")):
-        print("Out of source cmake build found at {0}".format(path))
-        os.execlp("make", "make", "-C", path_join(path, "build"), "-j{0}".format(multiprocessing.cpu_count()))
+from fnmatch import filter
+from multiprocessing import cpu_count
+from os import execlp, getcwd, listdir
+from os.path import isfile, join as pj, split as path_split
+from sys import argv
 
-    # Looking for makefile
-    if isfile(path_join(path, "Makefile")):
-        print("Makefile found.") 
-        os.execlp("make", "make", "-C", path_join(path, "build"), "-j{0}".format(multiprocessing.cpu_count()))
-    
-    path, remainder = os.path.split(path)
+path = getcwd() if len(argv)==1 else argv[1]
+
+templates = {
+    "CmakeLists.txt": ["make", "-C", "{path}/build", "-j{cpucount}"],
+    "stack.yaml": ["stack", "build"]
+}
+
+def log(msg):
+    print("wmake: "+msg)
+
+def has(path, glob):
+    candidates = filter(listdir(path), glob)
+    if len(candidates) > 0:
+        log("Found {0} in {1}.".format(", ".join(candidates), path))
+        return True
+    return False
+
+def run(*command):
+    log("Running: {0}".format(" ".join(command)))
+    log("Bye!")
+    execlp(command[0], *command)
+
+cpus = str(cpu_count())
+
+while path:
+
+    if has(path, "CMakeLists.txt"):
+        run("make", "-C", pj(path, "build"), "-j"+cpus)
+
+    if has(path, "Makefile"):
+        run("make", "-C", pj(path, "build"), "-j"+cpus)
+
+    if has(path, "stack.yaml"):
+        run("stack", "build")
+
+    if has(path, "*.cabal"):
+        run("cabal", "build")
+
+    path, remainder = path_split(path)
+
+    if path=="/": break
 
 print("Nothing found !")
 exit(-1)
-
