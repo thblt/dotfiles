@@ -555,6 +555,11 @@ We just load the mode.
             (setq org-catch-invisible-edits t ; Avoid editing folded contents
                   org-hide-leading-stars t
                   org-hide-emphasis-markers t
+                  org-html-htmlize-output-type 'css ; Use CSS selectors
+                                                    ; instead of inline
+                                                    ; styles in
+                                                    ; generated HTML
+                                                    ; code blocks
                   org-imenu-depth 6
                   org-src-fontify-natively t  ; Syntax highlighting in src blocks.
                   )
