@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Not the sharpest script in the drawer, indeed.  Firefox plugin "It's
+# all text" is unable to pass arguments to the editor command besides
+# the name of the file to edit.  This wrapper script simply adds the -c flag.
+# Joy!
+
+emacsclient -c $@
