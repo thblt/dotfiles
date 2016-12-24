@@ -732,7 +732,7 @@ A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre
 
 #+begin_src emacs-lisp
   (use-package highlight-indent-guides
-    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-))
+    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 #+end_src
 
 *** Rainbow delimiters
