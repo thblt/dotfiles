@@ -83,8 +83,9 @@ add desktop-base # Wallpaper and Plymouth themes
 add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
 add compton
 # Display manager & session locker
-add lightdm-gtk-greeter light-locker
-add policykit-1 # LightDM depends on this to handle shutdown/reboot/etc
+remove lightdm-gtk-greeter light-locker
+remove policykit-1 # LightDM depends on this to handle shutdown/reboot/etc
+add nodm slock
 # Dbus
 add dbus-x11
 # Notification system
