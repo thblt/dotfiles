@@ -946,10 +946,7 @@ Quickly commit changes to all open files in current project.  I only made minor 
           (if (get-file-buffer
                (magit-expand-git-file-name file))
               (magit-stage-file file)))
-        (setq commit-msg (read-input "Commit message: "))
-        (if (= 0 (length commit-msg))
-            (message "No commit message, aborting.")
-          (magit-commit))
+        (magit-commit)
         (delete-window (get-buffer-window file-list-buffer))
         (bury-buffer file-list-buffer))))
 
