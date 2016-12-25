@@ -933,8 +933,8 @@ Quickly commit changes to all open files in current project.  I only made minor 
 
 #+begin_src emacs-lisp
   (defun thblt-magit-commit-all ()
-    (interactive)
     "Stage and commit all unstaged files open in buffers."
+    (interactive)
     (require 'magit)
     (save-some-buffers t)
     (let ((unstaged-files (magit-unstaged-files))
@@ -952,8 +952,6 @@ Quickly commit changes to all open files in current project.  I only made minor 
 
   (global-set-key (kbd "C-x g c") 'thblt-magit-commit-all)
 #+end_src
-
-
 
 ** Mu4e
 
