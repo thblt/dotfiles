@@ -115,8 +115,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
     ((modMask .|. shiftMask,                xK_c),                    kill)
   , ((modMask .|. shiftMask,                xK_q),                    spawn "/home/thblt/.xmonad/quit-xmonad.sh")
   , ((modMask,                              xK_q),                    spawn "/home/thblt/.xmonad/recompile-xmonad.sh")
-  , ((modMask,                              xK_Escape),               spawn "dm-tool lock")
-  , ((modMask .|. shiftMask,                xK_Escape),               spawn "dm-tool switch-to-greeter")
+  , ((modMask,                              xK_Escape),               spawn "slock")
+--  , ((modMask .|. shiftMask,                xK_Escape),               spawn "dm-tool switch-to-greeter")
   -- Layout management
   , ((modMask,                              xK_space),                sendMessage NextLayout)
   , ((modMask .|. shiftMask,                xK_space),                setLayout $ XMonad.layoutHook conf) -- Reset
