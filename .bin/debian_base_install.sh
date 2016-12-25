@@ -13,7 +13,7 @@ packages=""
 # Drivers and hardware
 add firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
-add file less man-db powertop psmisc rename sudo time wipe
+add file info less man-db powertop psmisc rename sudo time wipe
 # Networking fundamentals
 add ca-certificates curl dnsutils lynx rsync wget whois
 # Debian/APT utilities
@@ -114,6 +114,8 @@ add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
 add emacs24 emacs25 vim vim-gtk
 # These are the dependencies of Emacs pdf-tools
 add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev libz-dev
+# And the Emacs non-free documentation
+add emacs25-common-non-dfsg
 # Text editing tools
 add meld
 # Spell checking
