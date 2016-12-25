@@ -928,6 +928,7 @@ An extra function to quickly commit changes to all open files in current project
     (interactive)
     "Stage and commit all unstaged files open in buffers."
     (require 'magit)
+    (save-buffer)
     (let ((unstaged-files (magit-unstaged-files))
           (file-list-buffer (get-buffer-create "*Staged Files*"))
           commit-msg)
