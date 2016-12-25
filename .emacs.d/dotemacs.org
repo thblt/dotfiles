@@ -28,7 +28,7 @@ This is my Emacs configuration.
    - [[#misc-syntaxes][Misc syntaxes]]
  - [[#tools][Tools]]
    - [[#ebib][Ebib]]
-   - [[#magit-and-git][Magit and git]]
+   - [[#magit-and-git][Magit and Git]]
    - [[#mu4e][Mu4e]]
    - [[#pdf-tools][PDF Tools]]
    - [[#regular-expression-builder][Regular expression builder]]
@@ -911,7 +911,7 @@ This section deals with tools which don't edit anything.
   )
 #+end_src
 
-** Magit and git
+** Magit and Git
 
 #+begin_src emacs-lisp
 (use-package magit
@@ -920,6 +920,40 @@ This section deals with tools which don't edit anything.
 
 (use-package git-timemachine)
 #+end_src
+
+An extra function to quickly commit changes to all open files in current project:
+
+#+begin_src emacs-lisp
+  (defun thblt-magit-commit-all ()
+    "Stage and commit all unstaged files open in buffers."
+    (require 'magit)
+    (let ((unstaged-files (magit-unstaged-files))
+          (file-list-buffer (get-buffer-create "*Staged Files*"))
+          commit-msg)
+      (if (= 0 (length unstaged-files))
+          (message "No unstaged files.")
+        (dolist (file unstaged-files)
+          (if (get-file-buffer
+               (magit-expand-git-file-name file))
+              (magit-stage-file file)))
+        (with-current-buffer file-list-buffer
+          (setq buffer-read-only nil)
+          (erase-buffer)
+          (insert "Files to commit:\n\n")
+          (dolist (file unstaged-files)
+            (insert (format "* %s\n" file)))
+          (goto-char 0)
+          (pop-to-buffer (current-buffer))
+          (fit-window-to-buffer))
+        (setq commit-msg (read-input "Commit message: "))
+        (if (= 0 (length commit-msg))
+            (message "No commit message, aborting.")
+          (magit-commit (list "-m" commit-msg)))
+        (delete-window (get-buffer-window file-list-buffer))
+        (bury-buffer file-list-buffer))))
+#+end_src
+
+
 
 ** Mu4e
 
