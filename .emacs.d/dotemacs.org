@@ -913,22 +913,30 @@ This section deals with tools which don't edit anything.
 
 ** Magit and Git
 
+Git is used everywhere, so let's define a global prefix for all Git-related commands:
+
+#+begin_src emacs-lisp
+  (define-prefix-command 'thblt-git-map)
+  (global-set-key (kbd "C-x g") 'thblt-git-map)
+#+end_src
+
+
 #+begin_src emacs-lisp
 (use-package magit
-  :bind ( ("C-x G" . magit-status) )
+  :bind ( ("C-x g s" . magit-status) )
   )
 
 (use-package git-timemachine)
 #+end_src
 
-An extra function to quickly commit changes to all open files in current project:
+Quickly commit changes to all open files in current project.  I only made minor changes to [[https://www.reddit.com/user/bakuretsu][bakuretsu]]'s answer to my [[https://www.reddit.com/r/emacs/comments/5k34bw/git_is_there_a_way_to_quickly_commit_changes_in/][Reddit question]].
 
 #+begin_src emacs-lisp
   (defun thblt-magit-commit-all ()
     (interactive)
     "Stage and commit all unstaged files open in buffers."
     (require 'magit)
-    (save-buffer)
+    (save-some-buffers)
     (let ((unstaged-files (magit-unstaged-files))
           (file-list-buffer (get-buffer-create "*Staged Files*"))
           commit-msg)
@@ -954,7 +962,7 @@ An extra function to quickly commit changes to all open files in current project
         (delete-window (get-buffer-window file-list-buffer))
         (bury-buffer file-list-buffer))))
 
-  (global-set-key (kbd "C-x g") 'thblt-magit-commit-all)
+  (global-set-key (kbd "C-x g c") 'thblt-magit-commit-all)
 #+end_src
 
 
