@@ -915,7 +915,7 @@ This section deals with tools which don't edit anything.
 
 #+begin_src emacs-lisp
 (use-package magit
-  :bind ( ("C-x g" . magit-status) )
+  :bind ( ("C-x G" . magit-status) )
   )
 
 (use-package git-timemachine)
@@ -925,6 +925,7 @@ An extra function to quickly commit changes to all open files in current project
 
 #+begin_src emacs-lisp
   (defun thblt-magit-commit-all ()
+    (interactive)
     "Stage and commit all unstaged files open in buffers."
     (require 'magit)
     (let ((unstaged-files (magit-unstaged-files))
@@ -951,6 +952,8 @@ An extra function to quickly commit changes to all open files in current project
           (magit-commit (list "-m" commit-msg)))
         (delete-window (get-buffer-window file-list-buffer))
         (bury-buffer file-list-buffer))))
+
+  (global-set-key (kbd "C-x g") 'thblt-magit-commit-all)
 #+end_src
 
 
