@@ -746,15 +746,24 @@ A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre
 (use-package rainbow-delimiters)
 #+end_src
 
-*** Rainbow mode
+*** Rainbow mode + Kurecolor
 
-Similar to Atom's Pigments plugin or something.
+Rainbow mode is similar to Atom's Pigments plugin or something.
 
 #+begin_src emacs-lisp
-(use-package rainbow-mode
-  :init (add-hook 'prog-mode-hook (rainbow-mode))
-  :diminish (rainbow-mode))
+  (use-package rainbow-mode
+    :init (add-hook 'prog-mode-hook (rainbow-mode))
+    (add-hook 'css-mode-hook 'rainbow-mode)
+    (add-hook 'scss-mode-hook 'rainbow-mode)
+    :diminish (rainbow-mode))
 #+end_src
+
+Kurecolor transforms color:
+
+#+begin_src emacs-lisp
+  (use-package kurecolor)
+#+end_src
+
 
 ** Project management
 
