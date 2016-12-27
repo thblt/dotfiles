@@ -24,6 +24,8 @@ add fish tmux zsh
 #   ^ Better out of the box than zsh, cool for root or new users.
 # Compression
 add unrar zip unzip
+# Misc
+add policykit-1 # Everything needs this.
 
 ###############################################################
 # At this point, the base system is usable interactively.     #
