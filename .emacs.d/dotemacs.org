@@ -821,6 +821,12 @@ With Ivy integration:
             (lambda ()
               (local-set-key (kbd "C-c o") 'ff-find-other-file)))
 #+end_src
+*** Go
+
+#+begin_src emacs-lisp
+  (use-package go-mode)
+#+end_src
+
 
 *** Haskell
 
