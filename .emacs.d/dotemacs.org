@@ -763,7 +763,6 @@ Kurecolor transforms color:
   (use-package kurecolor)
 #+end_src
 
-
 ** Project management
 
 #+begin_src emacs-lisp
@@ -821,12 +820,12 @@ With Ivy integration:
             (lambda ()
               (local-set-key (kbd "C-c o") 'ff-find-other-file)))
 #+end_src
+
 *** Go
 
 #+begin_src emacs-lisp
   (use-package go-mode)
 #+end_src
-
 
 *** Haskell
 
@@ -888,7 +887,6 @@ Hayoo:
 #+begin_src emacs-lisp
   (use-package rust-mode)
 #+end_src
-
 
 *** Web development
 
