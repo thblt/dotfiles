@@ -626,7 +626,6 @@ More efficient line numbering, especially on large files with huge foldings (eg 
   (add-hook 'prog-mode-hook 'linum-mode)
 #+end_src
 
-
 **** Linum-relative
 
 #+begin_src emacs-lisp :tangle no
@@ -877,6 +876,13 @@ Hayoo:
 
   (use-package flycheck-pyflakes)
 #+end_src
+
+*** Rust
+
+#+begin_src emacs-lisp
+  (use-package rust-mode)
+#+end_src
+
 
 *** Web development
 
