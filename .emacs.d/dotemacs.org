@@ -102,8 +102,6 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 
 *** UI defaults
 
-TODO: =cursor-type= doesn't work.
-
 #+begin_src emacs-lisp
   (setq-default
    cursor-type 'bar
@@ -182,8 +180,8 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
 
 #+begin_src emacs-lisp
   (use-package ivy
-    :config (setq ivy-use-virtual-buffers t)
     :init (ivy-mode)
+    :config (setq ivy-use-virtual-buffers t)
     :diminish (ivy-mode)
     )
 
@@ -205,7 +203,7 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
 
 *** Customization helper
 
-A little function to identify the face at point.  Nice to write themes.
+A little function to identify the face at point.  Nice to have when writing themes.
 
 #+begin_src emacs-lisp
   (defun what-face (pos)
@@ -736,7 +734,8 @@ A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre
 
 #+begin_src emacs-lisp
   (use-package highlight-indent-guides
-    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+    :config (setq highlight-indent-guides-method 'column))
 #+end_src
 
 *** Rainbow delimiters
@@ -941,11 +940,11 @@ Git is used everywhere, so let's define a global prefix for all Git-related comm
 
 
 #+begin_src emacs-lisp
-(use-package magit
-  :bind ( ("C-x g s" . magit-status) )
-  )
+  (use-package magit
+    :bind ( ("C-x g s" . magit-status) )
+    )
 
-(use-package git-timemachine)
+  (use-package git-timemachine)
 #+end_src
 
 Quickly commit changes to all open files in current project.  I only made minor changes to [[https://www.reddit.com/user/bakuretsu][bakuretsu]]'s answer to my [[https://www.reddit.com/r/emacs/comments/5k34bw/git_is_there_a_way_to_quickly_commit_changes_in/][Reddit question]].
