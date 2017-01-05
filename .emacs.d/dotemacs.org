@@ -169,7 +169,7 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
 
 #+begin_src emacs-lisp
   (defadvice load-theme (before theme-dont-propagate activate)
-    (mapcar #'disable-theme custom-enabled-themes))
+    (mapc #'disable-theme custom-enabled-themes))
 #+end_src
 
 *** Hydra
@@ -998,127 +998,136 @@ Quickly commit changes to all open files in current project.  I only made minor 
            ("<f12>" . mu4e-quit)
            )
     :config (progn
-            (require 'mu4e-contrib)
-            (mu4e-maildirs-extension)
-            (setq mu4e-html2text-command 'mu4e-shr2text
-                  mu4e-maildir "~/.Mail/"
-                  mu4e-get-mail-command "mbsync p1 ovh"
-                  mu4e-change-filenames-when-moving t  ; Required for mbsync
-                  mu4e-update-interval 60 ;; seconds
-                  message-send-mail-function 'smtpmail-send-it
-                  mu4e-headers-auto-update t
+              (require 'mu4e-contrib)
+              (mu4e-maildirs-extension)
 
-                  mu4e-confirm-quit nil
-                  mu4e-hide-index-messages t
-                  mu4e-split-view 'vertical
-                  mu4e-headers-include-related t  ; Include related messages in threads
-                  mu4e-view-show-images t
+              (setq
+               ;; General settings
+               mu4e-html2text-command 'mu4e-shr2text
+               mu4e-maildir "~/.Mail/"
+               mu4e-get-mail-command "mbsync p1 ovh"
+               mu4e-change-filenames-when-moving t  ; Required for mbsync
+               mu4e-update-interval 60 ;; seconds
+               message-send-mail-function 'smtpmail-send-it
+               mu4e-headers-auto-update t
 
-                  mu4e-use-fancy-chars t
-                  mu4e-headers-attach-mark '("" . "")
-                  mu4e-headers-encrypted-mark '("" . "")
-                  mu4e-headers-flagged-mark '("+" . "⚑")
-                  mu4e-headers-list-mark '("" . "")
-                  mu4e-headers-new-mark '("" . "")
-                  mu4e-headers-read-mark '("" . "")
-                  mu4e-headers-replied-mark '("" . "↩")
-                  mu4e-headers-seen-mark '("" . "")
-                  mu4e-headers-unseen-mark '("" . "")
-                  mu4e-headers-unread-mark '("" . "✱")
-                  mu4e-headers-signed-mark '("" . "")
-                  mu4e-headers-trashed-mark '("T" . "T")
+               mu4e-confirm-quit nil
+               mu4e-hide-index-messages t
+               mu4e-split-view 'vertical
+               mu4e-headers-include-related t  ; Include related messages in threads
+               mu4e-view-show-images t
 
-                  mu4e-headers-from-or-to-prefix '("" . "→ ")
+               mu4e-use-fancy-chars t
+               mu4e-headers-attach-mark '("" . "")
+               mu4e-headers-encrypted-mark '("" . "")
+               mu4e-headers-flagged-mark '("+" . "⚑")
+               mu4e-headers-list-mark '("" . "")
+               mu4e-headers-new-mark '("" . "")
+               mu4e-headers-read-mark '("" . "")
+               mu4e-headers-replied-mark '("" . "↩")
+               mu4e-headers-seen-mark '("" . "")
+               mu4e-headers-unseen-mark '("" . "")
+               mu4e-headers-unread-mark '("" . "✱")
+               mu4e-headers-signed-mark '("" . "")
+               mu4e-headers-trashed-mark '("T" . "T")
 
-                  mu4e-headers-has-child-prefix '("+" . "└┬")
-                  mu4e-headers-first-child-prefix '("|" . "├")
+               mu4e-headers-from-or-to-prefix '("" . "→ ")
 
-                  mu4e-headers-default-prefix '("" . "├")
+               mu4e-headers-has-child-prefix '("+" . "└┬")
+               mu4e-headers-first-child-prefix '("|" . "├")
 
-                  mu4e-headers-fields '(
-					(:flags          . 3)
-					(:human-date     . 21)
-					(:from-or-to     . 25)
-					(:thread-subject . nil)
-					)
+               mu4e-headers-default-prefix '("" . "├")
 
-                  mu4e-user-mail-address-list '(
-						"thblt@thb.lt"
-						"thibault.polge@malix.univ-paris1.fr"
-						"thibault.polge@univ-paris1.fr"
-						"thibault@thb.lt"
-						"tpolge@gmail.com"
-						)
-                  mu4e-context-policy 'pick-first
-                  mu4e-compose-context-policy 'ask
-                  mu4e-contexts
-                  `( ,(make-mu4e-context
-                       :name "Namo"
-                       :enter-func (lambda () (mu4e-message "Namo"))
-                       :match-func (lambda (msg)
-                                     (when msg
-                                       (mu4e-message-maildir-matches msg "^/Namo/")))
+               mu4e-headers-fields '(
+                                     (:flags          . 3)
+                                     (:human-date     . 21)
+                                     (:from-or-to     . 25)
+                                     (:thread-subject . nil)
+                                     )
 
-                       :vars '(( user-mail-address   . "thibault@thb.lt" )
-			       ( mu4e-sent-folder        . "/Namo/Sent" )
-			       ( mu4e-drafts-folder      . "/Namo/Drafts" )
-			       ( mu4e-trash-folder       . "/Namo/Trash" )
-			       ( smtpmail-local-domain   . "thb.lt" )
-			       ( smtpmail-smtp-server    . "namo.thb.lt" )
-			       ( smtpmail-stream-type    . tls )
-			       ( smtpmail-smtp-service   . 465 )))
+               mu4e-user-mail-address-list '(
+                                             "thblt@thb.lt"
+                                             "thibault.polge@malix.univ-paris1.fr"
+                                             "thibault.polge@univ-paris1.fr"
+                                             "thibault@thb.lt"
+                                             "tpolge@gmail.com"
+                                             )
+               mu4e-context-policy 'pick-first
+               mu4e-compose-context-policy 'ask
 
-		     ,(make-mu4e-context
-                       :name "OVH"
-                       :enter-func (lambda () (mu4e-message "OVH"))
-                       :match-func (lambda (msg)
-                                     (when msg
-                                       (mu4e-message-maildir-matches msg "^/P1/")))
-                       :vars '(( user-mail-address   . "thibault@thb.lt"  )
-			       ( mu4e-sent-folder        . "/OVH/Sent" )
-			       ( mu4e-drafts-folder      . "/OVH/Drafts" )
-			       ( mu4e-trash-folder       . "/OVH/Trash" )
-			       ( smtpmail-local-domain   . "thb.lt" )
-			       ( smtpmail-smtp-server    . "ssl0.ovh.net" )
-			       ( smtpmail-smtp-user      . "thibault@thb.lt" )
-			       ( smtpmail-stream-type    . tls )
-			       ( smtpmail-smtp-service   . 465 )))
+               ;; Contexts
 
-                     ,(make-mu4e-context
-                       :name "P1"
-                       :enter-func (lambda () (mu4e-message "P1"))
-                       :match-func (lambda (msg)
-                                     (when msg
-                                       (mu4e-message-maildir-matches msg "^/OVH/")))
-                       :vars '(( user-mail-address   . "thibault.polge@univ-paris1.fr"  )
-			       ( mu4e-sent-folder        . "/P1/sent-mail" )
-			       ( mu4e-drafts-folder      . "/P1/Drafts" )
-			       ( mu4e-trash-folder       . "/P1/Trash" )
-			       ( smtpmail-local-domain   . "univ-paris1.fr" )
-			       ( smtpmail-smtp-server    . "smtp.univ-paris1.fr" )
-			       ( smtpmail-smtp-user      . "tpolge" )
-			       ( smtpmail-stream-type    . tls )
-			       ( smtpmail-smtp-service   . 465 ))))
+               mu4e-contexts
+               `( ,(make-mu4e-context
+                    :name "Namo"
+                    :enter-func (lambda () (mu4e-message "Namo"))
+                    :match-func (lambda (msg)
+                                  (when msg
+                                    (mu4e-message-maildir-matches msg "^/Namo/")))
 
-                  mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX)"
-                                     "Global inbox"            ?i)
+                    :vars '(( user-mail-address   . "thibault@thb.lt" )
+                            ( mu4e-sent-folder        . "/Namo/Sent" )
+                            ( mu4e-drafts-folder      . "/Namo/Drafts" )
+                            ( mu4e-trash-folder       . "/Namo/Trash" )
+                            ( smtpmail-local-domain   . "thb.lt" )
+                            ( smtpmail-smtp-server    . "namo.thb.lt" )
+                            ( smtpmail-stream-type    . tls )
+                            ( smtpmail-smtp-service   . 465 )))
 
-                                    ("(flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX))"
-                                     "Unread inbox"            ?I)
+                  ,(make-mu4e-context
+                    :name "OVH"
+                    :enter-func (lambda () (mu4e-message "OVH"))
+                    :match-func (lambda (msg)
+                                  (when msg
+                                    (mu4e-message-maildir-matches msg "^/P1/")))
+                    :vars '(( user-mail-address   . "thibault@thb.lt"  )
+                            ( mu4e-sent-folder        . "/OVH/Sent" )
+                            ( mu4e-drafts-folder      . "/OVH/Drafts" )
+                            ( mu4e-trash-folder       . "/OVH/Trash" )
+                            ( smtpmail-local-domain   . "thb.lt" )
+                            ( smtpmail-smtp-server    . "ssl0.ovh.net" )
+                            ( smtpmail-smtp-user      . "thibault@thb.lt" )
+                            ( smtpmail-stream-type    . tls )
+                            ( smtpmail-smtp-service   . 465 )))
 
-                                    ("(m:/Namo/emetis)"
-                                     "emetis"                  ?e)
+                  ,(make-mu4e-context
+                    :name "P1"
+                    :enter-func (lambda () (mu4e-message "P1"))
+                    :match-func (lambda (msg)
+                                  (when msg
+                                    (mu4e-message-maildir-matches msg "^/OVH/")))
+                    :vars '(( user-mail-address   . "thibault.polge@univ-paris1.fr"  )
+                            ( mu4e-sent-folder        . "/P1/sent-mail" )
+                            ( mu4e-drafts-folder      . "/P1/Drafts" )
+                            ( mu4e-trash-folder       . "/P1/Trash" )
+                            ( smtpmail-local-domain   . "univ-paris1.fr" )
+                            ( smtpmail-smtp-server    . "smtp.univ-paris1.fr" )
+                            ( smtpmail-smtp-user      . "tpolge" )
+                            ( smtpmail-stream-type    . tls )
+                            ( smtpmail-smtp-service   . 465 ))))
 
-                                    ("(m:/Namo/historiens-sante)"
-                                     "historiens-sante"        ?h)
+               ;; Bookmarks
 
-                                    ("(m:/Namo/theuth)"
-                                     "theuth"                  ?t)
+               mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX)"
+                                  "Global inbox"            ?i)
 
-                                    ("(flag:flagged)"
-                                     "Flagged"                 ?f)
-				    ) )
-	    (add-hook 'mu4e-view-mode-hook (visual-line-mode t))))
+                                 ("(flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX))"
+                                  "Unread inbox"            ?I)
+
+                                 ("(m:/Namo/emetis)"
+                                  "emetis"                  ?e)
+
+                                 ("(m:/Namo/historiens-sante)"
+                                  "historiens-sante"        ?h)
+
+                                 ("(m:/Namo/theuth)"
+                                  "theuth"                  ?t)
+
+                                 ("(flag:flagged)"
+                                  "Flagged"                 ?f)
+                                 )
+               ) ;; (setq)
+              (add-hook 'mu4e-view-mode-hook (visual-line-mode t))))
 #+end_src
 
 Compose messages with org tables and org lists.
