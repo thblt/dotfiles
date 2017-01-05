@@ -8,9 +8,8 @@
 (require 'package)
 (package-initialize)
 
-(require 'projectile)
-(require 'counsel-projectile)
-;; (ivy-mode)
-(projectile-global-mode)
-(counsel-projectile-on)
+(require 'counsel)
+(require 'highlight-indent-guides)
+
+(ivy-mode)
 
