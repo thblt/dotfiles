@@ -134,7 +134,10 @@ add gpa keychain
 # Bad office suite
 add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 # The texlive monster and tex utilities
-add texlive-base texlive-lang-french texlive-xetex lyx
+add texlive-base texlive-lang-french texlive-xetex lmodern lyx
+#                                                  ^ not part of the base distribution.
+# Handling misc formats
+add djvulibre-bin
 # Misc
 add barcode qrencode zbar-tools
 add pandoc
