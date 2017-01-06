@@ -58,9 +58,6 @@ alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sor
 alias bc="bc -l"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
-# SSH host
-alias namo="ssh thblt@namo.thb.lt"
-alias k9="ssh thblt@k9.thb.lt"
 
 function mkcd() {
 if mkdir -p "$@"
