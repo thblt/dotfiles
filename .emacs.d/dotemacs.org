@@ -1079,7 +1079,7 @@ Quickly commit changes to all open files in current project.  I only made minor 
                     :enter-func (lambda () (mu4e-message "OVH"))
                     :match-func (lambda (msg)
                                   (when msg
-                                    (mu4e-message-maildir-matches msg "^/P1/")))
+                                    (mu4e-message-maildir-matches msg "^/OVH/")))
                     :vars '(( user-mail-address   . "thibault@thb.lt"  )
                             ( mu4e-sent-folder        . "/OVH/Sent" )
                             ( mu4e-drafts-folder      . "/OVH/Drafts" )
