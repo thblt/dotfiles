@@ -1126,7 +1126,7 @@ Quickly commit changes to all open files in current project.  I only made minor 
                                   "Flagged"                 ?f)
                                  )
                ) ;; (setq)
-              (add-hook 'mu4e-view-mode-hook (visual-line-mode t))))
+              (add-hook 'mu4e-view-mode-hook 'visual-line-mode)))
 #+end_src
 
 Compose messages with org tables and org lists.
