@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# List packages that haven't been installed by either the Debian installer or debian_base_install script
-comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat ~/.dotfiles/Notes/debian_initial_`hostname`.list | sort -u)) <(debian_base_install.sh list | sort -u)
-
-
