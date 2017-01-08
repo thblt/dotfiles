@@ -20,7 +20,7 @@ add ca-certificates curl dnsutils lynx rsync wget whois
 add apt-file aptitude debian-keyring netselect-apt
 #                     ^ Need this to verify release ISOs
 # Shell and terminal multiplexing
-add fish tmux zsh
+add fish tmux tmux-plugin-manager zsh
 #   ^ Better out of the box than zsh, cool for root or new users.
 # Compression
 add unrar zip unzip
@@ -98,12 +98,13 @@ add alsa-base alsa-utils
 # Printing
 add cups
 add printer-driver-brlaser
+add ghostscript # Also required by djvu2pdf.  Probably installed automatically
 # add printer-driver-splix # For the Samsung - doesn't work
 
 # Misc desktop utilities
 add feh scrot suckless-tools synapse udiskie wmctrl xsel zenity
 # Font manager and fonts
-add font-manager fonts-dejavu fonts-roboto fonts-symbola
+add font-manager fonts-dejavu fonts-noto fonts-noto-cjk fonts-roboto fonts-symbola
 
 #
 # Desktop (not necessarily X) tools
@@ -137,7 +138,7 @@ add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 add texlive-base texlive-lang-french texlive-xetex lmodern lyx
 #                                                  ^ not part of the base distribution.
 # Handling misc formats
-add djvulibre-bin
+add djvulibre-bin # Required (with ghostscript) for .bin/djvu2pdf
 # Misc
 add barcode qrencode zbar-tools
 add pandoc
