@@ -1,5 +1,6 @@
 *~
 .DS_Store
+*.synctex.gz
 *.swp
 .*.~undo-tree~
 *.un~
