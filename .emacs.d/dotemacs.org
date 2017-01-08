@@ -522,7 +522,10 @@ This section deals with two things:
     :config (progn
               (setq-default TeX-save-query nil      ; Autosave
                             TeX-parse-self t
-                            TeX-engine 'xetex)))
+                            TeX-engine 'xetex
+                            TeX-source-correlate-mode t ;; Synctex on
+                            )))
+
   (eval-after-load 'reftex-vars
     '(progn
        ;; (also some other reftex-related customizations)
@@ -1140,9 +1143,13 @@ Compose messages with org tables and org lists.
 ** PDF Tools
 
 #+begin_src emacs-lisp
-(use-package pdf-tools
-  :init (pdf-tools-install)
-  )
+  (use-package pdf-tools
+    :init (progn (pdf-tools-install)
+                 (unless (assoc "PDF Tools" TeX-view-program-list-builtin)
+                   (add-to-list 'TeX-view-program-list-builtin
+                                '("PDF Tools" TeX-pdf-tools-sync-view)))
+                 (add-to-list 'TeX-view-program-selection
+                              '(output-pdf "PDF Tools"))))
 #+end_src
 
 ** Regular expression builder
