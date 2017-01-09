@@ -587,7 +587,7 @@ htmlize is required for fontifying exported HTML:
 TODOs and calendar
 
 #+begin_src emacs-lisp
-  (setq org-agenda-files (list "~/Documents/NOTES.org"))
+  (setq org-agenda-files (list "~/Documents/LOG.org"))
 #+end_src
 
 * Writing code
