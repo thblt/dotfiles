@@ -2,10 +2,11 @@
 
 cd $HOME
 
+# Public files in ~/.dotfiles
 declare -a things=(
     .Xresources
     .bin
-	.cig	
+    .cig
     .emacs.d
     .gitconfig
     .gitignore_global
@@ -32,5 +33,13 @@ done
 mkdir .config 2> /dev/null
 cd .config
 for t in `ls ../.dotfiles/.config`; do
-	ln -s ../.dotfiles/.config/$t .
+    ln -s ../.dotfiles/.config/$t .
+done
+
+# Private files are in ~/.dotfiles.private
+
+cd "$HOME/.dotfiles.private"
+things=`find . -type f -not -iwholename "*/.git/*"`
+for t in $things; do
+    ln -s "$HOME/.dotfiles.private/$t" "$HOME/$t"
 done
