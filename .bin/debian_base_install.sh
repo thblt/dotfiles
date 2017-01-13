@@ -115,7 +115,8 @@ add rxvt-unicode-256color
 # Browsers
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
 # Text editors (with CLI versions as well)
-add emacs24 emacs25 vim vim-gtk
+remove vim-gtk
+add emacs24 emacs25 vim vim-gtk3
 # These are the dependencies of Emacs pdf-tools
 add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev libz-dev
 # And the Emacs non-free documentation
