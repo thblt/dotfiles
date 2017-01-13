@@ -975,6 +975,25 @@ Quickly commit changes to all open files in current project.  I only made minor 
   (global-set-key (kbd "C-x g c") 'thblt-magit-commit-all)
 #+end_src
 
+*** Repositories
+
+#+begin_src emacs-lisp
+  (setq magit-repository-directories '(
+                                       ("~/.dotfiles")
+                                       ("~/.dotfiles.private")
+                                       ("~/Documents/Concours/")
+                                       ("~/Documents/Philo/")
+                                       ("~/Documents/Code/eziam-theme-emacs/")
+                                       ("~/Documents/Code/Docoptc/")
+                                       ("~/Documents/Code/haskell.thb.lt/")
+                                       ("~/Documents/Thb.lt/")
+                                       ))
+#+end_src
+
+
+#+end_
+
+
 ** Mu4e
 
 #+begin_src emacs-lisp
