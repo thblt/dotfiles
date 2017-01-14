@@ -990,9 +990,6 @@ Quickly commit changes to all open files in current project.  I only made minor 
                                        ))
 #+end_src
 
-
-#+end_
-
 ** Mu4e
 
 #+begin_src emacs-lisp
