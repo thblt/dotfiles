@@ -979,14 +979,14 @@ Quickly commit changes to all open files in current project.  I only made minor 
 
 #+begin_src emacs-lisp
   (setq magit-repository-directories '(
-                                       ("~/.dotfiles")
-                                       ("~/.dotfiles.private")
-                                       ("~/Documents/Concours/")
-                                       ("~/Documents/Philo/")
-                                       ("~/Documents/Code/eziam-theme-emacs/")
-                                       ("~/Documents/Code/Docoptc/")
-                                       ("~/Documents/Code/haskell.thb.lt/")
-                                       ("~/Documents/Thb.lt/")
+                                       ("~/.dotfiles" . 1)
+                                       ("~/.dotfiles.private". 1)
+                                       ("~/Documents/Concours/". 1)
+                                       ("~/Documents/Philo/". 1)
+                                       ("~/Documents/Code/eziam-theme-emacs/". 1)
+                                       ("~/Documents/Code/Docoptc/". 1)
+                                       ("~/Documents/Code/haskell.thb.lt/". 1)
+                                       ("~/Documents/Thb.lt/". 1)
                                        ))
 #+end_src
 
