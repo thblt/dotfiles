@@ -993,20 +993,20 @@ First, let's configure the view.
           ("Path"       99  magit-repolist-column-path nil)))
 #+end_src
 
-For some reasons, =magit-repolist-column-[unpushed-to|unpulled-from]-upstream= doesn't work.  Here's my own version.  Unlike magit version, they show nothing when no commits are unpulled/unpushed.
+For some reasons, =magit-repolist-column-[unpushed-to|unpulled-from]-upstream= doesn't work.  Here's my own version.
 
 #+begin_src emacs-lisp
   (defun thblt-magit-repolist-column-unpushed-to-upstream (_id)
     "Insert number of commits in the current branch but not its upstream."
     (--when-let (magit-get-upstream-branch)
       (let ((n (car (magit-rev-diff-count "HEAD" it))))
-        (propertize (if (> n 0) (number-to-string n) "") 'face 'bold))))
+        (propertize (number-to-string n) 'face (if (> n 0) 'bold 'shadow)))))
 
   (defun thblt-magit-repolist-column-unpulled-from-upstream (_id)
     "Insert number of upstream commits not in the current branch."
     (--when-let (magit-get-upstream-branch)
       (let ((n (cadr (magit-rev-diff-count "HEAD" it))))
-        (propertize (if (> n 0) (number-to-string n) "") 'face 'bold))))
+        (propertize (number-to-string n) 'face (if (> n 0) 'bold 'shadow)))))
 #+end_src
 
 Then configure the list of repositories:
@@ -1024,6 +1024,7 @@ Then configure the list of repositories:
           ("~/Documents/Thb.lt/". 1)
           ))
 #+end_src
+
 ** Feed reader
 
 #+begin_src emacs-lisp
