@@ -945,8 +945,8 @@ Git is used everywhere, so let's define a global prefix for all Git-related comm
 
 #+begin_src emacs-lisp
   (use-package magit
-    :bind ( ("C-x g s" . magit-status) )
-    )
+    :bind ( ("C-x g s" . magit-status)
+            ("C-x g r" . magit-list-repositories)))
 
   (use-package git-timemachine)
 #+end_src
@@ -992,7 +992,6 @@ Quickly commit changes to all open files in current project.  I only made minor 
 
 
 #+end_
-
 
 ** Mu4e
 
