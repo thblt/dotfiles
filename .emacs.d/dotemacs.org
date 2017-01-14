@@ -29,6 +29,7 @@ This is my Emacs configuration.
  - [[#tools][Tools]]
    - [[#ebib][Ebib]]
    - [[#magit-and-git][Magit and Git]]
+   - [[#feed-reader][Feed reader]]
    - [[#mu4e][Mu4e]]
    - [[#pdf-tools][PDF Tools]]
    - [[#regular-expression-builder][Regular expression builder]]
@@ -1023,6 +1024,21 @@ Then configure the list of repositories:
           ("~/Documents/Thb.lt/". 1)
           ))
 #+end_src
+** Feed reader
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :after elfeed
+    :after elfeed-goodies
+    :bind (("M-<f12>" . elfeed))
+    :config (progn
+                   (elfeed-goodies/setup)
+                   (elfeed-org)
+                   ))
+    (use-package elfeed-goodies)
+    (use-package elfeed-org
+      :init (setq rmh-elfeed-org-files (list "~/.emacs.d/feeds.org")))
+#+end_src
 
 ** Mu4e
 
@@ -1208,7 +1224,6 @@ We use the =string= syntax, as advised on [[https://www.masteringemacs.org/artic
 #+begin_src emacs-lisp
 (setq reb-re-syntax 'string)
 #+end_src
-
 * Conclusion
 
 We should have started (or crashed) by now.  It's time to run the server!

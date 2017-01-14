@@ -19,6 +19,7 @@
 .emacs.d/elpa
 .emacs.d/elpa*
 .emacs.d/eshell
+.emacs.d/feeds.org
 .emacs.d/games
 .emacs.d/ido.last
 .emacs.d/irony
