@@ -980,32 +980,34 @@ Quickly commit changes to all open files in current project.  I only made minor 
 First, let's configure the view.
 
 #+begin_src emacs-lisp
-  (setq magit-repolist-columns '(
-                                 ("Name" 25 magit-repolist-column-ident nil)
-                                 ("Branch" 10 magit-repolist-column-branch)
-                                 ;; ("Version" 25 magit-repolist-column-version nil)
-                                 ("Upstream" 15 magit-repolist-column-upstream)
-                                 ("L<U" 5 magit-repolist-column-unpulled-from-upstream
-                                  ((:right-align t)))
-                                 ("L>U" 5 magit-repolist-column-unpushed-to-upstream
-                                  ((:right-align t)))
-                                 ("Test" 15 magit-repolist-column-unpushed-to-pushremote)
-                                 ("Test'" 15 magit-repolist-column-unpulled-from-pushremote)
-                                 ("Dirty" 6 magit-repolist-column-dirty)
-                                 ("Path" 99 magit-repolist-column-path nil)))
+  (setq magit-repolist-columns
+        '(
+          ("Name" 25 magit-repolist-column-ident nil)
+          ("Branch" 10 magit-repolist-column-branch)
+          ;; ("Version" 25 magit-repolist-column-version nil)
+          ("Upstream" 15 magit-repolist-column-upstream)
+          ("L<U" 5 magit-repolist-column-unpulled-from-upstream
+           ((:right-align t)))
+          ("L>U" 5 magit-repolist-column-unpushed-to-upstream
+           ((:right-align t)))
+          ("L>PR" 15 magit-repolist-column-unpushed-to-pushremote)
+          ("L<PR" 15 magit-repolist-column-unpulled-from-pushremote)
+          ("Dirty" 6 magit-repolist-column-dirty)
+          ("Path" 99 magit-repolist-column-path nil)))
 #+end_src
 
 #+begin_src emacs-lisp
-  (setq magit-repository-directories '(
-                                       ("~/.dotfiles" . 1)
-                                       ("~/.dotfiles.private". 1)
-                                       ("~/Documents/Concours/". 1)
-                                       ("~/Documents/Philo/". 1)
-                                       ("~/Documents/Code/eziam-theme-emacs/". 1)
-                                       ("~/Documents/Code/Docoptc/". 1)
-                                       ("~/Documents/Code/haskell.thb.lt/". 1)
-                                       ("~/Documents/Thb.lt/". 1)
-                                       ))
+  (setq magit-repository-directories
+        '(
+          ("~/.dotfiles" . 1)
+          ("~/.dotfiles.private". 1)
+          ("~/Documents/Concours/". 1)
+          ("~/Documents/Philo/". 1)
+          ("~/Documents/Code/eziam-theme-emacs/". 1)
+          ("~/Documents/Code/Docoptc/". 1)
+          ("~/Documents/Code/haskell.thb.lt/". 1)
+          ("~/Documents/Thb.lt/". 1)
+          ))
 #+end_src
 
 ** Mu4e
