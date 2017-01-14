@@ -986,15 +986,31 @@ First, let's configure the view.
           ("Branch" 10 magit-repolist-column-branch)
           ;; ("Version" 25 magit-repolist-column-version nil)
           ("Upstream" 15 magit-repolist-column-upstream)
-          ("L<U" 5 magit-repolist-column-unpulled-from-upstream
-           ((:right-align t)))
-          ("L>U" 5 magit-repolist-column-unpushed-to-upstream
-           ((:right-align t)))
+          ("L<U" 5 thblt-magit-repolist-column-unpulled-from-upstream)
+          ("L>U" 5 thblt-magit-repolist-column-unpushed-to-upstream)
           ("L>PR" 15 magit-repolist-column-unpushed-to-pushremote)
           ("L<PR" 15 magit-repolist-column-unpulled-from-pushremote)
           ("Dirty" 6 magit-repolist-column-dirty)
           ("Path" 99 magit-repolist-column-path nil)))
 #+end_src
+
+For some reasons, =magit-repolist-column-[unpushed-to|unpulled-from]-upstream= doesn't work.  Here's my own version.  Unlike magit version, they show nothing when no commits are unpulled/unpushed.
+
+#+begin_src emacs-lisp
+  (defun thblt-magit-repolist-column-unpushed-to-upstream (_id)
+    "Insert number of commits in the current branch but not its upstream."
+    (--when-let (magit-get-upstream-branch t)
+      (let ((n (car (magit-rev-diff-count "HEAD" it))))
+        (propertize (if (> n 0) (number-to-string n) "") 'face 'bold))))
+
+
+  (defun thblt-magit-repolist-column-unpulled-from-upstream (_id)
+    "Insert number of upstream commits not in the current branch."
+    (--when-let (magit-get-upstream-branch t)
+      (let ((n (cadr (magit-rev-diff-count "HEAD" it))))
+        (propertize (if (> n 0) (number-to-string n) "") 'face 'bold))))
+#+end_src
+
 
 #+begin_src emacs-lisp
   (setq magit-repository-directories
