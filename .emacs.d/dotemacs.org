@@ -161,7 +161,7 @@ Configure the default font:
 
 And load the default theme: [[https://github.com/thblt/eziam-theme-emacs][Eziam]].
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (load-theme 'eziam-light t)
 #+end_src
 
