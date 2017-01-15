@@ -1033,10 +1033,10 @@ Then configure the list of repositories:
     :after elfeed-goodies
     :bind (("M-<f12>" . elfeed))
     :config (progn
-                   (elfeed-goodies/setup)
+;;                   (elfeed-goodies/setup)
                    (elfeed-org)
                    ))
-    (use-package elfeed-goodies)
+;;    (use-package elfeed-goodies)
     (use-package elfeed-org
       :init (setq rmh-elfeed-org-files (list "~/.emacs.d/feeds.org")))
 #+end_src
