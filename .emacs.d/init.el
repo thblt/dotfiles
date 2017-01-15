@@ -29,8 +29,10 @@
 (eval-and-compile
   (package-install 'use-package))
 
-(setq use-package-always-ensure t
+(setq use-package-always-defer t
+      use-package-always-ensure t
       use-package-verbose t)
+
 (require 'use-package)
 
 ;; We need to install org /before/ tangling dotemacs.org, or it will never update.
