@@ -148,7 +148,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "~/.xmonad/emacsclient-with-feedback")
 --, ((modMask,                              xK_s),                    scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
   , ((modMask,                              xK_s),                    namedScratchpadAction myScratchpads "term")
-  , ((modMask,                              xK_w),                    namedScratchpadAction myScratchpads "web")
+  , ((modMask .|. shiftMask,                xK_w),                    namedScratchpadAction myScratchpads "web")
   , ((modMask,                              xK_g),                    gotoMenu)
   , ((modMask .|. shiftMask,                xK_g),                    bringMenu)
   , ((0,                                    xF86XK_AudioLowerVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume)
