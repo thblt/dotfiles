@@ -585,10 +585,11 @@ htmlize is required for fontifying exported HTML:
   (use-package htmlize)
 #+end_src
 
-TODOs and calendar
+**** TODOs, calendar, notes
 
 #+begin_src emacs-lisp
-  (setq org-agenda-files (list "~/Documents/LOG.org"))
+  (setq org-agenda-files (list "~/Documents/LOG.org")
+        org-default-notes-file "~/Documents/LOG.org")
 #+end_src
 
 * Writing code
