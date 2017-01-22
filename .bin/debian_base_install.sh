@@ -58,7 +58,7 @@ add nodejs npm
 # Python
 add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
 # Rust
-add rustc
+add cargo rustc
 # Some deps
 add libclang-dev sqlite3
 #                ^ for helm-dash/counsel-dash
