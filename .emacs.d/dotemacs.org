@@ -45,11 +45,23 @@ This is my Emacs configuration.
 
 ** Package sources and locations
 
-Some of the packages I use are outside of standard =load-path=, so we add their locations.
+*** Packages from git
+
+Some packages are not in (M)ELPA, we can grab them from git using [[https://github.com/dimitri/el-get][el-get]]:
 
 #+begin_src emacs-lisp
-(add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
-(add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+  (use-package el-get)
+#+end_src
+
+*** Development packages
+
+The package I work are on my Code folder, and we need to load them from here:
+
+**** Eziam
+
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
+  (add-to-list 'custom-theme-load-path "/home/thblt/Documents/Code/eziam-theme-emacs")
 #+end_src
 
 ** General defaults
