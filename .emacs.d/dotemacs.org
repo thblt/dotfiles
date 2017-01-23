@@ -1238,6 +1238,7 @@ We use the =string= syntax, as advised on [[https://www.masteringemacs.org/artic
 #+begin_src emacs-lisp
 (setq reb-re-syntax 'string)
 #+end_src
+
 * Conclusion
 
 We should have started (or crashed) by now.  It's time to run the server!
