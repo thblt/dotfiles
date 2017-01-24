@@ -11,7 +11,7 @@ remove() {
 packages=""
 
 # Drivers and hardware
-add firmware-linux-free firmware-linux-nonfree smartmontools
+add efivar firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
 add file info less man-db powertop psmisc rename sudo time wipe
 # Networking fundamentals
