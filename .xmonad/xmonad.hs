@@ -64,8 +64,8 @@ myWorkspaces = map show [ 1 .. 9 :: Int ]
 myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
-myActiveColor = "#ff0000"
-myInactiveColor = "#000000"
+myActiveColor = "#007bFF"
+myInactiveColor = "#888888"
 
 data MySpacing = MySpacing {
   myGaps       :: Int,
@@ -75,7 +75,7 @@ data MySpacing = MySpacing {
 
 mySpacing :: MySpacing
 mySpacing | myHostName == "rudiger" = MySpacing 0 2 0
-          | otherwise = MySpacing 1 1 4
+          | otherwise = MySpacing 2 2 0
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
