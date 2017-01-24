@@ -55,6 +55,7 @@ alias -g P="2>&1| pygmentize -l pytb"
 # Misc aliases
 alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat ~/.dotfiles/Notes/debian_initial_`hostname`.list | sort -u)) <(debian_base_install.sh list | sort -u)"
 alias bc="bc -l"
+alias efivardump="efivar --list | xargs -I vn efivar --print --name=vn"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias push-priv-dotfiles="cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
