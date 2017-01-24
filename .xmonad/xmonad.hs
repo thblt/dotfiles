@@ -14,6 +14,8 @@ import           System.Posix.Unistd                 (SystemID (nodeName),
 import           XMonad
 --import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 import           XMonad.Actions.Navigation2D
+-- import           XMonad.Actions.MessageFeedback -- READ BELOW.
+-- Note to self: this is broken.  The messages get correctly sent, but the view doesn't update.  You have to move focus or do something else.
 import           XMonad.Actions.WindowBringer        (bringMenu, gotoMenu)
 import           XMonad.Hooks.EwmhDesktops           (ewmh)
 import           XMonad.Hooks.FadeInactive           (fadeInactiveLogHook)
@@ -83,18 +85,19 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                . myDecoration
                . smartSpacingWithEdge (myGaps mySpacing)
                . withBorder (fromIntegral $ myBorderSize mySpacing) $
-               emptyBSP
+               (emptyBSP ||| (Mirror $ Tall 1 (3/100) (3/4)))
   where
     myDecoration = id
     -- myDecoration = noFrillsDeco shrinkText def {
     --   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
     --   , activeColor = myActiveColor
     --   , activeTextColor = myActiveColor
-      -- , activeBorderColor = myActiveColor
-      -- , inactiveColor = myInactiveColor
-      -- , inactiveTextColor = myInactiveColor
-      -- , inactiveBorderColor = myInactiveColor
-      -- }
+    --   , activeBorderColor = myActiveColor
+    --   , inactiveColor = myInactiveColor
+    --   , inactiveTextColor = myInactiveColor
+    --   , inactiveBorderColor = myInactiveColor
+    --   , fontName = "-*-clean-medium-r-*-*-12-*-*-*-*-*-*-*"
+    --   }
 
 
 myScratchpads :: [NamedScratchpad]
@@ -124,8 +127,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask,                              xK_l),                    sendMessage Expand)
   , ((modMask .|. shiftMask,                xK_f),                    sendMessage ToggleStruts)
   , ((modMask,                              xK_f),                    sendMessage $ Toggle FULL)
---, ((modMask,                              xK_equal),                sendMessage $ IncMasterN 1)
---, ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))
+  , ((modMask,                              xK_equal),                sendMessage $ IncMasterN 1)
+  , ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))
   -- BSP-specific
   , ((modMask .|. shiftMask,                xK_h),                    sendMessage $ ExpandTowards L)
   , ((modMask .|. shiftMask,                xK_j),                    sendMessage $ ExpandTowards D)
@@ -154,13 +157,13 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((0,                                    xF86XK_AudioLowerVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume)
   , ((0,                                    xF86XK_AudioRaiseVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume)
   , ((0,                                    xF86XK_AudioMute),        spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
-  , ((0,                                    xF86XK_MonBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1")
-  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1")
-  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1")
-  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1")
-  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1" )
-  , ((0,                                    xF86XK_KbdBrightnessUp),  spawn "sudo ~/.bin/anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%")
-  , ((0,                                    xF86XK_KbdBrightnessDown),spawn "sudo ~/.bin/anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")
+  , ((0,                                    xF86XK_MonBrightnessUp),  spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1")
+  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1")
+  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessUp),  spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1")
+  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1")
+  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1" )
+  , ((0,                                    xF86XK_KbdBrightnessUp),  spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%")
+  , ((0,                                    xF86XK_KbdBrightnessDown),spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")
   , ((modMask,                              xK_Right),                windowGo R False)
   , ((modMask,                              xK_Left ),                windowGo L False)
   , ((modMask,                              xK_Up   ),                windowGo U False)
@@ -174,8 +177,8 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Up   ),                windowSwap U False)
   , ((modMask .|. shiftMask,                xK_Down ),                windowSwap D False)
 
-  , ((modMask, xK_equal), sendMessage Balance)
-  , ((modMask, xK_d), sendMessage Equalize)
+--  , ((modMask, xK_equal), sendMessage Balance)
+--  , ((modMask, xK_d), sendMessage Equalize)
   ]
   ++
   -- workspace switching
