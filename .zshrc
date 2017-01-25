@@ -52,19 +52,26 @@ alias -g NE="2> /dev/null"
 alias -g NUL="> /dev/null 2>&1"
 alias -g P="2>&1| pygmentize -l pytb"
 
-# Misc aliases
+# Misc aliases and functions
 alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat ~/.dotfiles/Notes/debian_initial_`hostname`.list | sort -u)) <(debian_base_install.sh list | sort -u)"
 alias bc="bc -l"
+
+function bump-elisp-version() {
+    sed "s/\;; Version: [.0-9]\+$/;; Version: $1/" $@[2,-1]
+}
+
 alias efivardump="efivar --list | xargs -I vn efivar --print --name=vn"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
-alias push-priv-dotfiles="cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
-alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
 
 function mkcd() {
 if mkdir -p "$@"
 	then cd "$@"
 fi
 }
+
+alias push-priv-dotfiles="cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
+alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
+
 
 # Moving between directories
 alias bd=". bd -s"
