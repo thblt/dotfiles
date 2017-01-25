@@ -31,7 +31,7 @@ mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code
 eval $(keychain --eval)
 keynav &
 light-locker &
-synapse -s &
+# synapse -s &
 udiskie &
 xrdb merge ~/.Xresources # LightDM does it, nodm doesn't
 xmodmap .Xmodmap.`hostname`

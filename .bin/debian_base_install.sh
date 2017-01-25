@@ -102,7 +102,8 @@ add ghostscript # Also required by djvu2pdf.  Probably installed automatically
 # add printer-driver-splix # For the Samsung - doesn't work
 
 # Misc desktop utilities
-add feh scrot suckless-tools synapse udiskie wmctrl xsel zenity
+add feh scrot suckless-tools udiskie wmctrl xsel zenity
+remove synapse
 # Font manager and fonts
 add font-manager fonts-dejavu fonts-noto fonts-noto-cjk fonts-roboto fonts-symbola
 
