@@ -111,7 +111,7 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 *** Keybindings
 
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+end_src
 
 *** UI defaults
@@ -232,7 +232,14 @@ A little function to identify the face at point.  Nice to have when writing them
 From Emacs Wiki
 
 #+begin_src emacs-lisp
+  (defun switch-to-minibuffer ()
+    "Switch to minibuffer window."
+    (interactive)
+    (if (active-minibuffer-window)
+        (select-window (active-minibuffer-window))
+      (error "Minibuffer is not active")))
 
+  (global-set-key (kbd "C-c o") 'switch-to-minibuffer) ;; Bind to `C-c o'
 #+end_src
 
 ** MacOS
