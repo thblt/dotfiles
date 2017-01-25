@@ -24,7 +24,7 @@ My XMonad configuration is like every other.  Yet, I'm quite happy of:
 
 Some bits may even be useful with different tiling window managers:
 
- - =.bin/dmenu-desktop= is a modified version of i3's =i3-dmenu-desktop= launcher which makes it independent of i3.  Unlike =dmenu-run=, it doesn't present a list of binaries, but of =.desktop= files, which is nicer.  For terminal apps, it requires =x-terminal-emulator= to be in path, and is thus limited to Debian.
+ - =.bin/dmenu-desktop= :: is a modified version of i3's =i3-dmenu-desktop= launcher which makes it independent of i3.  Unlike =dmenu-run=, it doesn't present a list of binaries, but of =.desktop= files, which is nicer.  For terminal apps, it requires =x-terminal-emulator= to be in path, and is thus limited to Debian.
 
  - =~/.xsessionrc= :: People who never used a tiling WM without a desktop environment may find this a good starting point.  Or perhaps they'll hate it.
 
@@ -36,7 +36,9 @@ My Tmux/ZSH config looks like this.  If you like what you see, steal it:
 #+NAME:    tmux_zsh
 [[https://cloud.githubusercontent.com/assets/2453136/22307942/47a5b060-e345-11e6-937f-dbd7eb721bf0.png]]
 
- - =.xmonad/tmux-attach-or-new= is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
+Also:
+
+ - =.xmonad/tmux-attach-or-new= :: is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
 
 * Emacs (and other editors)
 
