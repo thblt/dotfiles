@@ -302,9 +302,9 @@ Correct words using Ivy instead of default method:
 Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + doesn't work with org-mode.
 
 #+begin_src emacs-lisp
-(use-package auto-dictionary
-  ;;  :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
-)
+  (use-package auto-dictionary
+    :init (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode)))
+    )
 #+end_src
 
 ** TODO “Modal” editing
