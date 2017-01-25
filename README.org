@@ -34,7 +34,7 @@ My Tmux/ZSH config looks like this.  If you like what you see, steal it:
 
 #+CAPTION: Tmux + ZSH config
 #+NAME:    tmux_zsh
-[[https://raw.githubusercontent.com/thblt/dotfiles/master/screenshots/tmux+zsh.png]]
+[[https://cloud.githubusercontent.com/assets/2453136/22307942/47a5b060-e345-11e6-937f-dbd7eb721bf0.png]]
 
  - =.xmonad/tmux-attach-or-new= is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
 
