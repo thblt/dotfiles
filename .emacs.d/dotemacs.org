@@ -755,6 +755,15 @@ A good replacement for ~comment-dwim~, but unline [[https://github.com/remyferre
     )
 #+end_src
 
+Use popups instead of the modeline to display flycheck errors:
+
+#+begin_src emacs-lisp
+  (use-package flycheck-pos-tip
+    :after flycheck
+    :init (flycheck-pos-tip-mode)
+    )
+#+end_src
+
 *** Highlight-indent-guides
 
 #+begin_src emacs-lisp
