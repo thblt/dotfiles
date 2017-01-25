@@ -1007,6 +1007,8 @@ Quickly commit changes to all open files in current project.  I only made minor 
 
 *** magit-list-repositories
 
+=magit-list-repositories= provides a summary view of multiple repositories.
+
 First, let's configure the view.
 
 #+begin_src emacs-lisp
@@ -1023,6 +1025,8 @@ First, let's configure the view.
 #+end_src
 
 For some reasons, =magit-repolist-column-[unpushed-to|unpulled-from]-upstream= doesn't work.  Here's my own version.
+
+[@TODO:  This has been [[https://github.com/magit/magit/issues/2960][fixed in magit]].  Untangle when the fix made it to a released version]
 
 #+begin_src emacs-lisp
   (defun thblt-magit-repolist-column-unpushed-to-upstream (_id)
@@ -1052,6 +1056,35 @@ Then configure the list of repositories:
           ("~/Documents/Code/haskell.thb.lt/". 1)
           ("~/Documents/Thb.lt/". 1)
           ))
+#+end_src
+
+An extra feature:  update all remotes.  Probably very dirty.
+
+#+begin_src emacs-lisp
+  (require 'cl)
+  (require 'magit-repos)
+
+  (defun thblt-magit-repolist-refresh ()
+    "@TODO Add documentation"
+    (interactive)
+    (goto-char (point-min))
+    (catch 'done
+      (while t
+        (--if-let (tabulated-list-get-id)
+            (progn
+              (cd (expand-file-name it))
+              (magit-fetch-all ())))
+
+
+        (when (move-text--at-last-line-p)
+          (throw 'done t))
+
+        (forward-line)
+        (redisplay))
+      ()
+      ))
+
+  (define-key magit-repolist-mode-map (kbd "G") 'thblt-magit-repolist-refresh)
 #+end_src
 
 ** Feed reader
