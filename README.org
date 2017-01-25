@@ -16,7 +16,7 @@ My XMonad configuration is like every other.  Yet, I'm quite happy of:
 
  - Compile-time per-machine configuration :: Some bits of TemplateHaskell in xmonad.hs bind the current hostname to a variable and allows the configuration to vary depending on the machine it gets compiled on.  I mostly use it to handle keyboard layout differences, but it may be useful for some other things.
 
- - =.xmonad/quit-xmonad.sh= :: a small and reasonably ugly script which makes use of wmctrl to nicely close all open windows in all workspaces /before/ killing its parent process (/ie/, xmonad).  Remember by the default for quitting XMonad is simply to kill the WM directly, thus aggressively destroying all child processes.
+ - =.xmonad/quit-xmonad.sh= :: a small and reasonably ugly script which makes use of wmctrl to nicely close all open windows in all workspaces /before/ killing its parent process (/ie/, xmonad).  This is much better than the default method (kill the WM directly, thus aggressively destroy all child processes)
 
  - =.xmonad/recompile-xmonad.sh= :: Sends a notification when XMonad successfully restarted.  Nice for testing new things.
 
