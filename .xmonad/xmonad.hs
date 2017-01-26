@@ -145,7 +145,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Tab),                  windows XSS.focusUp)
   , ((modMask,                              xK_Return),               windows XSS.swapMaster)
   , ((modMask,                              xK_t),                    withFocused $ windows . XSS.sink)
-  , ((modMask,                              xK_p),                    spawn "~/.bin/dmenu-desktop" )
+  , ((modMask,                              xK_p),                    spawn "~/.bin/dmenu-desktop --entry-type=name" )
   , ((modMask .|. shiftMask,                xK_p),                    spawn "dmenu_run")
   , ((modMask .|. shiftMask,                xK_Return),               spawn $ terminal conf)
   , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "~/.xmonad/emacsclient-with-feedback")
