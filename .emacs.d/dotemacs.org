@@ -29,7 +29,7 @@ This is my Emacs configuration.
  - [[#tools][Tools]]
    - [[#ebib][Ebib]]
    - [[#magit-and-git][Magit and Git]]
-   - [[#feed-reader][Feed reader]]
+   - [[#elfeed-feed-reader][Elfeed feed reader]]
    - [[#mu4e][Mu4e]]
    - [[#pdf-tools][PDF Tools]]
    - [[#regular-expression-builder][Regular expression builder]]
@@ -1087,7 +1087,7 @@ An extra feature:  update all remotes.  Probably very dirty.
   (define-key magit-repolist-mode-map (kbd "G") 'thblt-magit-repolist-refresh)
 #+end_src
 
-** Feed reader
+** Elfeed feed reader
 
 #+begin_src emacs-lisp
   (use-package elfeed
@@ -1095,12 +1095,12 @@ An extra feature:  update all remotes.  Probably very dirty.
     :after elfeed-goodies
     :bind (("M-<f12>" . elfeed))
     :config (progn
-;;                   (elfeed-goodies/setup)
-                   (elfeed-org)
-                   ))
-;;    (use-package elfeed-goodies)
-    (use-package elfeed-org
-      :init (setq rmh-elfeed-org-files (list "~/.emacs.d/feeds.org")))
+              (elfeed-goodies/setup)
+              (elfeed-org)
+              ))
+  (use-package elfeed-goodies)
+  (use-package elfeed-org
+    :init (setq rmh-elfeed-org-files (list "~/.emacs.d/feeds.org")))
 #+end_src
 
 ** Mu4e
