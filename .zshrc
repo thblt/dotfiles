@@ -57,7 +57,7 @@ alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sor
 alias bc="bc -l"
 
 function bump-elisp-version() {
-    sed "s/\;; Version: [.0-9]\+$/;; Version: $1/" $@[2,-1]
+    sed -i "s/\;; Version: [.0-9]\+$/;; Version: $1/" $@[2,-1]
 }
 
 alias efivardump="efivar --list | xargs -I vn efivar --print --name=vn"
