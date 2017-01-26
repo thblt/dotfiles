@@ -4,4 +4,4 @@ if [ -e /usr/libexec/path_helper ]; then
 	eval `/usr/libexec/path_helper`
 fi
 export GOPATH=$HOME/.go
-export PATH="${PATH}:${HOME}/.bin:${HOME}/.local/bin:$GOPATH/bin"
+export PATH="${PATH}:${HOME}/.bin:${HOME}/.local/bin:$GOPATH/bin:$HOME/.cargo/bin"
