@@ -9,7 +9,7 @@ This is my Emacs configuration.
    - [[#package-sources-and-locations][Package sources and locations]]
    - [[#general-defaults][General defaults]]
    - [[#user-interface][User interface]]
-   - [[#macos][MacOS]]
+   - [[#misc][Misc]]
  - [[#editing-text][Editing text]]
    - [[#spell-checking][Spell checking]]
    - [[#modal-editing][“Modal” editing]]
@@ -93,18 +93,18 @@ Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fun
 Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
 
 #+begin_src emacs-lisp
-  (setq backup-directory-alist                  ; Autosave and backups in /tmp/
-        `((".*" . ,temporary-file-directory))
-        auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t))
-
-        ;; Let Customize put its mess elsewhere
-        custom-file (concat user-emacs-directory "_customize.el"))
-
-  (load custom-file)
+  (let ((backup-dir (concat user-emacs-directory "backups")))
+    (setq backup-directory-alist `((".*" . ,backup-dir))
+          auto-save-file-name-transforms `((".*" ,backup-dir t))))
 #+end_src
 
-TODO Use *numbered backups*.  See [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbered-Backups.html]].
+We want numbered backups, because catastrophes happen.  The numbers may be a bit crazy, but better safe than sorry.
+
+#+BEGIN_SRC emacs-lisp
+  (setq version-control t
+        kept-new-versions 500
+        kept-old-versions 500)
+#+END_SRC
 
 *** Browser
 
@@ -271,7 +271,9 @@ From Emacs Wiki
   (global-set-key (kbd "C-c o") 'switch-to-minibuffer) ;; Bind to `C-c o'
 #+end_src
 
-** MacOS
+** Misc
+
+*** MacOS
 
 Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
 
@@ -291,6 +293,17 @@ Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
     (use-package exec-path-from-shell
       :init (exec-path-from-shell-initialize)))
 #+end_src
+
+*** Customize
+
+I configure Customize to store its data outside of =init.el= (I don't want these versioned).
+
+#+BEGIN_SRC emacs-lisp
+  ;; Let Customize put its mess elsewhere
+  (setq custom-file (concat user-emacs-directory "_customize.el"))
+
+  (load custom-file)
+#+END_SRC
 
 * Editing text
 
