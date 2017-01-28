@@ -89,7 +89,8 @@ Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fun
   (setq-default major-mode 'text-mode)
 #+end_src
 
-*** Backup directories
+*** TODO Backups
+
 Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
 
 #+begin_src emacs-lisp
@@ -103,6 +104,8 @@ Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customi
 
   (load custom-file)
 #+end_src
+
+TODO Use *numbered backups*.  See [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Numbered-Backups.html]].
 
 *** Browser
 
