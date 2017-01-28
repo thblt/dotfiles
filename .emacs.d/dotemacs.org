@@ -621,10 +621,10 @@ We define a few hydras for org-mode.
  1. The emphasize hydra, overriding =C-c C-x C-f=:
 
     #+begin_src emacs-lisp
-      (defhydra hydra-org-emphasize (:color blue :exit t :hint nil)
+      (defhydra hydra-org-emphasize (:exit t :hint nil)
         "
-      _b_old _i_talic _u_nderline _p_re _c_ode _s_trikethrough?
-      "
+      _b_old _i_talic _u_nderline _p_re _c_ode _s_trikethrough?"
+
         ("b" (org-emphasize ?*) )
         ("i" (org-emphasize ?/) )
         ("u" (org-emphasize ?_) )
