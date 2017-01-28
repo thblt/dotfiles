@@ -402,8 +402,8 @@ Move lines of text with =M-<up>= and =M-<down>=.
     :config (progn
               (sp-pair "“" "”")
               (sp-pair "«" "»")
-              (sp-local-pair 'org-mode "/" "/")
-              (sp-local-pair 'org-mode "*" "*")
+;;              (sp-local-pair 'org-mode "/" "/")
+;;              (sp-local-pair 'org-mode "*" "*")
               )
     :diminish (smartparens-mode))
 #+end_src
