@@ -53,6 +53,22 @@ Some packages are not in (M)ELPA, we can grab them from git using [[https://gith
   (use-package el-get)
 #+end_src
 
+*** Use-package
+
+#+BEGIN_SRC emacs-lisp
+  (unless package-archive-contents
+    (package-refresh-contents))
+
+  (eval-and-compile
+    (package-install 'use-package))
+
+  (setq use-package-always-ensure t
+        use-package-verbose t)
+
+  (require 'use-package)
+#+END_SRC
+
+
 *** Development packages
 
 The package I work are on my Code folder, and we need to load them from here:
