@@ -22,7 +22,7 @@ This is my Emacs configuration.
  - [[#writing-code][Writing code]]
    - [[#settings][Settings]]
    - [[#minor-modes-1][Minor modes]]
-   - [[#project-management][Project management]]
+   - [[#project-management-with-projectile][Project management with Projectile]]
    - [[#build-systems][Build systems]]
    - [[#programming-languages][Programming languages]]
    - [[#misc-syntaxes][Misc syntaxes]]
@@ -859,17 +859,28 @@ Kurecolor transforms color:
   (use-package kurecolor)
 #+end_src
 
-** Project management
+** TODO Project management with Projectile
+
+Let's load Projectile, and:
+
+ - globally ignore undo-files and similar byproducts.
+ - toggle the =C-p p= and =C-p SPC= bindings (I find the latter easier to enter, and thus more adequate for "do what I mean");
+
+TODO: Could Projectile read ignore patterns from =~/.gitignore_global=?
 
 #+begin_src emacs-lisp
-(use-package projectile
-  :init (projectile-global-mode)
-  :config (setq projectile-globally-ignored-file-suffixes (append '(
-                                                               ".un~"
-                                                               ".~undo-tree~"
-                                                               )
-                                                                  projectile-globally-ignored-files))
-  :diminish (projectile-mode))
+  (use-package projectile
+    :init (projectile-global-mode)
+    :config (setq projectile-globally-ignored-file-suffixes (append '(
+                                                                      ".un~"
+                                                                      ".~undo-tree~"
+                                                                      )
+                                                                    projectile-globally-ignored-files))
+    :bind (
+           :map projectile-mode-map
+                ("C-c p p"   . counsel-projectile)
+                ("C-c p SPC" . counsel-projectile-switch-project))
+    :diminish (projectile-mode))
 #+end_src
 
 With Ivy integration:
