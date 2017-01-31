@@ -70,6 +70,8 @@ fi
 }
 
 alias push-priv-dotfiles="cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
+alias wifi-off="sudo rfkill block wifi"
+alias wifi-on="sudo rfkill unblock wifi"
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
 
 
