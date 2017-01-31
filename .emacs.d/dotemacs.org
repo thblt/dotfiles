@@ -443,16 +443,16 @@ Move lines of text with =M-<up>= and =M-<down>=.
 *** Smartparens
 
 #+begin_src emacs-lisp
-  (use-package smartparens-config         ; Be smart with parentheses
-    :ensure smartparens
-    :init (smartparens-global-mode)
-    :config (progn
-              (sp-pair "“" "”")
-              (sp-pair "«" "»")
-;;              (sp-local-pair 'org-mode "/" "/")
-;;              (sp-local-pair 'org-mode "*" "*")
-              )
-    :diminish (smartparens-mode))
+      (use-package smartparens-config         ; Be smart with parentheses
+        :ensure smartparens
+        :init (progn
+                (smartparens-global-mode)
+                (show-smartparens-global-mode))
+        :config (progn
+                  (sp-pair "“" "”")
+                  (sp-pair "«" "»")
+                  )
+        :diminish (smartparens-mode))
 #+end_src
 
 *** Undo-tree
