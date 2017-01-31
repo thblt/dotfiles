@@ -635,16 +635,32 @@ We just load the mode.
   (eval-after-load 'org-indent
     '(diminish 'org-indent-mode)
     )
-
-  (use-package toc-org
-    :init (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 
-htmlize is required for fontifying exported HTML:
+Some cool org extensions:
 
-#+begin_src emacs-lisp
-  (use-package htmlize)
-#+end_src
+ - =toc-org= provides, guess what, automatic TOC generation for org-mode.  This is better [[https://github.com/snosov1/toc-org/issues/20#issuecomment-276407541][pinned to melpa-stable]].
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package toc-org
+      :init (add-hook 'org-mode-hook 'toc-org-enable)
+      :pin melpa
+      )
+  #+END_SRC
+
+ - =org-download= allows to drag-and-drop pictures in org-mod buffers:
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package org-download)
+  #+END_SRC
+
+   No further configuration required, the package enables itself.
+
+ - =htmlize= is required for fontifying exported HTML:
+
+  #+begin_src emacs-lisp
+    (use-package htmlize)
+  #+end_src
 
 **** Hydras
 
