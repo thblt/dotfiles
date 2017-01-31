@@ -27,6 +27,7 @@ This is my Emacs configuration.
    - [[#programming-languages][Programming languages]]
    - [[#misc-syntaxes][Misc syntaxes]]
  - [[#tools][Tools]]
+   - [[#dired][Dired]]
    - [[#ebib][Ebib]]
    - [[#magit-and-git][Magit and Git]]
    - [[#elfeed-feed-reader][Elfeed feed reader]]
@@ -1076,6 +1077,14 @@ Hayoo:
 * Tools
 
 This section deals with tools which don't edit anything.
+
+** Dired
+
+I don't know Dired well, so this is nothing more than an attempt.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dired+)
+#+END_SRC
 
 ** Ebib
 
