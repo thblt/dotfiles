@@ -354,8 +354,23 @@ Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + d
 Selected is a package which allows to create specific bindings when region is active:
 
 #+begin_src emacs-lisp
-  (use-package selected)
+  (use-package selected
+    :commands selected-minor-mode
+    :init (setq selected-org-mode-map (make-sparse-keymap)))
 #+end_src
+
+Since use-package doesn't support binding to functions with arguments,and writing a defun for each possible emphasis is a bit overkill, we use =define-key= rather than =:bind=:
+
+#+BEGIN_SRC emacs-lisp
+  (define-key selected-org-mode-map (kbd "*") (lambda () (interactive) (org-emphasize ?*)))
+  (define-key selected-org-mode-map (kbd "/") (lambda () (interactive) (org-emphasize ?/)))
+  (define-key selected-org-mode-map (kbd "_") (lambda () (interactive) (org-emphasize ?_)))
+  (define-key selected-org-mode-map (kbd "+") (lambda () (interactive) (org-emphasize ?+)))
+  (define-key selected-org-mode-map (kbd "~") (lambda () (interactive) (org-emphasize ?~)))
+  (define-key selected-org-mode-map (kbd "=") (lambda () (interactive) (org-emphasize ?=)))
+#+END_SRC
+
+For some reason, this doesn't work if the lambdas aren't =(interactive)=.
 
 ** Moving around
 *** Avy
