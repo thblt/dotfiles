@@ -88,12 +88,12 @@ Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fun
   (setq-default major-mode 'text-mode)
 #+end_src
 
-*** TODO Backups
+*** Backups
 
 Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
 
 #+begin_src emacs-lisp
-  (let ((backup-dir (concat user-emacs-directory "backups")))
+  (let ((backup-dir (concat user-emacs-directory "backups/")))
     (setq backup-directory-alist `((".*" . ,backup-dir))
           auto-save-file-name-transforms `((".*" ,backup-dir t))))
 #+end_src
