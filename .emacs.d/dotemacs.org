@@ -356,8 +356,9 @@ Selected is a package which allows to create specific bindings when region is ac
 
 #+begin_src emacs-lisp
   (use-package selected
-    :commands selected-minor-mode
-    :init (setq selected-org-mode-map (make-sparse-keymap)))
+    :init (progn
+            (setq selected-org-mode-map (make-sparse-keymap))
+            (selected-global-mode)))
 #+end_src
 
 Since use-package doesn't support binding to functions with arguments,and writing a defun for each possible emphasis is a bit overkill, we use =define-key= rather than =:bind=:
