@@ -491,24 +491,24 @@ Auto-yasnippet is a cool package for creating disposable snippets on the fly.
 
 *** TODO Autosave when losing focus
 
-This was the initial version, but I hope using an external package would improve thing (especially by not saving org-mode separate code editing buffers)
+This is the initial version, which works perfectly well:
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (add-hook 'focus-out-hook
             (lambda ()
               (save-some-buffers t)))
 #+end_src
 
-This saves at regular intervals, which may be cool, but doesn't play well with the fact that Emacs deletes trailing whitespace on save (this is configured somewhere else):
+I also tried two other solutions (not tangling):
 
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package auto-save-buffers-enhanced
     :init (auto-save-buffers-enhanced t))
 #+END_SRC
 
-Another attempt, then:
+and
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package focus-autosave-mode
     :init (focus-autosave-mode t)
     )
