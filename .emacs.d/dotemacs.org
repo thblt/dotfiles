@@ -646,8 +646,8 @@ We just load the mode.
 *** Org-mode
 
 #+begin_src emacs-lisp
-  (use-package org-plus-contrib
-    :pin org
+  (use-package org
+    :pin gnu ;; Don't use Org ELPA until it gets https
     :init (progn
             (setq org-catch-invisible-edits t ; Avoid editing folded contents
                   org-hide-leading-stars t
