@@ -45,15 +45,6 @@ This is my Emacs configuration.
 #+end_src
 
 ** Package sources and locations
-
-*** Packages from git
-
-Some packages are not in (M)ELPA, we can grab them from git using [[https://github.com/dimitri/el-get][el-get]]:
-
-#+begin_src emacs-lisp
-  (use-package el-get)
-#+end_src
-
 *** Use-package
 
 #+BEGIN_SRC emacs-lisp
@@ -68,6 +59,14 @@ Some packages are not in (M)ELPA, we can grab them from git using [[https://gith
 
   (require 'use-package)
 #+END_SRC
+
+*** Packages from git
+
+Some packages are not in (M)ELPA, we can grab them from git using [[https://github.com/dimitri/el-get][el-get]]:
+
+#+begin_src emacs-lisp
+  (use-package el-get)
+#+end_src
 
 *** Development packages
 
