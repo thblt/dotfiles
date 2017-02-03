@@ -5,11 +5,6 @@
 			)
       )
 
-(require 'package)
 (package-initialize)
 
-(require 'counsel)
-(require 'highlight-indent-guides)
-
-(ivy-mode)
-
+(require 'org)
