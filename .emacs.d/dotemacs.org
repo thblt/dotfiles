@@ -154,7 +154,6 @@ Don't show the menu bar, unless this is MacOS.  Never show toolbar or scrollbars
 
 #+begin_src emacs-lisp
   (unless (string= 'system-type 'darwin) (menu-bar-mode -1))
-
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
 #+end_src
