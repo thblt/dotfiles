@@ -240,6 +240,7 @@ Popwin “makes you free from the hell of annoying buffers”:
 
 #+BEGIN_SRC emacs-lisp
   (use-package popwin
+    :commands popwin-mode
     :init (popwin-mode)
     )
 #+END_SRC
