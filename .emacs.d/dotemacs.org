@@ -1222,7 +1222,6 @@ An extra feature:  update all remotes.  Probably very dirty.
 
 #+begin_src emacs-lisp
   (use-package elfeed
-    :after elfeed
     :after elfeed-goodies
     :bind (("M-<f12>" . elfeed))
     :config (progn
