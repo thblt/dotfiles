@@ -1,0 +1,2 @@
+! Caps_Lock to control
+keysym Caps_Lock = Control_L
