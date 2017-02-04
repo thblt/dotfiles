@@ -15,7 +15,7 @@ This is my Emacs configuration.
    - [[#modal-editing][“Modal” editing]]
    - [[#moving-around][Moving around]]
    - [[#minor-modes][Minor modes]]
-   - [[#customizations][Customizations]]
+   - [[#customization][Customization]]
  - [[#writing-prose][Writing prose]]
    - [[#common-settings-and-minor-modes][Common settings and minor modes]]
    - [[#major-modes][Major modes]]
@@ -360,6 +360,8 @@ Selected is a package which allows to create specific bindings when region is ac
             (selected-global-mode)))
 #+end_src
 
+*** Org-mode emphasis
+
 Since use-package doesn't support binding to functions with arguments,and writing a defun for each possible emphasis is a bit overkill, we use =define-key= rather than =:bind=:
 
 #+BEGIN_SRC emacs-lisp
@@ -372,6 +374,12 @@ Since use-package doesn't support binding to functions with arguments,and writin
 #+END_SRC
 
 For some reason, this doesn't work if the lambdas aren't =(interactive)=.
+
+*** Unfill
+
+#+BEGIN_SRC emacs-lisp
+  (define-key selected-keymap (kbd "M-Q") 'unfill-region)
+#+END_SRC
 
 ** Moving around
 *** Avy
@@ -487,8 +495,7 @@ Auto-yasnippet is a cool package for creating disposable snippets on the fly.
             ("H-y" . aya-open-line)))
 #+end_src
 
-** Customizations
-
+** Customization
 *** TODO Autosave when losing focus
 
 This is the initial version, which works perfectly well:
