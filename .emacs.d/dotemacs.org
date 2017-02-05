@@ -354,10 +354,11 @@ Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + d
 Selected is a package which allows to create specific bindings when region is active:
 
 #+begin_src emacs-lisp
-  (use-package selected
-    :init (progn
-            (setq selected-org-mode-map (make-sparse-keymap))
-            (selected-global-mode)))
+    (use-package selected
+      :init (progn
+              (setq selected-org-mode-map (make-sparse-keymap))
+              (selected-global-mode))
+      :diminish selected-minor-mode)
 #+end_src
 
 *** Org-mode emphasis
