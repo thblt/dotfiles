@@ -1257,6 +1257,8 @@ An extra feature:  update all remotes.  Probably very dirty.
 
 ** Mu4e
 
+Configuration for mu4e is split between a published part, below, and a private part, tangled from =~/.emacs.d/thblt-mu4e.el=.  The public part contains common mu4e settings, the private parts defines accounts and bookmarks.
+
 #+begin_src emacs-lisp
 (defun mu4e-message-maildir-matches (msg rx)
   (when rx
@@ -1337,89 +1339,24 @@ An extra feature:  update all remotes.  Probably very dirty.
                                              "tpolge@gmail.com"
                                              )
                mu4e-context-policy 'pick-first
-               mu4e-compose-context-policy 'ask
+               mu4e-compose-context-policy 'ask)
 
-               ;; Contexts
-
-               mu4e-contexts
-               `( ,(make-mu4e-context
-                    :name "Namo"
-                    :enter-func (lambda () (mu4e-message "Namo"))
-                    :match-func (lambda (msg)
-                                  (when msg
-                                    (mu4e-message-maildir-matches msg "^/Namo/")))
-
-                    :vars '(( user-mail-address   . "thibault@thb.lt" )
-                            ( mu4e-sent-folder        . "/Namo/Sent" )
-                            ( mu4e-drafts-folder      . "/Namo/Drafts" )
-                            ( mu4e-trash-folder       . "/Namo/Trash" )
-                            ( smtpmail-local-domain   . "thb.lt" )
-                            ( smtpmail-smtp-server    . "namo.thb.lt" )
-                            ( smtpmail-stream-type    . tls )
-                            ( smtpmail-smtp-service   . 465 )))
-
-                  ,(make-mu4e-context
-                    :name "OVH"
-                    :enter-func (lambda () (mu4e-message "OVH"))
-                    :match-func (lambda (msg)
-                                  (when msg
-                                    (mu4e-message-maildir-matches msg "^/OVH/")))
-                    :vars '(( user-mail-address   . "thibault@thb.lt"  )
-                            ( mu4e-sent-folder        . "/OVH/Sent" )
-                            ( mu4e-drafts-folder      . "/OVH/Drafts" )
-                            ( mu4e-trash-folder       . "/OVH/Trash" )
-                            ( smtpmail-local-domain   . "thb.lt" )
-                            ( smtpmail-smtp-server    . "ssl0.ovh.net" )
-                            ( smtpmail-smtp-user      . "thibault@thb.lt" )
-                            ( smtpmail-stream-type    . tls )
-                            ( smtpmail-smtp-service   . 465 )))
-
-                  ,(make-mu4e-context
-                    :name "P1"
-                    :enter-func (lambda () (mu4e-message "P1"))
-                    :match-func (lambda (msg)
-                                  (when msg
-                                    (mu4e-message-maildir-matches msg "^/OVH/")))
-                    :vars '(( user-mail-address   . "thibault.polge@univ-paris1.fr"  )
-                            ( mu4e-sent-folder        . "/P1/sent-mail" )
-                            ( mu4e-drafts-folder      . "/P1/Drafts" )
-                            ( mu4e-trash-folder       . "/P1/Trash" )
-                            ( smtpmail-local-domain   . "univ-paris1.fr" )
-                            ( smtpmail-smtp-server    . "smtp.univ-paris1.fr" )
-                            ( smtpmail-smtp-user      . "tpolge" )
-                            ( smtpmail-stream-type    . tls )
-                            ( smtpmail-smtp-service   . 465 ))))
-
-               ;; Bookmarks
-
-               mu4e-bookmarks `( ("(m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX)"
-                                  "Global inbox"            ?i)
-
-                                 ("(flag:unread AND (m:/P1/INBOX OR m:/Namo/INBOX OR m:/OVH/INBOX))"
-                                  "Unread inbox"            ?I)
-
-                                 ("(m:/Namo/emetis)"
-                                  "emetis"                  ?e)
-
-                                 ("(m:/Namo/historiens-sante)"
-                                  "historiens-sante"        ?h)
-
-                                 ("(m:/Namo/theuth)"
-                                  "theuth"                  ?t)
-
-                                 ("(flag:flagged)"
-                                  "Flagged"                 ?f)
-                                 )
-               ) ;; (setq)
+              ;; (setq)
               (add-hook 'mu4e-view-mode-hook 'visual-line-mode)))
 #+end_src
 
-Compose messages with org tables and org lists.
+Compose messages with org-mode tables and lists:
 
 #+begin_src emacs-lisp
 (add-hook 'message-mode-hook 'turn-on-orgtbl)
 (add-hook 'message-mode-hook 'turn-on-orgstruct++)
 #+end_src
+
+Load private configuration:
+
+#+BEGIN_SRC emacs-lisp
+  (org-babel-load-file (expand-file-name "thblt-mu4e.org" user-emacs-directory))
+#+END_SRC
 
 ** PDF Tools
 
