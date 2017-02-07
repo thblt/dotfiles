@@ -64,7 +64,7 @@ This is my Emacs configuration.
 
 Some packages are not in (M)ELPA, we can grab them from git using [[https://github.com/dimitri/el-get][el-get]]:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (use-package el-get)
 #+end_src
 
