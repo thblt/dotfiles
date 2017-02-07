@@ -75,9 +75,11 @@ data MySpacing = MySpacing {
   myDecoHeight :: Int
   }
 
-mySpacing :: MySpacing
-mySpacing | myHostName == "rudiger" = MySpacing 0 2 0
-          | otherwise = MySpacing 2 2 0
+-- mySpacing :: MySpacing
+-- mySpacing | myHostName == "rudiger" = MySpacing 2 2 0
+--           | otherwise = MySpacing 2 2 0
+
+mySpacing = MySpacing 2 2 0
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
