@@ -200,6 +200,13 @@ By default, multiple themes can be loaded at the same time.  Nobody wants this (
     (mapc #'disable-theme custom-enabled-themes))
 #+end_src
 
+Create some shortcut commands to load both Eziam themes:
+
+#+BEGIN_SRC emacs-lisp
+  (defun eziam-dark () (interactive) (load-theme 'eziam-dark t))
+  (defun eziam-light () (interactive) (load-theme 'eziam-light t))
+#+END_SRC
+
 *** Hydra
 
 Hydras are everywhere.
