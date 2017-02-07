@@ -1158,6 +1158,8 @@ First, let's configure the view.
           ("Upstream"   15  magit-repolist-column-upstream)
           ("L<U"        5   thblt-magit-repolist-column-unpulled-from-upstream)
           ("L>U"        5   thblt-magit-repolist-column-unpushed-to-upstream)
+          ("L<P"        5   thblt-magit-repolist-column-unpulled-from-pushremote)
+          ("L>P"        5   thblt-magit-repolist-column-unpushed-to-pushremote)
           ("Dirty"      6   magit-repolist-column-dirty)
           ("Path"       99  magit-repolist-column-path nil)))
 #+end_src
@@ -1176,6 +1178,18 @@ For some reasons, =magit-repolist-column-[unpushed-to|unpulled-from]-upstream= d
   (defun thblt-magit-repolist-column-unpulled-from-upstream (_id)
     "Insert number of upstream commits not in the current branch."
     (--when-let (magit-get-upstream-branch)
+      (let ((n (cadr (magit-rev-diff-count "HEAD" it))))
+        (propertize (number-to-string n) 'face (if (> n 0) 'bold 'shadow)))))
+
+  (defun thblt-magit-repolist-column-unpushed-to-pushremote (_id)
+    "Insert number of commits in the current branch but not its upstream."
+    (--when-let (magit-get-push-branch)
+      (let ((n (car (magit-rev-diff-count "HEAD" it))))
+        (propertize (number-to-string n) 'face (if (> n 0) 'bold 'shadow)))))
+
+  (defun thblt-magit-repolist-column-unpulled-from-pushremote (_id)
+    "Insert number of upstream commits not in the current branch."
+    (--when-let (magit-get-push-branch)
       (let ((n (cadr (magit-rev-diff-count "HEAD" it))))
         (propertize (number-to-string n) 'face (if (> n 0) 'bold 'shadow)))))
 #+end_src
