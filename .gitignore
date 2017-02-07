@@ -25,7 +25,7 @@
 .emacs.d/games
 .emacs.d/ido.last
 .emacs.d/irony
-.emacs.d/mu4e.el
+.emacs.d/thblt-mu4e.*
 .emacs.d/network-security.data
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/projectile.cache
