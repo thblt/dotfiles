@@ -1327,13 +1327,13 @@ Configuration for mu4e is split between a published part, below, and a private p
 
                mu4e-headers-default-prefix '(" " . " ─")
                mu4e-headers-duplicate-prefix '("D" . "D")
-               mu4e-headers-empty-parent-prefix '("X" . "X")
+               mu4e-headers-empty-parent-prefix '("X" . " X")
                mu4e-headers-first-child-prefix '("|" . "╰─")
                mu4e-headers-has-child-prefix '("+" . " ┬")
 
                mu4e-headers-fields '(
                                      (:flags          . 3)
-                                     (:human-date     . 21)
+                                     (:human-date     . 12)
                                      (:from-or-to     . 25)
                                      (:thread-subject . nil)
                                      )
