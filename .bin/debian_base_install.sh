@@ -139,6 +139,10 @@ add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
 # The texlive monster and tex utilities
 add texlive-base texlive-lang-french texlive-xetex lmodern lyx
 #                                                  ^ not part of the base distribution.
+add dvipng texlive-fonts-recommended texlive-generic-recommended
+#   ^ These three are required for org-toggle-latex-fragment
+
+
 # Handling misc formats
 add djvulibre-bin # Required (with ghostscript) for .bin/djvu2pdf
 # Misc
