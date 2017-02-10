@@ -457,7 +457,7 @@ Move lines of text with =M-<up>= and =M-<down>=.
     )
 #+end_src
 
-*** Smartparens
+*** TODO Smartparens
 
 #+begin_src emacs-lisp
       (use-package smartparens-config         ; Be smart with parentheses
@@ -471,6 +471,96 @@ Move lines of text with =M-<up>= and =M-<down>=.
                   )
         :diminish (smartparens-mode))
 #+end_src
+
+TODO: Stolen this list from xah-fly-keys:
+
+#+BEGIN_EXAMPLE emacs-lisp
+  (sp-pair "(" ")")
+  (sp-pair "[" "]")  
+  (sp-pair "{" "}") 
+  (sp-pair "<""" ">") 
+  (sp-pair "（" "）") 
+  (sp-pair "［" "］") 
+  (sp-pair "｛" "｝") 
+  (sp-pair "⦅" "⦆") 
+  (sp-pair "〚" "〛") 
+  (sp-pair "⦃" "⦄") 
+  (sp-pair "“""" "”") 
+  (sp-pair "‘""" "’") 
+  (sp-pair "‹""" "›") 
+  (sp-pair "«""" "»") 
+  (sp-pair "「" "」") 
+  (sp-pair "〈" "〉") 
+  (sp-pair "《" "》") 
+  (sp-pair "【" "】") 
+  (sp-pair "〔" "〕") 
+  (sp-pair "⦗" "⦘") 
+  (sp-pair "『" "』") 
+  (sp-pair "〖" "〗") 
+  (sp-pair "〘" "〙") 
+  (sp-pair "｢" "｣") 
+  (sp-pair "⟦" "⟧") 
+  (sp-pair "⟨" "⟩") 
+  (sp-pair "⟪" "⟫") 
+  (sp-pair "⟮""" "⟯") 
+  (sp-pair "⟬""" "⟭") 
+  (sp-pair "⌈""" "⌉") 
+  (sp-pair "⌊""" "⌋") 
+  (sp-pair "⦇" "⦈") 
+  (sp-pair "⦉" "⦊") 
+  (sp-pair "❛""" "❜") 
+  (sp-pair "❝""" "❞") 
+  (sp-pair "❨" "❩") 
+  (sp-pair "❪" "❫") 
+  (sp-pair "❴" "❵") 
+  (sp-pair "❬" "❭") 
+  (sp-pair "❮""" "❯") 
+  (sp-pair "❰" "❱") 
+  (sp-pair "❲" "❳") 
+  (sp-pair "〈" "〉") 
+  (sp-pair "⦑" "⦒") 
+  (sp-pair "⧼" "⧽") 
+  (sp-pair "﹙" "﹚") 
+  (sp-pair "﹛" "﹜") 
+  (sp-pair "﹝" "﹞") 
+  (sp-pair "⁽" "⁾") 
+  (sp-pair "₍" "₎") 
+  (sp-pair "⦋" "⦌") 
+  (sp-pair "⦍" "⦎") 
+  (sp-pair "⦏" "⦐") 
+  (sp-pair "⁅" "⁆") 
+  (sp-pair "⸢""" "⸣") 
+  (sp-pair "⸤""" "⸥") 
+  (sp-pair "⟅""" "⟆") 
+  (sp-pair "⦓" "⦔") 
+  (sp-pair "⦕" "⦖") 
+  (sp-pair "⸦""" "⸧") 
+  (sp-pair "⸨""" "⸩") 
+  (sp-pair "｟" "｠") 
+  (sp-pair "⧘""" "⧙") 
+  (sp-pair "⧚""" "⧛") 
+  (sp-pair "⸜""" "⸝") 
+  (sp-pair "⸌""" "⸍") 
+  (sp-pair "⸂""" "⸃") 
+  (sp-pair "⸄""" "⸅") 
+  (sp-pair "⸉""" "⸊") 
+  (sp-pair "᚛""" "᚜") 
+  (sp-pair "༺""" "༻") 
+  (sp-pair "༼""" "༽") 
+  (sp-pair "⏜""" "⏝") 
+  (sp-pair "⎴" "⎵") 
+  (sp-pair "⏞""" "⏟") 
+  (sp-pair "⏠""" "⏡") 
+  (sp-pair "﹁" "﹂") 
+  (sp-pair "﹃" "﹄") 
+  (sp-pair "︹" "︺") 
+  (sp-pair "︻" "︼") 
+  (sp-pair "︗" "︘") 
+  (sp-pair "︿" "﹀") 
+  (sp-pair "︽" "︾") 
+  (sp-pair "﹇""" "﹈") 
+  (sp-pair "︷" "︸") 
+#+END_EXAMPLE
 
 *** Undo-tree
 
@@ -710,11 +800,11 @@ Some cool org extensions:
     (use-package htmlize)
   #+end_src
 
-**** Hydras
+**** TODO Hydras
 
 We define a few hydras for org-mode.
 
- 1. The emphasize hydra, overriding =C-c C-x C-f=:
+ 1. The *emphasize* hydra, overriding =C-c C-x C-f=:
 
     #+begin_src emacs-lisp
       (defhydra hydra-org-emphasize (:exit t :hint nil)
@@ -730,6 +820,8 @@ We define a few hydras for org-mode.
 
       (define-key org-mode-map (kbd "C-c C-x C-f") 'hydra-org-emphasize/body)
     #+end_src
+
+ 2. The *visibility* hydra, which toggles contents visibility. @TODO
 
 **** TODOs, calendar, notes
 
@@ -1329,7 +1421,7 @@ Configuration for mu4e is split between a published part, below, and a private p
                mu4e-headers-duplicate-prefix '("D" . "D")
                mu4e-headers-empty-parent-prefix '("X" . " X")
                mu4e-headers-first-child-prefix '("|" . "╰─")
-               mu4e-headers-has-child-prefix '("+" . " ┬")
+               mu4e-headers-has-child-prefix '("+" . "╰┬")
 
                mu4e-headers-fields '(
                                      (:flags          . 3)
