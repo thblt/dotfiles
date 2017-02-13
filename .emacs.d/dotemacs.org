@@ -1448,9 +1448,16 @@ Configuration for mu4e is split between a published part, below, and a private p
 Compose messages with org-mode tables and lists:
 
 #+begin_src emacs-lisp
-(add-hook 'message-mode-hook 'turn-on-orgtbl)
-(add-hook 'message-mode-hook 'turn-on-orgstruct++)
+  (add-hook 'message-mode-hook 'turn-on-orgtbl)
+  (add-hook 'message-mode-hook 'turn-on-orgstruct++)
 #+end_src
+
+Enable company-mode completion in compose buffer until [[https://github.com/djcb/mu/issues/1029][this issue]] gets fixed:
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'message-mode-hook 'company-mode)
+#+END_SRC
+
 
 Load private configuration:
 
