@@ -1381,8 +1381,8 @@ Configuration for mu4e is split between a published part, below, and a private p
   ;;         :map mu4e-main-mode-map
   ;;         ()
            :map mu4e-view-mode-map
-           ("(" . mu4e-headers-prev-unread)
-           (")" . mu4e-headers-next-unread))
+           ("(" . mu4e-view-headers-prev-unread)
+           (")" . mu4e-view-headers-next-unread))
     :config (progn
               (require 'mu4e-contrib)
               (mu4e-maildirs-extension)
