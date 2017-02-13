@@ -1376,11 +1376,13 @@ Configuration for mu4e is split between a published part, below, and a private p
     :ensure nil                 ; Comes with mu, not on a Emacs package repo
     :bind (("<f12>" . mu4e)
            :map mu4e-headers-mode-map
-           ()
-           :map mu4e-main-mode-map
-           ()
+           ("(" . mu4e-headers-prev-unread)
+           (")" . mu4e-headers-next-unread)
+  ;;         :map mu4e-main-mode-map
+  ;;         ()
            :map mu4e-view-mode-map
-           ())
+           ("(" . mu4e-headers-prev-unread)
+           (")" . mu4e-headers-next-unread))
     :config (progn
               (require 'mu4e-contrib)
               (mu4e-maildirs-extension)
