@@ -800,6 +800,12 @@ Some cool org extensions:
     (use-package htmlize)
   #+end_src
 
+**** Org-ref
+
+#+BEGIN_SRC emacs-lisp
+  (use-package org-ref)
+#+END_SRC
+
 **** TODO Hydras
 
 We define a few hydras for org-mode.
