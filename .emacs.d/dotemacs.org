@@ -804,8 +804,7 @@ Some cool org extensions:
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-ref
-    :load-path "~/Documents/Code/org-ref"
-    )
+    :pin melpa)
 #+END_SRC
 
 **** TODO Hydras
