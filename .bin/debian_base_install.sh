@@ -15,7 +15,7 @@ add efivar firmware-linux-free firmware-linux-nonfree smartmontools
 # Misc system utilities
 add file info less man-db powertop psmisc rename sudo time wipe
 # Networking fundamentals
-add ca-certificates curl dnsutils lynx rsync wget whois
+add ca-certificates curl dnsutils lynx rsync telnet wget whois
 # Debian/APT utilities
 add apt-file aptitude debian-keyring netselect-apt
 #                     ^ Need this to verify release ISOs
@@ -38,7 +38,7 @@ add policykit-1 # Everything needs this.
 #
 
 # General programming tools
-add autoconf automake cmake exuberant-ctags git gpp
+add autoconf automake cmake exuberant-ctags git gpp texinfo
 # Debian-specific
 add build-essential checkinstall
 # Language-specific build systems are with their language.
@@ -117,11 +117,13 @@ add rxvt-unicode-256color
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
 # Text editors (with CLI versions as well)
 remove vim-gtk
-add emacs24 emacs25 vim vim-gtk3
+add emacs25 vim vim-gtk3
 # These are the dependencies of Emacs pdf-tools
 add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev libz-dev
 # And the Emacs non-free documentation
 add emacs25-common-non-dfsg
+# I don't use emacs 24 anymore
+remove emacs24
 # Text editing tools
 add meld
 # Spell checking
