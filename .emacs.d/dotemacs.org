@@ -308,8 +308,7 @@ I configure Customize to store its data outside of =init.el= (I don't want these
 #+BEGIN_SRC emacs-lisp
   ;; Let Customize put its mess elsewhere
   (setq custom-file (concat user-emacs-directory "_customize.el"))
-
-  (load custom-file)
+  (load custom-file t)
 #+END_SRC
 
 * Editing text
