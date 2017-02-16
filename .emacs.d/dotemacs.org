@@ -1366,15 +1366,21 @@ An extra feature:  update all remotes.  Probably very dirty.
 
 Configuration for mu4e is split between a published part, below, and a private part, tangled from =~/.emacs.d/thblt-mu4e.el=.  The public part contains common mu4e settings, the private parts defines accounts and bookmarks.
 
+First, we /may/ need to update the load-path.  Official Debian build of Emacs don't need that, but self-built versions do:
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
+#+END_SRC
+
 #+begin_src emacs-lisp
-(defun mu4e-message-maildir-matches (msg rx)
-  (when rx
-    (if (listp rx)
-        ;; if rx is a list, try each one for a match
-        (or (mu4e-message-maildir-matches msg (car rx))
-            (mu4e-message-maildir-matches msg (cdr rx)))
-      ;; not a list, check rx
-      (string-match rx (mu4e-message-field msg :maildir)))))
+  (defun mu4e-message-maildir-matches (msg rx)
+    (when rx
+      (if (listp rx)
+          ;; if rx is a list, try each one for a match
+          (or (mu4e-message-maildir-matches msg (car rx))
+              (mu4e-message-maildir-matches msg (cdr rx)))
+        ;; not a list, check rx
+        (string-match rx (mu4e-message-field msg :maildir)))))
 #+end_src
 
 #+begin_src emacs-lisp
