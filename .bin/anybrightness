@@ -21,8 +21,8 @@ for f in {"brightness", "max_brightness"}:
    if not (os.path.exists(fp) and os.path.isfile(fp)):
       print("Bad path: {0}".format(path))
       exit(-1)
-   
-  
+
+
 # Get max_brightness:
 with open(os.path.join(path, "max_brightness"), "r") as mbf:
    max_brightness = int(mbf.read())
@@ -30,12 +30,12 @@ with open(os.path.join(path, "max_brightness"), "r") as mbf:
 # And current brightness
 with open(os.path.join(path, "brightness"), "r") as mbf:
    brightness = int(mbf.read())
-   
+
 # Compute percentage
 
 
 # Find what to do
-      
+
 op = do_set
 
 if value.startswith("+"):
@@ -48,7 +48,7 @@ elif value.startswith("="):
    value = value[1:]
 
 # Compute percentage
-   
+
 if value.endswith("%"):
    value = max(1, int(int(value[:-1]) * (float(max_brightness)/100)))
 else:
@@ -60,5 +60,3 @@ with open(os.path.join(path, "brightness"), "w") as b:
    b.write(new_brightness)
 
 print("{0}\t{1}\t{2}".format(brightness, max_brightness, new_brightness))
-
-
