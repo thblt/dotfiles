@@ -1,0 +1,14 @@
+cd ~/Documents/Code/emacs
+
+sudo apt install libc6-dev libgif-dev libgnutls28-dev
+libgtk-3-dev libice-dev libjpeg-dev libncurses5-dev libotf-dev
+libsm-dev libtiff5-dev libx11-dev libxext-dev libxi-dev
+libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxt-dev
+libxtst-dev libxv-dev xaw3dg-dev
+
+./autogen.sh
+
+./configure --prefix=/home/thblt/.local/opt/emacs --with-x-toolkit=gtk3  --with-gnutls
+
+make
+make install
