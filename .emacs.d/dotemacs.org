@@ -80,6 +80,15 @@ The package I work are on my Code folder, and we need to load them from here:
 #+end_src
 
 ** General defaults
+
+*** System settings
+
+For some reason, the default value of =max-specpdl-size= prevents [[Mu4e][Mu4e]] from correctly rendering some HTML e-mails.  We increase it from 1300 to 5000.
+
+#+BEGIN_SRC emacs-lisp
+  (setq max-specpdl-size 5000)
+#+END_SRC
+
 *** Default major mode
 
 Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fundamental has no hooks.
