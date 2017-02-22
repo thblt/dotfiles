@@ -1,7 +1,17 @@
 #!/bin/bash
 
-emacsclient -c
+USER_EMACS=$HOME/.local/opt/emacs/bin/
+
+if [ -e ${USER_EMACS}/emacs ]; then
+    EMACS_PATH=$USER_EMACS
+else
+    EMACS_PATH=$(dirname $(which emacs))
+fi
+
+echo "Running Emacs from $EMACS_PATH"
+
+${EMACS_PATH}/emacsclient -c
 if [[ $? != 0 ]]; then
-    urxvt -title "Invoking Emacs daemon…" -e emacs --daemon
-    emacsclient -c
+    urxvt -title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon
+    $EMACS_PATH/emacsclient -c
 fi
