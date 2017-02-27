@@ -136,9 +136,17 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 
 *** Keybindings
 
+Rebind =C-x k= to kill the /current/ buffer.
+
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x k") 'kill-this-buffer)
 #+end_src
+
+Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
+#+END_SRC
 
 *** UI defaults
 
