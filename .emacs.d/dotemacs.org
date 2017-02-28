@@ -718,6 +718,7 @@ This section deals with two things:
 
 #+begin_src emacs-lisp
   (use-package writeroom-mode ; Distraction-free mode
+    :init (setq writeroom-mode-line t)
     :config (defhydra hydra-writeroom-width ()
               "width"
               ("-" writeroom-decrease-width "decrease")
