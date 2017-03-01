@@ -1051,15 +1051,20 @@ TODO: Could Projectile read ignore patterns from =~/.gitignore_global=?
 #+begin_src emacs-lisp
   (use-package projectile
     :init (projectile-global-mode)
+    (define-prefix-command 'thblt-projectile-map)
+
     :config (setq projectile-globally-ignored-file-suffixes (append '(
                                                                       ".un~"
                                                                       ".~undo-tree~"
                                                                       )
                                                                     projectile-globally-ignored-files))
     :bind (
-           :map projectile-mode-map
-                ("C-c p p"   . counsel-projectile)
-                ("C-c p SPC" . counsel-projectile-switch-project))
+           ("C-c p" . thblt-projectile-map)
+           ("C-c p SPC" . counsel-projectile-switch-project)
+           ("C-c p p"   . counsel-projectile)
+             :map projectile-mode-map
+           ("C-c p p"   . counsel-projectile)
+           ("C-c p SPC" . counsel-projectile-switch-project))
     :diminish (projectile-mode))
 #+end_src
 
