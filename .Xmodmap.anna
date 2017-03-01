@@ -1,2 +1,5 @@
 ! Caps_Lock to control
-keysym Caps_Lock = Control_L
+! keysym Caps_Lock = Control_L
+
+! Toggle $ and *
+keycode 35 = asterisk dollar
