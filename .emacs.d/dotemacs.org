@@ -17,6 +17,7 @@ This is my Emacs configuration.
    - [[#minor-modes][Minor modes]]
    - [[#customization][Customization]]
  - [[#writing-prose][Writing prose]]
+   - [[#the-text-mode-hydra][The text-mode hydra]]
    - [[#common-settings-and-minor-modes][Common settings and minor modes]]
    - [[#major-modes][Major modes]]
  - [[#writing-code][Writing code]]
@@ -682,6 +683,19 @@ This section deals with two things:
  1. Major modes dedicated to writing prose, as opposed to code or configuration.
  2. Non-code bits in code/configuration files: comments and integrated documentation.
 
+** The text-mode hydra
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-text-mode ()
+    "text-mode switches"
+    ("f" flyspell-mode "Flyspell" :exit t)
+    ("l" ispell-change-dictionary "Language" :exit t)
+    ("w" writeroom-mode "Writeroom" :exit t)
+    ("=" writeroom-increase-width "Increase width")
+    ("-" writeroom-decrease-width "Decrase width"))
+
+  (bind-key (kbd "C-x w") 'hydra-text-mode/body text-mode-map)
+#+END_SRC
 ** Common settings and minor modes
 *** Abbrev
 
@@ -718,11 +732,7 @@ This section deals with two things:
 
 #+begin_src emacs-lisp
   (use-package writeroom-mode ; Distraction-free mode
-    :init (setq writeroom-mode-line t)
-    :config (defhydra hydra-writeroom-width ()
-              "width"
-              ("-" writeroom-decrease-width "decrease")
-              ("=" writeroom-increase-width "increase")))
+    :init (setq writeroom-mode-line t))
 #+end_src
 
 ** Major modes
