@@ -3,3 +3,6 @@
 
 ! Toggle $ and *
 keycode 35 = asterisk dollar
+
+! Make grave not dead
+keycode 51 = d'expérience``rave sterling
