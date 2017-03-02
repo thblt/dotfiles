@@ -1,3 +1,5 @@
+# -*- mode: shell-script -*-
+
 cd ~/Documents/Code/emacs
 
 sudo apt install libc6-dev \
@@ -6,6 +8,8 @@ sudo apt install libc6-dev \
      libgtk-3-dev \
      libice-dev \
      libjpeg-dev \
+     libmagickcore-dev \
+     libmagick++-dev
      libncurses5-dev \
      libotf-dev \
      libsm-dev \
@@ -19,8 +23,7 @@ sudo apt install libc6-dev \
      libxrandr-dev \
      libxt-dev \
      libxtst-dev \
-     libxv-dev \
-     xaw3dg-dev
+     libxv-dev
 
 ./autogen.sh
 
@@ -31,5 +34,3 @@ sudo apt install libc6-dev \
 
 make -j
 make -j install
-
-# -*- mode: shell-script -*-
