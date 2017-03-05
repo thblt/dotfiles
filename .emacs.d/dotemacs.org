@@ -1061,20 +1061,11 @@ TODO: Could Projectile read ignore patterns from =~/.gitignore_global=?
 #+begin_src emacs-lisp
   (use-package projectile
     :init (projectile-global-mode)
-    (define-prefix-command 'thblt-projectile-map)
-
     :config (setq projectile-globally-ignored-file-suffixes (append '(
                                                                       ".un~"
                                                                       ".~undo-tree~"
                                                                       )
                                                                     projectile-globally-ignored-files))
-    :bind (
-           ("C-c p" . thblt-projectile-map)
-           ("C-c p SPC" . counsel-projectile-switch-project)
-           ("C-c p p"   . counsel-projectile)
-             :map projectile-mode-map
-           ("C-c p p"   . counsel-projectile)
-           ("C-c p SPC" . counsel-projectile-switch-project))
     :diminish (projectile-mode))
 #+end_src
 
@@ -1082,7 +1073,12 @@ With Ivy integration:
 
 #+begin_src emacs-lisp
   (use-package counsel-projectile
-    :init (counsel-projectile-on))
+    :init (counsel-projectile-on) (define-prefix-command 'thblt-projectile-map)
+    :bind (
+           :map projectile-mode-map
+           ("C-c p p"   . counsel-projectile)
+           ("C-c p SPC" . counsel-projectile-switch-project))
+    )
 #+end_src
 
 ** Build systems
@@ -1517,13 +1513,13 @@ Enable company-mode completion in compose buffer until [[https://github.com/djcb
 Enable notifications:
 
 #+BEGIN_SRC emacs-lisp
-    (use-package mu4e-alert
-      :after mu4e
-      :init (progn
-              (setq mu4e-alert-interesting-mail-query (concat "flag:unread AND " (mu4e-get-bookmark-query ?i)))
-              (mu4e-alert-set-default-style 'libnotify)
-              (mu4e-alert-enable-notifications)
-              (mu4e-alert-enable-mode-line-display)))
+  (use-package mu4e-alert
+    :after mu4e
+    :init (progn
+            (setq mu4e-alert-interesting-mail-query (concat "flag:unread AND " (mu4e-get-bookmark-query ?i)))
+            (mu4e-alert-set-default-style 'libnotify)
+            (mu4e-alert-enable-notifications)
+            (mu4e-alert-enable-mode-line-display)))
 #+END_SRC
 
 ** PDF Tools
