@@ -1433,6 +1433,9 @@ Then the bulk of the config:
               (mu4e-maildirs-extension)
 
               (setq
+              ;; Use ivy
+               mu4e-completing-read-function 'ivy-completing-read
+
                ;; General settings
                mu4e-html2text-command 'mu4e-shr2text
                mu4e-maildir "~/.Mail/"
@@ -1517,8 +1520,8 @@ Enable notifications:
     :after mu4e
     :init (progn
             (setq mu4e-alert-interesting-mail-query (concat "flag:unread AND " (mu4e-get-bookmark-query ?i)))
-            (mu4e-alert-set-default-style 'libnotify)
-            (mu4e-alert-enable-notifications)
+;;            (mu4e-alert-set-default-style 'libnotify)
+;;            (mu4e-alert-enable-notifications)
             (mu4e-alert-enable-mode-line-display)))
 #+END_SRC
 
