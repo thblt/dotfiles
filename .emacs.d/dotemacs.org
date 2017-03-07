@@ -38,6 +38,21 @@ This is my Emacs configuration.
  - [[#conclusion][Conclusion]]
 
 * Fundamentals
+
+Let's say hello:
+
+#+BEGIN_SRC emacs-lisp
+  (message "
+  ███████╗███╗   ███╗ █████╗  ██████╗███████╗██╗
+  ██╔════╝████╗ ████║██╔══██╗██╔════╝██╔════╝██║
+  █████╗  ██╔████╔██║███████║██║     ███████╗██║
+  ██╔══╝  ██║╚██╔╝██║██╔══██║██║     ╚════██║╚═╝
+  ███████╗██║ ╚═╝ ██║██║  ██║╚██████╗███████║██╗
+  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝
+  ")
+#+END_SRC
+
+
 ** Personal information
 
 #+begin_src emacs-lisp
