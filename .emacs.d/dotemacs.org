@@ -193,6 +193,18 @@ Mouse wheel scrolling makes big jumps by default, let's make it smoother.
         )
 #+end_src
 
+*** Customization helper
+
+A little function to identify the face at point.  Nice to have when writing themes.
+
+#+begin_src emacs-lisp
+  (defun what-face (pos)
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos))))
+#+end_src
+
 *** Fonts and themes
 
 Configure the default font:
@@ -269,17 +281,13 @@ Popwin “makes you free from the hell of annoying buffers”:
     )
 #+END_SRC
 
-*** Customization helper
+*** SR-Speedbar
 
-A little function to identify the face at point.  Nice to have when writing themes.
-
-#+begin_src emacs-lisp
-  (defun what-face (pos)
-    (interactive "d")
-    (let ((face (or (get-char-property (point) 'read-face-name)
-                    (get-char-property (point) 'face))))
-      (if face (message "Face: %s" face) (message "No face at %d" pos))))
-#+end_src
+#+BEGIN_SRC emacs-lisp
+  (use-package sr-speedbar
+    :init (setq sr-speedbar-right-side nil)
+    :bind ("<f7>" . sr-speedbar-toggle))
+#+END_SRC
 
 *** Return focus to minibuffer
 
