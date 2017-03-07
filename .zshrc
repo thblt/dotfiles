@@ -12,10 +12,14 @@ antigen bundle zsh-users/zaw
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
-antigen use oh-my-zsh
-antigen theme agnoster
+export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-bhilburn-SLASH-powerlevel9k.git/
+antigen theme bhilburn/powerlevel9k powerlevel9k
 
 antigen apply
+
+# ZSH Options
+
+setopt AUTOcd
 
 # Prefix-based history search with up and down arrow
 bindkey '^[[A' up-line-or-search
@@ -27,7 +31,7 @@ export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
 alias bc="bc -l"
 alias e="${EDITOR} --no-wait" # Shorthand
-alias ee="${EDITOR} --create-frame --no-wait" # Shorthand
+alias ee="${EDITO} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
 
 export GREP_COLOR=31
@@ -87,8 +91,8 @@ alias ..6="cd ../../../../../.."
 # Virtualenvwrapper
 
 export WORKON_HOME=~/.virtualenvs
-source `which virtualenvwrapper.sh` 2> /dev/null
-source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 2> /dev/null
+# source `which virtualenvwrapper.sh` 2> /dev/null
+# source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 2> /dev/null
 
 # Allow to recall aborted command
 # From <https://www.topbug.net/blog/2016/10/03/restore-the-previously-canceled-command-in-zsh/>
