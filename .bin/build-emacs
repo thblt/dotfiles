@@ -27,7 +27,7 @@ sudo apt install libc6-dev \
 
 ./autogen.sh
 
-./configure --prefix=/home/thblt/.local/opt/emacs \
+./configure --prefix=$HOME/.local/opt/emacs \
             --with-gnutls \
             --with-modules \
             --with-x-toolkit=gtk3  \
