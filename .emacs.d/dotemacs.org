@@ -52,7 +52,6 @@ Let's say hello:
   ")
 #+END_SRC
 
-
 ** Personal information
 
 #+begin_src emacs-lisp
@@ -376,7 +375,7 @@ On the fly spellchecking with Flyspell:
     :init
     (add-hook 'text-mode-hook (lambda () (flyspell-mode t)))
 
-    :diminish flyspell-mode)
+    :diminish flyspell-mode "Fly")
 #+end_src
 
 Correct words using Ivy instead of default method:
@@ -459,7 +458,7 @@ Emulates Vim's =f=, =F=, =t= and =T=.
 
 #+begin_src emacs-lisp
   (eval-after-load 'autorevert
-    '(diminish 'auto-revert-mode "ARev")
+    '(diminish 'auto-revert-mode "↺")
   )
 #+end_src
 
@@ -711,9 +710,9 @@ This section deals with two things:
 #+BEGIN_SRC emacs-lisp
   (defhydra hydra-text-mode ()
     "text-mode switches"
-    ("f" flyspell-mode "Flyspell" :exit t)
-    ("l" ispell-change-dictionary "Language" :exit t)
-    ("w" writeroom-mode "Writeroom" :exit t)
+    ("f" flyspell-mode "Flyspell")
+    ("l" ispell-change-dictionary "Language")
+    ("w" writeroom-mode "Writeroom")
     ("=" writeroom-increase-width "Increase width")
     ("-" writeroom-decrease-width "Decrase width"))
 
