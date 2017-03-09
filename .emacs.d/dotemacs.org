@@ -1160,7 +1160,9 @@ Intero mode is a “complete interactive development program for Haskell”:
 #+begin_src emacs-lisp
   (use-package intero
     :after haskell-mode
-    :init (add-hook 'haskell-mode-hook 'intero-mode))
+    :init (add-hook 'haskell-mode-hook 'intero-mode-blacklist)
+    (setq intero-blacklist '(
+                             "/home/thblt/.xmonad/")))
 #+end_src
 
 Intero doesn't provide linting.
