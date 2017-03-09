@@ -19,7 +19,16 @@ antigen apply
 
 # ZSH Options
 
+# Implicit CD
 setopt AUTOcd
+
+# History
+HISTFILE=$HOME/.zsh_history
+SAVEHIST=5000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt EXTENDED_HISTORY
 
 # Prefix-based history search with up and down arrow
 bindkey '^[[A' up-line-or-search
