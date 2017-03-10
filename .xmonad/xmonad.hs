@@ -38,6 +38,7 @@ import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
 import           XMonad.Layout.NoBorders             (withBorder)
 import           XMonad.Layout.NoFrillsDecoration
+import           XMonad.Layout.ShowWName
 import           XMonad.Layout.Spacing               (smartSpacingWithEdge)
 import qualified XMonad.StackSet                     as XSS
 import           XMonad.Util.NamedScratchpad
@@ -279,7 +280,7 @@ main = do
     , handleEventHook = docksEventHook
     , keys = myKeys
     , mouseBindings = myMouseBindings
-    , layoutHook = myLayoutHook
+    , layoutHook = showWName' myShowWNameTheme $ myLayoutHook
     , logHook = do
 --        dbusLogger dbus
 --        dynamicLogWithPP$ myPP dbus -- logPipe
@@ -302,3 +303,14 @@ main = do
     , terminal = "urxvt"
     , workspaces = myWorkspaces
     }
+
+myShowWNameTheme = def
+    { swn_font              = myWideFont
+    , swn_fade              = 0.5
+    , swn_bgcolor           = "#000000"
+    , swn_color             = "#FFFFFF"
+    }
+
+
+myWideFont  = "xft:DejaVu Sans Mono:"
+            ++ "style=Regular:pixelsize=60:hinting=true"
