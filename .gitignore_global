@@ -6,5 +6,6 @@
 .*.~undo-tree~
 *.un~
 ltximg
+ltxpng
 missfont.log
 tags
