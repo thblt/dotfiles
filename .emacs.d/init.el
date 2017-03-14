@@ -1,7 +1,6 @@
 (setq package-archives '(("gnu"          . "https://elpa.gnu.org/packages/")
                          ("melpa"        . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/"))
-;;                         ("org" . "http://orgmode.org/elpa/"))
 
       ;; Emacs25+ only.  TODO This is an experiment: I'm not sure
       ;; putting GNU above Melpa unstable is a good idea: I don't know
@@ -11,8 +10,7 @@
                                    ("melpa-stable" . 1000)
                                    ("gnu"          . 500)
                                    ("melpa"        . 100))
-;;                                   ("org"          . 1))
-				
+
       package-enable-at-startup nil
 
       ;; Isolate package directories for major Emacs version
