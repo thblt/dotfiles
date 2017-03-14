@@ -20,6 +20,7 @@ This is my Emacs configuration.
    - [[#the-text-mode-hydra][The text-mode hydra]]
    - [[#common-settings-and-minor-modes][Common settings and minor modes]]
    - [[#major-modes][Major modes]]
+   - [[#org-mode][Org-mode]]
  - [[#writing-code][Writing code]]
    - [[#settings][Settings]]
    - [[#minor-modes-1][Minor modes]]
@@ -407,21 +408,6 @@ Selected is a package which allows to create specific bindings when region is ac
       :diminish selected-minor-mode)
 #+end_src
 
-*** Org-mode emphasis
-
-Since use-package doesn't support binding to functions with arguments,and writing a defun for each possible emphasis is a bit overkill, we use =define-key= rather than =:bind=:
-
-#+BEGIN_SRC emacs-lisp
-  (define-key selected-org-mode-map (kbd "*") (lambda () (interactive) (org-emphasize ?*)))
-  (define-key selected-org-mode-map (kbd "/") (lambda () (interactive) (org-emphasize ?/)))
-  (define-key selected-org-mode-map (kbd "_") (lambda () (interactive) (org-emphasize ?_)))
-  (define-key selected-org-mode-map (kbd "+") (lambda () (interactive) (org-emphasize ?+)))
-  (define-key selected-org-mode-map (kbd "~") (lambda () (interactive) (org-emphasize ?~)))
-  (define-key selected-org-mode-map (kbd "=") (lambda () (interactive) (org-emphasize ?=)))
-#+END_SRC
-
-For some reason, this doesn't work if the lambdas aren't =(interactive)=.
-
 *** Unfill
 
 #+BEGIN_SRC emacs-lisp
@@ -705,19 +691,25 @@ This section deals with two things:
  1. Major modes dedicated to writing prose, as opposed to code or configuration.
  2. Non-code bits in code/configuration files: comments and integrated documentation.
 
-** The text-mode hydra
+** TODO The text-mode hydra
+
+TODO validate =:= and ~=~ on all keyboard mappings.
 
 #+BEGIN_SRC emacs-lisp
   (defhydra hydra-text-mode ()
     "text-mode switches"
     ("f" flyspell-mode "Flyspell")
-    ("l" ispell-change-dictionary "Language")
+    ("d" ispell-change-dictionary "Language")
     ("w" writeroom-mode "Writeroom")
-    ("=" writeroom-increase-width "Increase width")
-    ("-" writeroom-decrease-width "Decrase width"))
+    ("," text-scale-decrease "Decrease font size")
+    (";" text-scale-increase "Increase font size")
+    (":" writeroom-decrease-width "Decrease width")
+    ("=" writeroom-increase-width "Increase width"))
+
 
   (bind-key (kbd "C-x w") 'hydra-text-mode/body text-mode-map)
 #+END_SRC
+
 ** Common settings and minor modes
 *** Abbrev
 
@@ -797,31 +789,33 @@ We just load the mode.
   (use-package markdown-mode)
 #+end_src
 
-*** Org-mode
+** Org-mode
 
 #+begin_src emacs-lisp
-  (use-package org
-    :pin gnu ;; Don't use Org ELPA until it gets https
-    :init (progn
-            (setq org-catch-invisible-edits t ; Avoid editing folded contents
-                  org-hide-leading-stars t
-                  org-hide-emphasis-markers t
-                  org-html-htmlize-output-type 'css ; Use CSS selectors
-                                                    ; instead of inline
-                                                    ; styles in
-                                                    ; generated HTML
-                                                    ; code blocks
-                  org-imenu-depth 6
-                  org-src-fontify-natively t  ; Syntax highlighting in src blocks.
-                  )
-            (add-hook 'org-mode-hook (lambda ()
-                                       (org-indent-mode t)
-                                       (visual-line-mode t)
-                                       ))))
+    (use-package org
+      :pin gnu ;; Don't use Org ELPA until it gets https
+      :init (progn
+              (setq org-catch-invisible-edits t ; Avoid editing folded contents
+                    org-hide-leading-stars t
+                    org-hide-emphasis-markers t
+                    org-html-htmlize-output-type 'css ; Use CSS selectors
+                                            ; instead of inline
+                                            ; styles in
+                                            ; generated HTML
+                                            ; code blocks
+                    org-imenu-depth 6
+                    org-src-fontify-natively t  ; Syntax highlighting in src blocks.
+                    )
+              (add-hook 'org-mode-hook (lambda ()
+					 (org-indent-mode t)
+					 (visual-line-mode t)
+					 (which-function-mode t))))
+      :bind (:map org-mode-map
+		  ("<f1>" . org-where-am-i)))
 
-  (eval-after-load 'org-indent
-    '(diminish 'org-indent-mode)
-    )
+    (eval-after-load 'org-indent
+      '(diminish 'org-indent-mode)
+      )
 #+end_src
 
 Some cool org extensions:
@@ -849,18 +843,53 @@ Some cool org extensions:
     (use-package htmlize)
   #+end_src
 
-**** Org-ref
+ - We use =which-function-mode= to identify our position in Org buffers:
+
+#+BEGIN_SRC emacs-lisp
+  (defun org-where-am-i ()
+    "Returns a string of headers indicating where point is in the
+  current tree."
+    (interactive)
+    (let (headers)
+      (save-excursion
+	(while (condition-case nil
+                   (progn
+                     (push (nth 4 (org-heading-components)) headers)
+                     (outline-up-heading 1))
+		 (error nil))))
+      (message (mapconcat #'identity headers " > "))))
+#+END_SRC
+
+*** Org-ref
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-ref
     :pin melpa)
 #+END_SRC
 
-**** TODO Hydras
+*** TODO Hydras and selected bindings
 
 We define a few hydras for org-mode.
 
- 1. The *emphasize* hydra, overriding =C-c C-x C-f=:
+
+ 1. The *emphasize selected* bindings:
+
+    Since use-package doesn't support binding to functions with arguments,and writing a defun for each possible emphasis is a bit overkill, we use =define-key= rather than =:bind=.
+
+    #+BEGIN_SRC emacs-lisp
+      (define-key selected-org-mode-map (kbd "*") (lambda () (interactive) (org-emphasize ?*)))
+      (define-key selected-org-mode-map (kbd "b") (lambda () (interactive) (org-emphasize ?*)))
+      (define-key selected-org-mode-map (kbd "/") (lambda () (interactive) (org-emphasize ?/)))
+      (define-key selected-org-mode-map (kbd "i") (lambda () (interactive) (org-emphasize ?/)))
+      (define-key selected-org-mode-map (kbd "_") (lambda () (interactive) (org-emphasize ?_)))
+      (define-key selected-org-mode-map (kbd "+") (lambda () (interactive) (org-emphasize ?+)))
+      (define-key selected-org-mode-map (kbd "~") (lambda () (interactive) (org-emphasize ?~)))
+      (define-key selected-org-mode-map (kbd "=") (lambda () (interactive) (org-emphasize ?=)))
+    #+END_SRC
+
+    For some reason, this doesn't work if the lambdas aren't =(interactive)=.
+
+ 2. The *emphasize hydra*, overriding =C-c C-x C-f=.  I almost don't use this.
 
     #+begin_src emacs-lisp
       (defhydra hydra-org-emphasize (:exit t :hint nil)
@@ -877,9 +906,9 @@ We define a few hydras for org-mode.
       (define-key org-mode-map (kbd "C-c C-x C-f") 'hydra-org-emphasize/body)
     #+end_src
 
- 2. The *visibility* hydra, which toggles contents visibility. @TODO
+ 3. The *visibility* hydra, which toggles contents visibility. @TODO
 
-**** TODOs, calendar, notes
+*** TODOs, calendar, notes
 
 #+begin_src emacs-lisp
   (setq org-agenda-files (list "~/Documents/LOG.org")
