@@ -6,12 +6,18 @@ if [ ! -d "$HOME/.antigen" ]; then
 	git clone https://github.com/zsh-users/antigen.git $HOME/.antigen
 fi
 
+# Antigen plugin manager
 source ~/.antigen/antigen.zsh
 
-antigen bundle zsh-users/zaw
+# antigen bundle zsh-users/zaw
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
+# By default, ZSH considers / to be part of the word.  This makes
+# forward-word and backward-word stop at directory delimiters
+export WORDCHARS="*?_-.[]~=&;\!#$%^(){}<>"
+
+# Prompt
 antigen theme bhilburn/powerlevel9k powerlevel9k
 export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-bhilburn-SLASH-powerlevel9k.git/
 export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator background_jobs status dir context)
