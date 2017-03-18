@@ -13,10 +13,6 @@ source ~/.antigen/antigen.zsh
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
-# By default, ZSH considers / to be part of the word.  This makes
-# forward-word and backward-word stop at directory delimiters
-export WORDCHARS="*?_-.[]~=&;\!#$%^(){}<>"
-
 # Prompt
 antigen theme bhilburn/powerlevel9k powerlevel9k
 export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-bhilburn-SLASH-powerlevel9k.git/
@@ -33,6 +29,10 @@ antigen apply
 
 # ZSH Options
 
+# Completion
+autoload -U compinit && compinit
+zstyle ':completion:*' menu select
+
 # Implicit CD
 setopt AUTOcd
 
@@ -44,12 +44,19 @@ setopt SHARE_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
 
+# Editing
+
 # Prefix-based history search with up and down arrow
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
-# Variables
+# By default, ZSH considers / to be part of the word.  This makes
+# forward-word and backward-word stop at directory delimiters
+export WORDCHARS="*?_-.[]~=&;\!#$%^(){}<>"
 
+# ======
+
+# Variables
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
 alias bc="bc -l"
