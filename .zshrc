@@ -40,9 +40,10 @@ setopt AUTOcd
 HISTFILE=$HOME/.zsh_history
 SAVEHIST=20000
 setopt APPEND_HISTORY
-setopt SHARE_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
 setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt SHARE_HISTORY
 
 # Editing
 
@@ -103,7 +104,7 @@ if mkdir -p "$@"
 fi
 }
 
-alias push-priv-dotfiles="cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
+alias push-priv-dotfiles="pushd;cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git push;popd"
 alias wifi-off="sudo rfkill block wifi"
 alias wifi-on="sudo rfkill unblock wifi"
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
