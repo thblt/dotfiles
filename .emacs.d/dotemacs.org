@@ -1176,17 +1176,35 @@ With Ivy integration:
 Haskell-mode provides complete basic Haskell support:
 
 #+begin_src emacs-lisp
-  (use-package haskell-mode)
+    (defun thblt/find-file-back-recursive (path name)
+      "Looks up NAME in PATH and all its parents.
+    Returns the location it was found in, or nil."
+      (if (file-exists-p (expand-file-name name path))
+          path
+        (let ((parent-dir (expand-file-name ".." path)))
+          (if (string= parent-dir "/") nil
+            (thblt/find-file-back-recursive (expand-file-name ".." path) name)))))
+
+    (defun thblt/choose-haskell-ide ()
+      "If a) the current buffer is associated to a file and b)
+      there's a stack.yaml file in this directory or one if its
+      parents, start intero-mode.  Otherwise, start ghc-mode"
+      (interactive)
+      (if (and (buffer-file-name)
+               (thblt/find-file-back-recursive (file-name-directory (buffer-file-name)) "stack.yaml"))
+        (message "INTERO")
+        (message "Won't start intero")))
+
+  (use-package haskell-mode
+    :init (add-hook 'haskell-mode-hook 'thblt/choose-haskell-ide)
+    )
 #+end_src
 
 Intero mode is a “complete interactive development program for Haskell”:
 
 #+begin_src emacs-lisp
   (use-package intero
-    :after haskell-mode
-    :init (add-hook 'haskell-mode-hook 'intero-mode-blacklist)
-    (setq intero-blacklist '(
-                             "/home/thblt/.xmonad/")))
+    :init (setq intero-blacklist '("/home/thblt/.xmonad/")))
 #+end_src
 
 Intero doesn't provide linting.
