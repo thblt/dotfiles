@@ -3,13 +3,13 @@
 
 This is my Emacs configuration.
 
-* Contents :TOC:
+* Contents :TOC:noexport:
  - [[#fundamentals][Fundamentals]]
    - [[#personal-information][Personal information]]
    - [[#package-sources-and-locations][Package sources and locations]]
    - [[#general-defaults][General defaults]]
    - [[#user-interface][User interface]]
-   - [[#misc][Misc]]
+   - [[#macos][MacOS]]
  - [[#editing-text][Editing text]]
    - [[#spell-checking][Spell checking]]
    - [[#modal-editing][“Modal” editing]]
@@ -113,7 +113,7 @@ Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fun
   (setq-default major-mode 'text-mode)
 #+end_src
 
-*** Backups
+*** Backups and keeping filesystem clean
 
 Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
 
@@ -129,6 +129,14 @@ We want numbered backups, because catastrophes happen.  The numbers may be a bit
   (setq version-control t
         kept-new-versions 500
         kept-old-versions 500)
+#+END_SRC
+
+Let's disable Customize by pointing it to =/dev/null=:
+
+#+BEGIN_SRC emacs-lisp
+  ;; Let Customize put its mess elsewhere
+  (setq custom-file "/dev/null")
+  (load custom-file t)
 #+END_SRC
 
 *** Browser
@@ -149,7 +157,6 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 #+end_src
 
 ** User interface
-
 *** Keybindings
 
 Rebind =C-x k= to kill the /current/ buffer.
@@ -319,9 +326,7 @@ From Emacs Wiki
   (global-set-key (kbd "C-c o") 'switch-to-minibuffer) ;; Bind to `C-c o'
 #+end_src
 
-** Misc
-
-*** MacOS
+** MacOS
 
 Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
 
@@ -341,16 +346,6 @@ Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
     (use-package exec-path-from-shell
       :init (exec-path-from-shell-initialize)))
 #+end_src
-
-*** Customize
-
-I configure Customize to store its data outside of =init.el= (I don't want these versioned).
-
-#+BEGIN_SRC emacs-lisp
-  ;; Let Customize put its mess elsewhere
-  (setq custom-file (concat user-emacs-directory "_customize.el"))
-  (load custom-file t)
-#+END_SRC
 
 * Editing text
 
