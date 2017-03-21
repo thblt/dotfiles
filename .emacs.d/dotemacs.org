@@ -1293,16 +1293,17 @@ This section deals with tools which don't edit anything.
 #+BEGIN_SRC emacs-lisp
   (use-package calfw
     :pin melpa
-    :init (setq cfw:fchar-vertical-line ?│
-                cfw:fchar-horizontal-line ?─
-                cfw:fchar-junction ?┼
-                cfw:fchar-top-left-corner ?╭
-                cfw:fchar-top-right-corner ?╮
-                ;;      cfw:fchar-bottom-right-corner ?╯
-                ;;      cfw:fchar-bottom-left-corner ?╰
-                cfw:fchar-left-junction ?├
-                cfw:fchar-right-junction ?┤)
-    )
+    :init (setq
+           cfw:display-calendar-holidays nil
+           ;; Grid characters
+           cfw:fchar-vertical-line ?│
+           cfw:fchar-horizontal-line ?─
+           cfw:fchar-junction ?┼
+           cfw:fchar-top-junction ?┬
+           cfw:fchar-top-left-corner ?╭
+           cfw:fchar-top-right-corner ?╮
+           cfw:fchar-left-junction ?├
+           cfw:fchar-right-junction ?┤))
 #+END_SRC
 
 ** Dired
