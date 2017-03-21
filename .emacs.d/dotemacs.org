@@ -380,8 +380,9 @@ Correct words using Ivy instead of default method:
 #+begin_src emacs-lisp
   (use-package flyspell-correct-ivy
     :after flyspell-correct  ;; M-o doesnt work without this
-    :bind (:map flyspell-mode-map (
-                                   ("C-;" . flyspell-correct-previous-word-generic))))
+    :bind (("M-$" . flyspell-auto-correct-previous-word)
+           :map flyspell-mode-map
+           (("C-;" . flyspell-correct-previous-word-generic))))
 #+end_src
 
 Auto-dictionary mode.  Disabled for now, as it seems to slow everything down + doesn't work with org-mode.
