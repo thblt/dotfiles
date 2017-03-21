@@ -29,6 +29,7 @@ This is my Emacs configuration.
    - [[#programming-languages][Programming languages]]
    - [[#misc-syntaxes][Misc syntaxes]]
  - [[#tools][Tools]]
+   - [[#calendars][Calendars]]
    - [[#dired][Dired]]
    - [[#ebib][Ebib]]
    - [[#magit-and-git][Magit and Git]]
@@ -1286,6 +1287,23 @@ Hayoo:
 
 This section deals with tools which don't edit anything.
 
+** Calendars
+
+#+BEGIN_SRC emacs-lisp
+  (use-package calfw
+    :pin melpa
+    :init (setq cfw:fchar-vertical-line ?│
+                cfw:fchar-horizontal-line ?─
+                cfw:fchar-junction ?┼
+                cfw:fchar-top-left-corner ?╭
+                cfw:fchar-top-right-corner ?╮
+                ;;      cfw:fchar-bottom-right-corner ?╯
+                ;;      cfw:fchar-bottom-left-corner ?╰
+                cfw:fchar-left-junction ?├
+                cfw:fchar-right-junction ?┤)
+    )
+#+END_SRC
+
 ** Dired
 
 I don't know Dired well, so this is nothing more than an attempt.
@@ -1610,7 +1628,6 @@ We use the =string= syntax, as advised on [[https://www.masteringemacs.org/artic
 #+begin_src emacs-lisp
 (setq reb-re-syntax 'string)
 #+end_src
-
 * Conclusion
 
 We should have started (or crashed) by now.  It's time to run the server!
