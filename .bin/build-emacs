@@ -2,27 +2,27 @@
 
 cd ~/Documents/Code/emacs
 
-sudo apt install libc6-dev \
-     libgif-dev \
-     libgnutls28-dev \
-     libgtk-3-dev \
-     libice-dev \
-     libjpeg-dev \
-     libmagickcore-dev \
-     libmagick++-dev
-     libncurses5-dev \
-     libotf-dev \
-     libsm-dev \
-     libtiff5-dev \
-     libx11-dev \
-     libxext-dev \
-     libxi-dev \
-     libxmu-dev \
-     libxmuu-dev \
-     libxpm-dev \
-     libxrandr-dev \
-     libxt-dev \
-     libxtst-dev \
+sudo apt install libc6-dev	\
+     libgif-dev			\
+     libgnutls28-dev		\
+     libgtk-3-dev		\
+     libice-dev			\
+     libjpeg-dev		\
+     libmagickcore-dev		\
+     libmagick++-dev		\
+     libncurses5-dev		\
+     libotf-dev			\
+     libsm-dev			\
+     libtiff5-dev		\
+     libx11-dev			\
+     libxext-dev		\
+     libxi-dev			\
+     libxmu-dev			\
+     libxmuu-dev		\
+     libxpm-dev			\
+     libxrandr-dev		\
+     libxt-dev			\
+     libxtst-dev		\
      libxv-dev
 
 ./autogen.sh
@@ -32,5 +32,5 @@ sudo apt install libc6-dev \
             --with-modules \
             --with-x-toolkit=gtk3  \
 
-make -j
+	    make -j
 make -j install
