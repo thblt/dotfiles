@@ -115,6 +115,7 @@ add font-manager fonts-dejavu fonts-noto fonts-noto-cjk fonts-roboto fonts-symbo
 add rxvt-unicode-256color
 # Browsers
 add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
+add pulseaudio # Mozilla-released Firefox depends on this for audio playback
 # Text editors (with CLI versions as well)
 remove vim-gtk
 add emacs25 vim vim-gtk3
