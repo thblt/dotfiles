@@ -53,7 +53,7 @@ bindkey '^[[B' down-line-or-search
 
 # By default, ZSH considers / to be part of the word.  This makes
 # forward-word and backward-word stop at directory delimiters
-export WORDCHARS="*?_-.[]~=&;\!#$%^(){}<>"
+export WORDCHARS="*?.[]~=&;\!#$%^(){}<>"
 
 # ======
 
