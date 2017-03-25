@@ -962,10 +962,12 @@ More efficient line numbering, especially on large files with huge foldings (eg 
 *** Company
 
 #+begin_src emacs-lisp
-(use-package company
-  :init (add-hook 'prog-mode-hook 'company-mode)
-  :diminish company-mode
-  )
+  (use-package company
+    :init (add-hook 'prog-mode-hook 'company-mode)
+    :bind (:map company-mode-map
+                (("M-TAB" . company-complete-common)))
+    :diminish company-mode
+    )
 #+end_src
 
 *** Counsel-dash
