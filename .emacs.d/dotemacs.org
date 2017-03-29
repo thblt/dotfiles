@@ -500,7 +500,7 @@ TODO: Stolen this list from xah-fly-keys:
   (sp-pair "(" ")")
   (sp-pair "[" "]")
   (sp-pair "{" "}")
-  (sp-pair "<""" ">")
+  (sp-pair "<" ">")
   (sp-pair "（" "）")
   (sp-pair "［" "］")
   (sp-pair "｛" "｝")
