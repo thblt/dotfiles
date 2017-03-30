@@ -1,3 +1,4 @@
+
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
@@ -33,6 +34,7 @@ import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       emptyBSP)
 import           XMonad.Layout.BorderResize          (borderResize)
 import           XMonad.Layout.Fullscreen            (fullscreenSupport)
+import           XMonad.Layout.Gaps
 import           XMonad.Layout.IfMax
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
@@ -81,7 +83,11 @@ data MySpacing = MySpacing {
 
 mySpacing = MySpacing 2 2 0
 
-myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
+data GapsTransformer = GAPS deriving (Read, Show, Eq, Typeable)
+instance Transformer GapsTransformer Window where
+  transform _ x k = k (gaps[(U, 8), (D, 7), (R, 300), (L, 300)] x) (const x)
+
+myLayoutHook = avoidStruts $ mkToggle (FULL ?? GAPS ?? EOT) $
                ifMax 1 Full $
                borderResize
                . myDecoration
@@ -178,6 +184,7 @@ myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
   , ((modMask .|. shiftMask,                xK_Left ),                windowSwap L False)
   , ((modMask .|. shiftMask,                xK_Up   ),                windowSwap U False)
   , ((modMask .|. shiftMask,                xK_Down ),                windowSwap D False)
+  , ((modMask,                              xK_F7),                   sendMessage $ Toggle GAPS)
 
 --  , ((modMask, xK_equal), sendMessage Balance)
 --  , ((modMask, xK_d), sendMessage Equalize)
