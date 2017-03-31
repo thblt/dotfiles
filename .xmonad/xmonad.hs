@@ -216,7 +216,7 @@ main = do
 --dbus <- connectSession
 --getWellKnownName dbus
 
-  xmonad . fullscreenSupport . withNavigation2DConfig def {
+  launch . fullscreenSupport . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
       borderWidth = 0 -- Borders are added in the layout hook

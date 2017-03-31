@@ -82,7 +82,8 @@ add xfonts-base # XMonad decorations fail without this.
 add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on GTK2 apps
 add desktop-base # Wallpaper and Plymouth themes
 # Window and compositing manager
-add xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
+remove xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
+add libxft-dev libxinerama-dev libxrandr-dev # XMonad libraries
 add compton
 # Display manager & session locker
 add lightdm-gtk-greeter light-locker

@@ -1,0 +1,21 @@
+name:               thblt-xmonad
+version:            0.2
+homepage:           https://thb.lt
+synopsis:           My configuration for the XMonad tiling WM
+author:             Thibault Polge
+maintainer:         thibault@thb.lt
+
+cabal-version:      >= 1.24
+
+executable xmonad
+    main-is:        xmonad.hs
+    build-depends:  base,
+                    containers >= 0.5,
+                    mtl,
+                    template-haskell >= 2.11,
+                    unix,
+                    X11,
+                    xmonad >= 0.13,
+                    xmonad-contrib >= 0.13
+
+    ghc-options:    -Wall
