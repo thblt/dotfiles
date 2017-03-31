@@ -6,7 +6,6 @@
 *.pyenv
 *.swp
 *.un~
-./.emacs.d/abbrev_defs
 .DS_Store
 .config/gtk-3.0/bookmarks
 .emacs.d/.mc-lists.el
@@ -30,6 +29,7 @@
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/projectile.cache
 .emacs.d/recentf
+.emacs.d/tramp
 .emacs.d/url
 .vim/bundle/**
 .vim/undo/**
