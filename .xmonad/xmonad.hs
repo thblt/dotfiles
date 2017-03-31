@@ -3,46 +3,47 @@
 {-# LANGUAGE TypeSynonymInstances  #-}
 
 import           Data.Int
-import qualified Data.Map                            as M
-import           Data.Maybe                          (isJust)
+import qualified Data.Map as M
+import           Data.Maybe (isJust)
 import           Graphics.X11.ExtraTypes.XF86
 import           Language.Haskell.TH
-import           System.Posix.Unistd                 (SystemID (nodeName),
-                                                      getSystemID)
+import           System.Posix.Unistd (SystemID (nodeName),
+                                       getSystemID)
 import           XMonad
 --import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 import           XMonad.Actions.Navigation2D
 -- import           XMonad.Actions.MessageFeedback -- READ BELOW.
 -- Note to self: this is broken.  The messages get correctly sent, but the view doesn't update.  You have to move focus or do something else.
-import           XMonad.Actions.WindowBringer        (bringMenu, gotoMenu)
-import           XMonad.Hooks.EwmhDesktops           (ewmh)
-import           XMonad.Hooks.FadeInactive           (fadeInactiveLogHook)
-import           XMonad.Hooks.ManageDocks            (ToggleStruts (ToggleStruts),
-                                                      avoidStruts,
-                                                      docksEventHook,
-                                                      manageDocks)
-import           XMonad.Hooks.ManageHelpers          (isDialog)
-import           XMonad.Hooks.Place                  (placeHook, withGaps, smart)
-import           XMonad.Hooks.SetWMName              (setWMName)
-import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
+import           XMonad.Util.EZConfig (mkKeymap)
+import           XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
+import           XMonad.Hooks.EwmhDesktops (ewmh)
+import           XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
+import           XMonad.Hooks.ManageDocks (ToggleStruts (ToggleStruts),
+                                            avoidStruts,
+                                            docksEventHook,
+                                            manageDocks)
+import           XMonad.Hooks.ManageHelpers (isDialog)
+import           XMonad.Hooks.Place (placeHook, withGaps, smart)
+import           XMonad.Hooks.SetWMName (setWMName)
+import           XMonad.Layout.BinarySpacePartition (ResizeDirectional (..),
                                                       Rotate (Rotate),
                                                       SelectMoveNode (..),
                                                       TreeBalance (..),
                                                       emptyBSP)
-import           XMonad.Layout.BorderResize          (borderResize)
-import           XMonad.Layout.Fullscreen            (fullscreenSupport)
+import           XMonad.Layout.BorderResize (borderResize)
+import           XMonad.Layout.Fullscreen (fullscreenSupport)
 import           XMonad.Layout.Gaps
 import           XMonad.Layout.IfMax
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
-import           XMonad.Layout.NoBorders             (withBorder)
+import           XMonad.Layout.NoBorders (withBorder)
 import           XMonad.Layout.NoFrillsDecoration
-import           XMonad.Layout.Spacing               (smartSpacingWithEdge)
-import qualified XMonad.StackSet                     as XSS
+import           XMonad.Layout.Spacing (smartSpacingWithEdge)
+import qualified XMonad.StackSet as XSS
 import           XMonad.Util.NamedScratchpad
-import           XMonad.Util.NamedWindows            (getName)
-import           XMonad.Util.Run                     (spawnPipe)
-import           XMonad.Util.WorkspaceCompare        (getSortByIndex)
+import           XMonad.Util.NamedWindows (getName)
+import           XMonad.Util.Run (spawnPipe)
+import           XMonad.Util.WorkspaceCompare (getSortByIndex)
 
 -- Computer-dependent settings.
 
@@ -104,7 +105,6 @@ myLayoutHook = avoidStruts $ mkToggle (FULL ?? GAPS ?? EOT) $
     --   , fontName = "-*-clean-medium-r-*-*-12-*-*-*-*-*-*-*"
     --   }
 
-
 myScratchpads :: [NamedScratchpad]
 myScratchpads = [
   NS "term" "urxvt -title urxvt_scratchpad_1545645 -e ~/.xmonad/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
@@ -113,92 +113,93 @@ myScratchpads = [
   NS "web" "surf" (className =? "Surf")
     (customFloating rect)
   ]
-  where ratio = 12
+  where ratio = 16
         rect = XSS.RationalRect (1/ratio) (1/ratio) ((ratio-2)/ratio) ((ratio-2)/ratio)
 
 myKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys conf@XConfig { XMonad.modMask = modMask } = M.fromList $
+myKeys conf@XConfig { XMonad.modMask = modMask } =
+  mkKeymap conf $
   [
-    -- General
-    ((modMask .|. shiftMask,                xK_c),                    kill)
-  , ((modMask .|. shiftMask,                xK_q),                    spawn "/home/thblt/.xmonad/quit-xmonad.sh")
-  , ((modMask,                              xK_q),                    spawn "/home/thblt/.xmonad/recompile-xmonad.sh")
-  , ((modMask,                              xK_Escape),               spawn "dm-tool lock")
-  , ((modMask .|. shiftMask,                xK_Escape),               spawn "dm-tool switch-to-greeter")
-  -- Layout management
-  , ((modMask,                              xK_space),                sendMessage NextLayout)
-  , ((modMask .|. shiftMask,                xK_space),                setLayout $ XMonad.layoutHook conf) -- Reset
-  , ((modMask,                              xK_h),                    sendMessage Shrink)
-  , ((modMask,                              xK_l),                    sendMessage Expand)
-  , ((modMask .|. shiftMask,                xK_f),                    sendMessage ToggleStruts)
-  , ((modMask,                              xK_f),                    sendMessage $ Toggle FULL)
-  , ((modMask,                              xK_equal),                sendMessage $ IncMasterN 1)
-  , ((modMask,                              xK_minus),                sendMessage $ IncMasterN (-1))
-  -- BSP-specific
-  , ((modMask .|. shiftMask,                xK_h),                    sendMessage $ ExpandTowards L)
-  , ((modMask .|. shiftMask,                xK_j),                    sendMessage $ ExpandTowards D)
-  , ((modMask .|. shiftMask,                xK_k),                    sendMessage $ ExpandTowards U)
-  , ((modMask .|. shiftMask,                xK_l),                    sendMessage $ ExpandTowards R)
-  , ((modMask .|. controlMask,              xK_h),                    sendMessage $ ShrinkFrom L)
-  , ((modMask .|. controlMask,              xK_j),                    sendMessage $ ShrinkFrom D)
-  , ((modMask .|. controlMask,              xK_k),                    sendMessage $ ShrinkFrom U)
-  , ((modMask .|. controlMask,              xK_l),                    sendMessage $ ShrinkFrom R)
-  , ((modMask,                              xK_w),                    sendMessage $ SelectNode)
-  , ((modMask,                              xK_x),                    sendMessage $ MoveNode)
-  , ((modMask,                              xK_r),                    sendMessage Rotate)
-  , ((modMask,                              xK_Tab),                  windows XSS.focusDown)
-  , ((modMask .|. shiftMask,                xK_Tab),                  windows XSS.focusUp)
-  , ((modMask,                              xK_Return),               windows XSS.swapMaster)
-  , ((modMask,                              xK_t),                    withFocused $ windows . XSS.sink)
-  , ((modMask,                              xK_p),                    spawn "~/.bin/dmenu-desktop --entry-type=name" )
-  , ((modMask .|. shiftMask,                xK_p),                    spawn "dmenu_run")
-  , ((modMask .|. shiftMask,                xK_Return),               spawn $ terminal conf)
-  , ((modMask .|. controlMask .|. shiftMask,xK_Return),               spawn $ "~/.xmonad/emacsclient-with-feedback")
---, ((modMask,                              xK_s),                    scratchpadSpawnActionCustom $ terminal conf ++ " -name scratchpad -e ~/.xmonad/tmux-attach-or-new scratch")
-  , ((modMask,                              xK_s),                    namedScratchpadAction myScratchpads "term")
-  , ((modMask .|. shiftMask,                xK_w),                    namedScratchpadAction myScratchpads "web")
-  , ((modMask,                              xK_g),                    gotoMenu)
-  , ((modMask .|. shiftMask,                xK_g),                    bringMenu)
-  , ((0,                                    xF86XK_AudioLowerVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume)
-  , ((0,                                    xF86XK_AudioRaiseVolume), spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume)
-  , ((0,                                    xF86XK_AudioMute),        spawn $ "amixer set Master toggle; " ++ shNotifyVolume )
-  , ((0,                                    xF86XK_MonBrightnessUp),  spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1")
-  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1")
-  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessUp),  spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1")
-  , ((0 .|. shiftMask,                      xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1")
-  , ((0,                                    xF86XK_MonBrightnessDown),spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1" )
-  , ((0,                                    xF86XK_KbdBrightnessUp),  spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%")
-  , ((0,                                    xF86XK_KbdBrightnessDown),spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")
-  , ((modMask,                              xK_Right),                windowGo R False)
-  , ((modMask,                              xK_Left ),                windowGo L False)
-  , ((modMask,                              xK_Up   ),                windowGo U False)
-  , ((modMask,                              xK_Down ),                windowGo D False)
-  , ((modMask,                              xK_l    ),                windowGo R False)
-  , ((modMask,                              xK_h    ),                windowGo L False)
-  , ((modMask,                              xK_k    ),                windowGo U False)
-  , ((modMask,                              xK_j    ),                windowGo D False)
-  , ((modMask .|. shiftMask,                xK_Right),                windowSwap R False)
-  , ((modMask .|. shiftMask,                xK_Left ),                windowSwap L False)
-  , ((modMask .|. shiftMask,                xK_Up   ),                windowSwap U False)
-  , ((modMask .|. shiftMask,                xK_Down ),                windowSwap D False)
-  , ((modMask,                              xK_F7),                   sendMessage $ Toggle GAPS)
+    ("M-S-c"                     , kill),
+    ("M-S-q"                     , spawn "/home/thblt/.xmonad/quit-xmonad.sh"),
+    ("M-q"                       , restart "/home/thblt/.local/bin/xmonad" True), --spawn "/home/thblt/.xmonad/recompile-xmonad.sh"),
+    ("M-<Esc>"                   , spawn "dm-tool lock"),
+    ("M-S-<Esc>"                 , spawn "dm-tool switch-to-greeter"),
 
---  , ((modMask, xK_equal), sendMessage Balance)
---  , ((modMask, xK_d), sendMessage Equalize)
+    ("M-<Space>"                 , sendMessage NextLayout),
+    ("M-S-<Space>"               , setLayout $ XMonad.layoutHook conf), -- (Reset)
+
+    ("M-h"                       , sendMessage Shrink),
+    ("M-l"                       , sendMessage Expand),
+
+    ("M-f f"                     , sendMessage $ Toggle FULL),
+    ("M-f x"                     , sendMessage $ Toggle GAPS),
+    ("M-f s"                     , sendMessage ToggleStruts),
+
+    ("M-="                       , sendMessage $ IncMasterN 1),
+    ("M--"                       , sendMessage $ IncMasterN (-1)),
+    -- BSP-specific
+    ("M-S-h"                     , sendMessage $ ExpandTowards L),
+    ("M-S-j"                     , sendMessage $ ExpandTowards D),
+    ("M-S-k"                     , sendMessage $ ExpandTowards U),
+    ("M-S-l"                     , sendMessage $ ExpandTowards R),
+
+    ("M-C-h"                     , sendMessage $ ShrinkFrom L),
+    ("M-C-j"                     , sendMessage $ ShrinkFrom D),
+    ("M-C-k"                     , sendMessage $ ShrinkFrom U),
+    ("M-C-l"                     , sendMessage $ ShrinkFrom R),
+
+    ("M-w"                       , sendMessage SelectNode),
+    ("M-x"                       , sendMessage MoveNode),
+
+    ("M-r"                       , sendMessage Rotate),
+
+    ("M-<Tab>"                   , windows XSS.focusDown),
+    ("M-S-<Tab>"                 , windows XSS.focusUp),
+
+    ("M-<Return>"                , windows XSS.swapMaster),
+    ("M-t"                       ,                 withFocused $ windows . XSS.sink),
+
+    ("M-p"                       , spawn "~/.bin/dmenu-desktop --entry-type=name"),
+
+    ("M-S-<Return>"              , spawn $ terminal conf),
+
+    ("M-C-S-<Return>"            , spawn $ "~/.xmonad/emacsclient-with-feedback"),
+
+    ("M-s"                       , namedScratchpadAction myScratchpads "term"),
+
+    -- Volume
+    ("<XF86AudioLowerVolume"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
+    ("<XF86AudioRaiseVolume"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
+    ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
+
+    -- Brightness (monitor)
+    ("<XF86MonBrightnessUp>"     , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1"),
+    ("S-<XF86MonBrightnessUp>"   , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1"),
+    ("<XF86MonBrightnessDown>"   , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1"),
+    ("S-<XF86MonBrightnessDown>" , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1"),
+
+    -- Brightness (keyboard backlight)
+    ("<XF86KdbBrightnessUp>"     , spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%"),
+    ("<XF86KdbBrightnessDown>"   ,spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")
   ]
-  ++
+  where
+    shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
+
+
+
   -- workspace switching
-  [((m .|. modMask, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) workspacesKeys
-        , (f, m) <- [(XSS.greedyView, 0), (XSS.shift, shiftMask)]]
+extraKeys conf modMask = [((m .|. modMask, k), windows $ f i)
+     | (i, k) <- zip (XMonad.workspaces conf) workspacesKeys
+     , (f, m) <- [(XSS.greedyView, 0), (XSS.shift, shiftMask)]]
   ++
   -- mod-{a,z,e} %! Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{a,z,e} %! Move client to screen 1, 2, or 3
   [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_a, xK_z, xK_e] [0..]
         , (f, m) <- [(XSS.view, 0), (XSS.shift, shiftMask)]]
-  where
-    shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
+
+-- @TODO REstore
 
 myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
