@@ -1335,7 +1335,7 @@ Hayoo:
 *** YAML
 
 #+begin_src emacs-lisp
-(provide 'setup-yaml)
+  (use-package yaml-mode)
 #+end_src
 
 * Tools
