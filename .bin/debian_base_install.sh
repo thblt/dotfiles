@@ -158,6 +158,7 @@ if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
 	add acpid
 	add network-manager rfkill # TODO move to a "laptop" group
+  add plymouth # Because keyboard is broken
 	add task-laptop # Should have been installed automatically
 	add xserver-xorg-video-intel
 	add firmware-brcm80211 # Wifi
