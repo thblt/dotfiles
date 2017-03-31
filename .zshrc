@@ -61,6 +61,7 @@ export WORDCHARS="*?.[]~=&;\!#$%^(){}<>"
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
 alias bc="bc -l"
+alias bgd="bg;disown;"
 alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
