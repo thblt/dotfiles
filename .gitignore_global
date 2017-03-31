@@ -1,10 +1,11 @@
-.~lock*
 *~
-.DS_Store
 *.synctex.gz
 *.swp
 .*.~undo-tree~
 *.un~
+.~lock*
+.DS_Store
+.stack-work
 ltximg
 ltxpng
 missfont.log
