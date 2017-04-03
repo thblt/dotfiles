@@ -1577,20 +1577,23 @@ Then the bulk of the config:
                mu4e-completing-read-function 'ivy-completing-read
 
                ;; General settings
+               message-send-mail-function 'smtpmail-send-it
+               mu4e-change-filenames-when-moving t  ; Required for mbsync
+               mu4e-get-mail-command "mbsync p1 ovh"
+               mu4e-headers-auto-update t
                mu4e-html2text-command 'mu4e-shr2text
                mu4e-maildir "~/.Mail/"
-               mu4e-get-mail-command "mbsync p1 ovh"
-               mu4e-change-filenames-when-moving t  ; Required for mbsync
                mu4e-update-interval 60 ;; seconds
-               message-send-mail-function 'smtpmail-send-it
-               mu4e-headers-auto-update t
+               mu4e-sent-messages-behavior 'sent
 
+               ;; UI settings
                mu4e-confirm-quit nil
                mu4e-hide-index-messages t
                mu4e-split-view 'vertical
                mu4e-headers-include-related t  ; Include related messages in threads
                mu4e-view-show-images t
 
+               ;; UI symbols
                mu4e-use-fancy-chars t
                mu4e-headers-attach-mark '("" . "")
                mu4e-headers-encrypted-mark '("" . "")
