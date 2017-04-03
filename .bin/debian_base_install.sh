@@ -75,8 +75,8 @@ add exfat-fuse exfat-utils
 
 # Xorg
 add xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
-     mesa-utils mesa-va-drivers mesa-vdpau-drivers \
-	 libgl1-mesa-dri
+    mesa-utils mesa-va-drivers mesa-vdpau-drivers \
+    libgl1-mesa-dri
 
 add xfonts-base # XMonad decorations fail without this.
 add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on GTK2 apps
@@ -157,16 +157,17 @@ add transmission
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
-	add acpid
-	add network-manager rfkill # TODO move to a "laptop" group
-  add plymouth # Because keyboard is broken
-	add task-laptop # Should have been installed automatically
-	add xserver-xorg-video-intel
-	add firmware-brcm80211 # Wifi
+    add acpid
+    add gnome
+    add network-manager rfkill # TODO move to a "laptop" group
+    add plymouth # Because keyboard is broken
+    add task-laptop # Should have been installed automatically
+    add xserver-xorg-video-intel
+    add firmware-brcm80211 # Wifi
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 elif [ "rudiger" = `hostname` ]; then
     >&2 echo "I'm running on Rudiger."
-	add xserver-xorg-video-radeon
+    add xserver-xorg-video-radeon
     add numlockx
 fi
 
