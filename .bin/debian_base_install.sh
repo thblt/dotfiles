@@ -158,7 +158,6 @@ add transmission
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
     add acpid
-    add gnome
     add network-manager rfkill # TODO move to a "laptop" group
     add plymouth # Because keyboard is broken
     add task-laptop # Should have been installed automatically
@@ -167,8 +166,9 @@ if [ "anna" = `hostname` ]; then
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 elif [ "rudiger" = `hostname` ]; then
     >&2 echo "I'm running on Rudiger."
-    add xserver-xorg-video-radeon
+    add gnome
     add numlockx
+    add xserver-xorg-video-radeon
 fi
 
 if [ "$1" = "list" ]; then
