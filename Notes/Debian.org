@@ -4,6 +4,8 @@
 
 Note to readers: Hi! You've just found a completely useless document.  These are notes on how to install Debian the way I like it.  It won't be of any use to anyone else.
 
+*Notice*.  Everything that is marked as *DONE* is handled by the =debian-bootstrap= script.
+
 * Base install
 
 Install Debian as usual.
@@ -28,7 +30,8 @@ Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement i
    - Remove cdrom lines (=gg6dd=)
    - =%s/jessie/stretch/= (or whatever applies now.  You probably shouldn't stick with the current stable: unless the new stable is fresh and new, you'd better go for the next one.  There's gonna be trouble: this is install.  Better have problems once and for all with the current testing rather than with current stable and later, new stable.)
    - =%s/main/main contrib non-free=
- - =apt update=; =apt dist-upgrade=.  Coffee
+
+*Run debian-bootstrap* (https://bootstrap.thb.lt/debian)
 
 ** DONE Ne PAS installer automatiquement les paquets recommandés
 
@@ -53,7 +56,7 @@ APT::AutoRemove::SuggestsImportant "false";
 
  - =usermod -aG sudo,adm,systemd-journal thblt=
 
-** Install all the cool stuff
+** TODO Install all the cool stuff
 
 *debian-bootstrap handles this*
 
