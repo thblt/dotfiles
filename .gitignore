@@ -34,3 +34,4 @@
 .vim/bundle/**
 .vim/undo/**
 .xmonad/.bin
+.xmonad/xmonad.state
