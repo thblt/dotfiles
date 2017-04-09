@@ -166,7 +166,7 @@ if [ "anna" = `hostname` ]; then
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 elif [ "rudiger" = `hostname` ]; then
     >&2 echo "I'm running on Rudiger."
-    add gnome
+    add xfce4
     add numlockx
     add xserver-xorg-video-radeon
 fi
