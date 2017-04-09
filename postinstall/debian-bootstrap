@@ -42,7 +42,7 @@ if [ ! -f $pkglistfile ]; then
 fi
 
 # Install required tooling
-apt install ca-certificates git
+apt install ca-certificates git sudo
 
 # Clone dotfiles
 git clone https://github.com/thblt/dotfiles $target_home/.dotfiles
