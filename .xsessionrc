@@ -35,11 +35,3 @@ xrdb merge ~/.Xresources # LightDM does it, nodm doesn't
 xmodmap .Xmodmap.`hostname`
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
-
-echo Session is: "$1" O JOY
-if [ "default" = "$1" ]; then
-    echo "Yes XMONAD"
-    ~/.xmonad/.bin/xmonad
-else
-    echo "NOTXMONAD"
-fi

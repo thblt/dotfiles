@@ -4,11 +4,13 @@ homepage:           https://thb.lt
 synopsis:           My configuration for the XMonad tiling WM
 author:             Thibault Polge
 maintainer:         thibault@thb.lt
+-- build-type:         Simple
 
 cabal-version:      >= 1.24
 
 executable xmonad
-    main-is:        xmonad.hs
+    hs-source-dirs: src
+    main-is:        Main.hs
     build-depends:  base,
                     containers >= 0.5,
                     mtl,

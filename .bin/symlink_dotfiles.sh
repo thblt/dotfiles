@@ -18,6 +18,7 @@ declare -a things=(
     .vim
     .Xmodmap.`hostname`
     .xmonad
+    .xsession
     .xsessionrc
     .zshrc
 )

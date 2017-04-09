@@ -1,0 +1,1 @@
+$HOME/.xmonad/scripts/start
