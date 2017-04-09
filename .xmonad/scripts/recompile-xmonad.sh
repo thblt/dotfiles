@@ -1,6 +1,7 @@
 #!/bin/sh
+cd ~/.xmonad
 
-xmonad --recompile
+stack build
 if [ $? -eq 0 ]; then
     xmonad --restart
     notify-send -u low XMonad 'Recompiled and restarted.'

@@ -1,11 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 source ~/.profile
 
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
-
-# if [ "xmonad" == "$1" ]; then
 
 # Notification server first, so we can report errors
 if [ ! -e /etc/debian_version ]; then
@@ -26,7 +24,7 @@ else
 	notify-send -u critical `basename "$0"` "Unknown computer, keyboard layout not set."
 fi
 
-compton --config ~/.xmonad/compton.conf &
+compton --config ~/.config/compton.conf &
 # mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code/cozy-desktop/bin/cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
 eval $(keychain --eval)
 keynav &
@@ -37,4 +35,11 @@ xrdb merge ~/.Xresources # LightDM does it, nodm doesn't
 xmodmap .Xmodmap.`hostname`
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
-# fi
+
+echo Session is: "$1" O JOY
+if [ "default" = "$1" ]; then
+    echo "Yes XMONAD"
+    ~/.xmonad/.bin/xmonad
+else
+    echo "NOTXMONAD"
+fi
