@@ -1628,7 +1628,11 @@ Then the bulk of the config:
 Load private configuration (we need to do this now, some later steps make use of eg bookmarks):
 
 #+BEGIN_SRC emacs-lisp
-  (org-babel-load-file (expand-file-name "thblt-mu4e.org" user-emacs-directory))
+  (let ((mu4e-private-config (expand-file-name "thblt-mu4e.org" user-emacs-directory)))
+
+    (if (file-exists-p mu4e-private-config)
+        (org-babel-load-file mu4e-private-config)
+      (display-warning :warning "Private mu4e configuration missing")))
 #+END_SRC
 
 Compose messages with org-mode tables and lists:
