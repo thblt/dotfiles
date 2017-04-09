@@ -14,8 +14,8 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 
 # Prompt
+export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/bundles/bhilburn/powerlevel9k
 antigen theme bhilburn/powerlevel9k powerlevel9k
-export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/repos/https-COLON--SLASH--SLASH-github.com-SLASH-bhilburn-SLASH-powerlevel9k.git/
 export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator background_jobs status dir context)
 export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vcs)
 export POWERLEVEL9K_STATUS_VERBOSE=false
