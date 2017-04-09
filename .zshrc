@@ -16,7 +16,7 @@ antigen bundle zsh-users/zsh-autosuggestions
 # Prompt
 export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/bundles/bhilburn/powerlevel9k
 antigen theme bhilburn/powerlevel9k powerlevel9k
-export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator background_jobs status dir context)
+export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir)
 export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vcs)
 export POWERLEVEL9K_STATUS_VERBOSE=false
 
@@ -24,6 +24,8 @@ export POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
 export POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
 export POWERLEVEL9K_SHORTEN_DELIMITER="…"
 export POWERLEVEL9K_SHORTEN_FOLDER_MARKER=".git"
+
+export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
 antigen apply
 
@@ -37,15 +39,15 @@ zstyle ':completion:*' menu select
 setopt AUTOcd
 
 # History
-HISTFILE=$HOME/.zsh_history
-SAVEHIST=20000
-setopt APPEND_HISTORY
-setopt EXTENDED_HISTORY
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt SHARE_HISTORY
+export HISTFILE=$HOME/.zsh_history
+export SAVEHIST=20000
+export HISTSIZE=20000
+setopt append_history
+setopt hist_ignore_all_dups
+setopt hist_expire_dups_first
+setopt share_history
 
-# Editing
+# editing
 
 # Prefix-based history search with up and down arrow
 bindkey '^[[A' up-line-or-search
@@ -58,7 +60,6 @@ export WORDCHARS="*?.[]~=&;\!#$%^(){}<>"
 # ======
 
 # Variables
-export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 export EDITOR="emacsclient -ca ''"
 alias bc="bc -l"
 alias bgd="bg;disown;"
