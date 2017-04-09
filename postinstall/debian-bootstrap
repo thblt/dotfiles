@@ -36,8 +36,10 @@ apt update
 apt -y dist-upgrade
 
 # List installed packages
-templist=`tempfile`
-apt-mark showmanual > $templist
+pkglistfile=/usr/local/share/base-packages.list
+if [ ! -f $pkglistfile ]; then
+    apt-mark showmanual > $pkglistfile
+fi
 
 # Create Xsession
 echo "[Desktop Entry]"        > /usr/share/xsessions/Xsession.desktop
