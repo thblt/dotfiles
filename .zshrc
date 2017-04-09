@@ -89,7 +89,7 @@ alias -g NUL="> /dev/null 2>&1"
 alias -g P="2>&1| pygmentize -l pytb"
 
 # Misc aliases and functions
-alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat /usr/local/share/base-packages.list | sort -u)) <(debian_base_install.sh list | sort -u)"
+alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat /usr/local/share/base-packages.list | sort -u)) <($HOME/.dotfiles/postinstall/debian-install-packages list | sort -u)"
 alias bc="bc -l"
 
 function bump-elisp-version() {
