@@ -191,6 +191,6 @@ echo "Please review the FULL output above and press enter"
 echo "to proceed or C-c to abort."
 read dummy
 
-sudo apt-mark auto $removed_packages
-sudo apt autoremove --purge
-sudo apt install $packages
+apt-mark auto $removed_packages
+apt autoremove --purge
+apt install $packages
