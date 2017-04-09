@@ -92,7 +92,8 @@ remove nodm slock
 # Dbus
 add dbus-x11
 # Notification system
-add dunst libnotify-bin
+add dunst libnotify-bin gir1.2-notify-0.7
+#                       ^ Introspection data.  At least Udiskie requires this.
 # Audio
 add alsa-base alsa-utils
 
