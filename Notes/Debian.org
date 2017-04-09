@@ -15,7 +15,9 @@ Install Debian as usual.
 
 * Post install
 
-** Store base package list somewhere
+** DONE Store base package list somewhere
+
+*debian-bootstrap handles this*
 
 Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement installés post-install et ceux installés par l'installeur (que ce soit Debian, pacstrap ou whetever).  *Donc* =apt list --installed > ~/debian-initial-`hostname`.txt=, ça servira plus tard en combinaison avec
 =aptitude search '~i !~M'= (il y a un script pour ça dans mon =.bin=: =apt-what-have-I-installed=)
@@ -28,7 +30,9 @@ Comme partout ailleurs, c'est une plaie de distinguer les paquets manuellement i
    - =%s/main/main contrib non-free=
  - =apt update=; =apt dist-upgrade=.  Coffee
 
-** Ne PAS installer automatiquement les paquets recommandés
+** DONE Ne PAS installer automatiquement les paquets recommandés
+
+*debian-bootstrap handles this*
 
 Par défaut, Debian installe les paquets suggérés ou recommandés.  Comme je suis fou je n'aime pas ça.  KISS, toussa toussa.
 
@@ -43,11 +47,15 @@ APT::AutoRemove::RecommendsImportant "false";
 APT::AutoRemove::SuggestsImportant "false";
 #+end_src
 
-** Belong in the cool groups
+** DONE Belong in the cool groups
+
+*debian-bootstrap handles this*
 
  - =usermod -aG sudo,adm,systemd-journal thblt=
 
 ** Install all the cool stuff
+
+*debian-bootstrap handles this*
 
  - =apt install git=
  - as =thblt=, =git clone= your dotfiles to =~/.dotfiles=.
@@ -57,8 +65,6 @@ APT::AutoRemove::SuggestsImportant "false";
  - As root (you don't have sudo yet): =sh ~thblt/.dotfiles/bin/debian_base_install.sh=.  More coffee.  If you're on a slow connection, you may comment out texlive (but you're still going to get the gigabyte xmonad install)
 
  - As yourself, run =~/.dotfiles/bin/symlink_dotfiles.sh=
-
- - As yourself, =thblt_got_a_new_pc=.  It won't do much, but it will install Vundle and prevent vim from freaking out (and also create an empty .emacs.d/_customize.el).  (on Macs, it also installs Homebrew)  (Some day I may merge my various post-install scripts)
 
  - =chsh=, zsh is installed as =/usr/bin/zsh=.  The first zsh run will auto-install antigen which in turn will install its plugins, because of *magic* (and .zshrc)
 
