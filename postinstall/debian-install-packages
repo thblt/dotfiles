@@ -122,7 +122,7 @@ add pulseaudio # Mozilla-released Firefox depends on this for audio playback
 remove vim-gtk
 add emacs25 vim vim-gtk3
 # These are the dependencies of Emacs pdf-tools
-add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev libz-dev
+add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev zlib1g-dev
 # And the Emacs non-free documentation
 add emacs25-common-non-dfsg
 # I don't use emacs 24 anymore
