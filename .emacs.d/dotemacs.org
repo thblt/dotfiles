@@ -14,6 +14,7 @@ This is my Emacs configuration.
    - [[#spell-checking][Spell checking]]
    - [[#modal-editing][“Modal” editing]]
    - [[#moving-around][Moving around]]
+   - [[#replace][Replace]]
    - [[#minor-modes][Minor modes]]
    - [[#customization][Customization]]
  - [[#writing-prose][Writing prose]]
@@ -434,6 +435,16 @@ Emulates Vim's =f=, =F=, =t= and =T=.
            ("C-c ;" . iy-go-to-or-up-to-continue)
            ("C-c ," . iy-go-to-or-up-to-continue-backward)))
 #+end_src
+
+** Replace
+
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-regexp
+    :bind (
+           ("C-M-%" . vr/query-replace)
+           ("C-c r" . vr/replace)
+           ("C-c m" . vr/mc-mark)))
+#+END_SRC
 
 ** Minor modes
 
