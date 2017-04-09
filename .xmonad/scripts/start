@@ -2,16 +2,13 @@
 
 # The directory holding your source code and stack.yaml file:
 SRC_DIR=$HOME/.xmonad
-
 # The name of the executable produced by stack.  This comes from the
 # executable section of your Cabal file.
 EXE_NAME=xmonad
 
-cd $SRC_DIR
-stack build
+urxvt -e stack --stack-yaml=$SRC_DIR/stack.yaml build
 
-EXE_DIR=`stack path --dist-dir`
+EXE_DIR=`stack --stack-yaml=$SRC_DIR/stack.yaml path --dist-dir`
 
 cd $HOME
-
 $SRC_DIR/$EXE_DIR/build/$EXE_NAME/$EXE_NAME
