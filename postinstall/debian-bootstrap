@@ -46,7 +46,9 @@ apt install ca-certificates git
 
 # Clone dotfiles
 git clone https://github.com/thblt/dotfiles $target_home/.dotfiles
-$target_home/.dotfiles/postinstall/symlink-dotfiles
+# Symlink them (as the target user)
+sudo -u $target_user $target_home/.dotfiles/postinstall/symlink-dotfiles
+# Install all the things
 $target_home/.dotfiles/postinstall/debian-install-packages
 
 # Give back ownership
