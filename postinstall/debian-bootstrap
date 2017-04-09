@@ -41,11 +41,6 @@ if [ ! -f $pkglistfile ]; then
     apt-mark showmanual > $pkglistfile
 fi
 
-# Create Xsession
-echo "[Desktop Entry]"        > /usr/share/xsessions/Xsession.desktop
-echo "Name=Xsession"          >> /usr/share/xsessions/Xsession.desktop
-echo "Exec=/etc/X11/Xsession" >> /usr/share/xsessions/Xsession.desktop
-
 # Install required tooling
 apt install ca-certificates git
 
