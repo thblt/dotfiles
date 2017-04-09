@@ -33,8 +33,4 @@
 .emacs.d/url
 .vim/bundle/**
 .vim/undo/**
-.xmonad/dist
-.xmonad/xmonad
-.xmonad/xmonad-x86_64-linux
-.xmonad/xmonad.errors
-.xmonad/xmonad.state
+.xmonad/.bin
