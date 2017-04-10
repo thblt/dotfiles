@@ -1176,10 +1176,18 @@ With Ivy integration:
 #+begin_src emacs-lisp
   (use-package counsel-projectile
     :init (counsel-projectile-on) (define-prefix-command 'thblt-projectile-map)
+    :config (ivy-add-actions
+             ;; Allow to switch projects from counsel-projectile
+             'counsel-projectile
+             '(
+               ("p" (lambda (_) (counsel-projectile-switch-project))
+                "Switch project"
+                )
+               ))
     :bind (
            :map projectile-mode-map
-           ("C-c p p"   . counsel-projectile)
-           ("C-c p SPC" . counsel-projectile-switch-project))
+                ("C-c p p"   . counsel-projectile)
+                ("C-c p SPC" . counsel-projectile-switch-project))
     )
 #+end_src
 
