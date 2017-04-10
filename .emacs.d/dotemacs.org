@@ -1575,7 +1575,7 @@ Then the bulk of the config:
                ;; General settings
                message-send-mail-function 'smtpmail-send-it
                mu4e-change-filenames-when-moving t  ; Required for mbsync
-               mu4e-get-mail-command "mbsync p1 ovh"
+               mu4e-get-mail-command "mbsync ovh"
                mu4e-headers-auto-update t
                mu4e-html2text-command 'mu4e-shr2text
                mu4e-maildir "~/.Mail/"
