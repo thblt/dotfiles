@@ -1193,8 +1193,7 @@ With Ivy integration:
              '(
                ("p" (lambda (_) (counsel-projectile-switch-project))
                 "Switch project"
-                )
-               ))
+                )))
     :bind (
            :map projectile-mode-map
                 ("C-c p p"   . counsel-projectile)
