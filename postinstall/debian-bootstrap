@@ -1,29 +1,22 @@
 #!/bin/sh
 
+
+pkg_add() {
+    packages="$packages $@"
+}
+
+pkg_remove() {
+    removed_packages="$removed_packages $@"
+}
+
+packages=""
+
+target_user=`id -nu 1000`
+
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
    exit 1
 fi
-
-echo "I assume you have:"
-echo
-echo " - Updated /etc/apt/sources.list"
-echo
-echo "If that's OK, then just tell who I do work for?"
-
-read target_user
-id -u "$target_user" > /dev/null # We need quotes, or an empty value
-                                 # will be accepted as meaning current
-                                 # user
-
-if [ $? = "1" ]; then
-   echo "$target_user doesn't exist." 1>&2
-   exit 1
-else
-    target_home=$(eval echo ~$target_user)
-fi
-
-echo "Working for $target_user, whose home is $target_home."
 
 # Disable auto install of suggested/recommended packages, and allow their autoremoval
 echo 'APT::Install-Recommends "false";'              > /etc/apt/apt.conf.d/99_norecommends
@@ -31,8 +24,8 @@ echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/99_n
 echo 'APT::AutoRemove::SuggestsImportant "false";'   >> /etc/apt/apt.conf.d/99_norecommends
 
 # Update, upgrade
-apt -y autoremove
 apt update
+apt -y autoremove
 apt -y dist-upgrade
 
 # List installed packages
@@ -41,22 +34,196 @@ if [ ! -f $pkglistfile ]; then
     apt-mark showmanual > $pkglistfile
 fi
 
-# Install required tooling
-apt install ca-certificates git sudo
+# Drivers and hardware
+pkg_add efivar firmware-linux-free firmware-linux-nonfree smartmontools
+# Misc system utilities
+pkg_add file info less man-db powertop psmisc rename sudo time wipe
+# Networking fundamentals
+pkg_add ca-certificates curl dnsutils lynx rsync telnet wget whois
+# Debian/APT utilities
+pkg_add apt-file aptitude debian-keyring netselect-apt
+#                     ^ Need this to verify release ISOs
+# Shell and terminal multiplexing
+pkg_add fish tmux tmux-plugin-manager zsh
+#   ^ Better out of the box than zsh, cool for root or new users.
+# Compression
+pkg_add unrar zip unzip
+# Misc
+pkg_add policykit-1 # Everything needs this.
 
-# Clone dotfiles
-git clone https://github.com/thblt/dotfiles $target_home/.dotfiles
-# Symlink them (as the target user)
-sudo -u $target_user $target_home/.dotfiles/postinstall/symlink-dotfiles
-# Install all the things
-$target_home/.dotfiles/postinstall/debian-install-packages
+###############################################################
+# At this point, the base system is usable interactively.     #
+# Need to run this in a server? Wrap everything below in a if #
+###############################################################
 
-# Give back ownership
-chown -R $target_user $target_home
-chgrp -R $target_user $target_home
+#
+# Base programming
+# Diff tools are in desktop tools
+#
+
+# General programming tools
+pkg_add autoconf automake cmake exuberant-ctags git gpp texinfo
+# Debian-specific
+pkg_add build-essential checkinstall
+# Language-specific build systems are with their language.
+# Debuggers
+# Language-specific debuggers are with their language.
+pkg_add gdb lldb
+# C-family
+pkg_add clang clang-format
+# Go
+pkg_add golang
+# Haskell
+pkg_add cabal-install haskell-stack ghc ghc-mod hlint stylish-haskell
+# Java (?)
+pkg_add openjdk-8-jdk
+# Javascript
+pkg_add nodejs npm
+# Python
+pkg_add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
+# Rust
+pkg_add cargo rustc
+# Some deps
+pkg_add libclang-dev sqlite3
+#                ^ for helm-dash/counsel-dash
+#   ^ for emacs irony-mode (also needs cmake)
+
+#
+# Desktop environment
+#
+
+# Tools for computers with an attached keyboard and screen
+pkg_add fbset
+# Filesystems (exfat is pointless outside the desktop)
+pkg_add exfat-fuse exfat-utils
+
+# Xorg
+pkg_add xserver-xorg-core xserver-xorg-input-libinput x11-xserver-utils \
+    mesa-utils mesa-va-drivers mesa-vdpau-drivers \
+    libgl1-mesa-dri
+
+pkg_add xfonts-base # XMonad decorations fail without this.
+pkg_add gnome-themes-standard gtk2-engines-pixbuf # pixbuf required for Adwaita on GTK2 apps
+pkg_add desktop-base # Wallpaper and Plymouth themes
+# Window and compositing manager
+pkg_remove xmonad libghc-xmonad-contrib-dev libghc-xmonad-contrib-doc libghc-dbus-dev
+pkg_add libxft-dev libxinerama-dev libxrandr-dev # XMonad libraries
+pkg_add compton
+# Display manager & session locker
+pkg_add lightdm-gtk-greeter light-locker
+pkg_add policykit-1 # LightDM depends on this to handle shutdown/reboot/etc
+pkg_remove nodm slock
+# Dbus
+pkg_add dbus-x11
+# Notification system
+pkg_add dunst libnotify-bin gir1.2-notify-0.7
+#                       ^ Introspection data.  At least Udiskie requires this.
+# Audio
+pkg_add alsa-utils
+
+# Printing
+pkg_add cups
+pkg_add printer-driver-brlaser
+pkg_add ghostscript # Also required by djvu2pdf.  Probably installed automatically
+# add printer-driver-splix # For the Samsung - doesn't work
+
+# Misc desktop utilities
+pkg_add feh scrot suckless-tools udiskie wmctrl xsel zenity
+pkg_remove synapse
+# Font manager and fonts
+pkg_add font-manager fonts-dejavu fonts-noto fonts-noto-cjk fonts-roboto fonts-symbola
+
+#
+# Desktop (not necessarily X) tools
+#
+
+# Terminal emulator
+pkg_add rxvt-unicode-256color
+# Browsers
+pkg_add chromium chromium-l10n firefox-esr firefox-esr-l10n-fr torbrowser-launcher
+pkg_add pulseaudio # Mozilla-released Firefox depends on this for audio playback
+# Text editors (with CLI versions as well)
+pkg_remove vim-gtk
+pkg_add emacs25 vim vim-gtk3
+# These are the dependencies of Emacs pdf-tools
+pkg_add imagemagick libpng-dev libpoppler-glib-dev libpoppler-private-dev zlib1g-dev
+# And the Emacs non-free documentation
+pkg_add emacs25-common-non-dfsg
+# I don't use emacs 24 anymore
+pkg_remove emacs24
+# Text editing tools
+pkg_add meld
+# Spell checking
+pkg_add aspell aspell-fr
+# Email client
+pkg_add maildir-utils mu4e isync
+# File managers
+pkg_add mc pcmanfm
+# Media player
+pkg_add vlc
+# Crypto
+pkg_add gpa keychain
+# Bad office suite
+pkg_add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
+# The texlive monster and tex utilities
+pkg_add texlive-base texlive-lang-french texlive-xetex lmodern lyx
+#                                                  ^ not part of the base distribution.
+pkg_add dvipng texlive-fonts-recommended texlive-generic-recommended
+#   ^ These three are required for org-toggle-latex-fragment
+
+# Handling misc formats
+pkg_add djvulibre-bin # Required (with ghostscript) for .bin/djvu2pdf
+# Misc
+pkg_add barcode qrencode zbar-tools
+pkg_add pandoc
+pkg_add qalculate-gtk
+pkg_add transmission
+
+if [ "anna" = `hostname` ]; then
+    >&2 echo "I'm running on Anna."
+    add acpid
+    add network-manager rfkill # TODO move to a "laptop" group
+    add plymouth # Because keyboard is broken
+    add task-laptop # Should have been installed automatically
+    add xserver-xorg-video-intel
+    add firmware-brcm80211 # Wifi
+    # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
+elif [ "rudiger" = `hostname` ]; then
+    >&2 echo "I'm running on Rudiger."
+    add xfce4
+    add numlockx
+    add xserver-xorg-video-radeon
+elif [ "wednesday" = `hostname` ]; then
+    >&2 echo "I'm running on Wednesday."
+    add xserver-xorg-video-nouveau
+    add acpid
+    add network-manager rfkill
+    add task-laptop # Should have been installed automatically
+    add firmware-brcm80211 # Wifi
+fi
+
+if [ "$1" = "list" ]; then
+    echo $packages | tr " " "\n" | sort -u
+    exit 0
+fi
+
+echo
+echo "I'm about to install"
+echo "--------------------"
+echo
+echo $packages
+echo
+echo "I'm about to mark as automatically installed"
+echo "--------------------------------------------"
+echo $removed_packages
+echo
+echo "Please review the FULL output above and press enter"
+echo "to proceed or C-c to abort."
+read dummy
+
+apt-mark auto $removed_packages
+apt autoremove --purge
+apt install $packages
 
 # Fix groups for target user
 usermod -aG sudo,adm,systemd-journal $target_user
-
-# Enable ZSH
-chsh -s /usr/bin/zsh $target_user

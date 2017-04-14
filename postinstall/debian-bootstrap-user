@@ -1,5 +1,7 @@
 #!/bin/bash
 
+target_shell="/usr/bin/zsh"
+
 cd $HOME
 
 # Public files in ~/.dotfiles
@@ -44,3 +46,12 @@ things=`find . -type f -not -iwholename "*/.git/*"`
 for t in $things; do
     ln -s "$HOME/.dotfiles.private/$t" "$HOME/$t"
 done
+
+current_shell=`getent passwd $LOGNAME | cut -d: -f7`
+
+if [ $current_shell != "$target_shell" ]; then
+    chsh --shell $target_shell
+    echo "Shell set to $target_shell."
+else
+    echo "Shell seems already configured, ignoring."
+fi
