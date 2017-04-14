@@ -14,6 +14,7 @@ This is my Emacs configuration.
    - [[#spell-checking][Spell checking]]
    - [[#modal-editing][“Modal” editing]]
    - [[#moving-around][Moving around]]
+   - [[#replace][Replace]]
    - [[#minor-modes][Minor modes]]
    - [[#customization][Customization]]
  - [[#writing-prose][Writing prose]]
@@ -163,7 +164,7 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 Rebind =C-x k= to kill the /current/ buffer.
 
 #+begin_src emacs-lisp
-  (global-set-key (kbd "C-x k") 'kill-this-buffer)
+  (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
 #+end_src
 
 Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
@@ -434,6 +435,16 @@ Emulates Vim's =f=, =F=, =t= and =T=.
            ("C-c ;" . iy-go-to-or-up-to-continue)
            ("C-c ," . iy-go-to-or-up-to-continue-backward)))
 #+end_src
+
+** Replace
+
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-regexp
+    :bind (
+           ("C-M-%" . vr/query-replace)
+           ("C-c r" . vr/replace)
+           ("C-c m" . vr/mc-mark)))
+#+END_SRC
 
 ** Minor modes
 
@@ -1182,8 +1193,7 @@ With Ivy integration:
              '(
                ("p" (lambda (_) (counsel-projectile-switch-project))
                 "Switch project"
-                )
-               ))
+                )))
     :bind (
            :map projectile-mode-map
                 ("C-c p p"   . counsel-projectile)
@@ -1563,13 +1573,15 @@ Then the bulk of the config:
   ;;         ()
            :map mu4e-view-mode-map
            ("(" . mu4e-view-headers-prev-unread)
-           (")" . mu4e-view-headers-next-unread))
+           (")" . mu4e-view-headers-next-unread)
+           ("c" . visual-fill-column-mode))
+
     :config (progn
               (require 'mu4e-contrib)
               (mu4e-maildirs-extension)
 
               (setq
-              ;; Use ivy
+               ;; Use ivy
                mu4e-completing-read-function 'ivy-completing-read
 
                ;; General settings
@@ -1630,7 +1642,10 @@ Then the bulk of the config:
                mu4e-compose-context-policy 'ask)
 
               ;; (setq)
-              (add-hook 'mu4e-view-mode-hook 'visual-line-mode)))
+              (add-hook 'mu4e-view-mode-hook (lambda ()
+                                               (setq visual-fill-column-width 80)
+                                               (visual-line-mode 1)
+                                               (visual-fill-column-mode 1)))))
 #+end_src
 
 Load private configuration (we need to do this now, some later steps make use of eg bookmarks):

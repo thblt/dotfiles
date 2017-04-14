@@ -106,7 +106,7 @@ if mkdir -p "$@"
 fi
 }
 
-alias push-priv-dotfiles="pushd;cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date`';git pull;git push;popd"
+alias push-priv-dotfiles="pushd;cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date -Iseconds`';git pull;git push;popd"
 alias wifi-off="sudo rfkill block wifi"
 alias wifi-on="sudo rfkill unblock wifi"
 alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
