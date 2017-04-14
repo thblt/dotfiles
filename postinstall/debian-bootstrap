@@ -25,8 +25,8 @@ echo 'APT::AutoRemove::SuggestsImportant "false";'   >> /etc/apt/apt.conf.d/99_n
 
 # Update, upgrade
 apt update
-apt -y autoremove
-apt -y dist-upgrade
+apt autoremove
+apt dist-upgrade
 
 # List installed packages
 pkglistfile=/usr/local/share/base-packages.list
