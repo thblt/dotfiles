@@ -1573,13 +1573,15 @@ Then the bulk of the config:
   ;;         ()
            :map mu4e-view-mode-map
            ("(" . mu4e-view-headers-prev-unread)
-           (")" . mu4e-view-headers-next-unread))
+           (")" . mu4e-view-headers-next-unread)
+           ("c" . visual-fill-column-mode))
+
     :config (progn
               (require 'mu4e-contrib)
               (mu4e-maildirs-extension)
 
               (setq
-              ;; Use ivy
+               ;; Use ivy
                mu4e-completing-read-function 'ivy-completing-read
 
                ;; General settings
@@ -1640,7 +1642,10 @@ Then the bulk of the config:
                mu4e-compose-context-policy 'ask)
 
               ;; (setq)
-              (add-hook 'mu4e-view-mode-hook 'visual-line-mode)))
+              (add-hook 'mu4e-view-mode-hook (lambda ()
+                                               (setq visual-fill-column-width 80)
+                                               (visual-line-mode 1)
+                                               (visual-fill-column-mode 1)))))
 #+end_src
 
 Load private configuration (we need to do this now, some later steps make use of eg bookmarks):
