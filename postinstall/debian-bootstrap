@@ -181,25 +181,25 @@ pkg_add transmission
 
 if [ "anna" = `hostname` ]; then
     >&2 echo "I'm running on Anna."
-    add acpid
-    add network-manager rfkill # TODO move to a "laptop" group
-    add plymouth # Because keyboard is broken
-    add task-laptop # Should have been installed automatically
-    add xserver-xorg-video-intel
-    add firmware-brcm80211 # Wifi
+    pkg_add acpid
+    pkg_add network-manager rfkill # TODO move to a "laptop" group
+    pkg_add plymouth # Because keyboard is broken
+    pkg_add task-laptop # Should have been installed automatically
+    pkg_add xserver-xorg-video-intel
+    pkg_add firmware-brcm80211 # Wifi
     # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
 elif [ "rudiger" = `hostname` ]; then
     >&2 echo "I'm running on Rudiger."
-    add xfce4
-    add numlockx
-    add xserver-xorg-video-radeon
+    pkg_add xfce4
+    pkg_add numlockx
+    pkg_add xserver-xorg-video-radeon
 elif [ "wednesday" = `hostname` ]; then
     >&2 echo "I'm running on Wednesday."
-    add xserver-xorg-video-nouveau
-    add acpid
-    add network-manager rfkill
-    add task-laptop # Should have been installed automatically
-    add firmware-brcm80211 # Wifi
+    pkg_add xserver-xorg-video-nouveau
+    pkg_add acpid
+    pkg_add network-manager rfkill
+    pkg_add task-laptop # Should have been installed automatically
+    pkg_add firmware-brcm80211 # Wifi
 fi
 
 if [ "$1" = "list" ]; then
