@@ -27,10 +27,10 @@ sudo apt install libc6-dev	\
 
 ./autogen.sh
 
-./configure --prefix=$HOME/.local/opt/emacs \
+./configure --prefix=$HOME/.local/opt/emacs$1 \
             --with-gnutls \
             --with-modules \
-            --with-x-toolkit=gtk3  \
+            --with-x-toolkit=gtk3
 
-	    make -j
+make -j
 make -j install
