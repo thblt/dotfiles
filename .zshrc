@@ -99,6 +99,7 @@ function bump-elisp-version() {
 
 alias efivardump="efivar --list | xargs -I vn efivar --print --name=vn"
 alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
+alias ls="ls --color"
 
 function mkcd() {
 if mkdir -p "$@"
