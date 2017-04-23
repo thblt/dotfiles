@@ -15,9 +15,12 @@ import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       TreeBalance (..),
                                                       emptyBSP)
 import           XMonad.Layout.MultiToggle
+import           XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.StackSet as XSS
 import           XMonad.Util.EZConfig (mkKeymap)
 import           XMonad.Util.NamedScratchpad (NamedScratchpad, namedScratchpadAction)
+
+import XMonad.Thblt.Layouts
 
 keys :: [KeySym] -> [NamedScratchpad] -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 keys workspaceKeys scratchpads = \conf -> M.union (baseKeys scratchpads conf) (extraKeys workspaceKeys conf)
@@ -28,7 +31,7 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
   [
     ("M-S-c"                     , kill),
     ("M-S-q"                     , spawn "/home/thblt/.xmonad/scripts/stop"),
-    ("M-q"                       , restart "/home/thblt/.xmonad/scripts/start" True), --spawn "/home/thblt/.xmonad/recompile-xmonad.sh"),
+    ("M-q"                       , restart "/home/thblt/.xmonad/scripts/start" True),
     ("M-<Esc>"                   , spawn "dm-tool lock"),
     ("M-S-<Esc>"                 , spawn "dm-tool switch-to-greeter"),
 
@@ -38,12 +41,24 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-h"                       , sendMessage Shrink),
     ("M-l"                       , sendMessage Expand),
 
---    ("M-f f"                     , sendMessage $ Toggle FULL), --XXX Uncomment
---    ("M-f x"                     , sendMessage $ Toggle GAPS), --XXX Uncomment
+    ("M-f f"                     , sendMessage $ Toggle FULL),
+    ("M-f x"                     , sendMessage $ Toggle GAPS),
     ("M-f s"                     , sendMessage ToggleStruts),
 
     ("M-="                       , sendMessage $ IncMasterN 1),
-    ("M--"                       , sendMessage $ IncMasterN (-1)),
+    ("M-:"                       , sendMessage $ IncMasterN (-1)),
+
+    -- Navigation2D
+    ("M-<Up>"                    , windowGo U False),
+    ("M-<Right>"                 , windowGo R False),
+    ("M-<Down>"                  , windowGo D False),
+    ("M-<Left>"                  , windowGo L False),
+
+    ("M-S-<Up>"                  , windowSwap U False),
+    ("M-S-<Right>"               , windowSwap R False),
+    ("M-S-<Down>"                , windowSwap D False),
+    ("M-S-<Left>"                , windowSwap L False),
+
     -- BSP-specific
     ("M-S-h"                     , sendMessage $ ExpandTowards L),
     ("M-S-j"                     , sendMessage $ ExpandTowards D),
@@ -87,8 +102,6 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
   where
     shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
 
-
-
   -- workspace switching
 extraKeys :: [KeySym] -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
 extraKeys workspaceKeys conf@XConfig {XMonad.modMask = modMask} =
@@ -102,5 +115,3 @@ extraKeys workspaceKeys conf@XConfig {XMonad.modMask = modMask} =
   [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
   | (key, sc) <- zip [xK_a, xK_z, xK_e] [0..]
   , (f, m) <- [(XSS.view, 0), (XSS.shift, shiftMask)]]
-
--- @TODO REstore
