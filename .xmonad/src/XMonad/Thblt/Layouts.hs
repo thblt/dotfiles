@@ -15,14 +15,14 @@ import XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                              SelectMoveNode (..),
                                              TreeBalance (..),
                                              emptyBSP)
-import           XMonad.Layout.BorderResize (borderResize)
-import           XMonad.Layout.Gaps
-import           XMonad.Layout.IfMax
+import XMonad.Layout.BorderResize (borderResize)
+import XMonad.Layout.Gaps
+import XMonad.Layout.IfMax
 
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import           XMonad.Layout.NoBorders (withBorder)
-import           XMonad.Layout.Spacing (smartSpacingWithEdge)
+import XMonad.Layout.NoBorders (withBorder)
+import XMonad.Layout.Spacing (smartSpacingWithEdge)
 
 data MySpacing = MySpacing {
   myGaps       :: Int,
@@ -62,4 +62,4 @@ myDecoration = id
 -- mySpacing | myHostName == "rudiger" = MySpacing 2 2 0
 --           | otherwise = MySpacing 2 2 0
 
-mySpacing = MySpacing 2 2 0
+mySpacing = MySpacing 4 1 0

@@ -39,7 +39,7 @@ main = do
     , logHook = do
 --        dbusLogger dbus
 --        dynamicLogWithPP$ myPP dbus -- logPipe
-        fadeInactiveLogHook 0.98
+        fadeInactiveLogHook 0.8
     , manageHook = composeAll
       [
         namedScratchpadManageHook myScratchpads

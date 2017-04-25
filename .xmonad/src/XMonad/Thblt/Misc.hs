@@ -56,7 +56,7 @@ myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
 myActiveColor = "#007bFF"
-myInactiveColor = "#888888"
+myInactiveColor = "#000000"
 
 myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList

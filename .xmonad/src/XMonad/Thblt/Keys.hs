@@ -1,19 +1,14 @@
 module XMonad.Thblt.Keys (XMonad.Thblt.Keys.keys) where
 
 import qualified Data.Map as M
-import           Graphics.X11.ExtraTypes.XF86
 import           XMonad
 import           XMonad.Actions.Navigation2D
 import           XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
-import           XMonad.Hooks.ManageDocks            (ToggleStruts (ToggleStruts),
-                                                      avoidStruts,
-                                                      docksEventHook,
-                                                      manageDocks)
+import           XMonad.Hooks.ManageDocks            (ToggleStruts (ToggleStruts))
 import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       Rotate (Rotate),
                                                       SelectMoveNode (..),
-                                                      TreeBalance (..),
-                                                      emptyBSP)
+                                                      TreeBalance (..))
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.StackSet as XSS
