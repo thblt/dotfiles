@@ -17,6 +17,10 @@ Install Debian as usual.
 
 * Post install
 
+** Connect to wifi if you need to
+
+~iwconfig [interface] mode Managed essid [SSID] key [password]; dhclient [interface]~
+
 ** DONE Store base package list somewhere
 
 *debian-bootstrap handles this*
