@@ -248,9 +248,21 @@ fix_groups() {
 
 
 case $1 in
+    "bootstrap")
+        enforce_root
+        mk_apt_norecommands
+        global_upgrade
+        store_installed_packages
+        build_packages_list
+        execute_package_list
+        ;;
     "list")
         build_package_list
         echo $packages | tr " " "\n" | sort -u
         exit 0
+        ;;
+    *)
+        >&2 echo "What do you want me to do?"
+        exit 1
         ;;
 esac
