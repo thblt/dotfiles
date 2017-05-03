@@ -253,7 +253,7 @@ case $1 in
         mk_apt_norecommands
         global_upgrade
         store_installed_packages
-        build_packages_list
+        build_package_list
         execute_package_list
         ;;
     "list")
