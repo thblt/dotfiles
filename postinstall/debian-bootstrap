@@ -82,7 +82,7 @@ build_package_list() {
     # Java (?)
     pkg_add openjdk-8-jdk
     # Javascript
-    pkg_add nodejs npm
+    pkg_add nodejs
     # Python
     pkg_add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
     # Rust
