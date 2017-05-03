@@ -185,28 +185,38 @@ build_package_list() {
     pkg_add qalculate-gtk
     pkg_add transmission
 
-    if [ "anna" = `hostname` ]; then
-        >&2 echo "I'm running on Anna."
-        pkg_add acpid
-        pkg_add network-manager rfkill # TODO move to a "laptop" group
-        pkg_add plymouth # Because keyboard is broken
-        pkg_add task-laptop # Should have been installed automatically
-        pkg_add xserver-xorg-video-intel
-        pkg_add firmware-brcm80211 # Wifi
-        # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
-    elif [ "rudiger" = `hostname` ]; then
+    case `hostname` in
+        "anna")
+            >&2 echo "I'm running on Anna."
+            pkg_add acpid
+            pkg_add network-manager rfkill # TODO move to a "laptop" group
+            pkg_add plymouth # Because keyboard is broken
+            pkg_add task-laptop # Should have been installed automatically
+            pkg_add xserver-xorg-video-intel
+            pkg_add firmware-brcm80211 # Wifi
+            # TODO apt suggests for powertop: cpufrequtils laptop-mode-tools
+            ;;
+    "rudiger")
         >&2 echo "I'm running on Rudiger."
         pkg_add xfce4
         pkg_add numlockx
         pkg_add xserver-xorg-video-radeon
-    elif [ "wednesday" = `hostname` ]; then
+        ;;
+    "wednesday")
         >&2 echo "I'm running on Wednesday."
         pkg_add xserver-xorg-video-nouveau
         pkg_add acpid
         pkg_add network-manager rfkill
         pkg_add task-laptop # Should have been installed automatically
         pkg_add firmware-brcm80211 # Wifi
-    fi
+        ;;
+    "maladict")
+        >&2 echo "I'm running on Maladict."
+        ;;
+    *)
+        >&2 echo "Unknown machine, aborting."
+        exit 1
+    esac
 }
 
 show_package_list() {
