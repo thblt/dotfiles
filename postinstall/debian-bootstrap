@@ -212,6 +212,10 @@ build_package_list() {
         ;;
     "maladict")
         >&2 echo "I'm running on Maladict."
+        pkg_add acpid
+        pkg_add network-manager rfkill
+        pkg_remove plymouth plymouth-themes
+        pkg_add task-laptop
         ;;
     *)
         >&2 echo "Unknown machine, aborting."
@@ -255,11 +259,17 @@ case $1 in
         store_installed_packages
         build_package_list
         execute_package_list
+		fix_groups
         ;;
     "list")
         build_package_list
         echo $packages | tr " " "\n" | sort -u
         exit 0
+        ;;
+    "install")
+        enforce_root
+        build_package_list
+        execute_package_list
         ;;
     *)
         >&2 echo "What do you want me to do?"
