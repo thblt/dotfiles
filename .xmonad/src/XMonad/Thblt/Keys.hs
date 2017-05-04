@@ -77,8 +77,8 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-t"                       , withFocused $ windows . XSS.sink),
 
     ("M-p"                       , spawn "~/.bin/dmenu-desktop --entry-type=name"),
-    ("M-S-<Return>"              , spawn $ terminal conf),
-    ("M-C-S-<Return>"            , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
+    ("M-C-S-<Return>"              , spawn $ terminal conf),
+    ("M-S-<Return>"            , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
     -- Volume
     ("<XF86AudioLowerVolume>"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
