@@ -6,7 +6,7 @@ IMAPAccount ovh
 Host ssl0.ovh.net
 User thibault@thb.lt
 AuthMechs LOGIN
-PassCmd "~/.bin/netrc_pass ssl0.ovh.net"
+PassCmd "pass show remotes/ssl0.ovh.net/imap/thibault@thb.lt"
 SSLType IMAPS
 
 ImapStore ovh-remote
@@ -23,55 +23,4 @@ Patterns * %
 Create Both
 SyncState *
 Sync All
-Expunge Both
-
-##################
-###### NAMO ######
-##################
-
-IMAPAccount namo
-Host namo.thb.lt
-User thblt
-AuthMechs LOGIN
-PassCmd "~/.bin/netrc_pass namo.thb.lt"
-SSLType IMAPS
-
-ImapStore namo-remote
-Account namo
-
-MaildirStore namo-local
-Path ~/.Mail/Namo/
-Inbox ~/.Mail/Namo/INBOX
-
-Channel namo
-Master :namo-remote:
-Slave :namo-local:
-Patterns *
-Create Both
-SyncState *
-
-################
-###### P1 ######
-################
-
-IMAPAccount p1
-Host imap.univ-paris1.fr
-User tpolge
-AuthMechs LOGIN
-PassCmd "~/.bin/netrc_pass imap.univ-paris1.fr"
-SSLType IMAPS
-
-ImapStore p1-remote
-Account p1
-
-MaildirStore p1-local
-Path ~/.Mail/P1/
-Inbox ~/.Mail/P1/INBOX
-
-Channel p1
-Master :p1-remote:
-Slave :p1-local:
-Patterns *
-Create Both
-SyncState *
 Expunge Both

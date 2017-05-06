@@ -1631,6 +1631,7 @@ Then configure the list of repositories:
         '(
           ("~/.dotfiles" . 1)
           ("~/.dotfiles.private". 1)
+          ("~/.password-store". 1)
           ("~/Documents/Concours/". 1)
           ("~/Documents/Philo/". 1)
           ("~/Documents/Code/eziam-theme-emacs/". 1)
