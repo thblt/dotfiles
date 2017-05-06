@@ -24,7 +24,6 @@ if len(sys.argv) != 3:
    print("Setting be like +10, -5, 35, 12%, =3%, =19, 5%, +25%")
    exit(-1)
 
-
 if not sys.argv[1] in paths.keys():
    print("This machine doesn't provide this object.")
    print("Available objects are: {0}".format(", ".join(paths.keys())))
@@ -66,4 +65,4 @@ new_brightness = str(min(max_brightness, op(brightness, value)))
 with open(os.path.join(path, "brightness"), "w") as b:
    b.write(new_brightness)
 
-print("{0}\t{1}\t{2}".format(brightness, max_brightness, new_brightness))
+print("{2}/{1} (was {0})".format(brightness, max_brightness, new_brightness))
