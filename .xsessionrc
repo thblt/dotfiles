@@ -7,22 +7,38 @@ source ~/.profile
 
 # Notification server first, so we can report errors
 if [ ! -e /etc/debian_version ]; then
-	# Don't start Dunst manually on Debian
-	dunst &
+	  # Don't start Dunst manually on Debian
+	  dunst &
 else
-	echo "This is Debian, not starting some stuff"
+	  echo "This is Debian, not starting some stuff"
 fi
 
 # Input setup
-if [ "anna" = `hostname` ]; then
-	setxkbmap -layout  "macintosh_vndr/fr"
-elif [ "rudiger" = `hostname` ]; then
-	setxkbmap be -option compose:menu
-	numlockx on &
-	ckb --background &
-else
-	notify-send -u critical `basename "$0"` "Unknown computer, keyboard layout not set."
-fi
+# Better do this here, this is easier to port.
+
+case `hostname` in
+    "anna")
+	       setxkbmap -layout  "macintosh_vndr/fr"
+         ;;
+    "rudiger")
+	      setxkbmap be -option compose:menu
+	      numlockx on &
+	      ckb --background &
+        ;;
+    "maladict")
+        # Touchpad
+        xinput set-prop 13 282 1 # Tapping
+        xinput set-prop 13 284 1 # Drag
+        xinput set-prop 13 288 1 # Tapping button map
+        xinput set-prop 13 290 1 # Accel speed
+
+        xinput set-prop 13 300 0 1 # Click methods enabled (disable buttonareas)
+
+
+        ;;
+    *)
+	      notify-send -u critical `basename "$0"` "Unknown computer, keyboard layout not set."
+esac
 
 compton --config ~/.config/compton.conf &
 # mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code/cozy-desktop/bin/cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
