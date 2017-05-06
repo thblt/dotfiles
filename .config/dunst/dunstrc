@@ -1,5 +1,5 @@
 [global]
-    font = "DejaVu Sans Mono for Powerline Nerd Font 8"
+    font = "DejaVu Sans Mono for Powerline 8"
     allow_markup = yes
     format = "<b>%s %p</b>\n%b"
     sort = yes
@@ -20,13 +20,12 @@
     dmenu = "/usr/bin/dmenu -p dunst: -nb #FFFFFF -nf #000000 -sb #94DBFF -sf #000000"
     browser = xdg-open
 
-
 [frame]
     width = 3
     color = "#000000"
 
 [shortcuts]
-    close = mod4+ctrl+BackSpace
+    # close = mod4+ctrl+BackSpace
     close_all = mod4+ctrl+BackSpace
     history = mod4+Pause
     # context = mod4+s
