@@ -32,5 +32,5 @@ sudo apt install libc6-dev	\
             --with-modules \
             --with-x-toolkit=gtk3
 
-make -j
-make -j install
+make -j4
+make install
