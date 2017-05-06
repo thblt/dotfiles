@@ -1,40 +1,37 @@
 #!/usr/bin/env python
 
-import operator, os, sys
-
-_ROOT="/sys/devices/"
-
-if len(sys.argv) != 3:
-   print("Usage: {0} path setting".format(sys.argv[0]))
-   print("Setting be like +10, -5, 35, 12%, =3%, =19, 5%, +25%")
-   exit(-1)
+import operator, os, socket, sys
 
 do_set = lambda x, y: y
 do_increase = lambda x, y: x + y
 do_decrease = lambda x, y: x - y
 
-path = os.path.abspath(sys.argv[1])
-value = sys.argv[2]
+# Find the path
+hostname = socket.gethostname()
+if "anna" == hostname:
+   paths = {
+      "keyboard": "/sys/devices/platform/applesmc.768/leds/smc::kbd_backlight",
+      "monitor": "/sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0",
+   }
+elif "maladict" == hostname:
+   paths = {
+      "monitor": "/sys/class/backlight/intel_backlight"
+   }
 
-if not path.startswith(_ROOT):
-   print("Path {0} not under {1}".format(path, _ROOT))
+if len(sys.argv) != 3:
+   print("Usage: {0} object setting".format(sys.argv[0]))
+   print("Available objects are: {0}".format(", ".join(paths.keys())))
+   print("Setting be like +10, -5, 35, 12%, =3%, =19, 5%, +25%")
    exit(-1)
 
-# Find the path
 
-for f in {"brightness", "max_brightness"}:
-   fp = os.path.abspath(os.path.join(path, f))
-   fp_dir, fp_file = os.path.split(fp)
+if not sys.argv[1] in paths.keys():
+   print("This machine doesn't provide this object.")
+   print("Available objects are: {0}".format(", ".join(paths.keys())))
+   exit(-1)
 
-   test_a = os.path.exists(fp) # Check that the path exists
-   test_b = os.path.isfile(fp) #          - it refers to a file
-   test_c = fp_dir == path     #          - it's immediatly below `path`
-   test_d = fp_file == f       #          - it has the expected name
-   if not (test_a and test_b and test_c and test_d):
-      print("Bad path: {0}".format(path))
-      print("Debug: ", test_a, test_b, test_c, test_d)
-      exit(-1)
-
+path = paths[sys.argv[1]]
+value = sys.argv[2]
 
 # Get max_brightness:
 with open(os.path.join(path, "max_brightness"), "r") as mbf:
@@ -43,9 +40,6 @@ with open(os.path.join(path, "max_brightness"), "r") as mbf:
 # And current brightness
 with open(os.path.join(path, "brightness"), "r") as mbf:
    brightness = int(mbf.read())
-
-# Compute percentage
-
 
 # Find what to do
 
