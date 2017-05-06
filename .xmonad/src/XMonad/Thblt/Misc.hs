@@ -32,15 +32,13 @@ import           XMonad.Util.NamedWindows (getName)
 import           XMonad.Util.Run (spawnPipe)
 import           XMonad.Util.WorkspaceCompare (getSortByIndex)
 
-import qualified XMonad.Thblt.Keys as MyKeys
-
 -- Computer-dependent settings.
 
-[d| myHostName = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
+[d| hostname = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
 
 workspacesKeys :: [KeySym]
-workspacesKeys | myHostName == "anna"    = macAzertyKeys
-               | myHostName == "rudiger" = pcAzertyBeKeys
+workspacesKeys | hostname == "anna"    = macAzertyKeys
+               | hostname == "rudiger" = pcAzertyBeKeys
                | otherwise               = pcAzertyKeys
   where
     pcAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0] -- From AzertyConfig
@@ -55,9 +53,6 @@ myWorkspaces = map show [ 1 .. 9 :: Int ]
 myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
 
-myActiveColor = "#007bFF"
-myInactiveColor = "#000000"
-
 myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
     [
@@ -66,7 +61,6 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
 --    , ((0, 10), const $ prevWS) -- Three-finger left swipe
 --    , ((0, 11), const $ nextWS) -- Three finger right swipe
     ]
-
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads = [

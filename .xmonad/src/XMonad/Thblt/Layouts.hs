@@ -1,7 +1,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeSynonymInstances  #-}
 
-module XMonad.Thblt.Layouts (layoutHook, GapsTransformer (GAPS)) where
+module XMonad.Thblt.Layouts (layoutHook, MyTransformers (..), myActiveColor, myInactiveColor) where
 
 import Data.Typeable
 
@@ -18,11 +18,13 @@ import XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
 import XMonad.Layout.BorderResize (borderResize)
 import XMonad.Layout.Gaps
 import XMonad.Layout.IfMax
-
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders (withBorder)
+import XMonad.Layout.NoFrillsDecoration
 import XMonad.Layout.Spacing (smartSpacingWithEdge)
+
+import XMonad.Thblt.Misc
 
 data MySpacing = MySpacing {
   myGaps       :: Int,
@@ -30,9 +32,9 @@ data MySpacing = MySpacing {
   myDecoHeight :: Int
   }
 
-data GapsTransformer = GAPS deriving (Read, Show, Eq, Typeable)
-instance Transformer GapsTransformer Window where
-  transform _ x k = k (gaps[(U, 8), (D, 7), (R, 300), (L, 300)] x) (const x)
+data MyTransformers = GAPS  deriving (Read, Show, Eq, Typeable)
+instance Transformer MyTransformers Window where
+  transform GAPS x k = k (smartSpacingWithEdge (negate $ myGaps mySpacing) $ x) (const x)
 
 -- The layouts I use
 myBSP = emptyBSP
@@ -47,19 +49,25 @@ layoutHook = avoidStruts $ mkToggle (FULL ?? GAPS ?? EOT) $
              myBSP ||| myTall
 
 myDecoration = id
-    -- myDecoration = noFrillsDeco shrinkText def {
-    --   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
-    --   , activeColor = myActiveColor
-    --   , activeTextColor = myActiveColor
-    --   , activeBorderColor = myActiveColor
-    --   , inactiveColor = myInactiveColor
-    --   , inactiveTextColor = myInactiveColor
-    --   , inactiveBorderColor = myInactiveColor
-    --   , fontName = "-*-clean-medium-r-*-*-12-*-*-*-*-*-*-*"
-    --   }
+-- myDecoration = noFrillsDeco shrinkText def {
+--   decoHeight = (fromIntegral $ myDecoHeight mySpacing)
+--   , activeColor = myActiveColor
+--   , activeTextColor = "#ffffff"
+--   , activeBorderColor = "#000000"
+--   , inactiveColor = myInactiveColor
+--   , inactiveTextColor = myInactiveColor
+--   , inactiveBorderColor = myInactiveColor
+--   , fontName = "DejaVuSansMono-24"
+--   }
 
 -- mySpacing :: MySpacing
--- mySpacing | myHostName == "rudiger" = MySpacing 2 2 0
+-- mySpacing | hostname == "rudiger" = MySpacing 2 2 0
 --           | otherwise = MySpacing 2 2 0
 
-mySpacing = MySpacing 4 1 0
+mySpacing :: MySpacing
+mySpacing = case hostname of
+  "maladict" -> MySpacing 8 2 16
+  _ -> MySpacing 4 0 0
+
+myActiveColor = "#0059DD"
+myInactiveColor = "#000000"

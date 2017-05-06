@@ -77,8 +77,8 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-t"                       , withFocused $ windows . XSS.sink),
 
     ("M-p"                       , spawn "~/.bin/dmenu-desktop --entry-type=name"),
-    ("M-C-S-<Return>"              , spawn $ terminal conf),
-    ("M-S-<Return>"            , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
+    ("M-C-S-<Return>"            , spawn $ terminal conf),
+    ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
     -- Volume
     ("<XF86AudioLowerVolume"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
@@ -86,14 +86,14 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
 
     -- Brightness (monitor)
-    ("<XF86MonBrightnessUp>"     , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 +1"),
-    ("S-<XF86MonBrightnessUp>"   , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ +1"),
-    ("<XF86MonBrightnessDown>"   , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/backlight/acpi_video0 -1"),
-    ("S-<XF86MonBrightnessDown>" , spawn "sudo anybrightness /sys/devices/pci0000:00/0000:00:02.0/drm/card0/card0-eDP-1/intel_backlight/ -1"),
+    ("<XF86MonBrightnessUp>"     , spawn "sudo anybrightness monitor +10%"),
+    ("S-<XF86MonBrightnessUp>"   , spawn "sudo anybrightness monitor +1%"),
+    ("<XF86MonBrightnessDown>"   , spawn "sudo anybrightness monitor -10%"),
+    ("S-<XF86MonBrightnessDown>" , spawn "sudo anybrightness monitor -1%"),
 
     -- Brightness (keyboard backlight)
-    ("<XF86KdbBrightnessUp>"     , spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight +20%"),
-    ("<XF86KdbBrightnessDown>"   , spawn "sudo anybrightness /sys/devices/platform/applesmc.768/leds/smc::kbd_backlight -20%")]
+    ("<XF86KdbBrightnessUp>"     , spawn "sudo anybrightness keyboard +20%"),
+    ("<XF86KdbBrightnessDown>"   , spawn "sudo anybrightness keyboard +20%")]
   where
     shNotifyVolume = "notify-send Volume `amixer get Master | tail -n 1  | awk '{print $6}'` -t 250 -h string:fgcolor:#ffffff -h string:bgcolor:#000000 -h int:value:`amixer get Master | tail -n 1 | awk '{print $4}' | sed 's/[^0-9]//g'`"
 

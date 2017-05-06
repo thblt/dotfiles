@@ -16,7 +16,7 @@ import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
 import XMonad.Thblt.Misc
 import qualified XMonad.Thblt.Keys as XTK (keys)
-import qualified XMonad.Thblt.Layouts as XTL (layoutHook)
+import qualified XMonad.Thblt.Layouts as XTL (layoutHook, myActiveColor, myInactiveColor)
 
 main :: IO ()
 main = do
@@ -27,8 +27,8 @@ main = do
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
       borderWidth = 0 -- Borders are added in the layout hook
-    , focusedBorderColor = myActiveColor
-    , normalBorderColor = myInactiveColor
+    , focusedBorderColor = XTL.myActiveColor
+    , normalBorderColor = XTL.myInactiveColor
     , clickJustFocuses = False
     , focusFollowsMouse = False
     --    , handleEventHook = fullscreenEventHook <+> docksEventHook
@@ -39,7 +39,7 @@ main = do
     , logHook = do
 --        dbusLogger dbus
 --        dynamicLogWithPP$ myPP dbus -- logPipe
-        fadeInactiveLogHook 0.8
+        fadeInactiveLogHook 0.95
     , manageHook = composeAll
       [
         namedScratchpadManageHook myScratchpads
