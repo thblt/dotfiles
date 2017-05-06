@@ -171,7 +171,8 @@ build_package_list() {
     # Media player
     pkg_add vlc
     # Crypto
-    pkg_add gpa keychain pass
+    pkg_add gpa pass
+    pkg_remove keychain
     # Bad office suite
     pkg_add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
     # The texlive monster and tex utilities
