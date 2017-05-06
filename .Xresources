@@ -9,7 +9,7 @@
   Xft.hinting:   true
   Xft.rgba:      rgb
   Xft.hintstyle: hintfull
-#ifdef SRVR_rudiger
+#ifdef SRVR_maladict
   Xft.dpi:       289
 #else
   Xft.dpi:       72
