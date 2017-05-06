@@ -13,7 +13,7 @@ target_user=`id -nu 1000`
 
 enforce_root() {
     if [ "$(id -u)" != "0" ]; then
-        echo "This script must be run as root" 1>&2
+        echo "This command must be run as root" 1>&2
         exit 1
     fi
 }
@@ -40,6 +40,8 @@ store_installed_packages(){
 }
 
 build_package_list() {
+    # Kernel headers
+    pkg_add linux-headers-amd64 # FIXME Don't hardcode machine type
     # Drivers and hardware
     pkg_add efivar firmware-linux-free firmware-linux-nonfree smartmontools
     # Misc system utilities
@@ -134,7 +136,8 @@ build_package_list() {
     # add printer-driver-splix # For the Samsung - doesn't work
 
     # Misc desktop utilities
-    pkg_add feh scrot suckless-tools udiskie wmctrl xsel zenity
+    pkg_add arandr feh libinput-tools scrot suckless-tools \
+            udiskie wmctrl xclip xinput xsel zenity
     pkg_remove synapse
     # Font manager and fonts
     pkg_add font-manager fonts-dejavu fonts-noto fonts-noto-cjk fonts-roboto fonts-symbola
@@ -188,7 +191,7 @@ build_package_list() {
     case `hostname` in
         "anna")
             >&2 echo "I'm running on Anna."
-            pkg_add acpid
+            pkg_add acpi acpid
             pkg_add network-manager rfkill # TODO move to a "laptop" group
             pkg_add plymouth # Because keyboard is broken
             pkg_add task-laptop # Should have been installed automatically
@@ -200,6 +203,7 @@ build_package_list() {
         >&2 echo "I'm running on Rudiger."
         pkg_add xfce4
         pkg_add numlockx
+        pkg_add virtualbox-5.1
         pkg_add xserver-xorg-video-radeon
         ;;
     "wednesday")
@@ -212,10 +216,11 @@ build_package_list() {
         ;;
     "maladict")
         >&2 echo "I'm running on Maladict."
-        pkg_add acpid
+        pkg_add acpi acpid acpi-call-dkms
         pkg_add network-manager rfkill
         pkg_remove plymouth plymouth-themes
-        pkg_add task-laptop
+        pkg_add task-laptop tlp
+        pkg_add virtualbox-5.1
         ;;
     *)
         >&2 echo "Unknown machine, aborting."
