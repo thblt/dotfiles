@@ -81,8 +81,8 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
     -- Volume
-    ("<XF86AudioLowerVolume"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
-    ("<XF86AudioRaiseVolume"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
+    ("<XF86AudioLowerVolume>"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
+    ("<XF86AudioRaiseVolume>"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
     ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
 
     -- Brightness (monitor)
