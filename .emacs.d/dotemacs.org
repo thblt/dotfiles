@@ -1712,7 +1712,6 @@ Each of my accounts is synced (by =mbsync=) to a folder at the root of the Maild
 Then the bulk of the config:
 
 #+begin_src emacs-lisp
-  (use-package mu4e-maildirs-extension)
   (use-package mu4e
     :ensure nil                 ; Comes with mu, not on a Emacs package repo
     :bind (("<f12>" . mu4e)
@@ -1728,7 +1727,6 @@ Then the bulk of the config:
 
     :config (progn
               (require 'mu4e-contrib)
-              (mu4e-maildirs-extension)
 
               (setq
                ;; Use ivy
@@ -1736,6 +1734,7 @@ Then the bulk of the config:
 
                ;; General settings
                message-send-mail-function 'smtpmail-send-it
+               message-kill-buffer-on-exit t
                mu4e-change-filenames-when-moving t  ; Required for mbsync
                mu4e-get-mail-command "mbsync ovh"
                mu4e-headers-auto-update t
@@ -1791,7 +1790,6 @@ Then the bulk of the config:
                mu4e-context-policy 'pick-first
                mu4e-compose-context-policy 'ask)
 
-              ;; (setq)
               (add-hook 'mu4e-view-mode-hook (lambda ()
                                                (setq visual-fill-column-width 80)
                                                (visual-line-mode 1)
