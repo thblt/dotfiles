@@ -1,5 +1,7 @@
 #!/bin/sh
 
+
+
 pkg_add() {
     packages="$packages $@"
 }
@@ -7,9 +9,6 @@ pkg_add() {
 pkg_remove() {
     removed_packages="$removed_packages $@"
 }
-
-target_user=`id -nu 1000`
-
 
 enforce_root() {
     if [ "$(id -u)" != "0" ]; then
@@ -23,6 +22,10 @@ mk_apt_norecommands() {
     echo 'APT::Install-Recommends "false";'              > /etc/apt/apt.conf.d/99_norecommends
     echo 'APT::AutoRemove::RecommendsImportant "false";' >> /etc/apt/apt.conf.d/99_norecommends
     echo 'APT::AutoRemove::SuggestsImportant "false";'   >> /etc/apt/apt.conf.d/99_norecommends
+}
+
+fix_xsession_options() {
+    sed -i "s/^\\(use-ssh-agent\\)$/# \\1/" /etc/X11/Xsession.options
 }
 
 global_upgrade() {
@@ -256,6 +259,7 @@ fix_groups() {
     usermod -aG sudo,adm,systemd-journal $target_user
 }
 
+target_user=`id -nu 1000`
 
 case $1 in
     "bootstrap")
@@ -265,7 +269,8 @@ case $1 in
         store_installed_packages
         build_package_list
         execute_package_list
-		fix_groups
+		    fix_groups
+        fix_xsession_options
         ;;
     "list")
         build_package_list
