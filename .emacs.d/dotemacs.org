@@ -202,8 +202,8 @@ Don't show the menu bar, unless this is MacOS.  Never show toolbar or scrollbars
 
 I don't use the right fringe
 
-#+begin_src emacs-lisp
-  (set-fringe-mode '(1 . 0))
+#+begin_src emacs-lisp :tangle no
+  (set-fringe-mode '(32 . 0))
 #+end_src
 
 Mouse wheel scrolling makes big jumps by default, let's make it smoother.
