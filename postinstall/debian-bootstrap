@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 pkg_add() {
     packages="$packages $@"
 }
@@ -174,7 +172,7 @@ build_package_list() {
     # Media player
     pkg_add vlc
     # Crypto
-    pkg_add gpa pass
+    pkg_add gpa openssh-client paperkey pass
     pkg_remove keychain
     # Bad office suite
     pkg_add libreoffice-calc libreoffice-writer libreoffice-gtk3 libreoffice-l10n-fr
