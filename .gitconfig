@@ -3,6 +3,7 @@
 [user]
 	name = thblt
 	email = thibault@thb.lt
+	signingkey = 33CDE511
 [core]
 	excludesfile = /home/thblt/.gitignore_global
 	quotepath = off
