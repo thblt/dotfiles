@@ -1,11 +1,12 @@
 #!/bin/bash
 
+DOTFILES=$HOME/.dotfiles
+PRIVFILES=$HOME/.dotfiles.private
+
 target_shell="/usr/bin/zsh"
 
-cd $HOME
-
 # Public files in ~/.dotfiles
-declare -a things=(
+declare -a files=(
     .Xresources
     .bin
     .cig
@@ -18,34 +19,64 @@ declare -a things=(
     .profile
     .tmux.conf
     .vim
-    .Xmodmap.`hostname`
+    .Xmodmap.$(hostname)
     .xmonad
     .xsession
     .xsessionrc
     .zshrc
 )
 
-for t in "${things[@]}"; do
-    if [ -e .dotfiles/$t ]; then
-        ln -s .dotfiles/$t .
-    else
-        echo "No source file \"$t\", skipping."
+declare -a cherrypick=(
+    .gnupg
+    .local/share/applications
+    .config
+)
+
+mksymlink() {
+    # Symlinks $1 to $2
+    if [ ! -e $1 ]; then
+        echo "No source file '$1'."
+        return
     fi
+
+    if [ -e "$2" ]; then
+        if [ $(realpath "$1") == $(realpath "$2") ]; then
+            let notrelinked+=1
+            return 0
+        else
+            echo -e "WARNING\t A different $2 already exists.  NOT LINKING."
+            return 1
+        fi
+    fi
+
+    ln -s "$1" "$2"
+    let count+=1
+}
+notrelinked=0
+count=0
+
+for t in "${files[@]}"; do
+    mksymlink "$DOTFILES/$t" "$HOME/$t"
 done
 
-mkdir .config 2> /dev/null
-cd .config
-for t in `ls ../.dotfiles/.config`; do
-    ln -s ../.dotfiles/.config/$t .
+# Cherrypicking
+
+for d in "${cherrypick[@]}"; do
+    mkdir -p $HOME/$d
+    for t in $(ls $DOTFILES/$d); do
+        mksymlink "$DOTFILES/$d/$t" "$HOME/$d/$t"
+    done
 done
 
-# Private files are in ~/.dotfiles.private
+# Private files.  A simple mirroring.
 
-cd "$HOME/.dotfiles.private"
-things=`find . -type f -not -iwholename "*/.git/*"`
-for t in $things; do
-    ln -s "$HOME/.dotfiles.private/$t" "$HOME/$t"
+cd $PRIVFILES
+files=`find . -type f -not -iwholename "*/.git/*"`
+for t in $files; do
+    mksymlink $PRIVFILES/$t $HOME/$t
 done
+
+echo "$count files linked, $notrelinked were already present."
 
 current_shell=`getent passwd $LOGNAME | cut -d: -f7`
 
@@ -53,5 +84,5 @@ if [ $current_shell != "$target_shell" ]; then
     chsh --shell $target_shell
     echo "Shell set to $target_shell."
 else
-    echo "Shell seems already configured, ignoring."
+    echo "Shell is already $target_shell, not reconfiguring."
 fi
