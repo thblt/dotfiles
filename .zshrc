@@ -17,8 +17,14 @@ antigen bundle zsh-users/zsh-autosuggestions
 export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/bundles/bhilburn/powerlevel9k
 antigen theme bhilburn/powerlevel9k powerlevel9k
 export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir)
-export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(vcs)
+export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(dir_writable vcs)
 export POWERLEVEL9K_STATUS_VERBOSE=false
+
+export POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{black} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
+export POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+POWERLEVEL9K_HOME_ICON='~'
+POWERLEVEL9K_HOME_SUB_ICON='~'
+POWERLEVEL9K_FOLDER_ICON="/ $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')%F{black}"
 
 export POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
 export POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
