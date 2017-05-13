@@ -1180,11 +1180,11 @@ More efficient line numbering, especially on large files with huge foldings (eg 
     )
 #+end_src
 
-*** Counsel-dash
+*** Helm-dash
 
 #+begin_src emacs-lisp
-  (use-package counsel-dash
-    :bind ("<f1>" . counsel-dash-at-point)
+  (use-package helm-dash
+    :bind ("<f1>" . helm-dash-at-point)
     :config
     (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
     (defun counsel-dash-at-point ()
