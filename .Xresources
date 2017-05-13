@@ -9,11 +9,14 @@
   Xft.hinting:   true
   Xft.rgba:      rgb
   Xft.hintstyle: hintfull
+  Xft.dpi:       72
 #ifdef SRVR_maladict
   Xft.dpi:       289
-#else
-  Xft.dpi:       72
 #endif
+#ifdef SRVR_rudiger
+  Xft.dpi:       96
+#endif
+
 ! }}}
 
 URxvt*font: xft:DejaVu Sans Mono for Powerline:size=FONT_SIZE, \
