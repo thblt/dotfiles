@@ -1278,11 +1278,13 @@ Use popups instead of the modeline to display flycheck errors:
     )
 #+end_src
 
-*** Highlight-indent-guides
+*** TODO Highlight-indent-guides
+
+TODO [[https://github.com/DarthFennec/highlight-indent-guides/issues/23][Waiting for a fix]].  Uncomment line 2 when released.
 
 #+begin_src emacs-lisp
   (use-package highlight-indent-guides
-    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;;    :init (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
     :config (setq highlight-indent-guides-method 'character
                   highlight-indent-guides-character ?┃
                   highlight-indent-guides-auto-character-face-perc 25))
