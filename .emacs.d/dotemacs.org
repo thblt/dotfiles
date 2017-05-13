@@ -30,6 +30,7 @@ This is my Emacs configuration.
    - [[#programming-languages][Programming languages]]
    - [[#misc-syntaxes][Misc syntaxes]]
  - [[#tools][Tools]]
+   - [[#debian-bug-report-generator][Debian bug report generator]]
    - [[#calendars][Calendars]]
    - [[#dired][Dired]]
    - [[#ebib][Ebib]]
@@ -1497,6 +1498,11 @@ Hayoo:
 
 This section deals with tools which don't edit anything.
 
+** Debian bug report generator
+
+#+BEGIN_SRC emacs-lisp
+  (use-package debian-bug)
+#+END_SRC
 ** Calendars
 
 #+BEGIN_SRC emacs-lisp
