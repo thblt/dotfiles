@@ -1,6 +1,6 @@
 #!/bin/sh
 
-source ~/.profile
+. ~/.profile
 
 # Note: LightDM passes the name of the session as the first parameter of .xprofile.
 # Other display managers may not, or may source different files.
