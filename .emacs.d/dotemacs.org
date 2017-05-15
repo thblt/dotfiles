@@ -1490,11 +1490,26 @@ Hayoo:
 
 ** Misc syntaxes
 
-*** YAML
+*** Gettext (PO)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package po-mode)
+
+  (autoload 'po-mode "po-mode"
+    "Major mode for translators to edit PO files" t)
+  (setq auto-mode-alist (cons '("\\.po\\'\\|\\.po\\." . po-mode)
+                              auto-mode-alist))
+#+END_SRC
+
+*** JSON, TOML, YAML
 
 #+begin_src emacs-lisp
+  (use-package json-mode)
+  (use-package toml-mode)
   (use-package yaml-mode)
 #+end_src
+
+
 
 * Tools
 
