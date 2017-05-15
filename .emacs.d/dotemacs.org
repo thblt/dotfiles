@@ -37,6 +37,7 @@ This is my Emacs configuration.
    - [[#magit-and-git][Magit and Git]]
    - [[#elfeed-feed-reader][Elfeed feed reader]]
    - [[#mu4e][Mu4e]]
+   - [[#password-management-password-store][Password management (password-store)]]
    - [[#pdf-tools][PDF Tools]]
    - [[#regular-expression-builder][Regular expression builder]]
  - [[#conclusion][Conclusion]]
@@ -1852,6 +1853,14 @@ Enable notifications:
 ;;            (mu4e-alert-set-default-style 'libnotify)
 ;;            (mu4e-alert-enable-notifications)
             (mu4e-alert-enable-mode-line-display)))
+** Password management (password-store)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auth-password-store
+    :init (auth-pass-enable)
+    )
+
+  (use-package pass)
 #+END_SRC
 
 ** PDF Tools
