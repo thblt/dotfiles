@@ -161,7 +161,7 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 #+end_src
 
 ** User interface
-*** Keybindings
+*** Standard keybindings
 
 Rebind =C-x k= to kill the /current/ buffer.
 
@@ -169,10 +169,18 @@ Rebind =C-x k= to kill the /current/ buffer.
   (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
 #+end_src
 
+*** Buffer management (ibuffer)
+
 Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
 
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
+#+END_SRC
+
+Use =ibuffer-vc= to group buffers by version control status:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ibuffer-vc)
 #+END_SRC
 
 *** UI defaults
@@ -1813,7 +1821,7 @@ Then the bulk of the config:
                                              "tpolge@gmail.com"
                                              )
                mu4e-context-policy 'pick-first
-               mu4e-compose-context-policy 'ask)
+               mu4e-compose-context-policy 'pick-first)
 
               (add-hook 'mu4e-view-mode-hook (lambda ()
                                                (setq visual-fill-column-width 80)
