@@ -1165,8 +1165,8 @@ More efficient line numbering, especially on large files with huge foldings (eg 
 **** Linum-relative
 
 #+begin_src emacs-lisp :tangle no
-    (use-package linum-relative
-      :init (add-hook 'prog-mode-hook 'linum-relative-mode))
+  (use-package linum-relative
+        :init (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+end_src
 
 ** Minor modes
@@ -1521,6 +1521,7 @@ This section deals with tools which don't edit anything.
 #+BEGIN_SRC emacs-lisp
   (use-package debian-bug)
 #+END_SRC
+
 ** Calendars
 
 #+BEGIN_SRC emacs-lisp
