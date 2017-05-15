@@ -89,7 +89,8 @@ build_package_list() {
     # Python
     pkg_add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
     # Rust
-    pkg_add cargo rustc
+    # Use rustup for now
+    pkg_remove cargo rustc
     # Shell
     pkg_add shellcheck
     # Some deps
