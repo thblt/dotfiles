@@ -1817,6 +1817,9 @@ Then the bulk of the config:
                mu4e-update-interval 60 ;; seconds
                mu4e-sent-messages-behavior 'sent
 
+               ;; Behavior
+               mu4e-compose-dont-reply-to-self t
+
                ;; UI settings
                mu4e-confirm-quit nil
                mu4e-hide-index-messages t
