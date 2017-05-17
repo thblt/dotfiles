@@ -1229,62 +1229,42 @@ More efficient line numbering, especially on large files with huge foldings (eg 
 
 #+begin_src emacs-lisp
   (use-package helm-dash
+    :pin melpa
     :bind ("<f1>" . helm-dash-at-point)
     :config
     (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
-    (defun counsel-dash-at-point ()
-      (interactive)
-      (counsel-dash (thing-at-point 'symbol))
-      )
-    )
 
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("C"))
-              )
-            )
+    (add-hook 'c-mode-hook
+              (lambda ()
+                (setq-local helm-dash-docsets '("C"))
 
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
-              )
-            )
+                (add-hook 'c++-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))))
 
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Emacs Lisp"))
-              )
-            )
+                (add-hook 'emacs-lisp-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Emacs Lisp"))))
 
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Haskell"))
-              )
-            )
+                (add-hook 'haskell-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Haskell"))))
 
-  (add-hook 'html-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("HTML"))
-              )
-            )
+                (add-hook 'html-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("HTML"))))
 
-  (add-hook 'js-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("JavaScript"))
-              )
-            )
+                (add-hook 'js-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("JavaScript"))))
 
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
-              )
-            )
+                (add-hook 'python-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Python 2" "Python 3"))))
 
-  (add-hook 'rust-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Rust"))
-              )
-            )
+                (add-hook 'rust-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Rust")))))
 #+end_src
 
 *** Editorconfig
