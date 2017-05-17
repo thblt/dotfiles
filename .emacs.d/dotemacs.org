@@ -41,6 +41,7 @@ This is my Emacs configuration.
    - [[#pdf-tools][PDF Tools]]
    - [[#regular-expression-builder][Regular expression builder]]
  - [[#conclusion][Conclusion]]
+   - [[#hidpi-support-kindof][HiDPI support (kindof)]]
 
 * Fundamentals
 
@@ -337,41 +338,6 @@ From Emacs Wiki
 
   (global-set-key (kbd "C-c o") 'switch-to-minibuffer) ;; Bind to `C-c o'
 #+end_src
-
-*** HiDPI support (kindof)
-
-If we're running on a HiDPI machine (we can't really do better than that, we replace the flycheck fringe bitmap with a larger version.)
-
-#+BEGIN_SRC emacs-lisp
-  (if (string-prefix-p  "maladict" system-name)
-      (progn
-        (setq fringe-mode-explicit t)
-        (set-fringe-mode '(16 . 0))
-
-        (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-          (vector
-           #b1000000000
-           #b1100000000
-           #b1110000000
-           #b1111000000
-           #b1111100000
-           #b1111110000
-           #b1111111000
-           #b1111111100
-           #b1111111110
-           #b1111111111
-           #b1111111111
-           #b1111111110
-           #b1111111100
-           #b1111111000
-           #b1111110000
-           #b1111100000
-           #b1111000000
-           #b1110000000
-           #b1100000000
-           #b1000000000)
-          20 10 'center)))
-#+END_SRC
 
 ** MacOS
 
@@ -1920,6 +1886,44 @@ We use the =string= syntax, as advised on [[https://www.masteringemacs.org/artic
 (setq reb-re-syntax 'string)
 #+end_src
 * Conclusion
+
+** HiDPI support (kindof)
+
+This section is made of overrides to improve support for HiDPI monitors.  It must be at the end, to avoid being overriden by default settings.
+
+If we're running on a HiDPI machine, we replace the flycheck fringe bitmap with a larger version.
+
+#+BEGIN_SRC emacs-lisp
+  (if (string-prefix-p  "maladict" system-name)
+      (progn
+        (setq fringe-mode-explicit t)
+        (set-fringe-mode '(16 . 0))
+
+        (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+          (vector
+           #b1000000000
+           #b1100000000
+           #b1110000000
+           #b1111000000
+           #b1111100000
+           #b1111110000
+           #b1111111000
+           #b1111111100
+           #b1111111110
+           #b1111111111
+           #b1111111111
+           #b1111111110
+           #b1111111100
+           #b1111111000
+           #b1111110000
+           #b1111100000
+           #b1111000000
+           #b1110000000
+           #b1100000000
+           #b1000000000)
+          20 10 'center)))
+#+END_SRC
+
 
 We should have started (or crashed) by now.  It's time to run the server!
 
