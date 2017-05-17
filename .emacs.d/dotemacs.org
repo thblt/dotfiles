@@ -1279,6 +1279,12 @@ More efficient line numbering, especially on large files with huge foldings (eg 
               (setq-local helm-dash-docsets '("Python 2" "Python 3"))
               )
             )
+
+  (add-hook 'rust-mode-hook
+            (lambda ()
+              (setq-local helm-dash-docsets '("Rust"))
+              )
+            )
 #+end_src
 
 *** Editorconfig
