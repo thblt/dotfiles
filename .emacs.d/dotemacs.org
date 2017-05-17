@@ -1230,7 +1230,7 @@ More efficient line numbering, especially on large files with huge foldings (eg 
 
                 (add-hook 'rust-mode-hook
                           (lambda ()
-                            (setq-local helm-dash-docsets '("Rust")))))
+                            (setq-local helm-dash-docsets '("Rust")))))))
 #+end_src
 
 *** Editorconfig
@@ -1856,6 +1856,8 @@ Enable notifications:
 ;;            (mu4e-alert-set-default-style 'libnotify)
 ;;            (mu4e-alert-enable-notifications)
             (mu4e-alert-enable-mode-line-display)))
+#+END_SRC
+
 ** Password management (password-store)
 
 #+BEGIN_SRC emacs-lisp
