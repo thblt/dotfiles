@@ -32,6 +32,11 @@ global_upgrade() {
     apt dist-upgrade
 }
 
+mk_persistent_journal() {
+    sudo mkdir -p /var/log/journal
+    sudo systemd-tmpfiles --create --prefix /var/log/journal
+}
+
 store_installed_packages(){
     # List installed packages
     pkglistfile=/usr/local/share/base-packages.list
@@ -264,6 +269,7 @@ case $1 in
     "bootstrap")
         enforce_root
         mk_apt_norecommands
+        mk_persistent_journal
         global_upgrade
         store_installed_packages
         build_package_list
