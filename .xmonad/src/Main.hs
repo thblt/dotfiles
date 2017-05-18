@@ -46,8 +46,9 @@ main = do
       , placeHook $ withGaps (16,0,16,0) (smart (0.5,0.5))
       , manageDocks
       , isDialog --> doFloat
-      , className =? "Gloobus-preview"    --> doFloat
       , title =? "Invoking Emacs daemon…" --> doFloat
+      , className =? "Gloobus-preview"    --> doFloat
+      , className =? "Pinentry"           --> doFloat
       , className =? "Xdialog"            --> doFloat
       , className =? "Yad"                --> doFloat
       , className =? "zenity"             --> doFloat
