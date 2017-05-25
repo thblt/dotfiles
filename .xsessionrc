@@ -52,4 +52,4 @@ xmodmap .Xmodmap.`hostname`
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
 
-echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2&>1
+echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null
