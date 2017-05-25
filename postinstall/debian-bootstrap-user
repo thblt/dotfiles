@@ -19,7 +19,7 @@ declare -a files=(
     .profile
     .tmux.conf
     .vim
-    .Xmodmap.$(hostname)
+    .Xmodmap
     .xmonad
     .xsession
     .xsessionrc
@@ -34,22 +34,31 @@ declare -a cherrypick=(
 
 mksymlink() {
     # Symlinks $1 to $2
-    if [ ! -e $1 ]; then
-        echo "No source file '$1'."
+
+    src=$1
+    dest=$2
+
+    if [ -e "$src.$(hostname)" ]; then
+        src="$src.$(hostname)"
+        echo "Notice: Will use $src for $dest"
+    fi
+
+    if [ ! -e $src ]; then
+        echo "Warning: No source file '$src'."
         return
     fi
 
-    if [ -e "$2" ]; then
-        if [ $(realpath "$1") == $(realpath "$2") ]; then
+    if [ -e "$dest" ]; then
+        if [ $(realpath "$src") == $(realpath "$dest") ]; then
             let notrelinked+=1
             return 0
         else
-            echo -e "WARNING\t A different $2 already exists.  NOT LINKING."
+            echo -e "WARNING\t A different $dest already exists.  NOT LINKING."
             return 1
         fi
     fi
 
-    ln -s "$1" "$2"
+    ln -s "$src" "$des"
     let count+=1
 }
 notrelinked=0
@@ -76,6 +85,7 @@ for t in $files; do
     mksymlink $PRIVFILES/$t $HOME/$t
 done
 
+echo
 echo "$count files linked, $notrelinked were already present."
 
 current_shell=`getent passwd $LOGNAME | cut -d: -f7`
