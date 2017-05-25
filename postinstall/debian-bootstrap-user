@@ -58,7 +58,7 @@ mksymlink() {
         fi
     fi
 
-    ln -s "$src" "$des"
+    ln -s "$src" "$dest"
     let count+=1
 }
 notrelinked=0
