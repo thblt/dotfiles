@@ -4,43 +4,48 @@
 This is my Emacs configuration.
 
 * Contents :TOC:noexport:
- - [[#fundamentals][Fundamentals]]
-   - [[#personal-information][Personal information]]
-   - [[#package-sources-and-locations][Package sources and locations]]
-   - [[#general-defaults][General defaults]]
-   - [[#user-interface][User interface]]
-   - [[#macos][MacOS]]
- - [[#editing-text][Editing text]]
-   - [[#spell-checking][Spell checking]]
-   - [[#modal-editing][“Modal” editing]]
-   - [[#moving-around][Moving around]]
-   - [[#replace][Replace]]
-   - [[#minor-modes][Minor modes]]
-   - [[#customization][Customization]]
- - [[#writing-prose][Writing prose]]
-   - [[#the-text-mode-hydra][The text-mode hydra]]
-   - [[#common-settings-and-minor-modes][Common settings and minor modes]]
-   - [[#major-modes][Major modes]]
-   - [[#org-mode][Org-mode]]
- - [[#writing-code][Writing code]]
-   - [[#settings][Settings]]
-   - [[#minor-modes-1][Minor modes]]
-   - [[#project-management-with-projectile][Project management with Projectile]]
-   - [[#build-systems][Build systems]]
-   - [[#programming-languages][Programming languages]]
-   - [[#misc-syntaxes][Misc syntaxes]]
- - [[#tools][Tools]]
-   - [[#calendars][Calendars]]
-   - [[#dired][Dired]]
-   - [[#ebib][Ebib]]
-   - [[#magit-and-git][Magit and Git]]
-   - [[#elfeed-feed-reader][Elfeed feed reader]]
-   - [[#mu4e][Mu4e]]
-   - [[#pdf-tools][PDF Tools]]
-   - [[#regular-expression-builder][Regular expression builder]]
- - [[#conclusion][Conclusion]]
+- [[#fundamentals][Fundamentals]]
+  - [[#personal-information][Personal information]]
+  - [[#package-sources-and-locations][Package sources and locations]]
+  - [[#general-defaults][General defaults]]
+  - [[#user-interface][User interface]]
+  - [[#macos][MacOS]]
+- [[#editing-text][Editing text]]
+  - [[#spell-checking][Spell checking]]
+  - [[#modal-editing][“Modal” editing]]
+  - [[#moving-around][Moving around]]
+  - [[#replace][Replace]]
+  - [[#minor-modes][Minor modes]]
+  - [[#customization][Customization]]
+- [[#writing-prose][Writing prose]]
+  - [[#the-text-mode-hydra][The text-mode hydra]]
+  - [[#common-settings-and-minor-modes][Common settings and minor modes]]
+  - [[#major-modes][Major modes]]
+  - [[#org-mode][Org-mode]]
+- [[#writing-code][Writing code]]
+  - [[#settings][Settings]]
+  - [[#minor-modes-1][Minor modes]]
+  - [[#project-management-with-projectile][Project management with Projectile]]
+  - [[#build-systems][Build systems]]
+  - [[#programming-languages][Programming languages]]
+  - [[#misc-syntaxes][Misc syntaxes]]
+- [[#tools][Tools]]
+  - [[#debian-bug-report-generator][Debian bug report generator]]
+  - [[#calendars][Calendars]]
+  - [[#dired][Dired]]
+  - [[#ebib][Ebib]]
+  - [[#magit-and-git][Magit and Git]]
+  - [[#elfeed-feed-reader][Elfeed feed reader]]
+  - [[#mu4e][Mu4e]]
+  - [[#password-management-password-store][Password management (password-store)]]
+  - [[#pdf-tools][PDF Tools]]
+  - [[#regular-expression-builder][Regular expression builder]]
+- [[#conclusion][Conclusion]]
+  - [[#hidpi-support-kindof][HiDPI support (kindof)]]
 
 * Fundamentals
+
+This chapter deals with the general use of Emacs, and is limited to general settings and sane defaults.
 
 Let's say hello:
 
@@ -117,7 +122,7 @@ Change the default major mode to =text-mode= instead of =fundamental-mode=.  Fun
 
 *** Backups and keeping filesystem clean
 
-Let's keep everything clean.  Backup files go to =/tmp= with autosaves.  Customize saves its mess in a separate file, to keep init.el clean.
+Let's keep everything clean.  Backup files go to =/tmp= with autosaves.
 
 #+begin_src emacs-lisp
   (let ((backup-dir (concat user-emacs-directory "backups/")))
@@ -133,7 +138,7 @@ We want numbered backups, because catastrophes happen.  The numbers may be a bit
         kept-old-versions 500)
 #+END_SRC
 
-Let's disable Customize by pointing it to =/dev/null=:
+Disable Customize by pointing it to =/dev/null=:
 
 #+BEGIN_SRC emacs-lisp
   ;; Let Customize put its mess elsewhere
@@ -143,7 +148,7 @@ Let's disable Customize by pointing it to =/dev/null=:
 
 *** Browser
 
-Use system's default browser. Using =setsid xdg-open= prevents Emacs from killing xdg-open before it actually opened anything. See [[https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open][here]].
+Use default browser from the system. Using =setsid xdg-open= prevents Emacs from killing xdg-open before it actually opened anything. See [[https://askubuntu.com/questions/646631/emacs-doesnot-work-with-xdg-open][here]].
 
 #+begin_src emacs-lisp
   (setq-default
@@ -159,19 +164,6 @@ Use system's default browser. Using =setsid xdg-open= prevents Emacs from killin
 #+end_src
 
 ** User interface
-*** Keybindings
-
-Rebind =C-x k= to kill the /current/ buffer.
-
-#+begin_src emacs-lisp
-  (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
-#+end_src
-
-Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
-#+END_SRC
 
 *** UI defaults
 
@@ -203,7 +195,7 @@ Don't show the menu bar, unless this is MacOS.  Never show toolbar or scrollbars
 I don't use the right fringe
 
 #+begin_src emacs-lisp :tangle no
-  (set-fringe-mode '(32 . 0))
+  (set-fringe-mode '(16 . 0))
 #+end_src
 
 Mouse wheel scrolling makes big jumps by default, let's make it smoother.
@@ -217,17 +209,27 @@ Mouse wheel scrolling makes big jumps by default, let's make it smoother.
         )
 #+end_src
 
-*** Customization helper
+*** Standard keybindings
 
-A little function to identify the face at point.  Nice to have when writing themes.
+Rebind =C-x k= to kill the /current/ buffer.
 
 #+begin_src emacs-lisp
-  (defun what-face (pos)
-    (interactive "d")
-    (let ((face (or (get-char-property (point) 'read-face-name)
-                    (get-char-property (point) 'face))))
-      (if face (message "Face: %s" face) (message "No face at %d" pos))))
+  (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
 #+end_src
+
+*** Buffer management (ibuffer)
+
+Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
+
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-x C-b") 'ibuffer-other-window)
+#+END_SRC
+
+Use =ibuffer-vc= to group buffers by version control status:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ibuffer-vc)
+#+END_SRC
 
 *** Fonts and themes
 
@@ -260,6 +262,18 @@ Create some shortcut commands to load both Eziam themes:
   (defun eziam-dark () (interactive) (load-theme 'eziam-dark t))
   (defun eziam-light () (interactive) (load-theme 'eziam-light t))
 #+END_SRC
+
+*** Customization helper
+
+A little function to identify the face at point.  Nice to have when writing themes, and faster than =C-u C-x ==.
+
+#+begin_src emacs-lisp
+  (defun what-face (pos)
+    (interactive "d")
+    (let ((face (or (get-char-property (point) 'read-face-name)
+                    (get-char-property (point) 'face))))
+      (if face (message "Face: %s" face) (message "No face at %d" pos))))
+#+end_src
 
 *** Hydra
 
@@ -315,7 +329,7 @@ Popwin “makes you free from the hell of annoying buffers”:
 
 *** Return focus to minibuffer
 
-From Emacs Wiki
+=C-c o= gives focus back to the minibuffer, if it's active.  Code from the Emacs Wiki.
 
 #+begin_src emacs-lisp
   (defun switch-to-minibuffer ()
@@ -350,6 +364,8 @@ Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
 #+end_src
 
 * Editing text
+
+This chapter deals with /general/ text editing.  The next two configure prose and code editing, respectively.
 
 ** Spell checking
 
@@ -405,12 +421,6 @@ Selected is a package which allows to create specific bindings when region is ac
               (selected-global-mode))
       :diminish selected-minor-mode)
 #+end_src
-
-*** Unfill
-
-#+BEGIN_SRC emacs-lisp
-  (define-key selected-keymap (kbd "M-Q") 'unfill-region)
-#+END_SRC
 
 ** Moving around
 *** Avy
@@ -891,6 +901,12 @@ Ignore modification-time-only changes in files, i.e. ones that don't really chan
 
 #+end_src
 
+*** Unfill
+
+#+BEGIN_SRC emacs-lisp
+  (define-key selected-keymap (kbd "M-Q") 'unfill-region)
+#+END_SRC
+
 * Writing prose
 
 This section deals with two things:
@@ -1163,8 +1179,8 @@ More efficient line numbering, especially on large files with huge foldings (eg 
 **** Linum-relative
 
 #+begin_src emacs-lisp :tangle no
-    (use-package linum-relative
-      :init (add-hook 'prog-mode-hook 'linum-relative-mode))
+  (use-package linum-relative
+        :init (add-hook 'prog-mode-hook 'linum-relative-mode))
 #+end_src
 
 ** Minor modes
@@ -1180,60 +1196,46 @@ More efficient line numbering, especially on large files with huge foldings (eg 
     )
 #+end_src
 
-*** Counsel-dash
+*** Helm-dash
 
 #+begin_src emacs-lisp
-  (use-package counsel-dash
-    :bind ("<f1>" . counsel-dash-at-point)
+  (use-package helm-dash
+    :pin melpa
+    :bind ("<f1>" . helm-dash-at-point)
     :config
     (setq helm-dash-docsets-path "~/.local/share/DashDocsets")
-    (defun counsel-dash-at-point ()
-      (interactive)
-      (counsel-dash (thing-at-point 'symbol))
-      )
-    )
 
-  (add-hook 'c-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("C"))
-              )
-            )
+    (add-hook 'c-mode-hook
+              (lambda ()
+                (setq-local helm-dash-docsets '("C"))
 
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))
-              )
-            )
+                (add-hook 'c++-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Boost" "C++" "Qt"))))
 
-  (add-hook 'emacs-lisp-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Emacs Lisp"))
-              )
-            )
+                (add-hook 'emacs-lisp-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Emacs Lisp"))))
 
-  (add-hook 'haskell-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Haskell"))
-              )
-            )
+                (add-hook 'haskell-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Haskell"))))
 
-  (add-hook 'html-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("HTML"))
-              )
-            )
+                (add-hook 'html-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("HTML"))))
 
-  (add-hook 'js-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("JavaScript"))
-              )
-            )
+                (add-hook 'js-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("JavaScript"))))
 
-  (add-hook 'python-mode-hook
-            (lambda ()
-              (setq-local helm-dash-docsets '("Python 2" "Python 3"))
-              )
-            )
+                (add-hook 'python-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Python 2" "Python 3"))))
+
+                (add-hook 'rust-mode-hook
+                          (lambda ()
+                            (setq-local helm-dash-docsets '("Rust")))))))
 #+end_src
 
 *** Editorconfig
@@ -1461,6 +1463,12 @@ Hayoo:
 
 #+begin_src emacs-lisp
   (use-package rust-mode)
+  (use-package flycheck-rust
+    :init (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+  (add-hook 'rust-mode-hook
+            (progn
+              (setq compile-command "cargo build")))
 #+end_src
 
 *** Web development
@@ -1487,15 +1495,36 @@ Hayoo:
 
 ** Misc syntaxes
 
-*** YAML
+*** Gettext (PO)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package po-mode)
+
+  (autoload 'po-mode "po-mode"
+    "Major mode for translators to edit PO files" t)
+  (setq auto-mode-alist (cons '("\\.po\\'\\|\\.po\\." . po-mode)
+                              auto-mode-alist))
+#+END_SRC
+
+*** JSON, TOML, YAML
 
 #+begin_src emacs-lisp
+  (use-package json-mode)
+  (use-package toml-mode)
   (use-package yaml-mode)
 #+end_src
+
+
 
 * Tools
 
 This section deals with tools which don't edit anything.
+
+** Debian bug report generator
+
+#+BEGIN_SRC emacs-lisp
+  (use-package debian-bug)
+#+END_SRC
 
 ** Calendars
 
@@ -1743,6 +1772,9 @@ Then the bulk of the config:
                mu4e-update-interval 60 ;; seconds
                mu4e-sent-messages-behavior 'sent
 
+               ;; Behavior
+               mu4e-compose-dont-reply-to-self t
+
                ;; UI settings
                mu4e-confirm-quit nil
                mu4e-hide-index-messages t
@@ -1788,7 +1820,7 @@ Then the bulk of the config:
                                              "tpolge@gmail.com"
                                              )
                mu4e-context-policy 'pick-first
-               mu4e-compose-context-policy 'ask)
+               mu4e-compose-context-policy 'pick-first)
 
               (add-hook 'mu4e-view-mode-hook (lambda ()
                                                (setq visual-fill-column-width 80)
@@ -1831,6 +1863,16 @@ Enable notifications:
             (mu4e-alert-enable-mode-line-display)))
 #+END_SRC
 
+** Password management (password-store)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package auth-password-store
+    :init (auth-pass-enable)
+    )
+
+  (use-package pass)
+#+END_SRC
+
 ** PDF Tools
 
 #+begin_src emacs-lisp
@@ -1851,6 +1893,44 @@ We use the =string= syntax, as advised on [[https://www.masteringemacs.org/artic
 (setq reb-re-syntax 'string)
 #+end_src
 * Conclusion
+
+** HiDPI support (kindof)
+
+This section is made of overrides to improve support for HiDPI monitors.  It must be at the end, to avoid being overriden by default settings.
+
+If we're running on a HiDPI machine, we replace the flycheck fringe bitmap with a larger version.
+
+#+BEGIN_SRC emacs-lisp
+  (if (string-prefix-p  "maladict" system-name)
+      (progn
+        (setq fringe-mode-explicit t)
+        (set-fringe-mode '(16 . 0))
+
+        (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+          (vector
+           #b1000000000
+           #b1100000000
+           #b1110000000
+           #b1111000000
+           #b1111100000
+           #b1111110000
+           #b1111111000
+           #b1111111100
+           #b1111111110
+           #b1111111111
+           #b1111111111
+           #b1111111110
+           #b1111111100
+           #b1111111000
+           #b1111110000
+           #b1111100000
+           #b1111000000
+           #b1110000000
+           #b1100000000
+           #b1000000000)
+          20 10 'center)))
+#+END_SRC
+
 
 We should have started (or crashed) by now.  It's time to run the server!
 

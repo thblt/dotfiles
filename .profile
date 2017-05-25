@@ -1,4 +1,4 @@
-export PATH="${PATH}:${HOME}/.bin:${HOME}/.local/bin:$GOPATH/bin:$HOME/.cargo/bin"
+export PATH="/bin:/usr/bin:/usr/local/bin:${HOME}/.bin:${HOME}/.local/bin:$GOPATH/bin:$HOME/.cargo/bin"
 export GOPATH=$HOME/.go
 
 if [ -e /usr/libexec/path_helper ]; then

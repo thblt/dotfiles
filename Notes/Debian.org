@@ -60,7 +60,7 @@ APT::AutoRemove::SuggestsImportant "false";
 
  - =usermod -aG sudo,adm,systemd-journal thblt=
 
-** TODO Install all the cool stuff
+** DONE Install all the cool stuff
 
 *debian-bootstrap handles this*
 
@@ -99,7 +99,7 @@ Note: *never* edit files under =/boot/=: they will be erased at next grub update
 - =systemctl enable fstrim.timer=
 - =sudo update-initramfs -u -k all=
 
-*** Journal persistant
+*** DONE Journal persistant
 
 Teste =journalctl -b -1=.  Si ça répond =Specifying boot ID has no effect, no persistent journal was found=, les opérations à effectuer sont dans =/usr/share/doc/systemd/README.Debian.gz= (à lire avec =zless=).  Il faut simplement:
 

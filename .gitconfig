@@ -12,3 +12,5 @@
 	conflictStyle = diff3
 [diff]
 	tool = meld
+[diff "gpg"]
+	textconv = gpg --no-tty --decrypt

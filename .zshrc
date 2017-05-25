@@ -67,11 +67,18 @@ export WORDCHARS="*?.[]~=&;\!#$%^(){}<>"
 
 # Variables
 export EDITOR="emacsclient -ca ''"
+
+# Aliases
 alias bc="bc -l"
 alias bgd="bg;disown;"
 alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
+
+qrpass() {
+    pass show $1 | head -n 1 | qrencode -s 3 -o - | feh -Z -
+}
+export qrpass
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'

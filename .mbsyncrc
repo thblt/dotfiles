@@ -6,7 +6,7 @@ IMAPAccount ovh
 Host ssl0.ovh.net
 User thibault@thb.lt
 AuthMechs LOGIN
-PassCmd "pass show remotes/ssl0.ovh.net/imap/thibault@thb.lt"
+PassCmd "pass show ssl0.ovh.net"
 SSLType IMAPS
 
 ImapStore ovh-remote
@@ -19,7 +19,7 @@ Inbox ~/.Mail/OVH/Inbox
 Channel ovh
 Master :ovh-remote:
 Slave :ovh-local:
-Patterns * %
+Patterns * % !Drafts
 Create Both
 SyncState *
 Sync All

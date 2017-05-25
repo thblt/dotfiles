@@ -32,6 +32,11 @@ global_upgrade() {
     apt dist-upgrade
 }
 
+mk_persistent_journal() {
+    sudo mkdir -p /var/log/journal
+    sudo systemd-tmpfiles --create --prefix /var/log/journal
+}
+
 store_installed_packages(){
     # List installed packages
     pkglistfile=/usr/local/share/base-packages.list
@@ -89,7 +94,8 @@ build_package_list() {
     # Python
     pkg_add python-setuptools python3-setuptools python-pip python python3 virtualenvwrapper
     # Rust
-    pkg_add cargo rustc
+    # Use rustup for now
+    pkg_remove cargo rustc
     # Shell
     pkg_add shellcheck
     # Some deps
@@ -263,6 +269,7 @@ case $1 in
     "bootstrap")
         enforce_root
         mk_apt_norecommands
+        mk_persistent_journal
         global_upgrade
         store_installed_packages
         build_package_list

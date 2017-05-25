@@ -12,5 +12,6 @@
   (helm-dash-install-docset 'Python_2)
   (helm-dash-install-docset 'Python_3)
   (helm-dash-install-docset 'Qt_5)
+  (helm-dash-install-docset 'Rust)
   ;;  (helm-dash-install-docset 'Sass)
 )
