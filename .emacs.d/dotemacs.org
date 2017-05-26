@@ -1806,7 +1806,8 @@ Then the bulk of the config:
                mu4e-headers-has-child-prefix '("+" . "╰┬")
 
                mu4e-headers-fields '(
-                                     (:flags          . 3)
+                                     (:flags          . 5)
+                                     (:mailing-list   . 18)
                                      (:human-date     . 12)
                                      (:from-or-to     . 25)
                                      (:thread-subject . nil)
