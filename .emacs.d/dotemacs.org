@@ -1615,11 +1615,11 @@ First, let's configure the view.
           ("Branch"     10  magit-repolist-column-branch)
           ;; ("Version" 25  magit-repolist-column-version nil)
           ("Upstream"   15  magit-repolist-column-upstream)
-          ("L<U"        5   thblt-magit-repolist-column-unpulled-from-upstream)
-          ("L>U"        5   thblt-magit-repolist-column-unpushed-to-upstream)
-          ("L<P"        5   thblt-magit-repolist-column-unpulled-from-pushremote)
-          ("L>P"        5   thblt-magit-repolist-column-unpushed-to-pushremote)
-          ("Dirty"      6   magit-repolist-column-dirty)
+          ("↓U"         5   thblt-magit-repolist-column-unpulled-from-upstream)
+          ("↑U"         5   thblt-magit-repolist-column-unpushed-to-upstream)
+          ("↓P"         5   thblt-magit-repolist-column-unpulled-from-pushremote)
+          ("↑P"         5   thblt-magit-repolist-column-unpushed-to-pushremote)
+          (""           6   magit-repolist-column-dirty)
           ("Path"       99  magit-repolist-column-path nil)))
 #+end_src
 
@@ -1806,7 +1806,8 @@ Then the bulk of the config:
                mu4e-headers-has-child-prefix '("+" . "╰┬")
 
                mu4e-headers-fields '(
-                                     (:flags          . 3)
+                                     (:flags          . 5)
+                                     (:mailing-list   . 18)
                                      (:human-date     . 12)
                                      (:from-or-to     . 25)
                                      (:thread-subject . nil)
