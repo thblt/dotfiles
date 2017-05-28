@@ -19,7 +19,10 @@ stack_run() {
     fi
 
     shift
-    $stack $nixarg --stack-yaml=$SRC_DIR/stack.yaml $@
+    invoke="$stack $nixarg --stack-yaml=$SRC_DIR/stack.yaml $@"
+    >&2 echo $invoke
+    $invoke
+
 }
 
 if [ ! -e $SRC_DIR/.stack-work ]; then
