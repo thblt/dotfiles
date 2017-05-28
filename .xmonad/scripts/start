@@ -6,9 +6,29 @@ SRC_DIR=$HOME/.xmonad
 # executable section of your Cabal file.
 EXE_NAME=xmonad
 
-urxvt -e stack --stack-yaml=$SRC_DIR/stack.yaml build
+# Are we on NixOS?
+if nixos-version; then
+    nixarg="--nix"
+else
+    nixarg=""
+fi
 
-EXE_DIR=`stack --stack-yaml=$SRC_DIR/stack.yaml path --dist-dir`
+stack_run() {
+    if [ $1 != 0 ]; then
+        stack="urxvt -e stack"
+    else
+        stack="stack"
+    fi
 
-cd $HOME
+    shift
+    $stack $nixarg --stack-yaml=$SRC_DIR/stack.yaml $@
+}
+
+if [ ! -e $SRC_DIR/.stack-work ]; then
+    stack_run 1 "setup"
+fi
+
+stack_run 1 "build"
+
+EXE_DIR=$(stack_run 0 path --dist-dir)
 $SRC_DIR/$EXE_DIR/build/$EXE_NAME/$EXE_NAME
