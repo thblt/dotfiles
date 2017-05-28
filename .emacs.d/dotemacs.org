@@ -1752,7 +1752,7 @@ On NixOS, this is a bit more tricky.  We need to find the mu binary, dereference
     (when (and
            (string-prefix-p "/nix/store/" mu4epath)
            (file-directory-p mu4epath))
-      (add-to-list 'load-path mu4epath)))
+      (add-to-list 'load-path (file-truename mu4epath))))
 #+END_SRC
 
 Each of my accounts is synced (by =mbsync=) to a folder at the root of the Maildir (eg, =~/.Mail/Academic/=).  We then need a function to switch contexts based on a regular expression on the current Maildir path.   For some reason, this doesn't come included with mu4e, so here it is, and it probably comes [[https://www.reddit.com/r/emacs/comments/47t9ec/share_your_mu4econtext_configs/d0fsih6/][from here]].
