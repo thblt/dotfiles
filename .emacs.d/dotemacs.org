@@ -240,7 +240,7 @@ Configure the default font:
   (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono"))
   (set-face-attribute 'default nil
   ;;                  :font "DejaVu Sans Mono" ;; This breaks when Emacs is started as a daemon
-                      :height (if (string-prefix-p  "rudiger" system-name) 120 070)
+                      :height 100
                       )
 #+end_src
 
@@ -1934,6 +1934,10 @@ If we're running on a HiDPI machine, we replace the flycheck fringe bitmap with 
 #+BEGIN_SRC emacs-lisp
   (if (string-prefix-p  "maladict" system-name)
       (progn
+
+        (set-face-attribute 'default nil
+                            :height 070)
+
         (setq fringe-mode-explicit t)
         (set-fringe-mode '(16 . 0))
 
