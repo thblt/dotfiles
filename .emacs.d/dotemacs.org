@@ -1742,7 +1742,7 @@ First, we /may/ need to update the load-path.  Official Debian build of Emacs do
 
 On NixOS, this is a bit more tricky.  We need to find the mu binary, dereference it, and find the path from this.
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (let ((mu4epath
          (concat
           (f-dirname
