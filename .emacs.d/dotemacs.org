@@ -34,6 +34,7 @@ This is my Emacs configuration.
   - [[#calendars][Calendars]]
   - [[#dired][Dired]]
   - [[#ebib][Ebib]]
+  - [[#erc][ERC]]
   - [[#magit-and-git][Magit and Git]]
   - [[#elfeed-feed-reader][Elfeed feed reader]]
   - [[#mu4e][Mu4e]]
@@ -1515,7 +1516,6 @@ Hayoo:
 #+end_src
 
 
-
 * Tools
 
 This section deals with tools which don't edit anything.
@@ -1555,10 +1555,25 @@ I don't know Dired well, so this is nothing more than an attempt.
 ** Ebib
 
 #+begin_src emacs-lisp
-(use-package ebib
-  :config (setq ebib-bibtex-dialect 'biblatex)
-  )
+  (use-package ebib
+    :config (setq ebib-bibtex-dialect 'biblatex)
+    )
 #+end_src
+
+** ERC
+
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load 'erc
+    (setq erc-server "irc.freenode.net"
+          erc-port 6667
+          erc-nick "thblt"
+          erc-nick-uniquifier  "′"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package erc-hl-nicks
+    :init (add-hook 'erc-mode-hook 'erc-hl-nicks-mode))
+#+END_SRC
 
 ** Magit and Git
 
