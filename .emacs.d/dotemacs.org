@@ -275,6 +275,15 @@ A little function to identify the face at point.  Nice to have when writing them
       (if face (message "Face: %s" face) (message "No face at %d" pos))))
 #+end_src
 
+*** Window management (ace-window)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :init (setq aw-keys '(?q ?s ?d ?f ?g ?h ?j ?k ?l ?m))
+    :bind (
+           ("M-p" . ace-window)))
+#+END_SRC
+
 *** Hydra
 
 Hydras are everywhere.
@@ -1565,8 +1574,13 @@ I don't know Dired well, so this is nothing more than an attempt.
     (setq erc-server "irc.freenode.net"
           erc-port 6667
           erc-nick "thblt"
-          erc-nick-uniquifier  "′"))
+          erc-nick-uniquifier  "′"
+
+          erc-lurker-hide-list '("JOIN" "PART" "QUIT")
+          erc-lurker-threshold-time 900)) ; 15mn
 #+END_SRC
+
+Highlight nicks:
 
 #+BEGIN_SRC emacs-lisp
   (use-package erc-hl-nicks
