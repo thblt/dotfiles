@@ -4,7 +4,6 @@
 
 module XMonad.Thblt.Misc where
 
-
 import           Data.Int
 import qualified Data.Map as M
 import           Data.Maybe (isJust)
@@ -48,7 +47,7 @@ workspacesKeys | hostname == "anna"    = macAzertyKeys
 -- XMonad.
 
 myWorkspaces :: [ String ]
-myWorkspaces = map show [ 1 .. 9 :: Int ]
+myWorkspaces = map show [ 1 .. 9  :: Int ]
 
 myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]

@@ -28,7 +28,4 @@ stdenv.mkDerivation {
 
   LD_LIBRARY_PATH = "${xorg.libXinerama}/lib:${xorg.libXext}/lib:${xorg.libX11}/lib:${xorg.libXrandr}/lib";
 
-    # Make stack happy:
-    export GPG_TTY=`tty`
-  '';
 }
