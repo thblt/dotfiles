@@ -1574,7 +1574,7 @@ I don't know Dired well, so this is nothing more than an attempt.
     (setq erc-server "irc.freenode.net"
           erc-port 6667
           erc-nick "thblt"
-          erc-nick-uniquifier  "′"
+          erc-nick-uniquifier  "`"
 
           erc-server-auto-reconnect t
 
