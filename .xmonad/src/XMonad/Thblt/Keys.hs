@@ -27,8 +27,8 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-S-c"                     , kill),
     ("M-S-q"                     , spawn "/home/thblt/.xmonad/scripts/stop"),
     ("M-q"                       , restart "/home/thblt/.xmonad/scripts/start" True),
-    ("M-<Esc>"                   , spawn "light-locker-command -l"),
-    ("M-S-<Esc>"                 , spawn "light-locker-command -l"),
+    ("M-<Esc>"                   , spawn "dm-tool lock"),
+    ("M-S-<Esc>"                 , spawn "dm-tool lock"),
 
     ("M-<Space>"                 , sendMessage NextLayout),
     ("M-S-<Space>"               , setLayout $ XMonad.layoutHook conf), -- (Reset)
