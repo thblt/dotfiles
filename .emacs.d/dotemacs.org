@@ -1576,6 +1576,8 @@ I don't know Dired well, so this is nothing more than an attempt.
           erc-nick "thblt"
           erc-nick-uniquifier  "′"
 
+          erc-server-auto-reconnect t
+
           erc-lurker-hide-list '("JOIN" "PART" "QUIT")
           erc-lurker-threshold-time 900)) ; 15mn
 #+END_SRC
