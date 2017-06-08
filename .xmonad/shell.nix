@@ -12,8 +12,7 @@ stdenv.mkDerivation {
       packdeps
     ]))
 
-    # Non-Haskell Dependencies:
-    pkgconfig
+   pkgconfig
     autoconf
     xorg.libX11
     xorg.libXext
@@ -27,11 +26,6 @@ stdenv.mkDerivation {
     rsync # Needed by xmonad-web/gen-docs.sh
   ];
 
-  shellHook = ''
-    # Generate the configure script in X11:
-    ( test -d x11 && cd x11 && autoreconf -f )
+  LD_LIBRARY_PATH = "${xorg.libXinerama}/lib:${xorg.libXext}/lib:${xorg.libX11}/lib:${xorg.libXrandr}/lib";
 
-    # Make stack happy:
-    export GPG_TTY=`tty`
-  '';
 }

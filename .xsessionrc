@@ -2,17 +2,6 @@
 
 . ~/.profile
 
-# Note: LightDM passes the name of the session as the first parameter of .xprofile.
-# Other display managers may not, or may source different files.
-
-# Notification server first, so we can report errors
-if [ ! -e /etc/debian_version ]; then
-	  # Don't start Dunst manually on Debian
-	  dunst &
-else
-	  echo "This is Debian, not starting some stuff"
-fi
-
 # Input setup
 # Better do this here, this is easier to port.
 
@@ -41,9 +30,6 @@ case `hostname` in
 esac
 
 compton --config ~/.config/compton.conf &
-# mv ~/.cozy.err .cozy.err.old ; mv ~/.cozy.log ~/.cozy.log.old ; ~/Documents/Code/cozy-desktop/bin/cozy-desktop sync > ~/.cozy.log 2> ~/.cozy.err &
-#eval $(keychain --eval)
-#keynav &
 light-locker &
 # synapse -s &
 udiskie &
@@ -52,4 +38,6 @@ xmodmap .Xmodmap.`hostname`
 xsetroot -cursor_name left_ptr &
 ~/.fehbg &
 
+gpgconf --kill gpg-agent
+eval $(gpg-agent --daemon --enable-ssh-support)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null

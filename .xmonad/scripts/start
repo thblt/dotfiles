@@ -1,9 +1,7 @@
-#!/bin/sh -eu
+#!/bin/sh
 
-# The directory holding your source code and stack.yaml file:
 SRC_DIR=$HOME/.xmonad
-# The name of the executable produced by stack.  This comes from the
-# executable section of your Cabal file.
+# The name of the executable produced by stack.
 EXE_NAME=xmonad
 
 # Are we on NixOS?
@@ -21,7 +19,10 @@ stack_run() {
     fi
 
     shift
-    $stack $nixarg --stack-yaml=$SRC_DIR/stack.yaml $@
+    invoke="$stack $nixarg --stack-yaml=$SRC_DIR/stack.yaml $@"
+    >&2 echo $invoke
+    $invoke
+
 }
 
 if [ ! -e $SRC_DIR/.stack-work ]; then
