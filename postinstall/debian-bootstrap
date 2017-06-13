@@ -185,6 +185,7 @@ build_package_list() {
     # The texlive monster and tex utilities
     pkg_add texlive-base texlive-lang-french texlive-xetex lmodern lyx
     #                                                  ^ not part of the base distribution.
+    pkg_add biber texlive-bibtex-extra
     pkg_add dvipng texlive-fonts-recommended texlive-generic-recommended
     #   ^ These three are required for org-toggle-latex-fragment
 
