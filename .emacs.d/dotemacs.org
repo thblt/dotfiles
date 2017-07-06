@@ -8,8 +8,19 @@ This is my Emacs configuration.
   - [[#personal-information][Personal information]]
   - [[#package-sources-and-locations][Package sources and locations]]
   - [[#general-defaults][General defaults]]
-  - [[#user-interface][User interface]]
   - [[#macos][MacOS]]
+- [[#user-interface][User interface]]
+  - [[#settings][Settings]]
+  - [[#standard-keybindings][Standard keybindings]]
+  - [[#buffer-management-ibuffer][Buffer management (ibuffer)]]
+  - [[#fonts-and-themes][Fonts and themes]]
+  - [[#customization-helper][Customization helper]]
+  - [[#window-management-ace-window][Window management (ace-window)]]
+  - [[#hydra][Hydra]]
+  - [[#ivy][Ivy]]
+  - [[#popwin][Popwin]]
+  - [[#sr-speedbar][SR-Speedbar]]
+  - [[#return-focus-to-minibuffer][Return focus to minibuffer]]
 - [[#editing-text][Editing text]]
   - [[#spell-checking][Spell checking]]
   - [[#modal-editing][“Modal” editing]]
@@ -23,7 +34,7 @@ This is my Emacs configuration.
   - [[#major-modes][Major modes]]
   - [[#org-mode][Org-mode]]
 - [[#writing-code][Writing code]]
-  - [[#settings][Settings]]
+  - [[#settings-1][Settings]]
   - [[#minor-modes-1][Minor modes]]
   - [[#project-management-with-projectile][Project management with Projectile]]
   - [[#build-systems][Build systems]]
@@ -163,9 +174,30 @@ Use default browser from the system. Using =setsid xdg-open= prevents Emacs from
   (setq save-interprogram-paste-before-kill t)
 #+end_src
 
-** User interface
+** MacOS
 
-*** UI defaults
+Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
+
+#+begin_src emacs-lisp
+  (when (string= system-type 'darwin)
+    ;; Don't use alt, cmd is meta
+    (setq mac-option-modifier 'nil
+          mac-command-modifier 'meta)
+
+    ; Fix weird Apple keymap.on full-size kbs.
+    (global-set-key (kbd "<help>") 'overwrite-mode)
+
+    ; Fix load-path for mu4e (not sure this is still needed)
+    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
+
+    ; Load path from a shell
+    (use-package exec-path-from-shell
+      :init (exec-path-from-shell-initialize)))
+#+end_src
+
+* User interface
+
+** Settings
 
 #+begin_src emacs-lisp
   (setq-default
@@ -209,7 +241,7 @@ Mouse wheel scrolling makes big jumps by default, let's make it smoother.
         )
 #+end_src
 
-*** Standard keybindings
+** Standard keybindings
 
 Rebind =C-x k= to kill the /current/ buffer.
 
@@ -217,7 +249,7 @@ Rebind =C-x k= to kill the /current/ buffer.
   (global-set-key (kbd "C-x k") (lambda () (interactive) (kill-buffer (current-buffer))))
 #+end_src
 
-*** Buffer management (ibuffer)
+** Buffer management (ibuffer)
 
 Rebind =C-x C-b= to =ibuffer= instead of =list-buffers=:
 
@@ -231,7 +263,7 @@ Use =ibuffer-vc= to group buffers by version control status:
   (use-package ibuffer-vc)
 #+END_SRC
 
-*** Fonts and themes
+** Fonts and themes
 
 Configure the default font:
 
@@ -263,7 +295,7 @@ Create some shortcut commands to load both Eziam themes:
   (defun eziam-light () (interactive) (load-theme 'eziam-light t))
 #+END_SRC
 
-*** Customization helper
+** Customization helper
 
 A little function to identify the face at point.  Nice to have when writing themes, and faster than =C-u C-x ==.
 
@@ -275,7 +307,7 @@ A little function to identify the face at point.  Nice to have when writing them
       (if face (message "Face: %s" face) (message "No face at %d" pos))))
 #+end_src
 
-*** Window management (ace-window)
+** Window management (ace-window)
 
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
@@ -284,7 +316,7 @@ A little function to identify the face at point.  Nice to have when writing them
            ("M-p" . ace-window)))
 #+END_SRC
 
-*** Hydra
+** Hydra
 
 Hydras are everywhere.
 
@@ -292,7 +324,7 @@ Hydras are everywhere.
   (use-package hydra)
 #+end_src
 
-*** Ivy
+** Ivy
 
 #+begin_src emacs-lisp
   (use-package ivy
@@ -317,7 +349,7 @@ Hydras are everywhere.
     )
 #+end_src
 
-*** Popwin
+** Popwin
 
 Popwin “makes you free from the hell of annoying buffers”:
 
@@ -328,7 +360,7 @@ Popwin “makes you free from the hell of annoying buffers”:
     )
 #+END_SRC
 
-*** SR-Speedbar
+** SR-Speedbar
 
 #+BEGIN_SRC emacs-lisp
   (use-package sr-speedbar
@@ -336,7 +368,7 @@ Popwin “makes you free from the hell of annoying buffers”:
     :bind ("<f7>" . sr-speedbar-toggle))
 #+END_SRC
 
-*** Return focus to minibuffer
+** Return focus to minibuffer
 
 =C-c o= gives focus back to the minibuffer, if it's active.  Code from the Emacs Wiki.
 
@@ -349,27 +381,6 @@ Popwin “makes you free from the hell of annoying buffers”:
       (error "Minibuffer is not active")))
 
   (global-set-key (kbd "C-c o") 'switch-to-minibuffer) ;; Bind to `C-c o'
-#+end_src
-
-** MacOS
-
-Some of this may be outdated, I haven't used Emacs on MacOS for a long time.
-
-#+begin_src emacs-lisp
-  (when (string= system-type 'darwin)
-    ;; Don't use alt, cmd is meta
-    (setq mac-option-modifier 'nil
-          mac-command-modifier 'meta)
-
-    ; Fix weird Apple keymap.on full-size kbs.
-    (global-set-key (kbd "<help>") 'overwrite-mode)
-
-    ; Fix load-path for mu4e (not sure this is still needed)
-    (add-to-list 'load-path "/usr/local/share/emacs/site-lisp/mu4e")
-
-    ; Load path from a shell
-    (use-package exec-path-from-shell
-      :init (exec-path-from-shell-initialize)))
 #+end_src
 
 * Editing text
