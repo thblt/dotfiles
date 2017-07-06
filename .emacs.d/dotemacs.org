@@ -93,7 +93,7 @@ Some packages are not in (M)ELPA, we can grab them from git using [[https://gith
 
 *** Development packages
 
-The package I work are on my Code folder, and we need to load them from here:
+The package I work on are on my =Code= folder, and we need to load them from here:
 
 **** Eziam
 
