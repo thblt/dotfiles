@@ -1,0 +1,15 @@
+*-autoloads.el
+*.elc
+*.info
+*.swp
+*.synctex.gz
+*.un~
+*~
+.*.~undo-tree~
+.DS_Store
+.stack-work
+.~lock*
+ltximg
+ltxpng
+missfont.log
+tags

@@ -5,7 +5,6 @@
 	email = thibault@thb.lt
 	signingkey = 33CDE511
 [core]
-	excludesfile = /home/thblt/.gitignore_global
 	quotepath = off
 [merge]
 	tool = meld
