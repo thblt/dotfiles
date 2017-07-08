@@ -1,6 +1,0 @@
-#name : quote
-#key: q
-# --
-#+BEGIN_QUOTE
-  $0
-#+END_QUOTE$>
