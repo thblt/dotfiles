@@ -3,7 +3,9 @@
 [user]
 	name = thblt
 	email = thibault@thb.lt
-	signingkey = 33CDE511
+	signingkey = 95D25BA7
+[commit]
+    gpgsign = true
 [core]
 	quotepath = off
 [merge]
