@@ -1,5 +1,7 @@
 # -*- mode: shell-script -*-
 
+set -e
+
 cd ~/Documents/Code/emacs
 
 sudo apt install libc6-dev	\
@@ -30,7 +32,8 @@ sudo apt install libc6-dev	\
 ./configure --prefix=$HOME/.local/opt/emacs$1 \
             --with-gnutls \
             --with-modules \
-            --with-x-toolkit=gtk3
+            --with-x-toolkit=gtk3 \
+            --with-xwidgets
 
 make -j4
 make install
