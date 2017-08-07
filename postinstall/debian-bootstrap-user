@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 DOTFILES=$HOME/.dotfiles
 PRIVFILES=$HOME/.dotfiles.private
