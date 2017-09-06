@@ -15,3 +15,5 @@
 	tool = meld
 [diff "gpg"]
 	textconv = gpg --no-tty --decrypt
+[github]
+	user = thblt
