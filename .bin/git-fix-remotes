@@ -17,12 +17,18 @@
 import re
 from subprocess import run, PIPE
 from sys import argv
-from urllib.parse import urlparse
+from urllib.parse import urlparse, ParseResult
+
+# The list of services for which translation is known to work.
+knownServices = ["github.com",
+                 "git@github.com"] # SSH urls are parsed by urllib with the user as part of the netloc.
+
+githubUsers = [ "thblt" ] # Github users or organizations I have commit access to.
 
 # The regexes are quite basic. They should work
 # for all (my) setups
-
 splitter = re.compile(r"([-\w]+)\t(.+)\s\((\w+)\)")
+gitsshurl = re.compile(r"([-\w]+)@([-.\w]+):(.+)")
 
 def get_remotes():
     remotes = run(["git", "remote", "-v"], stdout=PIPE, timeout=10, universal_newlines=True).stdout.split("\n")
@@ -33,7 +39,7 @@ def get_remotes():
 
 def https2ssh(url):
     # Takes an https url, and returns a ssh url. Or tries to.
-    return "ssh://git@{netloc}:{path}.git".format(netloc = url.netloc, path=url.path)
+    return "ssh://git@{netloc}{path}.git".format(netloc = url.netloc, path=url.path)
 
 def ssh2https(url):
     # Takes a ssh url, and returns an https url. Or tries to.
@@ -48,7 +54,6 @@ def set_remote(name, url, push=False):
     run(command)
 
 remotes = get_remotes()
-
 for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # The lines below are weird, but order matters here.
     # I'm not sure git *guarantees* the order protocols
@@ -58,11 +63,40 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
     # `for protocol, url in remotes[name].items()`
     for protocol in ["fetch", "push"]:
         url = urlparse(remotes[name][protocol])
-        if not url.netloc:
-            print("Skipping {0} ({1}): can't understand {2} (this may be a git-style ssh URL)".format(name, protocol, remotes[name][protocol]))
-        if protocol=="fetch" and not "https" == url.scheme:
-            new = ssh2https(url)
-            remotes = get_remotes()
 
-        elif protocol=="push" and "https" == url.scheme:
+        if not url.netloc:
+            # This isn't parsable as a URL, it may be a git-style ssh remote.
+            url2 = gitsshurl.match(url.path)
+            if url2:
+                url = ParseResult(scheme="ssh",
+                                  netloc=url2.groups()[1],
+                                  path="/" + url2.groups()[2],
+                                  params="",
+                                  query="",
+                                  fragment="")
+            else:
+                print("Skipping {0} ({1}): can't understand {2}".format(name, protocol, remotes[name][protocol]))
+                break
+
+        # Fix some broken URLs
+        if "@" in url.netloc or ":" in url.netloc:
+            netloc = url.netloc.split("@")[1]
+            if netloc.endswith(":"):
+                netloc = netloc[:-1]
+
+            url = ParseResult(netloc=netloc,
+                              scheme=url.scheme,
+                              path=url.path,
+                              params=url.params,
+                              query=url.query,
+                              fragment=url.fragment)
+
+        if not url.netloc in knownServices:
+            print("I don't know what's possible with {0} URLs, skipping.".format(url.netloc))
+            break
+        if protocol == "fetch" and not "https" == url.scheme:
+            new = ssh2https(url)
+            set_remote(name, ssh2https(url), False)
+            get_remotes() # Reload, we may have changed push as well.
+        elif protocol== "push" and "https" == url.scheme:
             set_remote(name, https2ssh(url), True)
