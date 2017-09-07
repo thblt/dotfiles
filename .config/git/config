@@ -1,7 +1,7 @@
 [push]
 	default = simple
 [user]
-	name = thblt
+	name = Thibault Polge
 	email = thibault@thb.lt
 	signingkey = 95D25BA7
 [commit]
@@ -15,5 +15,7 @@
 	tool = meld
 [diff "gpg"]
 	textconv = gpg --no-tty --decrypt
+[gpg]
+	program = gpg2
 [github]
 	user = thblt
