@@ -1,12 +1,12 @@
 [global]
-    font = "DejaVu Sans Mono for Powerline 8"
+    font = "DejaVu Sans Mono for Powerline 6"
     allow_markup = yes
     format = "<b>%s %p</b>\n%b"
     sort = yes
     indicate_hidden = true
     # geometry = "x5"
     idle_threshold = 0
-    geometry = "300x5-20+20"
+    geometry = "600x5-20+20"
     alignment = left
     show_age_threshold = 60
     sticky_history = yes

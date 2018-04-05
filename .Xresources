@@ -13,13 +13,13 @@
 #ifdef SRVR_maladict
   Xft.dpi:       289
 #endif
-
 ! }}}
 
-URxvt*font: xft:DejaVu Sans Mono for Powerline:size=FONT_SIZE, \
-            xft:Symbola:size=FONT_SIZE:antialias=true:hinting=slight
-URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=Bold:size=FONT_SIZE, \
-                xft:Symbola:size=FONT_SIZE:antialias=true:hinting=slight
+Xcursor.size:  48
+Xcursor.theme: Adwaita
+
+URxvt*font: xft:DejaVu Sans Mono for Powerline:size=FONT_SIZE
+URxvt*boldFont: xft:DejaVu Sans Mono for Powerline:style=Bold:size=FONT_SIZE
 
 ! I cant remember the name of this theme, but it looks a lot
 ! like base16-tomorrow-night which can be https://github.com/powerline/fontsfound at
