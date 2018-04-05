@@ -75,6 +75,12 @@ alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
 
+texclean() {
+    for f in $@; do
+        rm $f.aux $f.bbl $f.bcf $f.blg $f.log $f.out $f.run.xml $f.toc;
+        done;
+}
+
 qrpass() {
     pass show $1 | head -n 1 | qrencode -s 3 -o - | feh -Z -
 }
