@@ -57,6 +57,6 @@ main = do
         ]
     , modMask = mod4Mask -- ``Windows'' key.
     , startupHook = setWMName "LG3D"
-    , terminal = "urxvt"
+    , terminal = "alacritty"
     , workspaces = myWorkspaces
     }

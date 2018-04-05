@@ -69,11 +69,11 @@
 
              # *** Apps
 
+             alacritty
              chromium
              latest.firefox-bin
              browserpass
              libreoffice
-             rxvt_unicode-with-plugins
              vlc
 
              # *** Fonts

@@ -63,7 +63,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
 
 myScratchpads :: [NamedScratchpad]
 myScratchpads = [
-  NS "term" "urxvt -title urxvt_scratchpad_1545645 -e ~/.xmonad/scripts/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
+  NS "term" "alacritty --title urxvt_scratchpad_1545645 -e ~/.xmonad/scripts/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
   (customFloating rect),
 
   NS "web" "surf" (className =? "Surf")

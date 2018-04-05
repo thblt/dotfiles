@@ -13,7 +13,7 @@ fi
 
 stack_run() {
     if [ $1 != 0 ]; then
-        stack="urxvt -e stack"
+        stack="alacritty -e stack"
     else
         stack="stack"
     fi
