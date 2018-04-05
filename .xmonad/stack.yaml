@@ -66,5 +66,6 @@ extra-package-dbs: []
 # compiler-check: newer-minor
 
 nix:
+  enable: true
   pure: true
   shell-file: shell.nix

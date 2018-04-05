@@ -11,7 +11,8 @@ fi
 echo "Running Emacs from $EMACS_PATH"
 
 ${EMACS_PATH}/emacsclient -c
+
 if [[ $? != 0 ]]; then
     urxvt -title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon
-    $EMACS_PATH/emacsclient -c
+    $0;
 fi

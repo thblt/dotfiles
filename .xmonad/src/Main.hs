@@ -47,6 +47,7 @@ main = do
       , manageDocks
       , isDialog --> doFloat
       , title =? "Invoking Emacs daemon…" --> doFloat
+      , title =? "Helm" --> doFloat
       , className =? "Gloobus-preview"    --> doFloat
       , className =? "Pinentry"           --> doFloat
       , className =? "Xdialog"            --> doFloat
