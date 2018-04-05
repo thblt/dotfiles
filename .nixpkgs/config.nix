@@ -100,6 +100,10 @@
 
              # ** Programming tools
 
+             python36
+             stack
+             ghc
+
              ripgrep
              git
              meld
