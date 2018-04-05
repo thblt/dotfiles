@@ -1,18 +1,23 @@
 #!/bin/sh
 
 USER_EMACS=$HOME/.local/opt/emacs/bin/
+SOCKET_DIR=/tmp/emacs1000
 
+# Find Emacs
 if [ -e ${USER_EMACS}/emacs ]; then
     EMACS_PATH=$USER_EMACS
 else
     EMACS_PATH=$(dirname $(which emacs))
 fi
 
-echo "Running Emacs from $EMACS_PATH"
+# Determine server to use
+server=$(ls $SOCKET_DIR | dmenu -i -p "Which Emacs? ")
 
-${EMACS_PATH}/emacsclient -c
+echo "Running Emacs ($server) from $EMACS_PATH"
+
+${EMACS_PATH}/emacsclient -c -s $server
 
 if [[ $? != 0 ]]; then
-    urxvt -title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon
-    $0;
+    alacritty --title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --eval "(setq server-name \"$server\")" --daemon
+    ${EMACS_PATH}/emacsclient -c -s $server
 fi
