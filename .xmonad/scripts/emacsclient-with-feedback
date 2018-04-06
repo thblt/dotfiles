@@ -13,6 +13,10 @@ fi
 # Determine server to use
 server=$(ls $SOCKET_DIR | dmenu -i -p "Which Emacs? ")
 
+if [[ $? != 0 ]]; then
+    exit;
+fi
+
 echo "Running Emacs ($server) from $EMACS_PATH"
 
 ${EMACS_PATH}/emacsclient -c -s $server
