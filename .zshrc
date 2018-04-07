@@ -38,7 +38,7 @@ zsh_nix_shell(){
         return
     fi
     [[ $IN_NIX_SHELL -eq "pure" ]] && msg='［🐚］'
-    [[ $IN_NIX_SHELL -eq "impure" ]] && msg='[🐚]'
+    [[ $IN_NIX_SHELL -eq "impure" ]] && msg='🐚'
     echo -n $msg
 }
 
