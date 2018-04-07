@@ -14,7 +14,7 @@ for p in $ZSH_LIB_DIR/*; do
 done;
 
 # Prompt
-export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir)
+export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir custom_nix_shell)
 export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(dir_writable vcs)
 
 export POWERLEVEL9K_STATUS_VERBOSE=false
@@ -32,8 +32,19 @@ export POWERLEVEL9K_SHORTEN_FOLDER_MARKER=".git"
 
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
+# Nix-shell status
+zsh_nix_shell(){
+    if [ -z $IN_NIX_SHELL ]; then
+        return
+    fi
+    [[ $IN_NIX_SHELL -eq "pure" ]] && msg='［🐚］'
+    [[ $IN_NIX_SHELL -eq "impure" ]] && msg='[🐚]'
+    echo -n $msg
+}
 
-# ZSH Options
+POWERLEVEL9K_CUSTOM_NIX_SHELL="zsh_nix_shell"
+POWERLEVEL9K_CUSTOM_NIX_SHELL_BACKGROUND="yellow"
+POWERLEVEL9K_CUSTOM_NIX_SHELL_FOREGROUND="black"
 
 # Completion
 autoload -U compinit && compinit
