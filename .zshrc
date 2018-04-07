@@ -179,4 +179,35 @@ zle -N zle-line-init
 
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Use system clipboard
+x-copy-region-as-kill () {
+    zle copy-region-as-kill
+    print -rn $CUTBUFFER | xsel -i -b
+}
+zle -N x-copy-region-as-kill
+
+x-kill-region () {
+    zle kill-region
+    print -rn $CUTBUFFER | xsel -i -b
+}
+zle -N x-kill-region
+
+x-kill-line () {
+    zle kill-line
+    print -rn $CUTBUFFER | xsel -i -b
+}
+zle -N x-kill-line
+
+x-yank () {
+    CUTBUFFER=$(xsel -o -b </dev/null)
+    zle yank
+}
+zle -N x-yank
+
+bindkey -e '\ew' x-copy-region-as-kill
+bindkey -e '^W' x-kill-region
+bindkey -e '^K' x-kill-line
+bindkey -e '^Y' x-yank
+
 source ~/.profile
