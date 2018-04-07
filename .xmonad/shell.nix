@@ -1,6 +1,6 @@
 with (import <nixpkgs> {});
 
-let ghc = haskell.packages.ghc802;
+let ghc = haskell.packages.ghc822;
 in
 stdenv.mkDerivation {
   name = "xmonad-testing";

@@ -81,7 +81,6 @@ for d in "${cherrypick[@]}"; do
 done
 
 # Private files.  A simple mirroring.
-
 cd $PRIVFILES
 files=`find . -type f -not -iwholename "*/.git/*"`
 for t in $files; do
@@ -90,12 +89,3 @@ done
 
 echo
 echo "$count files linked, $notrelinked were already present."
-
-current_shell=`getent passwd $LOGNAME | cut -d: -f7`
-
-if [ $current_shell != "$target_shell" ]; then
-    chsh --shell $target_shell
-    echo "Shell set to $target_shell."
-else
-    echo "Shell is already $target_shell, not reconfiguring."
-fi

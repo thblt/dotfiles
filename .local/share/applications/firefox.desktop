@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Firefox
-GenericName=Web Browser
-Exec=~/.local/opt/firefox/firefox
-
-Icon=firefox
-Type=Application
-Terminal=false
-Categories=Web
