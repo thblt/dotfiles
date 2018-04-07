@@ -1,23 +1,22 @@
  # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
-# Install antigen if needed
-if [ ! -d "$HOME/.antigen" ]; then
-	git clone https://github.com/zsh-users/antigen.git $HOME/.antigen
-fi
+ZSH_LIB_DIR=$HOME/.zsh-lib
 
-# Antigen plugin manager
-source ~/.antigen/antigen.zsh
+for p in $ZSH_LIB_DIR/*; do
+    b=$(basename $p)
 
-# antigen bundle zsh-users/zaw
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
+    if [ -e $p/$b.zsh ]; then
+        source $p/$b.zsh
+    elif [ -e $p/$b.zsh-theme ]; then
+        source $p/$b.zsh-theme
+    fi
+done;
 
 # Prompt
-export POWERLEVEL9K_INSTALLATION_PATH=$HOME/.antigen/bundles/bhilburn/powerlevel9k
-antigen theme bhilburn/powerlevel9k powerlevel9k
 export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir)
 export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(dir_writable vcs)
+
 export POWERLEVEL9K_STATUS_VERBOSE=false
 
 export POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{black} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
@@ -33,7 +32,6 @@ export POWERLEVEL9K_SHORTEN_FOLDER_MARKER=".git"
 
 export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
 
-antigen apply
 
 # ZSH Options
 
