@@ -1,4 +1,4 @@
- # Don't do anything if not running interactively
+# Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
 ZSH_LIB_DIR=$HOME/.zsh-lib
@@ -87,7 +87,7 @@ alias o=xdg-open
 texclean() {
     for f in $@; do
         rm $f.aux $f.bbl $f.bcf $f.blg $f.log $f.out $f.run.xml $f.toc;
-        done;
+    done;
 }
 
 qrpass() {
@@ -130,16 +130,14 @@ alias fuck='sudo $(fc -ln -1)' # 'sudo $(history -p \!\!)' is bash-only
 alias ls="ls --color"
 
 function mkcd() {
-if mkdir -p "$@"
-	then cd "$@"
-fi
+    if mkdir -p "$@"
+	  then cd "$@"
+    fi
 }
 
 alias push-priv-dotfiles="pushd;cd ~/.dotfiles.private;git add -Av;git commit -m 'Autocommit by `whoami` on `hostname` at `date -Iseconds`';git pull;git push;popd"
 alias wifi-off="sudo rfkill block wifi"
 alias wifi-on="sudo rfkill unblock wifi"
-alias zbarcam="LD_PRELOAD=/usr/lib/libv4l/v4l1compat.so zbarcam"
-
 
 # Moving between directories
 alias bd=". bd -s"
@@ -150,30 +148,24 @@ alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
 alias ..6="cd ../../../../../.."
 
-# Virtualenvwrapper
-
-export WORKON_HOME=~/.virtualenvs
-# source `which virtualenvwrapper.sh` 2> /dev/null
-# source /usr/share/virtualenvwrapper/virtualenvwrapper.sh 2> /dev/null
-
 # Allow to recall aborted command
 # From <https://www.topbug.net/blog/2016/10/03/restore-the-previously-canceled-command-in-zsh/>
 function zle-line-init {
-  # Your other zle-line-init configuration ...
+    # Your other zle-line-init configuration ...
 
-  # Store the last non-empty aborted line in MY_LINE_ABORTED
-  if [[ -n $ZLE_LINE_ABORTED ]]; then
-    MY_LINE_ABORTED="$ZLE_LINE_ABORTED"
-  fi
+    # Store the last non-empty aborted line in MY_LINE_ABORTED
+    if [[ -n $ZLE_LINE_ABORTED ]]; then
+        MY_LINE_ABORTED="$ZLE_LINE_ABORTED"
+    fi
 
-  # Restore aborted line on the first undo.
-  if [[ -n $MY_LINE_ABORTED ]]; then
-    local savebuf="$BUFFER" savecur="$CURSOR"
-    BUFFER="$MY_LINE_ABORTED"
-    CURSOR="$#BUFFER"
-    zle split-undo
-    BUFFER="$savebuf" CURSOR="$savecur"
-  fi
+    # Restore aborted line on the first undo.
+    if [[ -n $MY_LINE_ABORTED ]]; then
+        local savebuf="$BUFFER" savecur="$CURSOR"
+        BUFFER="$MY_LINE_ABORTED"
+        CURSOR="$#BUFFER"
+        zle split-undo
+        BUFFER="$savebuf" CURSOR="$savecur"
+    fi
 }
 zle -N zle-line-init
 
@@ -210,4 +202,5 @@ bindkey -e '^W' x-kill-region
 bindkey -e '^K' x-kill-line
 bindkey -e '^Y' x-yank
 
+# Source profile
 source ~/.profile
