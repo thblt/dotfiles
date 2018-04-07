@@ -30,6 +30,7 @@ declare -a files=(
 
 declare -a cherrypick=(
     .gnupg
+    .local/lib
     .local/share/applications
     .config
 )

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+BASEDIR=$(dirname "$0")
+
+for p in $BASEDIR/*; do
+    if [ -d $p ]; then
+        for f in $p/*.tmux; do
+            echo "Loading $f"
+            source $f
+        done
+    fi
+done

@@ -1,9 +1,21 @@
 [submodule ".zsh-lib/zsh-autosuggestions"]
-	path = .zsh-lib/zsh-autosuggestions
+	path = .local/lib/zsh/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions
 [submodule ".zsh-lib/zsh-syntax-highlighting"]
-	path = .zsh-lib/zsh-syntax-highlighting
+	path = .local/lib/zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
 [submodule ".zsh-lib/powerlevel9k"]
-	path = .zsh-lib/powerlevel9k
+	path = .local/lib/zsh/powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k
+[submodule ".local/lib/tmux/tmux-sensible"]
+	path = .local/lib/tmux/tmux-sensible
+	url = https://github.com/tmux-plugins/tmux-sensible
+[submodule ".local/lib/tmux/tmux-urlview"]
+	path = .local/lib/tmux/tmux-urlview
+	url = https://github.com/tmux-plugins/tmux-urlview
+[submodule ".local/lib/tmux/tmux-battery"]
+	path = .local/lib/tmux/tmux-battery
+	url = https://github.com/tmux-plugins/tmux-battery
+[submodule ".local/lib/tmux/tmux-cpu"]
+	path = .local/lib/tmux/tmux-cpu
+	url = https://github.com/tmux-plugins/tmux-cpu

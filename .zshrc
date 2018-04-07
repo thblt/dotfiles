@@ -1,7 +1,7 @@
 # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
-ZSH_LIB_DIR=$HOME/.zsh-lib
+ZSH_LIB_DIR=$HOME/.local/lib/zsh
 
 for p in $ZSH_LIB_DIR/*; do
     b=$(basename $p)
