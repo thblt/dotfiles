@@ -69,5 +69,5 @@ myScratchpads = [
   NS "web" "surf" (className =? "Surf")
     (customFloating rect)
   ]
-  where ratio = 12
+  where ratio = 24
         rect = XSS.RationalRect (1/ratio) (1/ratio) ((ratio-2)/ratio) ((ratio-2)/ratio)
