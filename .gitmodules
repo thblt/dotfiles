@@ -4,9 +4,6 @@
 [submodule ".zsh-lib/zsh-syntax-highlighting"]
 	path = .local/lib/zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
-[submodule ".zsh-lib/powerlevel9k"]
-	path = .local/lib/zsh/powerlevel9k
-	url = https://github.com/bhilburn/powerlevel9k
 [submodule ".local/lib/tmux/tmux-sensible"]
 	path = .local/lib/tmux/tmux-sensible
 	url = https://github.com/tmux-plugins/tmux-sensible

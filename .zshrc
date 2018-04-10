@@ -13,38 +13,109 @@ for p in $ZSH_LIB_DIR/*; do
     fi
 done;
 
-# Prompt
-export POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context root_indicator background_jobs status dir custom_nix_shell)
-export POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(dir_writable vcs)
-
-export POWERLEVEL9K_STATUS_VERBOSE=false
-
-export POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{black} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
-export POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
-POWERLEVEL9K_HOME_ICON='~'
-POWERLEVEL9K_HOME_SUB_ICON='~'
-POWERLEVEL9K_FOLDER_ICON="/ $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')%F{black}"
-
-export POWERLEVEL9K_SHORTEN_DIR_LENGTH=5
-export POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
-export POWERLEVEL9K_SHORTEN_DELIMITER="…"
-export POWERLEVEL9K_SHORTEN_FOLDER_MARKER=".git"
-
-export DEFAULT_USER="thblt"; # ZSH themes uses this to simplify prompt.
-
-# Nix-shell status
-zsh_nix_shell(){
-    if [ -z $IN_NIX_SHELL ]; then
-        return
-    fi
-    [[ $IN_NIX_SHELL -eq "pure" ]] && msg='［🐚］'
-    [[ $IN_NIX_SHELL -eq "impure" ]] && msg='🐚'
-    echo -n $msg
+thblt_prompt_reset() {
+    echo -n '%F{255}%K{}'
 }
 
-POWERLEVEL9K_CUSTOM_NIX_SHELL="zsh_nix_shell"
-POWERLEVEL9K_CUSTOM_NIX_SHELL_BACKGROUND="yellow"
-POWERLEVEL9K_CUSTOM_NIX_SHELL_FOREGROUND="black"
+thblt_prompt_path() {
+}
+
+thblt_prompt_git_status() {
+    oid=""
+    local_branch=""
+    upstream_branch=""
+    ahead=0
+    behind=0
+
+    modified=0 # Are there untracked files?
+
+    git status --porcelain=v2 --branch 2&>/dev/null |
+        while read line ; do
+            case "$line" in
+                \#\ branch.oid\ *)       export oid=$(echo $line | awk '{print $3}');
+                                         ;;
+                \#\ branch.head\ *)      export local_branch=$(echo $line | awk '{print $3}');
+                                         ;;
+                \#\ branch.upstream\ *)  export upstream_branch=$(echo $line | awk '{print $3}');
+                                         ;;
+                \#\ branch.ab\ *)        export ahead=$(echo $line | awk '{print $3}' | cut -b 2-);
+                                         export behind=$(echo $line | awk '{print $4}' | cut -b 2-);
+                                         ;;
+
+                \?*)                     export modified=1; ;;
+                1*)                      export modified=1; ;;
+                2*)                      export modified=1;
+            esac;
+        done;
+
+    [[ -z $oid ]] && return;
+
+    if [[ 0 != $modified ]]; then
+        echo -n "%F{11}"
+    else
+        echo -n "%F{green}"
+    fi
+
+    echo -n "  "
+
+    if [[ "(detached)" == "$local_branch" ]]; then
+        echo -n $(git rev-parse --short $oid);
+    else
+        echo -n $local_branch;
+    fi
+
+    if [[ 0 < $(($ahead + $behind)) ]]; then
+        echo -n ' '
+        [[ 0 < $ahead ]] && echo -n "↑$ahead"
+        [[ 0 < $behind ]] && echo -n "↓$behind"
+    fi;
+}
+
+thblt_prompt() {
+    # Jobs indicator
+    [[ 0 != $(jobs | wc -l) ]] && echo -n "%F{45} ✵ " && thblt_prompt_reset
+
+    # User/host
+    if [[ "thblt" != "$USER" || -n $SSH_CONNECTION ]]; then
+        echo -n "%F{yellow}";
+        echo -n "$USER@$HOST ";
+    fi
+
+    echo -n "%F{255}["
+
+    # Path
+    echo -n "%F{250}%~"
+
+    # Git
+    thblt_prompt_reset
+    thblt_prompt_git_status
+
+
+    # Closing ]
+    echo -n "%F{255}]"
+
+    thblt_prompt_reset
+
+    [[ -n "$IN_NIX_SHELL" ]] && echo -n ' %F{39}shell';
+
+    thblt_prompt_reset
+
+    if [[ 0 == $UID ]]; then
+        echo -n "%F{11}" # Default color
+        echo -n "%(?..%F{9})" # Override if $?
+        echo -n " # " # The prompt itself
+    else
+        echo -n "%(?..%F{9})"
+        echo -n ' ❱ '
+    fi
+
+
+}
+
+# Prompt
+setopt PROMPT_SUBST
+PROMPT='$(thblt_prompt)'
+RPROMPT=""
 
 # Completion
 autoload -U compinit && compinit
@@ -93,7 +164,6 @@ texclean() {
 qrpass() {
     pass show $1 | head -n 1 | qrencode -s 3 -o - | feh -Z -
 }
-export qrpass
 
 export GREP_COLOR=31
 alias grep='grep --color=auto'
