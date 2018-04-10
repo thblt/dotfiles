@@ -10,12 +10,12 @@
 [submodule ".local/lib/tmux/tmux-sensible"]
 	path = .local/lib/tmux/tmux-sensible
 	url = https://github.com/tmux-plugins/tmux-sensible
-[submodule ".local/lib/tmux/tmux-urlview"]
-	path = .local/lib/tmux/tmux-urlview
-	url = https://github.com/tmux-plugins/tmux-urlview
 [submodule ".local/lib/tmux/tmux-battery"]
 	path = .local/lib/tmux/tmux-battery
 	url = https://github.com/tmux-plugins/tmux-battery
 [submodule ".local/lib/tmux/tmux-cpu"]
 	path = .local/lib/tmux/tmux-cpu
 	url = https://github.com/tmux-plugins/tmux-cpu
+[submodule ".local/lib/tmux/tmux-url-select"]
+	path = .local/lib/tmux/tmux-url-select
+	url = https://github.com/dequis/tmux-url-select
