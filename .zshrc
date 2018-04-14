@@ -14,7 +14,7 @@ for p in $ZSH_LIB_DIR/*; do
 done;
 
 thblt_prompt_reset() {
-    echo -n '%F{255}%K{}'
+    echo -n '%f%k%b'
 }
 
 thblt_prompt_path() {
@@ -56,18 +56,17 @@ thblt_prompt_git_status() {
         echo -n "%F{green}"
     fi
 
-    echo -n "  "
+    echo -n " "
 
     if [[ "(detached)" == "$local_branch" ]]; then
         echo -n $(git rev-parse --short $oid);
     else
-        echo -n $local_branch;
+        [[ "master" != $local_branch ]] && echo -n " $local_branch";
     fi
 
     if [[ 0 < $(($ahead + $behind)) ]]; then
-        echo -n ' '
-        [[ 0 < $ahead ]] && echo -n "↑$ahead"
-        [[ 0 < $behind ]] && echo -n "↓$behind"
+        [[ 0 < $ahead ]] && echo -n " ↑$ahead"
+        [[ 0 < $behind ]] && echo -n " ↓$behind"
     fi;
 }
 
@@ -77,26 +76,30 @@ thblt_prompt() {
 
     # User/host
     if [[ "thblt" != "$USER" || -n $SSH_CONNECTION ]]; then
-        echo -n "%F{yellow}";
-        echo -n "$USER@$HOST ";
+        echo -n "%F{2}%B";
+        echo -n "$USER"
+        thblt_prompt_reset
+        echo -n "@"
+        echo -n "%F{2}%B";
+        echo -n "$HOST ";
     fi
 
     echo -n "%F{255}["
 
     # Path
-    echo -n "%F{250}%~"
-
-    # Git
-    thblt_prompt_reset
-    thblt_prompt_git_status
+    echo -n "%F{4}%B%~"
 
 
     # Closing ]
     echo -n "%F{255}]"
 
+    # Git
+    thblt_prompt_reset
+    thblt_prompt_git_status
+
     thblt_prompt_reset
 
-    [[ -n "$IN_NIX_SHELL" ]] && echo -n ' %F{39}shell';
+    [[ -n "$IN_NIX_SHELL" ]] && echo -n " %F{39}$name";
 
     thblt_prompt_reset
 
@@ -109,7 +112,7 @@ thblt_prompt() {
         echo -n ' ❱ '
     fi
 
-
+    thblt_prompt_reset
 }
 
 # Prompt
