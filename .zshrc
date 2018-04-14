@@ -56,13 +56,14 @@ thblt_prompt_git_status() {
         echo -n "%F{green}"
     fi
 
-    echo -n " "
+    echo -n " %B"
 
     if [[ "(detached)" == "$local_branch" ]]; then
         echo -n $(git rev-parse --short $oid);
     else
         [[ "master" != $local_branch ]] && echo -n " $local_branch";
     fi
+    echo -n "%b"
 
     if [[ 0 < $(($ahead + $behind)) ]]; then
         [[ 0 < $ahead ]] && echo -n " ↑$ahead"
@@ -74,43 +75,42 @@ thblt_prompt() {
     # Jobs indicator
     [[ 0 != $(jobs | wc -l) ]] && echo -n "%F{45} ✵ " && thblt_prompt_reset
 
-    # User/host
-    if [[ "thblt" != "$USER" || -n $SSH_CONNECTION ]]; then
-        echo -n "%F{2}%B";
-        echo -n "$USER"
-        thblt_prompt_reset
-        echo -n "@"
-        echo -n "%F{2}%B";
-        echo -n "$HOST ";
-    fi
-
-    echo -n "%F{255}["
+    # Opening [
+    echo -n "%F{255}%B["
 
     # Path
     echo -n "%F{4}%B%~"
-
-
-    # Closing ]
-    echo -n "%F{255}]"
+    thblt_prompt_reset
 
     # Git
     thblt_prompt_reset
     thblt_prompt_git_status
 
+    # Closing ]
+    echo -n "%F{255}%B]"
     thblt_prompt_reset
 
-    [[ -n "$IN_NIX_SHELL" ]] && echo -n " %F{39}$name";
+    [[ -n "$IN_NIX_SHELL" ]] && echo -n " %F{39}$name ";
 
     thblt_prompt_reset
+
+        # User/host
+    if [[ -n $SSH_CONNECTION ]]; then
+        # Aggressive colors
+        echo -n " %F{253}%K{253}%F{232}%B ⇅ $HOST %b%F{0}";
+        echo -n '%K{232}%F{253}'
+        thblt_prompt_reset
+    fi
 
     if [[ 0 == $UID ]]; then
-        echo -n "%F{11}" # Default color
+        echo -n "%F{226}%B" # Default color
         echo -n "%(?..%F{9})" # Override if $?
         echo -n " # " # The prompt itself
     else
         echo -n "%(?..%F{9})"
         echo -n ' ❱ '
     fi
+
 
     thblt_prompt_reset
 }
@@ -270,7 +270,7 @@ x-yank () {
 }
 zle -N x-yank
 
-which xsel 2&>1 > /dev/null
+which xsel 2&>/dev/null > /dev/null
 if [[ 0 == $? ]]; then
     bindkey -e '\ew' x-copy-region-as-kill
     bindkey -e '^W' x-kill-region
