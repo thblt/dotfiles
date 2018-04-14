@@ -270,10 +270,13 @@ x-yank () {
 }
 zle -N x-yank
 
-bindkey -e '\ew' x-copy-region-as-kill
-bindkey -e '^W' x-kill-region
-bindkey -e '^K' x-kill-line
-bindkey -e '^Y' x-yank
+which xsel 2&>1 > /dev/null
+if [[ 0 == $? ]]; then
+    bindkey -e '\ew' x-copy-region-as-kill
+    bindkey -e '^W' x-kill-region
+    bindkey -e '^K' x-kill-line
+    bindkey -e '^Y' x-yank
+fi
 
 # Source profile
 source ~/.profile
