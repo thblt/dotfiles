@@ -61,7 +61,7 @@ thblt_prompt_git_status() {
     if [[ "(detached)" == "$local_branch" ]]; then
         echo -n $(git rev-parse --short $oid);
     else
-        [[ "master" != $local_branch ]] && echo -n " $local_branch";
+        echo -n " $local_branch";
     fi
     echo -n "%b"
 
@@ -94,7 +94,7 @@ thblt_prompt() {
 
     thblt_prompt_reset
 
-        # User/host
+    # User/host
     if [[ -n $SSH_CONNECTION ]]; then
         # Aggressive colors
         echo -n " %F{253}%K{253}%F{232}%B ⇅ $HOST %b%F{0}";
