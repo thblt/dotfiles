@@ -81,15 +81,15 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
     -- Volume
-    ("<XF86AudioLowerVolume>"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
-    ("<XF86AudioRaiseVolume>"     , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
+    ("<XF86AudioLowerVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
+    ("<XF86AudioRaiseVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
     ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
 
     -- Brightness (monitor)
-    ("<XF86MonBrightnessUp>"     , spawn "sudo anybrightness monitor +10%"),
-    ("S-<XF86MonBrightnessUp>"   , spawn "sudo anybrightness monitor +1%"),
-    ("<XF86MonBrightnessDown>"   , spawn "sudo anybrightness monitor -10%"),
-    ("S-<XF86MonBrightnessDown>" , spawn "sudo anybrightness monitor -1%"),
+    ("<XF86MonBrightnessUp>"     , spawn "xbacklight -inc 10%"),
+    ("S-<XF86MonBrightnessUp>"   , spawn "xbacklight -inc 1%"),
+    ("<XF86MonBrightnessDown>"   , spawn "xbacklight -dec 10%"),
+    ("S-<XF86MonBrightnessDown>" , spawn "xbacklight -dec 1%"),
 
     -- Brightness (keyboard backlight)
     ("<XF86KdbBrightnessUp>"     , spawn "sudo anybrightness keyboard +20%"),
