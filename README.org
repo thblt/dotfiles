@@ -3,12 +3,12 @@
 Hi!  These are my [[https://en.wikipedia.org/wiki/Dot-file][dotfiles]].  They're messy and disorganized but may contain some little things of interest, hence this README.
 
 * Contents :TOC:
- - [[#xmonad][XMonad]]
- - [[#tmux-and-zsh][Tmux and ZSH]]
- - [[#emacs-and-other-editors][Emacs (and other editors)]]
- - [[#debian][Debian]]
- - [[#git][Git]]
- - [[#meta-aka-dotfiles-management][Meta (aka dotfiles management)]]
+- [[#xmonad][XMonad]]
+- [[#tmux-and-zsh][Tmux and ZSH]]
+- [[#emacs-and-other-editors][Emacs (and other editors)]]
+- [[#debian][Debian]]
+- [[#git][Git]]
+- [[#meta-aka-dotfiles-management][Meta (aka dotfiles management)]]
 
 * XMonad
 
