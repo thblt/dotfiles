@@ -1,120 +1,130 @@
-    {
+{ pkgs }:
+{
   allowUnfree = true;
 
   chromium = {
-    enablePepperFlash = true;
+              enablePepperFlash = true;
   };
 
-      packageOverrides = pkgs_: with pkgs_; {
+  packageOverrides = pkgs: rec {
 
-        # * Packages overrides
-          # ** Emacs 25
+                                thblt-alacritty = pkgs.stdenv.lib.overrideDerivation pkgs.alacritty (oldAttrs : {
+                                    src = pkgs.fetchgit {
+                                                         url = https://github.com/thblt/alacritty.git;
+                                                         rev = "4fb4110e40af2a64793284c3394045fdb74af1a9";
+                                                         sha256 =  "1z7vni4dwsa5zngi8xy6pqbl3rcsfvlq6k7v7v9841c7nrhjfnxzcd";
+                                    };
+                                  });
 
-          emacs = stdenv.lib.overrideDerivation emacs (oldAttrs : {
-              src = fetchurl {
-                url = "mirror://gnu/emacs/emacs-25.3.tar.xz";
-                sha256 = "253ac5e7075e594549b83fd9ec116a9dc37294d415e2f21f8ee109829307c00b";
-              };
-              patches = [];
-            });
+                                emacs = pkgs.stdenv.lib.overrideDerivation pkgs.emacs (oldAttrs : {
+                                    version = "26.1RC1";
+                                    src = pkgs.fetchurl {
+                                                         url = "ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-26.1-rc1.tar.xz";
+                                                         sha256 = "6594e668de00b96e73ad4f168c897fe4bca7c55a4caf19ee20eac54b62a05758";
+                                    };
+                                    patches = [];
+                                  });
 
-        # * Package list
+                                # * Package list
 
-          all = with pkgs; buildEnv {
-          name = "all";
-          paths =
-            [
+                                all = with pkgs; buildEnv {
+                                  name = "all";
+                                  paths =
+                                    [
 
-             # ** Shell
+                                     # ** Shell
 
-             tmux
+                                     tmux
 
-             # ** Common system utilities
 
-             zip
-             unzip
-             wget
-             whois
-             tree
-             p7zip
+                                     # ** Common system utilities
 
-             # ** Less common system utilities
+                                     htop
+                                     p7zip
+                                     tree
+                                     wget
+                                     whois
+                                     zip unzip
 
-             bc
-             graphviz
-             pandoc
-             udiskie
+                                     # ** Less common system utilities
 
-             # ** Crypto
+                                     bc
+                                     graphviz
+                                     pandoc
+                                     udiskie
 
-             gnupg1compat
-             gpa
-             pass
-             pinentry
+                                     # ** Crypto
 
-             # ** X11 and X utilities
+                                     gnupg1compat
+                                     gpa
+                                     pass
+                                     pinentry
 
-             arandr
-             compton
-             dmenu
-             dunst
-             feh
-             libnotify
-             lightlocker
-             powerline-fonts
-             scrot
-             wmctrl
-             xorg.xev
-             xsel
+                                     # ** X11 and X utilities
 
-             # *** Apps
+                                     arandr
+                                     compton
+                                     dmenu
+                                     dunst
+                                     feh
+                                     libnotify
+                                     lightlocker
+                                     powerline-fonts
+                                     scrot
+                                     wmctrl
+                                     xorg.xbacklight
+                                     xorg.xev
+                                     xsel
 
-             alacritty
-             chromium
-             latest.firefox-bin
-             browserpass
-             libreoffice
-             vlc
+                                     # *** Apps
 
-             # *** Fonts
+                                     alacritty
+                                     browserpass
+                                     chromium
+                                     firefox-bin
+                                     libreoffice
+                                     transmission-gtk
+                                     vlc
 
-             opensans-ttf
-             roboto
-             symbola
+                                     # *** Fonts
 
-             # *** Icon/cursor themes
+                                     opensans-ttf
+                                     roboto
+                                     symbola
 
-             gnome3.adwaita-icon-theme # For large mouse pointers
+                                     # *** Icon/cursor themes
 
-             # ** Emacs and friends
+                                     gnome3.adwaita-icon-theme # For large mouse pointers
 
-             emacs
-             isync
-             mu
-             aspell
-             aspellDicts.fr
-             aspellDicts.en
+                                     # ** Emacs and friends
 
-             hunspell
-             hunspellDicts.fr-any
+                                     emacs
+                                     isync
+                                     mu
+                                     aspell
+                                     aspellDicts.fr
+                                     aspellDicts.en
 
-             # ** Programming tools
+                                     hunspell
+                                     hunspellDicts.fr-any
 
-             python36
-             stack
-             ghc
+                                     # ** Programming tools
 
-             ripgrep
-             git
-             meld
+                                     python36
+                                     stack
 
-             # ** *TeX
+                                     nix-prefetch-scripts
 
-             asymptote
-             lyx
-             texlive.biber
-             texlive.combined.scheme-full
-             ];
-        };
-      };
-    }
+                                     ripgrep
+                                     git
+                                     meld
+
+                                     # ** *TeX
+
+                                     asymptote
+                                     lyx
+                                     texlive.biber
+                                     texlive.combined.scheme-full
+                                     ];
+                                };
+  };}
