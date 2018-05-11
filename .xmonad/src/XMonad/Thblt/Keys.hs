@@ -76,7 +76,7 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-<Return>"                , windows XSS.swapMaster),
     ("M-t"                       , withFocused $ windows . XSS.sink),
 
-    ("M-p"                       , spawn "~/.bin/dmenu-desktop --entry-type=name"),
+    ("M-p"                       , spawn "~/.local/bin/dmenu-desktop --entry-type=name"),
     ("M-C-S-<Return>"            , spawn $ terminal conf),
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
