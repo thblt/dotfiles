@@ -51,9 +51,9 @@ thblt_prompt_git_status() {
     [[ -z $oid ]] && return;
 
     if [[ 0 != $modified ]]; then
-        echo -n "%F{11}"
+        echo -n "%K{11}%F{232}"
     else
-        echo -n "%F{green}"
+        echo -n "%K{118}%F{232}"
     fi
 
     echo -n " %B"
@@ -69,6 +69,7 @@ thblt_prompt_git_status() {
         [[ 0 < $ahead ]] && echo -n " ↑$ahead"
         [[ 0 < $behind ]] && echo -n " ↓$behind"
     fi;
+    echo -n ' '
 }
 
 thblt_prompt() {
@@ -79,19 +80,11 @@ thblt_prompt() {
     echo -n "%F{255}%B["
 
     # Path
-    echo -n "%F{4}%B%~"
+    echo -n "%F{39}%B%~"
     thblt_prompt_reset
-
-    # Git
-    thblt_prompt_reset
-    thblt_prompt_git_status
 
     # Closing ]
     echo -n "%F{255}%B]"
-    thblt_prompt_reset
-
-    [[ -n "$IN_NIX_SHELL" ]] && echo -n " %F{39}$name ";
-
     thblt_prompt_reset
 
     # User/host
@@ -106,19 +99,33 @@ thblt_prompt() {
         echo -n "%F{226}%B" # Default color
         echo -n "%(?..%F{9})" # Override if $?
         echo -n " # " # The prompt itself
+    elif [[ -n $IN_NIX_SHELL ]]; then
+        echo -n "%F{39}%(?..%F{9})"
+        echo -n ' ◆ ';
     else
         echo -n "%(?..%F{9})"
         echo -n ' ❱ '
     fi
+}
 
+thblt_rprompt() {
 
-    thblt_prompt_reset
+    # git
+   thblt_prompt_git_status
+   thblt_prompt_reset
+
+    # nix-shell
+   if [[ -n $IN_NIX_SHELL ]]; then
+       echo -n " "
+       echo -n "%K{39}%F{255}%B $name ";
+   fi
+   return
 }
 
 # Prompt
 setopt PROMPT_SUBST
 PROMPT='$(thblt_prompt)'
-RPROMPT=""
+RPROMPT='$(thblt_rprompt)'
 
 # Completion
 autoload -U compinit && compinit
