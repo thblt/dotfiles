@@ -5,9 +5,6 @@ Hi!  These are my [[https://en.wikipedia.org/wiki/Dot-file][dotfiles]].  They're
 * Contents :TOC:
 - [[#xmonad][XMonad]]
 - [[#tmux-and-zsh][Tmux and ZSH]]
-- [[#emacs-and-other-editors][Emacs (and other editors)]]
-- [[#debian][Debian]]
-- [[#git][Git]]
 - [[#meta-aka-dotfiles-management][Meta (aka dotfiles management)]]
 
 * XMonad
@@ -24,7 +21,7 @@ My XMonad configuration is like every other.  Yet, I'm quite happy of:
 
 Some bits may even be useful with different tiling window managers:
 
- - =.bin/dmenu-desktop= :: is a modified version of i3's =i3-dmenu-desktop= launcher which makes it independent of i3.  Unlike =dmenu-run=, it doesn't present a list of binaries, but of =.desktop= files, which is nicer.  For terminal apps, it requires =x-terminal-emulator= to be in path, and is thus limited to Debian.
+ - =.local/bin/dmenu-desktop= :: is a modified version of i3's =i3-dmenu-desktop= launcher which makes it independent of i3.  Unlike =dmenu-run=, it doesn't present a list of binaries, but of =.desktop= files, which is nicer.  For terminal apps, it requires =x-terminal-emulator= to be in path, and is thus limited to Debian.
 
  - =~/.xsessionrc= :: People who never used a tiling WM without a desktop environment may find this a good starting point.  Or perhaps they'll hate it.
 
@@ -38,52 +35,8 @@ My Tmux/ZSH config looks like this.  If you like what you see, steal it:
 
 Also:
 
- - =.xmonad/tmux-attach-or-new= :: is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
-
-* Emacs (and other editors)
-
-Beyond the literate-style configuration (=.emacs.d/dotemacs.org=, which, like everyone's config, is obviously the best possible Emacs configuration ever), not much to see, except maybe:
-
- - =./.xmonad/emacsclient-with-feedback= :: A simple launcher script which either creates a new Emacs frame, starting the daemon if needed.  But there's a cool trick:  the daemon is started in a urxvt frame, giving the user (yours, truly) feedback of the startup process.  This is /much better/ than waiting without knowing if a frame is about to appear or if the daemon startup crashed.  And of course, the frame disappears as soon as the daemon is started.  The weird title is meant to have it gets floated automatically by XMonad, which doesn't seem to understand =-name=.
-
- - =.bin/wmake= :: (whatever-make) is a little script which basically tries to to find something that looks like build instructions, starting at =pwd= and recursing back.  If it finds something, it runs the appropriate build tool.  =wmake= may be a sane default value for your favorite's editor =compile-command= setting.
-
-                   It is sadly unfinished, and could be greatly improved.  For the moment, it doesn't even support all the compile systems I use.
-
-* Debian
-
-My notes on how to install a minimal Debian are somewhere around, but for that you'd better read [[https://thb.lt/blog/drafts/2017/minimal-debian.html][my writeup on my site]], which is cleaner and more general (that is, not steps to reproduce /my/ exact setup)  Beyond that,
-
- - =.bin/debian_base_install.sh= :: nothing fancy, just a script to install some packages.  A good way to
-
-   1. quickly bootstrap a new machine.
-
-   2. keep track of what's installed:  the script can spit out what it's supposed to install, which can then be compared with the actual list of packages.  The function which does that is the =apt-what-have-i-installed= alias in =.zshrc=.  It requires a list of standard packages which I generate just after installation (it basically displays packages which are (manually installed but not in (=debian_base_install.sh --list= or in initial package list)
-
-* Git
-
- - =.bin/cig= :: an ugly python script which reads a little of local repositories from either argv or =~/.cig=, updates all remotes (not even asynchronously!), and outputs a global summary:
-
-                 #+begin_example
-╭────────────────────────────────────┬────────┬─────────────────────┬──────────────╮
-│ ~/.dotfiles                        │ master │ New                 │ Ahead        │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/Documents/Enseignement           │ master │                     │              │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/Documents/Philo                  │ master │                     │              │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/Documents/Code/eziam-theme-emacs │ dev    │                     │              │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/Documents/Code/Docoptc           │ master │                     │              │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/Documents/Thb.lt                 │ master │                     │              │
-├────────────────────────────────────┼────────┼─────────────────────┼──────────────┤
-│ ~/.dotfiles.private                │ master │                     │              │
-╰────────────────────────────────────┴────────┴─────────────────────┴──────────────╯
-                 #+end_example
-
-                 It is abandoned, since I discovered that [[https://magit.vc/][Magit]] did the exact same thing (=M-x magit-list-repositories=)
+ - =.xmonad/scripts/tmux-attach-or-new= :: is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
 
 * Meta (aka dotfiles management)
 
- - =.bin/symlink_dotfiles.sh= :: is the script I use to, guess what, symlink my dotfiles.
+ - =.local/bin/dotfiles.sh= :: is the script I use to, guess what, symlink my dotfiles.
