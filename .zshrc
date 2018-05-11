@@ -165,6 +165,8 @@ alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait" # Shorthand
 alias o=xdg-open
 
+alias nix-zsh="nix-shell --run zsh"
+
 texclean() {
     for f in $@; do
         rm $f.aux $f.bbl $f.bcf $f.blg $f.log $f.out $f.run.xml $f.toc;
