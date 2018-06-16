@@ -169,7 +169,7 @@ alias nix-zsh="nix-shell --run zsh"
 
 texclean() {
     for f in $@; do
-        rm $f.aux $f.bbl $f.bcf $f.blg $f.log $f.out $f.run.xml $f.toc;
+        rm $f.aux $f.bbl $f.bcf $f.blg $f.idx $f.ilg $f.ind $f.log $f.out $f.run.xml $f.toc;
     done;
 }
 
