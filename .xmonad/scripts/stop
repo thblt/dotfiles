@@ -31,12 +31,20 @@ for win in $(wmctrl -l | awk '{print $1}'); do
     fi
 done
 
+# Politely terminate Emacs servers
+for s in /tmp/emacs1000/*; do
+    emacsclient -s $(basename $s) --eval '(kill-emacs)'
+done
+
+for s in /tmp/emacs1000/*; do
+    echo $s
+done
 
 # Last sanity check
 if [[ -z `wmctrl -l` ]]; then
-    #	notify-send "XMonad" "Killing XMonad process with id $PPID."
-    #kill $PPID
-	  killall xmonad
+    notify-send "XMonad" "Killing XMonad process with id $PPID."
+    kill $PPID
+	  # killall xmonad
 else
 	  notify-send -u normal "Quit failed" "Relaunching termination script."
 	  ~/.xmonad/quit-xmonad.sh

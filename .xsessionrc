@@ -7,8 +7,8 @@
 
 case `hostname` in
     "anna")
-	       setxkbmap -layout  "macintosh_vndr/fr"
-         ;;
+	      setxkbmap -layout  "macintosh_vndr/fr"
+        ;;
     "rudiger")
 	      setxkbmap be -option compose:menu
 	      numlockx on &
@@ -20,10 +20,7 @@ case `hostname` in
         xinput set-prop 13 284 1 # Drag
         xinput set-prop 13 288 1 # Tapping button map
         xinput set-prop 13 290 1 # Accel speed
-
         xinput set-prop 13 300 0 1 # Click methods enabled (disable buttonareas)
-
-
         ;;
     *)
 	      notify-send -u critical `basename "$0"` "Unknown computer, keyboard layout not set."

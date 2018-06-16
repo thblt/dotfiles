@@ -22,6 +22,6 @@ echo "Running Emacs ($server) from $EMACS_PATH"
 ${EMACS_PATH}/emacsclient -c -s $server
 
 if [[ $? != 0 ]]; then
-    alacritty --title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --eval "(setq server-name \"$server\")" --daemon
+    alacritty --title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon=$server
     ${EMACS_PATH}/emacsclient -c -s $server
 fi

@@ -35,3 +35,5 @@
 .vim/undo/**
 .xmonad/.bin
 .xmonad/xmonad.state
+.xmonad/xmonad.errors
+.xmonad/xmonad-x86*
