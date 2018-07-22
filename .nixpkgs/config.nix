@@ -3,128 +3,120 @@
   allowUnfree = true;
 
   chromium = {
-              enablePepperFlash = true;
+    enablePepperFlash = true;
   };
 
-  packageOverrides = pkgs: rec {
+  packageOverrides = pkgs:
+  rec {
+  #   emacs = pkgs.stdenv.lib.overrideDerivation pkgs.emacs (oldAttrs : {
+  #     version = "26.1RC1";
+  #     src = pkgs.fetchurl {
+  #       url = "ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-26.1-rc1.tar.xz";
+  #       sha256 = "6594e668de00b96e73ad4f168c897fe4bca7c55a4caf19ee20eac54b62a05758";
+  #     };
+  #     patches = [];
+  #   });
 
-                                thblt-alacritty = pkgs.stdenv.lib.overrideDerivation pkgs.alacritty (oldAttrs : {
-                                    src = pkgs.fetchgit {
-                                                         url = https://github.com/thblt/alacritty.git;
-                                                         rev = "4fb4110e40af2a64793284c3394045fdb74af1a9";
-                                                         sha256 =  "1z7vni4dwsa5zngi8xy6pqbl3rcsfvlq6k7v7v9841c7nrhjfnxzcd";
-                                    };
-                                  });
+    # * Package list
 
-                                emacs = pkgs.stdenv.lib.overrideDerivation pkgs.emacs (oldAttrs : {
-                                    version = "26.1RC1";
-                                    src = pkgs.fetchurl {
-                                                         url = "ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-26.1-rc1.tar.xz";
-                                                         sha256 = "6594e668de00b96e73ad4f168c897fe4bca7c55a4caf19ee20eac54b62a05758";
-                                    };
-                                    patches = [];
-                                  });
+      all = with pkgs; buildEnv {
+      name = "all";
+      paths =
+        [
 
-                                # * Package list
+        # ** Shell
 
-                                all = with pkgs; buildEnv {
-                                  name = "all";
-                                  paths =
-                                    [
-
-                                     # ** Shell
-
-                                     tmux
+        tmux
 
 
-                                     # ** Common system utilities
+        # ** Common system utilities
 
-                                     htop
-                                     p7zip
-                                     tree
-                                     wget
-                                     whois
-                                     zip unzip
+        htop
+        p7zip
+        tree
+        wget
+        whois
+        zip unzip
 
-                                     # ** Less common system utilities
+        # ** Less common system utilities
 
-                                     bc
-                                     graphviz
-                                     pandoc
-                                     udiskie
+        bc
+        graphviz
+        pandoc
+        udiskie
 
-                                     # ** Crypto
+        # ** Crypto
 
-                                     gnupg1compat
-                                     gpa
-                                     pass
-                                     pinentry
+        gnupg1compat
+        gpa
+        pass
+        pinentry
 
-                                     # ** X11 and X utilities
+        # ** X11 and X utilities
 
-                                     arandr
-                                     compton
-                                     dmenu
-                                     dunst
-                                     feh
-                                     libnotify
-                                     lightlocker
-                                     powerline-fonts
-                                     scrot
-                                     wmctrl
-                                     xorg.xbacklight
-                                     xorg.xev
-                                     xsel
+        arandr
+        compton
+        dmenu
+        dunst
+        feh
+        libnotify
+        lightlocker
+        powerline-fonts
+        scrot
+        wmctrl
+        xorg.xbacklight
+        xorg.xev
+        xsel
 
-                                     # *** Apps
+        # *** Apps
 
-                                     alacritty
-                                     browserpass
-                                     chromium
-                                     firefox-bin
-                                     libreoffice
-                                     transmission-gtk
-                                     vlc
+        alacritty
+        browserpass
+        chromium
+        # latest.firefox-bin
+        libreoffice
+        transmission-gtk
+        vlc
 
-                                     # *** Fonts
+        # *** Fonts
 
-                                     opensans-ttf
-                                     roboto
-                                     symbola
+        opensans-ttf
+        roboto
+        symbola
 
-                                     # *** Icon/cursor themes
+        # *** Icon/cursor themes
 
-                                     gnome3.adwaita-icon-theme # For large mouse pointers
+        gnome3.adwaita-icon-theme # For large mouse pointers
 
-                                     # ** Emacs and friends
+        # ** Emacs and friends
 
-                                     emacs
-                                     isync
-                                     mu
-                                     aspell
-                                     aspellDicts.fr
-                                     aspellDicts.en
+        emacs
+        isync
+        aspell
+        aspellDicts.fr
+        aspellDicts.en
 
-                                     hunspell
-                                     hunspellDicts.fr-any
+        hunspell
+        hunspellDicts.fr-any
 
-                                     # ** Programming tools
+        # ** Programming tools
 
-                                     python36
-                                     stack
+        python36
+        stack
 
-                                     nix-prefetch-scripts
+        nix-prefetch-scripts
 
-                                     ripgrep
-                                     git
-                                     meld
+        ripgrep
+        git
+        meld
 
-                                     # ** *TeX
+        # ** *TeX
 
-                                     asymptote
-                                     lyx
-                                     texlive.biber
-                                     texlive.combined.scheme-full
-                                     ];
-                                };
-  };}
+        asymptote
+        lyx
+        texlive.biber
+        texlive.combined.scheme-full
+      ];
+    };
+  };
+}
