@@ -111,15 +111,15 @@ thblt_prompt() {
 thblt_rprompt() {
 
     # git
-   thblt_prompt_git_status
-   thblt_prompt_reset
+    thblt_prompt_git_status
+    thblt_prompt_reset
 
     # nix-shell
-   if [[ -n $IN_NIX_SHELL ]]; then
-       echo -n " "
-       echo -n "%K{39}%F{255}%B $name ";
-   fi
-   return
+    if [[ -n $IN_NIX_SHELL ]]; then
+        echo -n " "
+        echo -n "%K{39}%F{255}%B $name ";
+    fi
+    return
 }
 
 # Prompt
@@ -150,8 +150,10 @@ bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
 
 # By default, ZSH considers / to be part of the word.  This makes
-# forward-word and backward-word stop at directory delimiters
-export WORDCHARS="*?.[]~=&;\!#$%^(){}<>"
+# forward-word and backward-word stop at directory delimiters Notice:
+# WORDCHARS define the non-alphanumeric characters which are
+# considered PART of words, not breaking points.
+export WORDCHARS='*?[]~=&;\!#$%^(){}<>'
 
 # ======
 
@@ -171,10 +173,6 @@ texclean() {
     for f in $@; do
         rm $f.aux $f.bbl $f.bcf $f.blg $f.idx $f.ilg $f.ind $f.log $f.out $f.run.xml $f.toc;
     done;
-}
-
-qrpass() {
-    pass show $1 | head -n 1 | qrencode -s 3 -o - | feh -Z -
 }
 
 export GREP_COLOR=31

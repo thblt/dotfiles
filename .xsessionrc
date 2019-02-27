@@ -38,3 +38,4 @@ xsetroot -cursor_name left_ptr &
 gpgconf --kill gpg-agent
 eval $(gpg-agent --daemon --enable-ssh-support)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null
+

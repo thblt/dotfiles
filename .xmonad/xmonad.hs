@@ -94,10 +94,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
 myScratchpads :: [NamedScratchpad]
 myScratchpads = [
   NS "term" "alacritty --title urxvt_scratchpad_1545645 -e ~/.xmonad/scripts/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
-  (customFloating rect),
-
-  NS "web" "surf" (className =? "Surf")
-    (customFloating rect)
+  (customFloating rect)
   ]
   where ratio = 24
         rect = XSS.RationalRect (1/ratio) (1/ratio) ((ratio-2)/ratio) ((ratio-2)/ratio)
@@ -108,7 +105,7 @@ data MySpacing = MySpacing {
   myDecoHeight :: Int
   }
 
-data MyTransformers = GAPS  deriving (Read, Show, Eq, Typeable)
+data MyTransformers = GAPS deriving (Read, Show, Eq, Typeable)
 instance Transformer MyTransformers Window where
   transform GAPS x k = k (smartSpacingWithEdge (negate $ myGaps mySpacing) $ x) (const x)
 
@@ -217,10 +214,10 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
 
     -- Brightness (monitor)
-    ("<XF86MonBrightnessUp>"     , spawn "xbacklight -inc 10%"),
-    ("S-<XF86MonBrightnessUp>"   , spawn "xbacklight -inc 1%"),
-    ("<XF86MonBrightnessDown>"   , spawn "xbacklight -dec 10%"),
-    ("S-<XF86MonBrightnessDown>" , spawn "xbacklight -dec 1%"),
+    ("<XF86MonBrightnessUp>"     , spawn "light -A 5"),
+    ("S-<XF86MonBrightnessUp>"   , spawn "light -A 1"),
+    ("<XF86MonBrightnessDown>"   , spawn "light -U 5"),
+    ("S-<XF86MonBrightnessDown>" , spawn "light -U 1"),
 
     -- Brightness (keyboard backlight)
     ("<XF86KdbBrightnessUp>"     , spawn "sudo anybrightness keyboard +20%"),
@@ -247,7 +244,9 @@ main = do
 --dbus <- connectSession
 --getWellKnownName dbus
 
-  launch . fullscreenSupport . withNavigation2DConfig def {
+  xmonad
+    -- . fullscreenSupport -- Removed until contrib issue #278 is solved
+    . withNavigation2DConfig def {
     defaultTiledNavigation = centerNavigation -- default lineNavigation is broken with BSP + smartSpacing
   } $ ewmh def {
       borderWidth = 0 -- Borders are added in the layout hook

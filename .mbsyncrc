@@ -24,3 +24,30 @@ Create Both
 SyncState *
 Sync All
 Expunge Both
+
+##################
+### Académique ###
+##################
+
+IMAPAccount ac
+Host imap.ac-orleans-tours.fr
+User tpolge
+AuthMechs LOGIN
+PassCmd "pass show ac-orleans-tours.fr"
+SSLType IMAPS
+
+ImapStore ac-remote
+Account ac
+
+MaildirStore ac-local
+Path ~/.Mail/Ac/
+Inbox ~/.Mail/Ac/Inbox
+
+Channel ac
+Master :ac-remote:
+Slave :ac-local:
+Patterns * % !Drafts
+Create Both
+SyncState *
+Sync All
+Expunge Both

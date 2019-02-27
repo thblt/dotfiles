@@ -2,9 +2,8 @@
 {
   allowUnfree = true;
 
-  chromium = {
-    enablePepperFlash = true;
-  };
+  #chromium.enablePepperFlash = true;
+  #oraclejdk.accept_license = true;
 
   packageOverrides = pkgs:
   rec {
@@ -28,9 +27,9 @@
 
         tmux
 
-
         # ** Common system utilities
 
+        acpi lm_sensors
         htop
         p7zip
         tree
@@ -60,7 +59,6 @@
         dunst
         feh
         libnotify
-        lightlocker
         powerline-fonts
         scrot
         wmctrl
@@ -73,13 +71,20 @@
         alacritty
         browserpass
         chromium
-        # latest.firefox-bin
+        firefox-bin
+        gimp
+        jabref
+        imagemagick
+        inkscape
         libreoffice
+        scantailor-advanced
         transmission-gtk
         vlc
+        zotero
 
         # *** Fonts
 
+        liberation-fonts
         opensans-ttf
         roboto
         symbola
@@ -101,14 +106,33 @@
 
         # ** Programming tools
 
-        python36
-        stack
+        # *** Language-independent
 
-        nix-prefetch-scripts
-
-        ripgrep
         git
         meld
+        nix-prefetch-scripts
+        ripgrep
+
+        # *** Go
+
+        go
+
+        # *** Haskell
+
+        haskellPackages.apply-refact hlint haskellPackages.hoogle stack
+        python36
+
+        # *** Python
+
+        # *** Lisps
+
+        racket
+        chez
+
+        # *** Rust
+
+        cargo
+        rustfmt
 
         # ** *TeX
 
