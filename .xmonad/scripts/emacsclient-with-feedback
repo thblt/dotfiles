@@ -10,6 +10,15 @@ else
     EMACS_PATH=$(dirname $(which emacs))
 fi
 
+# Clear server history
+for server in $(ls $SOCKET_DIR); do
+    emacsclient -s $server --eval "(ignore)"
+
+    if [[ $? != 0 ]]; then
+        rm $SOCKET_DIR/$server
+    fi
+done
+
 # Determine server to use
 server=$(ls $SOCKET_DIR | dmenu -i -p "Which Emacs? ")
 

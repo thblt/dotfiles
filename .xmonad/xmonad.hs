@@ -38,7 +38,7 @@ import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
 import           XMonad.Layout.NoBorders (withBorder)
 import           XMonad.Layout.NoFrillsDecoration
-import           XMonad.Layout.Spacing (smartSpacingWithEdge)
+import           XMonad.Layout.Spacing -- (smartSpacingWithEdge, toggleSmartSpacing)
 import           XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
 --import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 --import           XMonad.Actions.MessageFeedback -- READ BELOW.
@@ -66,18 +66,21 @@ import           XMonad.Util.WorkspaceCompare (getSortByIndex)
 [d| hostname = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
 
 workspacesKeys :: [KeySym]
-workspacesKeys | hostname == "anna"    = macAzertyKeys
-               | hostname == "rudiger" = pcAzertyBeKeys
-               | otherwise               = pcAzertyKeys
+workspacesKeys | hostname == "anna"     = macAzertyKeys
+               | hostname == "rudiger"  = pcAzertyBeKeys
+               | hostname == "maladict" = bépoKeys
+               | otherwise              = pcAzertyKeys
   where
-    pcAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0] -- From AzertyConfig
-    pcAzertyBeKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0] -- From AzertyConfig
-    macAzertyKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0] -- From AzertyConfig
+    pcAzertyKeys   = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0]
+    pcAzertyBeKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0]
+    macAzertyKeys  = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0]
+    chKeys         = [0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x39,0x30]
+    bépoKeys       = [0x22,0xab,0xbb,0x28,0x29,0x40,0x2b,0x2d,0x2f,0x2a]
 
 -- XMonad.
 
 myWorkspaces :: [ String ]
-myWorkspaces = map show [ 1 .. 9  :: Int ]
+myWorkspaces = map show [ 0 .. 9  :: Int ]
 
 myHiddenWorkspaces :: [ String ]
 myHiddenWorkspaces = [ "NSP" ]
@@ -113,13 +116,14 @@ instance Transformer MyTransformers Window where
 myBSP = emptyBSP
 myTall = Mirror $ Tall 1 (3/100) (3/4)
 
-myLayoutHook = avoidStruts $ mkToggle (FULL ?? GAPS ?? EOT) $
+myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
-               borderResize
-               . myDecoration
-               . smartSpacingWithEdge (myGaps mySpacing)
-               . withBorder (fromIntegral $ myBorderSize mySpacing) $
-               myBSP ||| myTall
+               -- borderResize
+               myDecoration
+               . spacingRaw True (Border 8 8 8 8) True (Border 8 8 8 8) True
+               -- . smartSpacingWithEdge (myGaps mySpacing)
+               . withBorder (fromIntegral $ myBorderSize mySpacing)
+               $ myBSP ||| myTall
 
 myDecoration = id
 -- myDecoration = noFrillsDeco shrinkText def {
@@ -158,18 +162,22 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-<Esc>"                   , spawn "light-locker-command --lock"),
     ("M-S-<Esc>"                 , spawn "light-locker-command --lock"),
 
+    ("M-d d"                     , spawn "/home/thblt/.xmonad/scripts/work-context-switcher desktop"),
+    ("M-d l"                     , spawn "/home/thblt/.xmonad/scripts/work-context-switcher laptop"),
+
     ("M-<Space>"                 , sendMessage NextLayout),
-    ("M-S-<Space>"               , setLayout $ XMonad.layoutHook conf), -- (Reset)
+    ("M-S-<Space>"               , setLayout $ XMonad.layoutHook conf), -- Reset
 
     ("M-h"                       , sendMessage Shrink),
     ("M-l"                       , sendMessage Expand),
 
-    ("M-f f"                     , sendMessage $ Toggle FULL),
-    ("M-f x"                     , sendMessage $ Toggle GAPS),
+    ("M-S-ê"                     , incScreenWindowSpacing 4), -- Toggle GAPS),
+    ("M-S-à"                     , decScreenWindowSpacing 4), -- Toggle GAPS),
+    ("M-f"                       , sendMessage $ Toggle FULL),
     ("M-f s"                     , sendMessage ToggleStruts),
 
-    ("M-="                       , sendMessage $ IncMasterN 1),
-    ("M-:"                       , sendMessage $ IncMasterN (-1)),
+    ("M-ê"                       , sendMessage $ IncMasterN (-1)),
+    ("M-à"                       , sendMessage $ IncMasterN 1),
 
     -- Navigation2D
     ("M-<Up>"                    , windowGo U False),
@@ -208,7 +216,7 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-C-S-<Return>"            , spawn $ terminal conf),
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , namedScratchpadAction scratchpads "term"),
-    -- Volume
+    -- VolumeÀ
     ("<XF86AudioLowerVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
     ("<XF86AudioRaiseVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
     ("<XF86AudioMute>"           , spawn $ "amixer set Master toggle; " ++ shNotifyVolume),
@@ -262,7 +270,7 @@ main = do
     , logHook = do
 --        dbusLogger dbus
 --        dynamicLogWithPP$ myPP dbus -- logPipe
-        fadeInactiveLogHook 0.95
+        fadeInactiveLogHook 1 -- 0.95
     , manageHook = composeAll
       [
         namedScratchpadManageHook myScratchpads
@@ -279,7 +287,7 @@ main = do
       , className =? "zbar"               --> doFloat
         ]
     , modMask = mod4Mask -- ``Windows'' key.
-    , startupHook = spawn "~/.xmonad/scripts/start" <+> setWMName "LG3D"
+    , startupHook = setWMName "LG3D"
     , terminal = "alacritty"
     , workspaces = myWorkspaces
     }
