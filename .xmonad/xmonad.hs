@@ -12,6 +12,7 @@ import           Language.Haskell.TH
 import           System.Posix.Unistd                 (SystemID (nodeName),
                                                       getSystemID)
 import           XMonad
+import           XMonad.Actions.CycleWS (toggleOrView)
 import           XMonad.Actions.Navigation2D
 import           XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import           XMonad.Hooks.EwmhDesktops (ewmh)
@@ -37,9 +38,7 @@ import           XMonad.Layout.IfMax
 import           XMonad.Layout.MultiToggle
 import           XMonad.Layout.MultiToggle.Instances
 import           XMonad.Layout.NoBorders (withBorder)
-import           XMonad.Layout.NoFrillsDecoration
 import           XMonad.Layout.Spacing -- (smartSpacingWithEdge, toggleSmartSpacing)
-import           XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
 --import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 --import           XMonad.Actions.MessageFeedback -- READ BELOW.
 --Note to self: this is broken.  The messages get correctly sent, but the view doesn't update.  You have to move focus or do something else.
@@ -56,7 +55,6 @@ import           XMonad.Layout.NoFrillsDecoration
 import qualified XMonad.StackSet as XSS
 
 import           XMonad.Util.EZConfig (mkKeymap)
-import           XMonad.Util.NamedScratchpad
 import           XMonad.Util.NamedWindows (getName)
 import           XMonad.Util.Run (spawnPipe)
 import           XMonad.Util.WorkspaceCompare (getSortByIndex)
@@ -80,10 +78,17 @@ workspacesKeys | hostname == "anna"     = macAzertyKeys
 -- XMonad.
 
 myWorkspaces :: [ String ]
-myWorkspaces = map show [ 0 .. 9  :: Int ]
-
-myHiddenWorkspaces :: [ String ]
-myHiddenWorkspaces = [ "NSP" ]
+myWorkspaces = [ "0"
+               , "1"
+               , "2"
+               , "3"
+               , "4"
+               , "5"
+               , "6"
+               , "7"
+               , "8"
+               , "9"
+               , "scratch" ]
 
 myMouseBindings :: XConfig Layout -> M.Map (KeyMask, Button) (Window -> X ())
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
@@ -93,14 +98,6 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
 --    , ((0, 10), const $ prevWS) -- Three-finger left swipe
 --    , ((0, 11), const $ nextWS) -- Three finger right swipe
     ]
-
-myScratchpads :: [NamedScratchpad]
-myScratchpads = [
-  NS "term" "alacritty --title urxvt_scratchpad_1545645 -e ~/.xmonad/scripts/tmux-attach-or-new scratch" (title =? "urxvt_scratchpad_1545645")
-  (customFloating rect)
-  ]
-  where ratio = 24
-        rect = XSS.RationalRect (1/ratio) (1/ratio) ((ratio-2)/ratio) ((ratio-2)/ratio)
 
 data MySpacing = MySpacing {
   myGaps       :: Int,
@@ -149,11 +146,11 @@ mySpacing = case hostname of
 myActiveColor = "#0059DD"
 myInactiveColor = "#000000"
 
-myKeys :: [KeySym] -> [NamedScratchpad] -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-myKeys workspaceKeys scratchpads = \conf -> M.union (baseKeys scratchpads conf) (extraKeys workspaceKeys conf)
+myKeys :: [KeySym] -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+myKeys workspaceKeys  = \conf -> M.union (baseKeys conf) (extraKeys workspaceKeys conf)
 
-baseKeys :: [NamedScratchpad] -> XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
-baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
+baseKeys :: XConfig Layout -> M.Map (KeyMask, KeySym) (X ())
+baseKeys conf@XConfig { XMonad.modMask = modMask } =
   mkKeymap conf $
   [
     ("M-S-c"                     , kill),
@@ -215,7 +212,7 @@ baseKeys scratchpads conf@XConfig { XMonad.modMask = modMask } =
     ("M-p"                       , spawn "~/.local/bin/dmenu-desktop --entry-type=name"),
     ("M-C-S-<Return>"            , spawn $ terminal conf),
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
-    ("M-s"                       , namedScratchpadAction scratchpads "term"),
+    ("M-s"                       , toggleOrView "scratch"),
     -- VolumeÀ
     ("<XF86AudioLowerVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-; " ++ shNotifyVolume),
     ("<XF86AudioRaiseVolume>"    , spawn $ "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+; " ++ shNotifyVolume),
@@ -264,7 +261,7 @@ main = do
     , focusFollowsMouse = False
     --    , handleEventHook = fullscreenEventHook <+> docksEventHook
     , handleEventHook = docksEventHook
-    , keys = myKeys workspacesKeys myScratchpads
+    , keys = myKeys workspacesKeys
     , mouseBindings = myMouseBindings
     , layoutHook = myLayoutHook
     , logHook = do
@@ -273,8 +270,7 @@ main = do
         fadeInactiveLogHook 1 -- 0.95
     , manageHook = composeAll
       [
-        namedScratchpadManageHook myScratchpads
-      , placeHook $ withGaps (16,0,16,0) (smart (0.5,0.5))
+        placeHook $ withGaps (16,0,16,0) (smart (0.5,0.5))
       , manageDocks
       , isDialog --> doFloat
       , title =? "Invoking Emacs daemon…" --> doFloat
