@@ -5,142 +5,152 @@
   #chromium.enablePepperFlash = true;
   #oraclejdk.accept_license = true;
 
-  packageOverrides = pkgs:
-  rec {
-  #   emacs = pkgs.stdenv.lib.overrideDerivation pkgs.emacs (oldAttrs : {
-  #     version = "26.1RC1";
-  #     src = pkgs.fetchurl {
-  #       url = "ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-26.1-rc1.tar.xz";
-  #       sha256 = "6594e668de00b96e73ad4f168c897fe4bca7c55a4caf19ee20eac54b62a05758";
-  #     };
-  #     patches = [];
-  #   });
+  packageOverrides = pkgs: rec
+  {
+    myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
+    emacs = pkgs.emacs.overrideAttrs (oldAttrs: rec {
+      name = "emacs-${version}${versionModifier}";
+      version = "26.2";
+      versionModifier = "";
+      src = pkgs.fetchurl {
+        url = "mirror://gnu/emacs/${name}.tar.xz";
+        sha256 = "151ce69dbe5b809d4492ffae4a4b153b2778459de6deb26f35691e1281a9c58e";
+      };
+      patches = [];
+    });
 
     # * Package list
 
-      all = with pkgs; buildEnv {
+    all = with pkgs; buildEnv
+    {
       name = "all";
       paths =
         [
 
-        # ** Shell
+          # ** Shell
 
-        tmux
+          tmux
 
-        # ** Common system utilities
+          # ** Common system utilities
 
-        acpi lm_sensors
-        htop
-        p7zip
-        tree
-        wget
-        whois
-        zip unzip
+          acpi lm_sensors
+          bind
+          htop
+          p7zip
+          tree
+          wget
+          whois
+          zip unzip
 
-        # ** Less common system utilities
+          # ** Less common system utilities
 
-        bc
-        graphviz
-        pandoc
-        udiskie
+          bc
+          graphviz
+          pandoc
+          udiskie
 
-        # ** Crypto
+          # ** Crypto
 
-        gnupg1compat
-        gpa
-        pass
-        pinentry
+          gnupg1compat
+          gpa
+          pass
+          pinentry
 
-        # ** X11 and X utilities
+          # ** X11 and X utilities
 
-        arandr
-        compton
-        dmenu
-        dunst
-        feh
-        libnotify
-        powerline-fonts
-        scrot
-        wmctrl
-        xorg.xbacklight
-        xorg.xev
-        xsel
+          arandr
+          compton
+          dmenu
+          dunst
+          feh
+          libnotify
+          lightlocker
+          powerline-fonts
+          scrot
+          wmctrl
+          xclip
+          xorg.xbacklight
+          xorg.xev
+          xsel
 
-        # *** Apps
+          # *** Apps
 
-        alacritty
-        browserpass
-        chromium
-        firefox-bin
-        gimp
-        jabref
-        imagemagick
-        inkscape
-        libreoffice
-        scantailor-advanced
-        transmission-gtk
-        vlc
-        zotero
+          alacritty
+          browserpass
+          chromium
+          firefox-bin
+          gimp
+          hugo
+          jabref
+          imagemagick
+          inkscape
+          libreoffice
+          scantailor-advanced
+          thunderbird
+          tor-browser-bundle
+          transmission-gtk
+          vlc
+          myZotero
 
-        # *** Fonts
+          # *** Fonts
 
-        liberation-fonts
-        opensans-ttf
-        roboto
-        symbola
+          #liberation-fonts
+          opensans-ttf
+          roboto
+          symbola
 
-        # *** Icon/cursor themes
+          # *** Icon/cursor themes
 
-        gnome3.adwaita-icon-theme # For large mouse pointers
+          gnome3.adwaita-icon-theme # For large mouse pointers
 
-        # ** Emacs and friends
+          # ** Emacs and friends
 
-        emacs
-        isync
-        aspell
-        aspellDicts.fr
-        aspellDicts.en
+          emacs
+          isync
+          aspell
+          aspellDicts.fr
+          aspellDicts.en
 
-        hunspell
-        hunspellDicts.fr-any
+          hunspell
+          hunspellDicts.fr-any
 
-        # ** Programming tools
+          # ** Programming tools
 
-        # *** Language-independent
+          # *** Language-independent
 
-        git
-        meld
-        nix-prefetch-scripts
-        ripgrep
+          git
+          meld
+          nix-prefetch-scripts
+          ripgrep
 
-        # *** Go
+          # *** Go
 
-        go
+          go
 
-        # *** Haskell
+          # *** Haskell
 
-        haskellPackages.apply-refact hlint haskellPackages.hoogle stack
-        python36
+          haskellPackages.apply-refact hlint haskellPackages.hoogle stack
+          python36
 
-        # *** Python
+          # *** Python
 
-        # *** Lisps
+          # *** Lisps
 
-        racket
-        chez
+          racket
+          chez
 
-        # *** Rust
+          # *** Rust
 
-        cargo
-        rustfmt
+          cargo
+          rustfmt
 
-        # ** *TeX
+          # ** *TeX
 
-        asymptote
-        lyx
-        texlive.biber
-        texlive.combined.scheme-full
-      ];
+          asymptote
+          lyx
+          #texlive.biber
+          texlive.combined.scheme-full
+        ];
     };
   };
 }
