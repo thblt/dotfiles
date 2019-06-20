@@ -48,10 +48,6 @@ import           XMonad.Hooks.ManageHelpers (isDialog)
 import           XMonad.Hooks.Place (placeHook, withGaps, smart)
 import           XMonad.Hooks.SetWMName (setWMName)
 
-import           XMonad.Layout.Fullscreen (fullscreenSupport)
-import           XMonad.Layout.MultiToggle
-import           XMonad.Layout.MultiToggle.Instances
-import           XMonad.Layout.NoFrillsDecoration
 import qualified XMonad.StackSet as XSS
 
 import           XMonad.Util.EZConfig (mkKeymap)
@@ -115,6 +111,7 @@ myTall = Mirror $ Tall 1 (3/100) (3/4)
 
 myLayoutHook = avoidStruts $ mkToggle (FULL ?? EOT) $
                ifMax 1 Full $
+               fullscreenFull $
                -- borderResize
                myDecoration
                . spacingRaw True (Border 8 8 8 8) True (Border 8 8 8 8) True
@@ -170,8 +167,8 @@ baseKeys conf@XConfig { XMonad.modMask = modMask } =
 
     ("M-S-ê"                     , incScreenWindowSpacing 4), -- Toggle GAPS),
     ("M-S-à"                     , decScreenWindowSpacing 4), -- Toggle GAPS),
-    ("M-f"                       , sendMessage $ Toggle FULL),
-    ("M-f s"                     , sendMessage ToggleStruts),
+    ("M-f"                     , sendMessage $ Toggle FULL),
+    -- ("M-f s"                     , sendMessage ToggleStruts),
 
     ("M-ê"                       , sendMessage $ IncMasterN (-1)),
     ("M-à"                       , sendMessage $ IncMasterN 1),
@@ -259,8 +256,8 @@ main = do
     , normalBorderColor = myInactiveColor
     , clickJustFocuses = False
     , focusFollowsMouse = False
-    --    , handleEventHook = fullscreenEventHook <+> docksEventHook
-    , handleEventHook = docksEventHook
+    , handleEventHook = fullscreenEventHook <+> docksEventHook
+    -- , handleEventHook = docksEventHook
     , keys = myKeys workspacesKeys
     , mouseBindings = myMouseBindings
     , layoutHook = myLayoutHook
