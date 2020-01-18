@@ -7,17 +7,27 @@
 
   packageOverrides = pkgs: rec
   {
-    myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
-    emacs = pkgs.emacs.overrideAttrs (oldAttrs: rec {
-      name = "emacs-${version}${versionModifier}";
-      version = "26.2";
-      versionModifier = "";
-      src = pkgs.fetchurl {
-        url = "mirror://gnu/emacs/${name}.tar.xz";
-        sha256 = "151ce69dbe5b809d4492ffae4a4b153b2778459de6deb26f35691e1281a9c58e";
-      };
-      patches = [];
-    });
+    # myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
+
+    emacsPrime = with pkgs; stdenv.lib.overrideDerivation
+      (pkgs.emacs.override {
+        srcRepo = true;
+        withGTK2 = false;
+        withGTK3 = false;
+      }) (attrs: rec {
+        name = "emacs-${version}${versionModifier}";
+        version = "HEAD";
+        versionModifier = "";
+        src = builtins.fetchGit {
+          url = "https://git.savannah.gnu.org/git/emacs.git";
+          rev = "d36adb544d984b91c70f6194da01344e4b2b6fc9";
+        };
+        autoconf = true;
+        automake = true;
+        texinfo = true;
+
+        patches = [];
+      });
 
     # * Package list
 
@@ -38,6 +48,7 @@
           htop
           p7zip
           tree
+          unrar
           wget
           whois
           zip unzip
@@ -46,7 +57,7 @@
 
           bc
           graphviz
-          pandoc
+          # pandoc
           udiskie
 
           # ** Crypto
@@ -64,7 +75,6 @@
           dunst
           feh
           libnotify
-          lightlocker
           powerline-fonts
           scrot
           wmctrl
@@ -78,6 +88,7 @@
           alacritty
           browserpass
           chromium
+          evince
           firefox-bin
           gimp
           hugo
@@ -85,12 +96,16 @@
           imagemagick
           inkscape
           libreoffice
+          gnome3.nautilus
+          qrencode
           scantailor-advanced
+          scribus
           thunderbird
-          tor-browser-bundle
+          #tor-browser-bundle
           transmission-gtk
           vlc
-          myZotero
+          youtube-dl
+          zotero
 
           # *** Fonts
 
@@ -105,7 +120,7 @@
 
           # ** Emacs and friends
 
-          emacs
+          emacsPrime
           isync
           aspell
           aspellDicts.fr
@@ -118,7 +133,8 @@
 
           # *** Language-independent
 
-          git
+          gitFull
+          gitAndTools.git-hub
           meld
           nix-prefetch-scripts
           ripgrep
@@ -129,10 +145,14 @@
 
           # *** Haskell
 
-          haskellPackages.apply-refact hlint haskellPackages.hoogle stack
-          python36
+          haskellPackages.apply-refact
+          hlint
+          haskellPackages.hoogle
+          stack
 
           # *** Python
+
+          python36
 
           # *** Lisps
 
@@ -141,8 +161,8 @@
 
           # *** Rust
 
-          cargo
-          rustfmt
+          rustup
+          # ^ provides rustfmt
 
           # ** *TeX
 

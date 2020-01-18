@@ -4,6 +4,8 @@
 
 module Main (main) where
 
+import Thblt.Lib
+
 import           Data.Int
 import qualified Data.Map as M
 import           Data.Maybe (isJust)
@@ -12,7 +14,7 @@ import           Language.Haskell.TH
 import           System.Posix.Unistd                 (SystemID (nodeName),
                                                       getSystemID)
 import           XMonad
-import           XMonad.Actions.CycleWS (toggleOrView)
+import           XMonad.Actions.CycleWS (nextWS, prevWS, toggleOrView)
 import           XMonad.Actions.Navigation2D
 import           XMonad.Actions.WindowBringer (bringMenu, gotoMenu)
 import           XMonad.Hooks.EwmhDesktops (ewmh)
@@ -21,10 +23,8 @@ import           XMonad.Hooks.ManageDocks            (ToggleStruts (ToggleStruts
                                                       avoidStruts,
                                                       docksEventHook,
                                                       manageDocks)
-import           XMonad.Hooks.ManageDocks (ToggleStruts (ToggleStruts))
-import           XMonad.Hooks.ManageDocks (docksEventHook, manageDocks)
 import           XMonad.Hooks.ManageHelpers (isDialog)
-import           XMonad.Hooks.Place (placeHook, smart, withGaps)
+import           XMonad.Hooks.Place (placeHook, withGaps, smart)
 import           XMonad.Hooks.SetWMName (setWMName)
 import           XMonad.Layout.BinarySpacePartition  (ResizeDirectional (..),
                                                       Rotate (Rotate),
@@ -42,11 +42,6 @@ import           XMonad.Layout.Spacing -- (smartSpacingWithEdge, toggleSmartSpac
 --import         XMonad.Actions.CycleWS              (nextWS, prevWS)
 --import           XMonad.Actions.MessageFeedback -- READ BELOW.
 --Note to self: this is broken.  The messages get correctly sent, but the view doesn't update.  You have to move focus or do something else.
-import           XMonad.Hooks.EwmhDesktops (ewmh)
-import           XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
-import           XMonad.Hooks.ManageHelpers (isDialog)
-import           XMonad.Hooks.Place (placeHook, withGaps, smart)
-import           XMonad.Hooks.SetWMName (setWMName)
 
 import qualified XMonad.StackSet as XSS
 
@@ -60,10 +55,11 @@ import           XMonad.Util.WorkspaceCompare (getSortByIndex)
 [d| hostname = $(stringE =<< runIO (fmap nodeName getSystemID) ) |]
 
 workspacesKeys :: [KeySym]
-workspacesKeys | hostname == "anna"     = macAzertyKeys
-               | hostname == "rudiger"  = pcAzertyBeKeys
-               | hostname == "maladict" = bépoKeys
-               | otherwise              = pcAzertyKeys
+workspacesKeys = bépoKeys
+-- workspacesKeys | hostname == "anna"     = macAzertyKeys
+--                | hostname == "rudiger"  = pcAzertyBeKeys
+--                | hostname == "maladict" = bépoKeys
+--                | otherwise              = pcAzertyKeys
   where
     pcAzertyKeys   = [0x26,0xe9,0x22,0x27,0x28,0x2d,0xe8,0x5f,0xe7,0xe0]
     pcAzertyBeKeys = [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0]
@@ -152,6 +148,8 @@ baseKeys conf@XConfig { XMonad.modMask = modMask } =
   [
     ("M-S-c"                     , kill),
     ("M-S-q"                     , spawn "/home/thblt/.xmonad/scripts/stop"),
+    (""                     , spawn "/home/thblt/.xmonad/scripts/stop"),
+
     ("M-q"                       , restart "xmonad" True),
     ("M-<Esc>"                   , spawn "light-locker-command --lock"),
     ("M-S-<Esc>"                 , spawn "light-locker-command --lock"),
@@ -172,6 +170,9 @@ baseKeys conf@XConfig { XMonad.modMask = modMask } =
 
     ("M-ê"                       , sendMessage $ IncMasterN (-1)),
     ("M-à"                       , sendMessage $ IncMasterN 1),
+
+    -- ("M-S-<Left>"                , prevWS),
+    -- ("M-S-<Right>"               , nextWS),
 
     -- Navigation2D
     ("M-<Up>"                    , windowGo U False),
@@ -207,7 +208,7 @@ baseKeys conf@XConfig { XMonad.modMask = modMask } =
     ("M-t"                       , withFocused $ windows . XSS.sink),
 
     ("M-p"                       , spawn "~/.local/bin/dmenu-desktop --entry-type=name"),
-    ("M-C-S-<Return>"            , spawn $ terminal conf),
+    ("M-$"            , spawn $ terminal conf),
     ("M-S-<Return>"              , spawn $ "~/.xmonad/scripts/emacsclient-with-feedback"),
     ("M-s"                       , toggleOrView "scratch"),
     -- VolumeÀ
