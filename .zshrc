@@ -100,10 +100,13 @@ thblt_prompt() {
         echo -n "%(?..%F{9})" # Override if $?
         echo -n " # " # The prompt itself
     elif [[ -n $IN_NIX_SHELL ]]; then
-        echo -n "%F{39}%(?..%F{9})"
+        # nix-shell
+        echo -n " "
+        echo -n "%K{39}%F{255}%B $name ";
+        thblt_prompt_reset
         echo -n ' ◆ ';
     else
-        echo -n "%(?..%F{9})"
+        echo -n "%(?..%F{9} %?)"
         echo -n ' ❱ '
     fi
 }
@@ -113,12 +116,6 @@ thblt_rprompt() {
     # git
     thblt_prompt_git_status
     thblt_prompt_reset
-
-    # nix-shell
-    if [[ -n $IN_NIX_SHELL ]]; then
-        echo -n " "
-        echo -n "%K{39}%F{255}%B $name ";
-    fi
     return
 }
 
