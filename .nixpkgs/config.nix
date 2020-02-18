@@ -20,7 +20,7 @@
         versionModifier = "";
         src = builtins.fetchGit {
           url = "https://git.savannah.gnu.org/git/emacs.git";
-          rev = "d36adb544d984b91c70f6194da01344e4b2b6fc9";
+          rev = "b519d515bac8bd8c1265fe3965a51be249581817";
         };
         autoconf = true;
         automake = true;
@@ -57,36 +57,18 @@
 
           bc
           graphviz
-          # pandoc
           udiskie
 
           # ** Crypto
 
           gnupg1compat
-          gpa
           pass
           pinentry
 
           # ** X11 and X utilities
 
-          arandr
-          compton
-          dmenu
-          dunst
-          feh
-          libnotify
-          powerline-fonts
-          scrot
-          wmctrl
-          xclip
-          xorg.xbacklight
-          xorg.xev
-          xsel
-
           # *** Apps
 
-          alacritty
-          browserpass
           chromium
           evince
           firefox-bin
@@ -100,8 +82,6 @@
           qrencode
           scantailor-advanced
           scribus
-          thunderbird
-          #tor-browser-bundle
           transmission-gtk
           vlc
           youtube-dl
@@ -109,9 +89,8 @@
 
           # *** Fonts
 
-          #liberation-fonts
+          iosevka
           opensans-ttf
-          roboto
           symbola
 
           # *** Icon/cursor themes
