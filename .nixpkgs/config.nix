@@ -6,15 +6,14 @@
   #oraclejdk.accept_license = true;
 
   packageOverrides = pkgs: rec
-  {
-    # myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
+    {
+      # myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
 
-    emacsPrime = with pkgs; stdenv.lib.overrideDerivation
-      (pkgs.emacs.override {
+      emacsPrime = (pkgs.emacs.override {
         srcRepo = true;
         withGTK2 = false;
         withGTK3 = false;
-      }) (attrs: rec {
+      }).overrideAttrs ({name, version, versionModifier, ...}: {
         name = "emacs-${version}${versionModifier}";
         version = "HEAD";
         versionModifier = "";
@@ -22,134 +21,130 @@
           url = "https://git.savannah.gnu.org/git/emacs.git";
           rev = "b519d515bac8bd8c1265fe3965a51be249581817";
         };
+        # configureFlags = configureFlags ++ ["--with-imagemagick"];
+        # buildInputs = buildInputs ++ [ pkgs.imagemagick ];
         autoconf = true;
         automake = true;
         texinfo = true;
-
         patches = [];
       });
 
-    # * Package list
+      # * Package list
 
-    all = with pkgs; buildEnv
-    {
-      name = "all";
-      paths =
-        [
+      all = with pkgs; buildEnv
+        {
+          name = "all";
+          paths =
+            [
 
-          # ** Shell
+              # ** Shell
 
-          tmux
+              tmux
 
-          # ** Common system utilities
+              # ** Common system utilities
 
-          acpi lm_sensors
-          bind
-          htop
-          p7zip
-          tree
-          unrar
-          wget
-          whois
-          zip unzip
+              acpi lm_sensors
+              bind
+              htop
+              p7zip
+              tree
+              unrar
+              wget
+              whois
+              zip unzip
 
-          # ** Less common system utilities
+              # ** Less common utilities
 
-          bc
-          graphviz
-          udiskie
+              bc
+              graphviz
+              udiskie
 
-          # ** Crypto
+              # ** Crypto
 
-          gnupg1compat
-          pass
-          pinentry
+              gnupg1compat
+              pass
+              pinentry
 
-          # ** X11 and X utilities
+              # ** X11 and X utilities
 
-          # *** Apps
+              # *** Apps
 
-          chromium
-          evince
-          firefox-bin
-          gimp
-          hugo
-          jabref
-          imagemagick
-          inkscape
-          libreoffice
-          gnome3.nautilus
-          qrencode
-          scantailor-advanced
-          scribus
-          transmission-gtk
-          vlc
-          youtube-dl
-          zotero
+              chromium
+              evince
+              firefox-bin
+              gimp
+              hugo
+              jabref
+              imagemagick
+              inkscape
+              libreoffice
+              gnome3.nautilus
+              qrencode
+              scantailor-advanced
+              scribus
+              transmission-gtk
+              vlc
+              youtube-dl
+              zotero
 
-          # *** Fonts
+              # *** Icon/cursor themes
 
-          iosevka
-          opensans-ttf
-          symbola
+              gnome3.adwaita-icon-theme # For large mouse pointers
 
-          # *** Icon/cursor themes
+              # ** Emacs and friends
 
-          gnome3.adwaita-icon-theme # For large mouse pointers
+              # emacsPrime
+              emacsPrimeemi
+              isync
+              aspell
+              aspellDicts.fr
+              aspellDicts.en
 
-          # ** Emacs and friends
+              hunspell
+              hunspellDicts.fr-any
 
-          emacsPrime
-          isync
-          aspell
-          aspellDicts.fr
-          aspellDicts.en
+              # ** Programming tools
 
-          hunspell
-          hunspellDicts.fr-any
+              # *** Language-independent
 
-          # ** Programming tools
+              gitFull
+              gitAndTools.git-hub
+              meld
+              nix-prefetch-scripts
+              ripgrep
 
-          # *** Language-independent
+              # *** Go
 
-          gitFull
-          gitAndTools.git-hub
-          meld
-          nix-prefetch-scripts
-          ripgrep
+              go
 
-          # *** Go
+              # *** Haskell
 
-          go
+              haskellPackages.apply-refact
+              hlint
+              haskellPackages.hoogle
+              stack
 
-          # *** Haskell
+              # *** Python
 
-          haskellPackages.apply-refact
-          hlint
-          haskellPackages.hoogle
-          stack
+              python36
 
-          # *** Python
+              # *** Lisps
 
-          python36
+              racket
+              chez
 
-          # *** Lisps
+              # *** Rust
 
-          racket
-          chez
+              rustup
+              # ^ provides rustfmt
 
-          # *** Rust
+              # ** *TeX
 
-          rustup
-          # ^ provides rustfmt
-
-          # ** *TeX
-
-          asymptote
-          lyx
-          #texlive.biber
-          texlive.combined.scheme-full
-        ];
+              asymptote
+              lyx
+              #texlive.biber
+              texlive.combined.scheme-full
+            ];
+        };
     };
-  };
 }

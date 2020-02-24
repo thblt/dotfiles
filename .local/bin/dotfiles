@@ -9,19 +9,10 @@ target_shell="/usr/bin/zsh"
 
 # Public files in ~/.dotfiles
 declare -a files=(
-    .Xresources
-    .bin
-    .cig
-    .gtkrc-2.0
-    .keynavrc
     .mbsyncrc
     .profile
     .tmux.conf
     .vim
-    .Xmodmap
-    .xmonad
-    .xsession
-    .xsessionrc
     .zshrc
 )
 

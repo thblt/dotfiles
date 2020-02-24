@@ -1,8 +1,0 @@
-! Caps_Lock to control
-! keysym Caps_Lock = Control_L
-
-! Toggle $ and *
-! keycode 35 = asterisk dollar
-
-! Make grave not dead
-keycode 51 = grave sterling
