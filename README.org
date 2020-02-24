@@ -1,42 +1,4 @@
 #+TITLE: thblt's dotfiles
 
-Hi!  These are my [[https://en.wikipedia.org/wiki/Dot-file][dotfiles]].  They're messy and disorganized but may contain some little things of interest, hence this README.
-
-* Contents :TOC:
-- [[#xmonad][XMonad]]
-- [[#tmux-and-zsh][Tmux and ZSH]]
-- [[#meta-aka-dotfiles-management][Meta (aka dotfiles management)]]
-
-* XMonad
-
-My XMonad configuration is like every other.  Yet, I'm quite happy of:
-
- - Compile-time per-machine configuration :: Some bits of TemplateHaskell in xmonad.hs bind the current hostname to a variable and allows the configuration to vary depending on the machine it gets compiled on.  I mostly use it to handle keyboard layout differences, but it may be useful for some other things.
-
- - =.xmonad/quit-xmonad.sh= :: a small and reasonably ugly script which makes use of wmctrl to nicely close all open windows in all workspaces /before/ killing its parent process (/ie/, xmonad).  This is much better than the default method (kill the WM directly, thus aggressively destroy all child processes)
-
- - =.xmonad/recompile-xmonad.sh= :: Sends a notification when XMonad successfully restarted.  Nice for testing new things.
-
- - =.xmonad/lib/XMonad/Layout/IfMax.hs= :: A modified version of IfMax which doesn't break with decorations.  I'm not the author, it comes from GitHub user f1u77y on [[https://github.com/xmonad/xmonad-contrib/issues/75][this xmonad-contrib issue]].
-
-Some bits may even be useful with different tiling window managers:
-
- - =.local/bin/dmenu-desktop= :: is a modified version of i3's =i3-dmenu-desktop= launcher which makes it independent of i3.  Unlike =dmenu-run=, it doesn't present a list of binaries, but of =.desktop= files, which is nicer.  For terminal apps, it requires =x-terminal-emulator= to be in path, and is thus limited to Debian.
-
- - =~/.xsessionrc= :: People who never used a tiling WM without a desktop environment may find this a good starting point.  Or perhaps they'll hate it.
-
-* Tmux and ZSH
-
-My Tmux/ZSH config looks like this.  If you like what you see, steal it:
-
-#+CAPTION: Tmux + ZSH config
-#+NAME:    tmux_zsh
-[[https://cloud.githubusercontent.com/assets/2453136/22307942/47a5b060-e345-11e6-937f-dbd7eb721bf0.png]]
-
-Also:
-
- - =.xmonad/scripts/tmux-attach-or-new= :: is a one-line script which either attaches tmux to an existing session, or creates it.  I use it in combination with the Scratchpad XMonad plugin.
-
-* Meta (aka dotfiles management)
-
- - =.local/bin/dotfiles.sh= :: is the script I use to, guess what, symlink my dotfiles.
+Hi!  These are my [[https://en.wikipedia.org/wiki/Dot-file][dotfiles]].  They're messy and disorganized, but feel
+free to steal.
