@@ -1,5 +1,5 @@
 hide_edge_borders --i3 smart
-default_border pixel 2
+default_border pixel
 
 ### Variables
 #
@@ -35,17 +35,16 @@ exec swayidle -w \
 exec mako
 exec udiskie
 
-
-
 ### Input configuration
 
 input * {
       xkb_layout fr
       xkb_variant bepo
       xkb_options "caps:ctrl_modifier"
+      # xkb_options "caps:escape"
       repeat_delay 200
       repeat_rate 30
-      }
+     }
 
 ### Key bindings
 

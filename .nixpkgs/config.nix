@@ -19,7 +19,7 @@
         versionModifier = "";
         src = builtins.fetchGit {
           url = "https://git.savannah.gnu.org/git/emacs.git";
-          rev = "b519d515bac8bd8c1265fe3965a51be249581817";
+          rev = "9dccaf8a5cdb10dae597345ec3741475477a7d97";
         };
         # configureFlags = configureFlags ++ ["--with-imagemagick"];
         # buildInputs = buildInputs ++ [ pkgs.imagemagick ];
@@ -93,8 +93,7 @@
 
               # ** Emacs and friends
 
-              # emacsPrime
-              emacsPrimeemi
+              emacsPrime
               isync
               aspell
               aspellDicts.fr
