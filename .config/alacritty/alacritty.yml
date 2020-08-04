@@ -19,13 +19,13 @@ draw_bold_text_with_bright_colors: true
 # Font configuration (changes require restart)
 font:
   normal:
-    family: "Iosevka Term"
+    family: "Iosevka"
     style: Regular
   bold:
-    family: "Iosevka Term"
+    family: "Iosevka"
     style: Bold
   italic:
-    family: "Iosevka Term" # should be "Menlo" or something on macOS.
+    family: "Iosevka" # should be "Menlo" or something on macOS.
     style: Italic
 
   size: 10
