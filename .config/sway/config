@@ -17,17 +17,12 @@ font Iosevka 10
 #
 # Default wallpaper
 output * bg ~/Images/Wallpapers/Curiosity.jpeg fill
-#
-# Example configuration:
-#
-#   output HDMI-A-1 resolution 1920x1080 position 1920,0
-#
-# You can get the names of your outputs by running: swaymsg -t get_outputs
+output eDP-1 scale 2
 
 ### Idle configuration
 
 exec swayidle -w \
-     timeout 300 'swaylock -f -c 000000' \
+     timeout 600 'swaylock -f -c 000000'            \
      timeout 600 'swaymsg "output * dpms off"' \
      resume 'swaymsg "output * dpms on"' \
      before-sleep 'swaylock -f -c 000000'
@@ -38,128 +33,142 @@ exec udiskie
 ### Input configuration
 
 input * {
-      xkb_layout fr
-      xkb_variant bepo
-      xkb_options "caps:ctrl_modifier"
-      # xkb_options "caps:escape"
-      repeat_delay 200
-      repeat_rate 30
-     }
+    xkb_layout fr
+    xkb_variant bepo
+    xkb_options "caps:ctrl_modifier"
+    xkb_file ~/.config/sway/bepo_thblt.xkb
+    repeat_delay 200
+    repeat_rate 30
+    }
+
+input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
+      tap enable
+      }
 
 ### Key bindings
 
-    # Launchers
-    bindsym $mod+dollar exec "alacritty"
-    bindsym $mod+return exec "emacsclient-with-feedback server"
-    bindsym $mod+Shift+return exec "emacsclient-with-feedback"
-    bindsym $mod+d exec rofi -show drun
+# Launchers
+bindsym $mod+dollar exec "alacritty"
+bindsym $mod+return exec "emacsclient-with-feedback server"
+bindsym $mod+Shift+return exec "emacsclient-with-feedback"
+bindsym $mod+d exec rofi -show drun
 
-    # Audio
-    bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-;"
-    bindsym XF86AudioRaiseVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+;"
-    bindsym XF86AudioMute exec "amixer set Master toggle;"
+# Audio
+bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-;"
+bindsym XF86AudioRaiseVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2+;"
+bindsym XF86AudioMute exec "amixer set Master toggle;"
 
-    # Backlight
-    bindsym XF86MonBrightnessUp exec "light -A 5"
-    bindsym Shift+XF86MonBrightnessUp exec "light -A 1"
-    bindsym XF86MonBrightnessDown exec "light -U 5"
-    bindsym Shift+XF86MonBrightnessDown exec "light -U 1"
-    bindsym $mod+XF86MonBrightnessUp exec "light -S 100"
-    bindsym $mod+XF86MonBrightnessDown exec "light -S 1"
+# Backlight
+bindsym XF86MonBrightnessUp exec "light -A 5"
+bindsym Shift+XF86MonBrightnessUp exec "light -A 1"
+bindsym XF86MonBrightnessDown exec "light -U 5"
+bindsym Shift+XF86MonBrightnessDown exec "light -U 1"
+bindsym $mod+XF86MonBrightnessUp exec "light -S 100"
+bindsym $mod+XF86MonBrightnessDown exec "light -S 1"
 
-    # Kill focused window
-    bindsym $mod+c kill
+# For some reasons, my layout doesn't emit symbols.  Here's the same binding as above, with keycodes.
+bindcode 232 exec "light -U 5"
+bindcode 233 exec "light -A 5"
+bindcode Shift+232 exec "light -U 1"
+bindcode Shift+233 exec "light -A 1"
+bindcode $mod+232 exec "light -S 1"
+bindcode $mod+233 exec "light -S 100"
 
-    # Lock
-    bindsym $mod+l exec swaylock -f -c 000000
+# Volume
+bindcode 123 exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindcode 122 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindcode 121 exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-    # Drag floating windows by holding down $mod and left mouse button.
-    # Resize them with right mouse button + $mod.
-    # Despite the name, also works for non-floating windows.
-    # Change normal to inverse to use left mouse button for resizing and right
-    # mouse button for dragging.
-    floating_modifier $mod normal
+# Kill focused window
+bindsym $mod+c kill
 
-    # Reload the configuration file
-    bindsym $mod+Shift+q reload
+# Lock
+bindsym $mod+f12 exec swaylock -f -c 000000
 
-    # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+escape exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+# Drag floating windows by holding down $mod and left mouse button.
+# Resize them with right mouse button + $mod.
+# Despite the name, also works for non-floating windows.
+# Change normal to inverse to use left mouse button for resizing and right
+# mouse button for dragging.
+floating_modifier $mod normal
+
+# Reload the configuration file
+bindsym $mod+Shift+q reload
+
+# Exit sway (logs you out of your Wayland session)
+bindsym $mod+Shift+escape exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 #
 # Moving around:
 #
-    # Move your focus around
-    bindsym $mod+$left focus left
-    bindsym $mod+$down focus down
-    bindsym $mod+$up focus up
-    bindsym $mod+$right focus right
-    # Move the focused window with the same, but add Shift
-    bindsym $mod+Shift+$left move left
-    bindsym $mod+Shift+$down move down
-    bindsym $mod+Shift+$up move up
-    bindsym $mod+Shift+$right move right
+# Move your focus around
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+# Move the focused window with the same, but add Shift
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
 #
 # Workspaces:
 #
-    # Switch to workspace
-    bindsym $mod+quotedbl workspace 1
-    bindsym $mod+guillemotleft workspace 2
-    bindsym $mod+guillemotright workspace 3
-    bindsym $mod+parenleft workspace 4
-    bindsym $mod+parenright workspace 5
-    bindsym $mod+at workspace 6
-    bindsym $mod+plus workspace 7
-    bindsym $mod+minus workspace 8
-    bindsym $mod+slash workspace 9
-    bindsym $mod+asterisk workspace 10
-    # Move focused container to workspace
-    bindsym $mod+1 move container to workspace 1
-    bindsym $mod+2 move container to workspace 2
-    bindsym $mod+3 move container to workspace 3
-    bindsym $mod+4 move container to workspace 4
-    bindsym $mod+5 move container to workspace 5
-    bindsym $mod+6 move container to workspace 6
-    bindsym $mod+7 move container to workspace 7
-    bindsym $mod+8 move container to workspace 8
-    bindsym $mod+9 move container to workspace 9
-    bindsym $mod+0 move container to workspace 10
-    # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
+bindsym $mod+1 move container to workspace 1
+bindsym $mod+quotedbl workspace 1
+bindsym $mod+2 move container to workspace 2
+bindsym $mod+guillemotleft workspace 2
+bindsym $mod+3 move container to workspace 3
+bindsym $mod+guillemotright workspace 3
+bindsym $mod+4 move container to workspace 4
+bindsym $mod+parenleft workspace 4
+bindsym $mod+5 move container to workspace 5
+bindsym $mod+parenright workspace 5
+bindsym $mod+6 move container to workspace 6
+bindsym $mod+at workspace 6
+bindsym $mod+7 move container to workspace 7
+bindsym $mod+plus workspace 7
+bindsym $mod+8 move container to workspace 8
+bindsym $mod+minus workspace 8
+bindsym $mod+9 move container to workspace 9
+bindsym $mod+slash workspace 9
+bindsym $mod+0 move container to workspace 10
+bindsym $mod+asterisk workspace 10
+
 #
 # Layout stuff:
 #
-    # You can "split" the current object of your focus with
-    # $mod+b or $mod+v, for horizontal and vertical splits
-    # respectively.
-    bindsym $mod+q splith
-    bindsym $mod+g splitv
+# You can "split" the current object of your focus with
+# $mod+b or $mod+v, for horizontal and vertical splits
+# respectively.
+bindsym $mod+q splith
+bindsym $mod+g splitv
 
-    # Switch the current container between different layout styles
-    bindsym $mod+eacute layout toggle tabbed splith splitv
+# Switch the current container between different layout styles
+bindsym $mod+eacute layout toggle tabbed splith splitv
 
-    # Make the current focus fullscreen
-    bindsym $mod+percent fullscreen
+# Make the current focus fullscreen
+bindsym $mod+percent fullscreen
 
-    # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+# Toggle the current focus between tiling and floating mode
+bindsym $mod+Shift+space floating toggle
 
-    # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+# Swap focus between the tiling area and the floating area
+bindsym $mod+space focus mode_toggle
 
-    # Move focus to the parent container
-    bindsym $mod+a focus parent
+# Move focus to the parent container
+bindsym $mod+a focus parent
 #
 # Scratchpad:
 #
-    # Sway has a "scratchpad", which is a bag of holding for windows.
-    # You can send windows there and get them back later.
+# Sway has a "scratchpad", which is a bag of holding for windows.
+# You can send windows there and get them back later.
 
-    # Move the currently focused window to the scratchpad
-    bindsym $mod+Shift+w move scratchpad
+# Move the currently focused window to the scratchpad
+bindsym $mod+Shift+w move scratchpad
 
-    # Show the next scratchpad window or hide the focused scratchpad window.
-    # If there are multiple scratchpad windows, this command cycles through them.
-    bindsym $mod+w scratchpad show
+# Show the next scratchpad window or hide the focused scratchpad window.
+# If there are multiple scratchpad windows, this command cycles through them.
+bindsym $mod+w scratchpad show
 #
 # Resizing containers:
 #

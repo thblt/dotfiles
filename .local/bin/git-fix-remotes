@@ -20,8 +20,10 @@ from sys import argv
 from urllib.parse import urlparse, ParseResult
 
 # The list of services for which translation is known to work.
-knownServices = ["github.com",
-                 "git@github.com"] # SSH urls are parsed by urllib with the user as part of the netloc.
+knownServices = [ "github.com"
+                , "git@github.com"
+                , "gitlab.com"
+                , "git@gitlab.com"] # SSH urls are parsed by urllib with the user as part of the netloc.
 
 githubUsers = [ "thblt" ] # Github users or organizations I have commit access to.
 
@@ -39,7 +41,8 @@ def get_remotes():
 
 def https2ssh(url):
     # Takes an https url, and returns a ssh url. Or tries to.
-    return "ssh://git@{netloc}{path}.git".format(netloc = url.netloc, path=url.path)
+    path = url.path[:-1] if url.path.endswith("/") else url.path
+    return "ssh://git@{netloc}{path}.git".format(netloc = url.netloc, path=path)
 
 def ssh2https(url):
     # Takes a ssh url, and returns an https url. Or tries to.
@@ -92,7 +95,7 @@ for name in argv[1:] if len(argv) > 1 else remotes.keys():
                               fragment=url.fragment)
 
         if not url.netloc in knownServices:
-            print("I don't know what's possible with {0} URLs, skipping.".format(url.netloc))
+            print("I don't know what's possible with `{0}` URLs, skipping.".format(url.netloc))
             break
         if protocol == "fetch" and not "https" == url.scheme:
             new = ssh2https(url)

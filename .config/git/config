@@ -19,3 +19,5 @@
 	program = gpg2
 [github]
 	user = thblt
+[pull]
+	rebase = false

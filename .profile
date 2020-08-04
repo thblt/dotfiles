@@ -11,5 +11,6 @@ if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
 fi
 
 if [ "$(tty)" = "/dev/tty1" ]; then
-	exec sway
+    export MOZ_ENABLE_WAYLAND=1
+	  exec sway
 fi

@@ -6,144 +6,145 @@
   #oraclejdk.accept_license = true;
 
   packageOverrides = pkgs: rec
+  {
+    # myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
+
+    emacsPrime = (pkgs.emacs.override {
+      srcRepo = true;
+      withGTK2 = false;
+      withGTK3 = false;
+    }).overrideAttrs ({name, version, versionModifier, ...}: {
+      name = "emacs-${version}${versionModifier}";
+      version = "HEAD";
+      versionModifier = "";
+      src = builtins.fetchGit {
+        url = "https://git.savannah.gnu.org/git/emacs.git";
+        rev = "9dccaf8a5cdb10dae597345ec3741475477a7d97";
+      };
+      # configureFlags = configureFlags ++ ["--with-imagemagick"];
+      # buildInputs = buildInputs ++ [ pkgs.imagemagick ];
+      autoconf = true;
+      automake = true;
+      texinfo = true;
+      patches = [];
+    });
+
+    # * Package list
+
+    all = with pkgs; buildEnv
     {
-      # myZotero = pkgs.callPackage "/home/thblt/.nixpkgs/zotero.nix" {};
+      name = "all";
+      paths =
+        [
 
-      emacsPrime = (pkgs.emacs.override {
-        srcRepo = true;
-        withGTK2 = false;
-        withGTK3 = false;
-      }).overrideAttrs ({name, version, versionModifier, ...}: {
-        name = "emacs-${version}${versionModifier}";
-        version = "HEAD";
-        versionModifier = "";
-        src = builtins.fetchGit {
-          url = "https://git.savannah.gnu.org/git/emacs.git";
-          rev = "9dccaf8a5cdb10dae597345ec3741475477a7d97";
-        };
-        # configureFlags = configureFlags ++ ["--with-imagemagick"];
-        # buildInputs = buildInputs ++ [ pkgs.imagemagick ];
-        autoconf = true;
-        automake = true;
-        texinfo = true;
-        patches = [];
-      });
+          # ** Shell
 
-      # * Package list
+          tmux
 
-      all = with pkgs; buildEnv
-        {
-          name = "all";
-          paths =
-            [
+          # ** Common system utilities
 
-              # ** Shell
+          acpi lm_sensors
+          bind
+          htop
+          p7zip
+          tree
+          unrar
+          wget
+          whois
+          zip unzip
 
-              tmux
+          # ** Less common utilities
 
-              # ** Common system utilities
+          bc
+          graphviz
+          udiskie
 
-              acpi lm_sensors
-              bind
-              htop
-              p7zip
-              tree
-              unrar
-              wget
-              whois
-              zip unzip
+          # ** Crypto
 
-              # ** Less common utilities
+          gnupg1compat
+          pass
+          pinentry
 
-              bc
-              graphviz
-              udiskie
+          # ** X11 and X utilities
 
-              # ** Crypto
+          # *** Apps
 
-              gnupg1compat
-              pass
-              pinentry
+          chromium
+          evince
+          firefox-bin
+          gimp
+          hugo
+          jabref
+          imagemagick
+          inkscape
+          libreoffice
+          gnome3.nautilus
+          qrencode
+          scantailor-advanced
+          scribus
+          transmission-gtk
+          vlc
+          youtube-dl
+          zotero
 
-              # ** X11 and X utilities
+          # *** Icon/cursor themes
 
-              # *** Apps
+          gnome3.adwaita-icon-theme # For large mouse pointers
 
-              chromium
-              evince
-              firefox-bin
-              gimp
-              hugo
-              jabref
-              imagemagick
-              inkscape
-              libreoffice
-              gnome3.nautilus
-              qrencode
-              scantailor-advanced
-              scribus
-              transmission-gtk
-              vlc
-              youtube-dl
-              zotero
+          # ** Emacs and friends
 
-              # *** Icon/cursor themes
+          emacsPrime
+          isync
+          aspell
+          aspellDicts.fr
+          aspellDicts.en
 
-              gnome3.adwaita-icon-theme # For large mouse pointers
+          hunspell
+          hunspellDicts.fr-any
 
-              # ** Emacs and friends
+          # ** Programming tools
 
-              emacsPrime
-              isync
-              aspell
-              aspellDicts.fr
-              aspellDicts.en
+          # *** Language-independent
 
-              hunspell
-              hunspellDicts.fr-any
+          gitFull
+          gitAndTools.git-hub
+          meld
+          nix-prefetch-scripts
+          ripgrep
 
-              # ** Programming tools
+          # *** Go
 
-              # *** Language-independent
+          go
 
-              gitFull
-              gitAndTools.git-hub
-              meld
-              nix-prefetch-scripts
-              ripgrep
+          # *** Haskell
 
-              # *** Go
+          haskellPackages.apply-refact
+          hlint
+          haskellPackages.hoogle
+          stack
 
-              go
+          # *** Python
 
-              # *** Haskell
+          python36
 
-              haskellPackages.apply-refact
-              hlint
-              haskellPackages.hoogle
-              stack
+          # *** Lisps
 
-              # *** Python
+          racket
+          chez
 
-              python36
+          # *** Rust
+          cargo
+          rustc
+          rustfmt
+          # ^ provides rustfmt
 
-              # *** Lisps
+          # ** *TeX
 
-              racket
-              chez
-
-              # *** Rust
-
-              rustup
-              # ^ provides rustfmt
-
-              # ** *TeX
-
-              asymptote
-              lyx
-              #texlive.biber
-              texlive.combined.scheme-full
-            ];
-        };
+          asymptote
+          lyx
+          #texlive.biber
+          texlive.combined.scheme-full
+        ];
     };
+  };
 }
