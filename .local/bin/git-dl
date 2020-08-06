@@ -1,13 +1,33 @@
 #!/usr/bin/env sh
 
+# git-dl
+#
+# The most efficient way (that I found) to download a given revision
+# from a git repository, and only this.
+#
+# Usage is git-dl REMOTE REV DEST-DIR
+#
+# - REMOTE-URL is a git URL, either remote or local.
+#
+# - REV is an commit-ish object that can be checked out (may work with
+#   just tree-ish)
+#
+# - DEST is an empty or non-existing dir where REF will be checked out.
+#
+# The output of this command in DEST is NOT a repository, it's an
+# orphan worktree.  The git-dir is created and deleted automatically.
+#
+# Technically, this should download exactly n+2 objects, where n is
+# the number of files in REV's tree.
+
 if [ "$#" -ne 3 ]; then
     echo "Usage:"
-    echo "  " $(basename $0) REMOTE-URL REF DEST-DIR
+    echo "  " $(basename $0) REMOTE-URL REV DEST-DIR
     exit -1
 fi
 
 REMOTE=$1
-REF=$2
+REV=$2
 DEST=$3
 GITDIR=$(mktemp -d)
 
@@ -19,7 +39,7 @@ fi
 
 git --git-dir $GITDIR --work-tree $DEST init $GITDIR
 git --git-dir $GITDIR --work-tree $DEST config --local advice.detachedHead false
-git --git-dir $GITDIR --work-tree $DEST fetch $REMOTE $REF
-git --git-dir $GITDIR --work-tree $DEST checkout $REF
+git --git-dir $GITDIR --work-tree $DEST fetch $REMOTE $REV
+git --git-dir $GITDIR --work-tree $DEST checkout $REV
 
 rm -rf $GITDIR
