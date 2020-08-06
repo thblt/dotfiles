@@ -21,3 +21,5 @@
 	user = thblt
 [pull]
 	rebase = false
+[submodule]
+	recurse = true

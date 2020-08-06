@@ -1,0 +1,6 @@
+#!/bin/sh
+
+scp $1 thblt@k9.thb.lt:/var/www/paste.thb.lt/$1
+dest="https://paste.thb.lt/$1"
+echo $dest | xsel -bi
+echo $dest

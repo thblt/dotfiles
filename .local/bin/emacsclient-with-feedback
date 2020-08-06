@@ -1,0 +1,42 @@
+#!/bin/sh
+
+USER_EMACS=$HOME/.local/opt/emacs/bin/
+SOCKET_DIR=/run/user/1000/emacs
+
+DMENU="rofi -dmenu"
+
+
+# Find Emacs
+if [ -e ${USER_EMACS}/emacs ]; then
+    EMACS_PATH=$USER_EMACS
+else
+    EMACS_PATH=$(dirname $(which emacs))
+fi
+
+# Clear server history
+for server in $(ls $SOCKET_DIR); do
+    emacsclient -s $server --eval "(ignore)"
+
+    if [[ $? != 0 ]]; then
+        rm $SOCKET_DIR/$server
+    fi
+done
+
+# Determine server to use
+if [[ $1 == "" ]]; then
+    server=$(ls $SOCKET_DIR | $DMENU -i -p "Which Emacs? ")
+    if [[ $? != 0 ]]; then
+        exit;
+    fi
+else
+    server=$1
+fi
+
+echo "Running Emacs ($server) from $EMACS_PATH"
+
+${EMACS_PATH}/emacsclient -c -s $server
+
+if [[ $? != 0 ]]; then
+    alacritty --title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon=$server
+    ${EMACS_PATH}/emacsclient -c -s $server
+fi

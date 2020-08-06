@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage:"
+    echo "  " $(basename $0) REMOTE-URL REF DEST-DIR
+    exit -1
+fi
+
+REMOTE=$1
+REF=$2
+DEST=$3
+GITDIR=$(mktemp -d)
+
+mkdir -p $DEST
+if [ "$(ls -A $DEST)" ]; then
+    echo "Destination must be an empty directory."
+    exit -1
+fi
+
+git --git-dir $GITDIR --work-tree $DEST init $GITDIR
+git --git-dir $GITDIR --work-tree $DEST config --local advice.detachedHead false
+git --git-dir $GITDIR --work-tree $DEST fetch $REMOTE $REF
+git --git-dir $GITDIR --work-tree $DEST checkout $REF
+
+rm -rf $GITDIR
