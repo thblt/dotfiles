@@ -13,6 +13,8 @@ window:
   # Setting this to false will result in window without borders and title bar.
   decorations: full
 
+  dynamic_title: true
+
 # When true, bold text is drawn using the bright variant of colors.
 draw_bold_text_with_bright_colors: true
 
@@ -75,7 +77,7 @@ colors:
     cyan:    '0x54ced6'
     white:   '0x2a2a2a'
 
-visual_bell:
+bell:
   animation: Ease
   duration: 0
 
@@ -113,8 +115,6 @@ mouse:
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
-
-dynamic_title: true
 
 mouse.hide_when_typing: false
 
