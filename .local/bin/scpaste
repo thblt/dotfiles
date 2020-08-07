@@ -1,6 +1,8 @@
 #!/bin/sh
 
-scp $1 thblt@k9.thb.lt:/var/www/paste.thb.lt/$1
-dest="https://paste.thb.lt/$1"
-echo $dest | xsel -bi
+fn=$(basename $1)
+
+scp $1 thblt@k9.thb.lt:/var/www/paste.thb.lt/$fn
+dest="https://paste.thb.lt/$fn"
+echo $dest | wl-copy
 echo $dest
