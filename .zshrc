@@ -1,17 +1,17 @@
 # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
-ZSH_LIB_DIR=$HOME/.local/lib/zsh
+# ZSH_LIB_DIR=$HOME/.local/lib/zsh
 
-for p in $ZSH_LIB_DIR/*; do
-    b=$(basename $p)
+# for p in $ZSH_LIB_DIR/*; do
+#     b=$(basename $p)
 
-    if [ -e $p/$b.zsh ]; then
-        source $p/$b.zsh
-    elif [ -e $p/$b.zsh-theme ]; then
-        source $p/$b.zsh-theme
-    fi
-done;
+#     if [ -e $p/$b.zsh ]; then
+#         source $p/$b.zsh
+#     elif [ -e $p/$b.zsh-theme ]; then
+#         source $p/$b.zsh-theme
+#     fi
+# done;
 
 thblt_prompt_reset() {
     echo -n '%f%k%b'
