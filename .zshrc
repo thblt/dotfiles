@@ -252,24 +252,24 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 # Use system clipboard
 x-copy-region-as-kill () {
     zle copy-region-as-kill
-    print -rn $CUTBUFFER | xsel -i -b
+    print -rn - $CUTBUFFER | wl-copy
 }
 zle -N x-copy-region-as-kill
 
 x-kill-region () {
     zle kill-region
-    print -rn $CUTBUFFER | xsel -i -b
+    print -rn - $CUTBUFFER | wl-copy
 }
 zle -N x-kill-region
 
 x-kill-line () {
     zle kill-line
-    print -rn $CUTBUFFER | xsel -i -b
+    print -rn - $CUTBUFFER | wl-copy
 }
 zle -N x-kill-line
 
 x-yank () {
-    CUTBUFFER=$(xsel -o -b </dev/null)
+    CUTBUFFER=$(wl-paste)
     zle yank
 }
 zle -N x-yank
