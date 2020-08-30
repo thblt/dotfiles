@@ -250,6 +250,10 @@ zle -N zle-line-init
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # Use system clipboard
+
+# @FIXME This will only work in Wayland.  I can live with this, or
+# choose the clipboard program to use depending on what we're running
+# on (check for $WAYLAND_DISPLAY then $DISPLAY).
 x-copy-region-as-kill () {
     zle copy-region-as-kill
     print -rn - $CUTBUFFER | wl-copy
@@ -274,8 +278,7 @@ x-yank () {
 }
 zle -N x-yank
 
-which xsel 2&>/dev/null > /dev/null
-if [[ 0 == $? ]]; then
+if [[ "$DISPLAY" || "$WAYLAND_DISPLAY" ]]; then
     bindkey -e '\ew' x-copy-region-as-kill
     bindkey -e '^W' x-kill-region
     bindkey -e '^K' x-kill-line
