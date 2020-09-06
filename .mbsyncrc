@@ -6,7 +6,7 @@ IMAPAccount ovh
 Host ssl0.ovh.net
 User thibault@thb.lt
 AuthMechs LOGIN
-PassCmd "pass show ssl0.ovh.net"
+PassCmd "gopass show ssl0.ovh.net"
 SSLType IMAPS
 
 ImapStore ovh-remote
@@ -34,7 +34,7 @@ IMAPAccount ac-amiens
 Host imap.ac-amiens.fr
 User tpolge
 AuthMechs LOGIN
-PassCmd "pass show ac-amiens.fr"
+PassCmd "gopass show ac-amiens.fr"
 SSLType IMAPS
 
 ImapStore ac-amiens-remote
@@ -62,7 +62,7 @@ IMAPAccount ac-orleans
 Host imap.ac-orleans-tours.fr
 User tpolge
 AuthMechs LOGIN
-PassCmd "pass show ac-orleans-tours.fr"
+PassCmd "gopass show ac-orleans-tours.fr"
 SSLType IMAPS
 
 ImapStore ac-orleans-remote
