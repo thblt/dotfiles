@@ -1,3 +1,4 @@
+#*#
 *-autoloads.el
 *.elc
 *.info
@@ -9,10 +10,11 @@
 .DS_Store
 .stack-work
 .~lock*
-#*#
+TAGS
+_region_.tex
 dir
+dist-newstyle
 ltximg
 ltxpng
 missfont.log
 tags
-TAGS

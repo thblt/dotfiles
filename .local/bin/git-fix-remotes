@@ -42,6 +42,7 @@ def get_remotes():
 def https2ssh(url):
     # Takes an https url, and returns a ssh url. Or tries to.
     path = url.path[:-1] if url.path.endswith("/") else url.path
+    path = url.path[:-5] if path.endswith(".git") else path
     return "ssh://git@{netloc}{path}.git".format(netloc = url.netloc, path=path)
 
 def ssh2https(url):
