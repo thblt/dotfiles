@@ -4,7 +4,6 @@
 # Don't do anything on dumb terms.  This prevents issues with TRAMP.
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-
 # ZSH_LIB_DIR=$HOME/.local/lib/zsh
 
 # for p in $ZSH_LIB_DIR/*; do
