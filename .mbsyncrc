@@ -13,18 +13,20 @@ ImapStore ovh-remote
 Account ovh
 
 MaildirStore ovh-local
-Path ~/.Mail/OVH/
-Inbox ~/.Mail/OVH/Inbox
+Path ~/.mail/thb.lt/
+Inbox ~/.mail/thb.lt/Inbox
 SubFolders Verbatim
 
 Channel ovh
-Master :ovh-remote:
+Master :ovh-remote:INBOX/
 Slave :ovh-local:
+Patterns % INBOX
 Patterns * % !Drafts
+
 Create Both
 SyncState *
 Sync All
-Expunge Slave
+Expunge Both
 
 ##################
 ### Académique ###
@@ -41,8 +43,8 @@ ImapStore ac-amiens-remote
 Account ac-amiens
 
 MaildirStore ac-amiens-local
-Path ~/.Mail/Académique/
-Inbox ~/.Mail/Académique/Inbox
+Path ~/.mail/ac-amiens/
+Inbox ~/.mail/ac-amiens/Inbox
 SubFolders Verbatim
 
 Channel ac-amiens
@@ -52,32 +54,32 @@ Patterns * % !Drafts
 Create Both
 SyncState *
 Sync All
-Expunge Slave
+Expunge Both
 
 ###########################
 ### Académique (ancien) ###
 ###########################
 
-IMAPAccount ac-orleans
+IMAPAccount ac-orleans-tours
 Host imap.ac-orleans-tours.fr
 User tpolge
 AuthMechs LOGIN
 PassCmd "gopass show ac-orleans-tours.fr"
 SSLType IMAPS
 
-ImapStore ac-orleans-remote
-Account ac-orleans
+ImapStore ac-orleans-tours-remote
+Account ac-orleans-tours
 
-MaildirStore ac-orleans-local
-Path ~/.Mail/Ac/
-Inbox ~/.Mail/Ac/Inbox
+MaildirStore ac-orleans-tours-local
+Path ~/.mail/ac-orleans-tours/
+Inbox ~/.mail/ac-orleans-tours/Inbox
 SubFolders Verbatim
 
-Channel ac-orleans
-Master :ac-orleans-remote:
-Slave :ac-orleans-local:
+Channel ac-orleans-tours
+Master :ac-orleans-tours-remote:
+Slave :ac-orleans-tours-local:
 Patterns * % !Drafts
 Create Both
 SyncState *
 Sync All
-Expunge Slave
+Expunge Both

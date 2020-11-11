@@ -1,0 +1,33 @@
+#!/bin/sh
+
+echo "Classifying…"
+
+# Classify by inbox, don't untag new yet
+notmuch tag +ac-amiens -- "folder:/ac-amiens/"
+notmuch tag +ac-orleans-tours -- "folder:/ac-orleans-tours/"
+notmuch tag -thb.lt -- "folder:/thb.lt/"
+
+# drafts
+notmuch tag +drafts -new -- "folder:/.*/Drafts.*$/"
+
+# sent
+notmuch tag +sent -new -- "folder:/.*/Sent$/"
+notmuch tag -inbox -- "folder:/.*/Sent$/"
+notmuch tag -archive -- "folder:/.*/Sent$/"
+
+# archive
+notmuch tag +archive -new -- "folder:/.*/Archive$/"
+notmuch tag -inbox -- "folder:/.*/Archive$/"
+notmuch tag -sent -- "folder:/.*/Archive$/"
+
+# deleted
+notmuch tag +deleted -new -- "folder:/.*/Trash$/"
+
+# inbox is what's in the various inboxes
+notmuch tag +inbox -new -- "folder:/.*/Inbox$/"
+
+# identify lost email
+notmuch tag +lost -- "(not tag:sent) and (not tag:inbox) and (not tag:archive) and (not tag:draft) and (not tag:deleted)"
+
+#
+# notmuch search tag:inbox and tag:unread

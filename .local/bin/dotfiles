@@ -9,10 +9,12 @@ target_shell="/usr/bin/zsh"
 
 # Public files in ~/.dotfiles
 declare -a files=(
+    .notmuch-config
     .mbsyncrc
     .profile
     .tmux.conf
     .zshrc
+    .mail/.notmuch/hooks
 )
 
 declare -a cherrypick=(
