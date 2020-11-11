@@ -27,9 +27,12 @@ declare -a cherrypick=(
 )
 
 log_error() {
+    tput bold
     tput setab 1
-    tput setaf 3
-    echo "ERROR" $@
+    echo -n " ERROR "
+    tput sgr0
+    tput bold
+    echo " $@"
 }
 
 mksymlink() {
