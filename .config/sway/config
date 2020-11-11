@@ -175,6 +175,9 @@ bindsym $mod+w scratchpad show
 bindsym $mod+Left gaps horizontal current minus 50
 bindsym $mod+Right gaps horizontal current plus 50
 
+# Dismiss notifications
+bindsym $mod+backspace exec makoctl dismiss -a
+
 #
 # Resizing containers:
 #
@@ -192,7 +195,7 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+backspace mode "resize"
+bindsym $mod+r mode "resize"
 
 #
 # Status Bar:
