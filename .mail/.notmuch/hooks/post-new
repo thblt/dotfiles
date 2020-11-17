@@ -23,11 +23,14 @@ notmuch tag -sent -- "folder:/.*/Archive$/"
 # deleted
 notmuch tag +deleted -new -- "folder:/.*/Trash$/"
 
+# spam
+notmuch tag +spam -new -- "folder:/.*/Junk$/"
 # inbox is what's in the various inboxes
 notmuch tag +inbox -new -- "folder:/.*/Inbox$/"
 
 # identify lost email
 notmuch tag +lost -- "(not tag:sent) and (not tag:inbox) and (not tag:archive) and (not tag:draft) and (not tag:deleted)"
+notmuch tag -lost -- "tag: lost and (tag:sent or tag:inbox or tag:archive or tag:draft or tag:deleted)"
 
-#
-# notmuch search tag:inbox and tag:unread
+notmuch search tag:inbox and tag:unread | wc -l > ~/.cache/unread-mail-count
+echo Unread mail: $(cat ~/.cache/unread-mail-count)
