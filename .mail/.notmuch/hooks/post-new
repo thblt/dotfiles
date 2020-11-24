@@ -5,7 +5,7 @@ echo "Classifying…"
 # Classify by inbox, don't untag new yet
 notmuch tag +ac-amiens -- "folder:/ac-amiens/"
 notmuch tag +ac-orleans-tours -- "folder:/ac-orleans-tours/"
-notmuch tag -thb.lt -- "folder:/thb.lt/"
+notmuch tag +thb.lt -- "folder:/thb.lt/"
 
 # drafts
 notmuch tag +drafts -new -- "folder:/.*/Drafts.*$/"
