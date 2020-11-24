@@ -25,8 +25,6 @@ knownServices = [ "github.com"
                 , "gitlab.com"
                 , "git@gitlab.com"] # SSH urls are parsed by urllib with the user as part of the netloc.
 
-githubUsers = [ "thblt" ] # Github users or organizations I have commit access to.
-
 # The regexes are quite basic. They should work
 # for all (my) setups
 splitter = re.compile(r"([-\w]+)\t(.+)\s\((\w+)\)")
@@ -42,7 +40,7 @@ def get_remotes():
 def https2ssh(url):
     # Takes an https url, and returns a ssh url. Or tries to.
     path = url.path[:-1] if url.path.endswith("/") else url.path
-    path = url.path[:-5] if path.endswith(".git") else path
+    path = url.path[:-4] if path.endswith(".git") else path
     return "ssh://git@{netloc}{path}.git".format(netloc = url.netloc, path=path)
 
 def ssh2https(url):
