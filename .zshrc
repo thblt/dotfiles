@@ -165,7 +165,6 @@ alias bc="bc -l"
 alias bgd="bg;disown;"
 alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait"# Shorthand
-alias mu=~/.emacs.d/lib/mu4e/mu/mu
 alias o=xdg-open
 alias nix-zsh="nix-shell --run zsh"
 
