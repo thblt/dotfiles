@@ -3,7 +3,7 @@
 [user]
 	name = Thibault Polge
 	email = thibault@thb.lt
-	signingkey = 95D25BA7
+	signingkey = D2A2F0A1E7A85E6FB711DEE563A44817A52EAB7B
 [commit]
     gpgsign = true
 [core]
