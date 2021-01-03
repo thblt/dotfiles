@@ -14,15 +14,22 @@ else
 fi
 
 # Clear server history
+#
+# This is especially useful for GTK Emacs, whose daemons may have
+# crashed when a display server terminated, leaving orphan socket
+# files.
+#
+# A drawback is that it will freeze until all daemons become
+# responsive again.
 for server in $(ls $SOCKET_DIR); do
-    emacsclient -s $server --eval "(ignore)"
+    emacsclient -s $server --eval t
 
     if [[ $? != 0 ]]; then
         rm $SOCKET_DIR/$server
     fi
 done
 
-# Determine server to use
+# Choose which server to use, prompting if necessary.
 if [[ $1 == "" ]]; then
     server=$(ls $SOCKET_DIR | $DMENU -i -p "Which Emacs? ")
     if [[ $? != 0 ]]; then
@@ -34,9 +41,9 @@ fi
 
 echo "Running Emacs ($server) from $EMACS_PATH"
 
-${EMACS_PATH}/emacsclient -c -s $server
+${EMACS_PATH}/emacsclient -c -s "$server"
 
 if [[ $? != 0 ]]; then
     alacritty --title "Invoking Emacs daemon…" -e $EMACS_PATH/emacs --daemon=$server
-    ${EMACS_PATH}/emacsclient -c -s $server
+    ${EMACS_PATH}/emacsclient -c -s "$server"
 fi
