@@ -18,11 +18,10 @@ Inbox ~/.mail/thb.lt/Inbox
 SubFolders Verbatim
 
 Channel ovh
-Master :ovh-remote:INBOX/
-Slave :ovh-local:
+Far :ovh-remote:
+Near :ovh-local:
 Patterns % INBOX
 Patterns * % !Drafts
-
 Create Both
 SyncState *
 Sync All
@@ -48,8 +47,8 @@ Inbox ~/.mail/ac-amiens/Inbox
 SubFolders Verbatim
 
 Channel ac-amiens
-Master :ac-amiens-remote:
-Slave :ac-amiens-local:
+Far :ac-amiens-remote:
+Near :ac-amiens-local:
 Patterns * % !Drafts
 Create Both
 SyncState *
@@ -76,8 +75,8 @@ Inbox ~/.mail/ac-orleans-tours/Inbox
 SubFolders Verbatim
 
 Channel ac-orleans-tours
-Master :ac-orleans-tours-remote:
-Slave :ac-orleans-tours-local:
+Far :ac-orleans-tours-remote:
+Near :ac-orleans-tours-local:
 Patterns * % !Drafts
 Create Both
 SyncState *
