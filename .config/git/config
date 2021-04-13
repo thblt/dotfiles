@@ -23,3 +23,7 @@
 	rebase = false
 [submodule]
 	recurse = false
+[url "ssh://git@github.com/"]
+  pushInsteadOf = "https://github.com/"
+[url "ssh://git@gitlab.com/"]
+  pushInsteadOf = "https://gitlab.com/"
