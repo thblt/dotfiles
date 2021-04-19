@@ -15,11 +15,6 @@ set $right f
 
 font Iosevka 10
 
-### Output configuration
-#
-# Default wallpaper
-output * bg ~/Images/Wallpapers/Curiosity.jpeg fill
-
 ### Idle configuration
 
 exec swayidle -w \
