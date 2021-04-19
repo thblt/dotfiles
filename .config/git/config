@@ -17,8 +17,6 @@
 	textconv = gpg --no-tty --decrypt
 [gpg]
 	program = gpg2
-[github]
-	user = thblt
 [pull]
 	rebase = false
 [submodule]
@@ -27,3 +25,7 @@
   pushInsteadOf = "https://github.com/"
 [url "ssh://git@gitlab.com/"]
   pushInsteadOf = "https://gitlab.com/"
+[github]
+	user = thblt
+[gitlab]
+	user = thble
