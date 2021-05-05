@@ -4,18 +4,6 @@
 # Don't do anything on dumb terms.  This prevents issues with TRAMP.
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-# ZSH_LIB_DIR=$HOME/.local/lib/zsh
-
-# for p in $ZSH_LIB_DIR/*; do
-#     b=$(basename $p)
-
-#     if [ -e $p/$b.zsh ]; then
-#         source $p/$b.zsh
-#     elif [ -e $p/$b.zsh-theme ]; then
-#         source $p/$b.zsh-theme
-#     fi
-# done;
-
 thblt_prompt_reset() {
     echo -n '%f%k%b'
 }
@@ -265,7 +253,13 @@ zle -N zle-line-init
 # Case-insensitive completion *only* when there's no case sensitive match.
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-# Use system clipboard
+# * Make run-help work with subcommands
+
+unalias run-help
+autoload -Uz run-help-git
+autoload -Uz run-help
+
+# * Use system clipboard
 
 # @FIXME This will only work in Wayland.  I can live with this, or
 # choose the clipboard program to use depending on what we're running
