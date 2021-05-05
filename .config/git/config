@@ -29,3 +29,5 @@
 	user = thblt
 [gitlab]
 	user = thble
+[init]
+	defaultBranch = main
