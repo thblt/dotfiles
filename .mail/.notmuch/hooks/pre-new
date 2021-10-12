@@ -1,3 +1,7 @@
 #!/bin/sh
 
+set -e # Fail on error
+gpg --card-status > /dev/null # Fail if card absent.
+# ^ This so `notmuch new` can run in a background loop without
+# endlessly prompting for a card if not present.
 mbsync -a
