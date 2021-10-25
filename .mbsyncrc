@@ -26,6 +26,7 @@ Create Both
 SyncState *
 Sync All
 Expunge Both
+Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manpage)
 
 ##################
 ### Académique ###
@@ -54,6 +55,7 @@ Create Both
 SyncState *
 Sync All
 Expunge Both
+Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manpage)
 
 ###########################
 ### Académique (ancien) ###
@@ -82,3 +84,4 @@ Create Both
 SyncState *
 Sync All
 Expunge Both
+Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manpage)
