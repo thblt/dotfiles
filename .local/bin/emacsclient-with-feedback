@@ -3,8 +3,7 @@
 USER_EMACS=$HOME/.local/opt/emacs/bin/
 SOCKET_DIR=/run/user/1000/emacs
 
-DMENU="rofi -dmenu"
-
+DMENU="fuzzel -dmenu"
 
 # Find Emacs
 if [ -e ${USER_EMACS}/emacs ]; then

@@ -13,6 +13,8 @@ set $down n
 set $up p
 set $right f
 
+set $launcher "fuzzel"
+
 font Iosevka 10
 
 ### Idle configuration
@@ -47,7 +49,7 @@ input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
 bindsym $mod+dollar exec "alacritty"
 bindsym $mod+return exec "emacsclient-with-feedback server"
 bindsym $mod+Shift+return exec "emacsclient-with-feedback"
-bindsym $mod+d exec rofi -show drun
+bindsym $mod+d exec $launcher
 
 # Audio
 bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-;"
