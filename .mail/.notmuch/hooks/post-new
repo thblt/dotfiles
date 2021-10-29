@@ -30,7 +30,7 @@ notmuch tag +inbox -new -- "folder:/.*/Inbox$/"
 
 # identify lost email
 notmuch tag +lost -- "(not tag:sent) and (not tag:inbox) and (not tag:archive) and (not tag:draft) and (not tag:deleted)"
-notmuch tag -lost -- "tag: lost and (tag:sent or tag:inbox or tag:archive or tag:draft or tag:deleted)"
+notmuch tag -lost -- "tag:lost and (tag:sent or tag:inbox or tag:archive or tag:draft or tag:deleted)"
 
 notmuch search tag:inbox and tag:unread | wc -l > ~/.cache/unread-mail-count
 echo Unread mail: $(cat ~/.cache/unread-mail-count)
