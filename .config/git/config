@@ -31,3 +31,6 @@
 	user = thble
 [init]
 	defaultBranch = main
+[merge "aspell-merge3"]
+	name = A merge driver for aspell custom dictionaries.
+	driver = aspell-merge3 %O %A %B --output %A
