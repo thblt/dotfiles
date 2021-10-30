@@ -57,8 +57,9 @@ thblt_prompt_git_status() {
     echo -n "%b"
 
     if [[ 0 < $(($ahead + $behind)) ]]; then
-        [[ 0 < $ahead ]] && echo -n " ↑$ahead"
-        [[ 0 < $behind ]] && echo -n " ↓$behind"
+        echo -n " "
+        [[ 0 < $ahead ]] && echo -n "▲ $ahead"
+        [[ 0 < $behind ]] && echo -n "▼ $behind"
     fi;
     echo -n ' '
 }
