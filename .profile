@@ -2,8 +2,8 @@ export GOPATH=$HOME/.go
 export PATH="$PATH:/bin:/usr/bin:/usr/local/bin:${HOME}/.local/bin:$GOPATH/bin:$HOME/.cargo/bin"
 
 if [ -e /usr/libexec/path_helper ]; then
-	# Darwin/OSX utility to determine system path
-	eval $(/usr/libexec/path_helper)
+    # Darwin/OSX utility to determine system path
+    eval $(/usr/libexec/path_helper)
 fi
 
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then
@@ -12,5 +12,5 @@ fi
 
 if [ "$(tty)" = "/dev/tty1" ]; then
     export MOZ_ENABLE_WAYLAND=1
-	  exec sway
+    exec sway
 fi
