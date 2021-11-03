@@ -131,6 +131,10 @@ bindsym $mod+9 move container to workspace 9
 bindsym $mod+slash workspace 9
 bindsym $mod+0 move container to workspace 10
 bindsym $mod+asterisk workspace 10
+bindsym $mod+degree move container to workspace 11
+bindsym $mod+equal workspace 11
+bindsym $mod+grave move container to workspace 12
+bindsym $mod+percent workspace 12
 
 #
 # Layout stuff:
@@ -145,7 +149,7 @@ bindsym $mod+g splitv
 bindsym $mod+eacute layout toggle tabbed splith splitv
 
 # Make the current focus fullscreen
-bindsym $mod+percent fullscreen
+bindsym $mod+f11 fullscreen
 
 # Toggle the current focus between tiling and floating mode
 bindsym $mod+Shift+space floating toggle

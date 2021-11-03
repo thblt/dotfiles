@@ -8,9 +8,6 @@ thblt_prompt_reset() {
     echo -n '%f%k%b'
 }
 
-thblt_prompt_path() {
-}
-
 thblt_prompt_git_status() {
     oid=""
     local_branch=""
@@ -213,7 +210,7 @@ alias ls="ls --color"
 
 function mkcd() {
     if mkdir -p "$@"
-	  then cd "$@"
+    then cd "$@"
     fi
 }
 
