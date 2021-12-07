@@ -1,8 +1,18 @@
+# * Non-interactive and dumb terminals.
+
 # Don't do anything if not running interactively
 [[ $- != *i* ]] && return
 
 # Don't do anything on dumb terms.  This prevents issues with TRAMP.
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
+# * Variables
+
+export EDITOR="emacsclient -ca ''"
+export GREP_COLOR=31
+alias grep='grep --color=auto'
+
+# * Prompt
 
 thblt_prompt_reset() {
     echo -n '%f%k%b'
@@ -108,19 +118,23 @@ thblt_rprompt() {
     return
 }
 
-# Prompt
+# ** Install the prompt
+
 setopt PROMPT_SUBST
 PROMPT='$(thblt_prompt)'
 RPROMPT='$(thblt_rprompt)'
 
-# Completion
+# * Misc
+
+# ** Completion
 autoload -U compinit && compinit
 zstyle ':completion:*' menu select
 
-# Implicit CD
+# ** Implicit CD
 setopt AUTOcd
 
-# History
+# ** History
+
 export HISTFILE=$HOME/.zsh_history
 export SAVEHIST=20000
 export HISTSIZE=20000
@@ -129,24 +143,10 @@ setopt hist_ignore_all_dups
 setopt hist_expire_dups_first
 setopt share_history
 
-# editing
+# * Aliases
 
-# Prefix-based history search with up and down arrow
-bindkey '^[[A' up-line-or-search
-bindkey '^[[B' down-line-or-search
+# ** General
 
-# By default, ZSH considers / to be part of the word.  This makes
-# forward-word and backward-word stop at directory delimiters Notice:
-# WORDCHARS define the non-alphanumeric characters which are
-# considered PART of words, not breaking points.
-export WORDCHARS='*?[]~=&;\!#$%^(){}<>'
-
-# ======
-
-# Variables
-export EDITOR="emacsclient -ca ''"
-
-# Aliases
 alias bc="bc -l"
 alias bgd="bg;disown;"
 alias e="${EDITOR} --no-wait" # Shorthand
@@ -174,17 +174,15 @@ texclean() {
     done;
 }
 
-export GREP_COLOR=31
-alias grep='grep --color=auto'
+# ** Git aliases
 
-# Git aliases
 alias ga="git add"
 alias gc="git commit"
 alias gd="git diff"
 alias gp="git push"
 alias grm="git rm"
 
-#Pipe aliass
+# ** Pipe aliass
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
@@ -196,9 +194,11 @@ alias -g NE="2> /dev/null"
 alias -g NUL="> /dev/null 2>&1"
 alias -g P="2>&1| pygmentize -l pytb"
 
-# Misc aliases and functions
+# ** Misc aliases and functions
 alias apt-what-have-i-installed="comm -23 <(comm -23 <(apt-mark showmanual | sort -u) <(cat /usr/local/share/base-packages.list | sort -u)) <($HOME/.dotfiles/postinstall/debian-bootstrap list | sort -u)"
 alias bc="bc -l"
+
+# * More aliases
 
 function bump-elisp-version() {
     sed -i "s/\;; Version: [.0-9]\+$/;; Version: $1/" $@[2,-1]
@@ -227,37 +227,21 @@ alias ..4="cd ../../../.."
 alias ..5="cd ../../../../.."
 alias ..6="cd ../../../../../.."
 
-# Allow to recall aborted command
-# From <https://www.topbug.net/blog/2016/10/03/restore-the-previously-canceled-command-in-zsh/>
-function zle-line-init {
-    # Your other zle-line-init configuration ...
+# * Line editor
 
-    # Store the last non-empty aborted line in MY_LINE_ABORTED
-    if [[ -n $ZLE_LINE_ABORTED ]]; then
-        MY_LINE_ABORTED="$ZLE_LINE_ABORTED"
-    fi
+# Prefix-based history search with up and down arrow
+bindkey '^[[A' up-line-or-search
+bindkey '^[[B' down-line-or-search
 
-    # Restore aborted line on the first undo.
-    if [[ -n $MY_LINE_ABORTED ]]; then
-        local savebuf="$BUFFER" savecur="$CURSOR"
-        BUFFER="$MY_LINE_ABORTED"
-        CURSOR="$#BUFFER"
-        zle split-undo
-        BUFFER="$savebuf" CURSOR="$savecur"
-    fi
-}
-zle -N zle-line-init
+# By default, ZSH considers / to be part of the word.  This makes
+# forward-word and backward-word stop at directory delimiters Notice:
+# WORDCHARS define the non-alphanumeric characters which are
+# considered PART of words, not breaking points.
+export WORDCHARS='*?[]~=&;\!#$%^(){}<>'
 
-# Case-insensitive completion *only* when there's no case sensitive match.
-zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+# ======
 
-# * Make run-help work with subcommands
-
-unalias run-help
-autoload -Uz run-help-git
-autoload -Uz run-help
-
-# * Use system clipboard
+# ** Use system clipboard
 
 # @FIXME This will only work in Wayland.  I can live with this, or
 # choose the clipboard program to use depending on what we're running
@@ -292,6 +276,46 @@ if [[ "$DISPLAY" || "$WAYLAND_DISPLAY" ]]; then
     bindkey -e '^K' x-kill-line
     bindkey -e '^Y' x-yank
 fi
+
+# ** zle-line-init
+
+# Allow to recall aborted command
+# From <https://www.topbug.net/blog/2016/10/03/restore-the-previously-canceled-command-in-zsh/>
+function zle-line-init {
+    # Your other zle-line-init configuration ...
+
+    # Store the last non-empty aborted line in MY_LINE_ABORTED
+    if [[ -n $ZLE_LINE_ABORTED ]]; then
+        MY_LINE_ABORTED="$ZLE_LINE_ABORTED"
+    fi
+
+    # Restore aborted line on the first undo.
+    if [[ -n $MY_LINE_ABORTED ]]; then
+        local savebuf="$BUFFER" savecur="$CURSOR"
+        BUFFER="$MY_LINE_ABORTED"
+        CURSOR="$#BUFFER"
+        zle split-undo
+        BUFFER="$savebuf" CURSOR="$savecur"
+    fi
+}
+zle -N zle-line-init
+
+# Case-insensitive completion *only* when there's no case sensitive match.
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# ** fzf
+
+if [ -n "${commands[fzf-share]}" ]; then
+    source "$(fzf-share)/key-bindings.zsh"
+    source "$(fzf-share)/completion.zsh"
+fi
+
+# * Make run-help work with subcommands
+
+unalias run-help
+autoload -Uz run-help-git
+autoload -Uz run-help
+
 
 # Source profile
 source ~/.profile
