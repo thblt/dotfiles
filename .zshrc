@@ -183,6 +183,8 @@ alias gp="git push"
 alias grm="git rm"
 
 # ** Pipe aliass
+
+alias -g C='| wl-copy'
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
