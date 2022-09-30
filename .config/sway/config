@@ -81,7 +81,7 @@ bindcode 121 exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym $mod+c kill
 
 # Lock
-bindsym $mod+f12 exec swaylock -f -c 000000
+bindsym $mod+escape exec swaylock -f -c 000000
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
