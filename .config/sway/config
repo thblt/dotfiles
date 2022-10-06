@@ -64,6 +64,10 @@ bindsym Shift+XF86MonBrightnessDown exec "light -U 1"
 bindsym $mod+XF86MonBrightnessUp exec "light -S 100"
 bindsym $mod+XF86MonBrightnessDown exec "light -S 1"
 
+# Eject
+# @TODO Don't hardcode fuzzel
+bindsym $mod+Delete exec "umount /run/media/$(whoami)/$(ls --color=no /run/media/$(whoami)/ | fuzzel --dmenu --prompt \"Eject? > \")"
+
 # For some reasons, my layout doesn't emit symbols.  Here's the same binding as above, with keycodes.
 bindcode 232 exec "light -U 5"
 bindcode 233 exec "light -A 5"
