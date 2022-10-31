@@ -50,6 +50,7 @@ bindsym $mod+dollar exec "alacritty"
 bindsym $mod+return exec "emacsclient-with-feedback server"
 bindsym $mod+Shift+return exec "emacsclient-with-feedback"
 bindsym $mod+d exec $launcher
+bindsym $mod+j exec emoji-menu
 
 # Audio
 bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-;"
