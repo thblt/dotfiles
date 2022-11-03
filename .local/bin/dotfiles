@@ -24,6 +24,7 @@ declare -a cherrypick=(
 #   .local/lib
     .local/share/applications
     .config
+    .ssh
 )
 
 log_error() {
