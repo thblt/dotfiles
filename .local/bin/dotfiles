@@ -21,8 +21,6 @@ declare -a cherrypick=(
     .cabal
     .gnupg
     .local/bin
-#   .local/lib
-    .local/share/applications
     .config
     .ssh
 )
