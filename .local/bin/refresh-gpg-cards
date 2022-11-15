@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+card_sn=$(gpg --card-status | grep "^Serial number" | cut -d " " -f4)
+echo Using card $card_sn
+key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
+git config --global "user.signingkey" "0x$key_s"
