@@ -4,7 +4,8 @@ export LANG=C
 
 # Update gitconfig
 key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
-git config --global "user.signingkey" "0x$key_s"
+echo "[user]" > ~/.config/git/signingkey
+echo "  signingkey = 0x$key_s" >> ~/.config/git/signingkey
 
 # Update sshcontrol
 card_sn=$(gpg --card-status | grep "^Serial number" | cut -d " " -f4)

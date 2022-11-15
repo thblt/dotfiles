@@ -3,9 +3,10 @@
 [user]
 	name = Thibault Polge
 	email = thibault@thb.lt
-	signingkey = D2A2F0A1E7A85E6FB711DEE563A44817A52EAB7B
+[Include]
+	path = "~/.config/git/signingkey"
 [commit]
-    gpgsign = true
+	gpgsign = true
 [core]
 	quotepath = off
 [merge]
@@ -22,9 +23,9 @@
 [submodule]
 	recurse = false
 [url "ssh://git@github.com/"]
-  pushInsteadOf = "https://github.com/"
+	pushInsteadOf = "https://github.com/"
 [url "ssh://git@gitlab.com/"]
-  pushInsteadOf = "https://gitlab.com/"
+	pushInsteadOf = "https://gitlab.com/"
 [url "ssh://git@git.sr.ht/"]
 	pushInsteadOf = "https://git.sr.ht/"
 [github]
