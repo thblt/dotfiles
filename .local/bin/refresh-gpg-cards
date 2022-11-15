@@ -1,7 +1,17 @@
 #!/bin/sh
 set -e
+export LANG=C
 
-card_sn=$(gpg --card-status | grep "^Serial number" | cut -d " " -f4)
-echo Using card $card_sn
+# Update gitconfig
 key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
 git config --global "user.signingkey" "0x$key_s"
+
+# Update sshcontrol
+card_sn=$(gpg --card-status | grep "^Serial number" | cut -d " " -f4)
+gpg -K --with-subkey-fingerprint --with-keygrip \
+    | grep -B3 -A1 "^      Card serial no. = .* $card_sn" \
+    | grep -A 3 "\\[A\\]$f" \
+    | tail -n 1 \
+    | cut -d " " -f 9 > ~/.gnupg/sshcontrol
+
+LANG=C
