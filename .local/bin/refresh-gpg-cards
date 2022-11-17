@@ -27,19 +27,22 @@
 set -e
 export LANG=C
 
-# Update gitconfig
-old_key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
+# Read key fingerprints
 # The fpr field contains the three fingerprints, in (some) order.
-key_s=$(gpg --card-status --with-colons | grep "^fpr:" | cut -d: -f2)
+fingerprints=$(gpg --card-status --with-colons | grep "^fpr:")
+key_s=$(echo $fingerprints | cut -d: -f2)
+key_a=$(echo $fingerprints | cut -d: -f3)
+echo "Signature key: $key_s"
+echo "Auth key:      $key_a"
+
+# Update gitconfig
 echo "[user]" > ~/.config/git/signingkey
 echo "  signingkey = 0x$key_s" >> ~/.config/git/signingkey
 
 # Update sshcontrol
-card_sn=$(gpg --card-status --with-colons | grep "^serial:" | cut -d ":" -f2)
-gpg -K --with-subkey-fingerprint --with-keygrip \
-    | grep -B3 -A1 "^      Card serial no. = .* $card_sn" \
-    | grep -A 3 "\\[A\\]$f" \
-    | tail -n 1 \
-    | cut -d " " -f 9 > ~/.gnupg/sshcontrol
-
-LANG=C
+gpg -K --with-subkey-fingerprint --with-keygrip --with-colons \
+    | grep -A 100 "^fpr:.*:$key_a" \
+    | grep "^grp:" \
+    | head -n 1 \
+    | cut -d: -f 10 \
+    > ~/.gnupg/sshcontrol
