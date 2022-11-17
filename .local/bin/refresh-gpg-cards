@@ -28,13 +28,14 @@ set -e
 export LANG=C
 
 # Update gitconfig
-key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
+old_key_s=$(gpg --card-status | grep "^Signature key" | cut -d: -f2 | sed "s/ //g")
+# The fpr field contains the three fingerprints, in (some) order.
+key_s=$(gpg --card-status --with-colons | grep "^fpr:" | cut -d: -f2)
 echo "[user]" > ~/.config/git/signingkey
 echo "  signingkey = 0x$key_s" >> ~/.config/git/signingkey
 
 # Update sshcontrol
 card_sn=$(gpg --card-status --with-colons | grep "^serial:" | cut -d ":" -f2)
-echo $old_card_sn $card_sn
 gpg -K --with-subkey-fingerprint --with-keygrip \
     | grep -B3 -A1 "^      Card serial no. = .* $card_sn" \
     | grep -A 3 "\\[A\\]$f" \
