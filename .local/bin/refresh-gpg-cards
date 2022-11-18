@@ -40,9 +40,13 @@ echo "[user]" > ~/.config/git/signingkey
 echo "  signingkey = 0x$key_s" >> ~/.config/git/signingkey
 
 # Update sshcontrol
+
+# @FIXME: this assumes, optimistically, that the fingerprint
+# will always come *before* the keygrip --- which probably isn't
+# guaranteed.
 gpg -K --with-subkey-fingerprint --with-keygrip --with-colons \
     | grep -A 100 "^fpr:.*:$key_a" \
     | grep "^grp:" \
     | head -n 1 \
     | cut -d: -f 10 \
-    > ~/.gnupg/sshcontrol
+          > ~/.gnupg/sshcontrol
