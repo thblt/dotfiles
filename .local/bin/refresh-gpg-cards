@@ -3,16 +3,17 @@
 # This script helps the gpg-ssh-agent and git work correctly with
 # multiple sign and encryption subkeys stored on multiple smartcards.
 # It reads the smartcard status and (re)creates ~/.gnupg/sshcontrol
-# and ~/.config/git/signingkey with the keygrip of an A and U subkey,
-# respectively, present on a connected smartcard.
+# and ~/.config/git/signingkey with the keygrip of an A and an S
+# subkey, respectively, present on a connected smartcard.
 #
-# This can probably be called from an udev rule, at each smartcard
+# This can probably be called from an udev rule, for each smartcard
 # insertion/deletion.  It should fail cleanly if no card is connected.
 #
-# Notice that git doesn't read ~/.config/git/signingkey, it needs to
-# be Include’d from the main config, like this
+# Notice that git doesn't read ~/.config/git/signingkey; this file
+# needs to be Include’d from the main config, as follows:
+
 # [Include]
-# path = "~/.config/git/signingkey"
+#   path = "~/.config/git/signingkey"
 #
 # Limitations:
 #  - Only works with a single smartcard.  This is a hard limitation in
@@ -20,9 +21,6 @@
 #    there could be multiple keygrips in sshcontrol.  Supporting
 #    multiple smartcards may also allow to prefer unlocked
 #    smartcards/subkeys.
-#
-#  - It calls gpg with the default output format instead of properly
-#    parsable ` --with-colons --status-fd=v2`
 
 set -e
 export LANG=C
@@ -36,6 +34,7 @@ echo "Signature key: $key_s"
 echo "Auth key:      $key_a"
 
 # Update gitconfig
+
 echo "[user]" > ~/.config/git/signingkey
 echo "  signingkey = 0x$key_s!" >> ~/.config/git/signingkey
 
