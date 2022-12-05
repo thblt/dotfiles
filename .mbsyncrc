@@ -61,27 +61,27 @@ Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manp
 ### Académique (ancien) ###
 ###########################
 
-IMAPAccount ac-orleans-tours
-Host imap.ac-orleans-tours.fr
-User tpolge
-AuthMechs LOGIN
-PassCmd "gopass show ac-orleans-tours.fr"
-SSLType IMAPS
+# IMAPAccount ac-orleans-tours
+# Host imap.ac-orleans-tours.fr
+# User tpolge
+# AuthMechs LOGIN
+# PassCmd "gopass show ac-orleans-tours.fr"
+# SSLType IMAPS
 
-ImapStore ac-orleans-tours-remote
-Account ac-orleans-tours
+# ImapStore ac-orleans-tours-remote
+# Account ac-orleans-tours
 
-MaildirStore ac-orleans-tours-local
-Path ~/.mail/ac-orleans-tours/
-Inbox ~/.mail/ac-orleans-tours/Inbox
-SubFolders Verbatim
+# MaildirStore ac-orleans-tours-local
+# Path ~/.mail/ac-orleans-tours/
+# Inbox ~/.mail/ac-orleans-tours/Inbox
+# SubFolders Verbatim
 
-Channel ac-orleans-tours
-Far :ac-orleans-tours-remote:
-Near :ac-orleans-tours-local:
-Patterns * % !Drafts
-Create Both
-SyncState *
-Sync All
-Expunge Both
-Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manpage)
+# Channel ac-orleans-tours
+# Far :ac-orleans-tours-remote:
+# Near :ac-orleans-tours-local:
+# Patterns * % !Drafts
+# Create Both
+# SyncState *
+# Sync All
+# Expunge Both
+# Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manpage)
