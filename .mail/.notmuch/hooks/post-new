@@ -7,23 +7,23 @@ notmuch tag +ac-amiens -- "folder:/ac-amiens/"
 notmuch tag +ac-orleans-tours -- "folder:/ac-orleans-tours/"
 notmuch tag +thb.lt -- "folder:/thb.lt/"
 
-# drafts
+# # drafts
 notmuch tag +drafts -new -- "folder:/.*/Drafts.*$/"
 
-# sent
+# # sent
 notmuch tag +sent -new -- "folder:/.*/Sent$/"
 notmuch tag -inbox -- "folder:/.*/Sent$/"
 notmuch tag -archive -- "folder:/.*/Sent$/"
 
-# archive
+# # archive
 notmuch tag +archive -new -- "folder:/.*/Archive$/"
 notmuch tag -inbox -- "folder:/.*/Archive$/"
 notmuch tag -sent -- "folder:/.*/Archive$/"
 
-# deleted
+# # deleted
 notmuch tag +deleted -new -- "folder:/.*/Trash$/"
 
-# spam
+# # spam
 notmuch tag +spam -new -- "folder:/.*/Junk$/"
 # inbox is what's in the various inboxes
 notmuch tag +inbox -new -- "folder:/.*/Inbox$/"
