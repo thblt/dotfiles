@@ -32,6 +32,7 @@
 .emacs.d/recentf
 .emacs.d/tramp
 .emacs.d/url
+.gnupg/sshcontrol
 .vim/bundle/**
 .vim/undo/**
 .xmonad/.bin
