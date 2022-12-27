@@ -1,5 +1,17 @@
 [MailMover]
-folders = thb.lt/Inbox ac-amiens/Inbox thb.lt/Archive ac-amiens/Archive ac-orleans-tours/Inbox ac-orleans-tours/Archive
+folders =
+  ac-amiens/Archive
+  ac-amiens/Inbox
+  ac-amiens/Junk
+  ac-amiens/Trash
+  ac-orleans-tours/Archive
+  ac-orleans-tours/Drafts
+  ac-orleans-tours/Inbox
+  ac-orleans-tours/Junk
+  thb.lt/Archive
+  thb.lt/Drafts
+  thb.lt/Inbox
+  thb.lt/Junk
 rename = True
 
 # Clear inbox
@@ -50,14 +62,22 @@ ac-orleans-tours/Trash =
 thb.lt/Junk =
   'tag:inbox':thb.lt/Inbox
   'tag:archive':thb.lt/Archive
-  'tag:spam':thb.lt/Junk
+  'tag:deleted':thb.lt/Trash
 
 ac-amiens/Junk =
   'tag:inbox':ac-amiens/Inbox
   'tag:archive':ac-amiens/Archive
-  'tag:spam':ac-amiens/Junk
+  'tag:deleted':ac-amiens/Trash
 
 ac-orleans-tours/Junk =
   'tag:inbox':ac-orleans-tours/Inbox
   'tag:archive':ac-orleans-tours/Archive
-  'tag:spam':ac-orleans-tours/Junk
+  'tag:deleted':ac-orleans-tours/Trash
+
+# Undraft
+thb.lt/Drafts =
+  'tag:deleted':thb.lt/Trash
+ac-amiens/Drafts =
+  'tag:deleted':ac-amiens/Trash
+ac-orleans-tours/Drafts =
+  'tag:deleted':ac-orleans-tours/Trash
