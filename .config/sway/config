@@ -35,13 +35,13 @@ input * {
     xkb_variant bepo
     xkb_options "caps:ctrl_modifier"
     xkb_file ~/.config/sway/bepo_thblt.xkb
-    repeat_delay 200
-    repeat_rate 30
+    repeat_delay 150
+    repeat_rate 60
     }
 
 input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
-      tap enable
-      }
+    tap enable
+    }
 
 ### Key bindings
 
