@@ -35,15 +35,19 @@ input * {
     xkb_variant bepo
     xkb_options "caps:ctrl_modifier"
     xkb_file ~/.config/sway/bepo_thblt.xkb
-    repeat_delay 150
+    repeat_delay 200
     repeat_rate 60
+    tap enabled
     }
 
 input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
-    tap enable
+    tap enabled
     }
 
 ### Key bindings
+
+bindsym --release $mod exec "notify-send Belleê"
+bindsym --no-repeat $mod exec "notify-send Pressed"
 
 # Launchers
 bindsym $mod+dollar exec "alacritty"
@@ -64,11 +68,6 @@ bindsym XF86MonBrightnessDown exec "light -U 5"
 bindsym Shift+XF86MonBrightnessDown exec "light -U 1"
 bindsym $mod+XF86MonBrightnessUp exec "light -S 100"
 bindsym $mod+XF86MonBrightnessDown exec "light -S 1"
-
-# Eject
-# @TODO Don't hardcode fuzzel
-bindsym $mod+Delete exec umount /run/media/$(whoami)/$(ls --color=no /run/media/$(whoami)/ | fuzzel --dmenu --prompt \"unmount? > \")
-
 # For some reasons, my layout doesn't emit symbols.  Here's the same binding as above, with keycodes.
 bindcode 232 exec "light -U 5"
 bindcode 233 exec "light -A 5"
@@ -76,6 +75,10 @@ bindcode Shift+232 exec "light -U 1"
 bindcode Shift+233 exec "light -A 1"
 bindcode $mod+232 exec "light -S 1"
 bindcode $mod+233 exec "light -S 100"
+
+# Eject
+# @TODO Don't hardcode fuzzel
+bindsym $mod+Delete exec umount /run/media/$(whoami)/$(ls --color=no /run/media/$(whoami)/ | fuzzel --dmenu --prompt \"unmount? > \")
 
 # Volume
 bindcode 123 exec pactl set-sink-volume @DEFAULT_SINK@ +5%
