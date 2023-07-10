@@ -3,30 +3,33 @@
 echo "Classifying…"
 
 # Classify by inbox, don't untag new yet
-notmuch tag +ac-amiens -- "folder:/ac-amiens/"
-notmuch tag +ac-orleans-tours -- "folder:/ac-orleans-tours/"
-notmuch tag +thb.lt -- "folder:/thb.lt/"
+notmuch tag +ac-amiens -- "tag:new and folder:/ac-amiens/"
+notmuch tag +ac-orleans-tours -- "tag:new and folder:/ac-orleans-tours/"
+notmuch tag +thb.lt -- "tag:new folder:/thb.lt/"
 
-# # drafts
-notmuch tag +drafts -new -- "folder:/.*/Drafts.*$/"
+# inbox
+notmuch tag +inbox -- "folder:/\\/Inbox$/"
+notmuch tag -inbox -- "not folder:/\\/Inbox$/"
 
-# # sent
-notmuch tag +sent -new -- "folder:/.*/Sent$/"
-notmuch tag -inbox -- "folder:/.*/Sent$/"
-notmuch tag -archive -- "folder:/.*/Sent$/"
+# drafts
+notmuch tag +drafts -new -- "folder:/\\/Drafts$/"
+notmuch tag -drafts -- "not folder:/\\/Drafts$/"
 
-# # archive
-notmuch tag +archive -new -- "folder:/.*/Archive$/"
-notmuch tag -inbox -- "folder:/.*/Archive$/"
-notmuch tag -sent -- "folder:/.*/Archive$/"
+# sent
+notmuch tag +sent -new -- "folder:/\\/Sent$/"
+notmuch tag -sent -- "not folder:/\\/Sent$/"
 
-# # deleted
-notmuch tag +deleted -new -- "folder:/.*/Trash$/"
+# archive
+notmuch tag +archive -new -- "folder:/\\/Archive$/"
+notmuch tag -archive -- "not folder:/\\/Archive$/"
 
-# # spam
-notmuch tag +spam -new -- "folder:/.*/Junk$/"
-# inbox is what's in the various inboxes
-notmuch tag +inbox -new -- "folder:/.*/Inbox$/"
+# deleted
+notmuch tag +deleted -new -- "folder:/\\/Trash$/"
+notmuch tag -deleted -- "not folder:/\\/Trash$/"
+
+# spam
+notmuch tag +spam -new -- "folder:/\\/Junk$/"
+notmuch tag -spam -- "not folder:/\\/Junk$/"
 
 # identify lost email
 notmuch tag +lost -- "(not tag:sent) and (not tag:inbox) and (not tag:archive) and (not tag:draft) and (not tag:deleted)"

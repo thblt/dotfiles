@@ -16,63 +16,63 @@ rename = True
 
 # Clear inbox
 thb.lt/Inbox =
-  'tag:archive':thb.lt/Archive
   'tag:deleted':thb.lt/Trash
   'tag:spam':thb.lt/Junk
+  'not tag:inbox':thb.lt/Archive
 ac-amiens/Inbox =
-  'tag:archive':ac-amiens/Archive
   'tag:deleted':ac-amiens/Trash
   'tag:spam':ac-amiens/Junk
+  'not tag:inbox':ac-amiens/Archive
 ac-orleans-tours/Inbox =
-  'tag:archive':ac-orleans-tours/Archive
   'tag:deleted':ac-orleans-tours/Trash
   'tag:spam':ac-orleans-tours/Junk
+  'not tag:inbox':ac-orleans-tours/Archive
 
 # Restore from archive
 thb.lt/Archive =
   'tag:deleted':thb.lt/Trash
-  'tag:inbox':thb.lt/Inbox
-  'tag:spam':thb.lt/Junk
+#   'tag:inbox':thb.lt/Inbox
+#   'tag:spam':thb.lt/Junk
 ac-amiens/Archive =
   'tag:deleted':ac-amiens/Trash
-  'tag:inbox':ac-amiens/Inbox
-  'tag:spam':ac-amiens/Junk
+#   'tag:inbox':ac-amiens/Inbox
+#   'tag:spam':ac-amiens/Junk
 ac-orleans-tours/Archive =
   'tag:deleted':ac-orleans-tours/Trash
-  'tag:inbox':ac-orleans-tours/Inbox
-  'tag:spam':ac-orleans-tours/Junk
+#   'tag:inbox':ac-orleans-tours/Inbox
+#   'tag:spam':ac-orleans-tours/Junk
 
 # Undelete
 thb.lt/Trash =
-  'tag:inbox':thb.lt/Inbox
-  'tag:archive':thb.lt/Archive
-  'tag:spam':thb.lt/Junk
+  '!tag:deleted and tag:inbox':thb.lt/Inbox
+#   'tag:archive':thb.lt/Archive
+#   'tag:spam':thb.lt/Junk
 
 ac-amiens/Trash =
-  'tag:inbox':ac-amiens/Inbox
-  'tag:archive':ac-amiens/Archive
-  'tag:spam':ac-amiens/Junk
+  '!tag:deleted and tag:inbox':ac-amiens/Inbox
+#   'tag:archive':ac-amiens/Archive
+#   'tag:spam':ac-amiens/Junk
 
 ac-orleans-tours/Trash =
-  'tag:inbox':ac-orleans-tours/Inbox
-  'tag:archive':ac-orleans-tours/Archive
-  'tag:spam':ac-orleans-tours/Junk
+  '!tag:deleted and tag:inbox':ac-orleans-tours/Inbox
+#   'tag:archive':ac-orleans-tours/Archive
+#   'tag:spam':ac-orleans-tours/Junk
 
 # Unspam
 thb.lt/Junk =
-  'tag:inbox':thb.lt/Inbox
-  'tag:archive':thb.lt/Archive
-  'tag:deleted':thb.lt/Trash
+  '!tag:spam and tag:inbox':thb.lt/Inbox
+#   'tag:archive':thb.lt/Archive
+#   'tag:deleted':thb.lt/Trash
 
 ac-amiens/Junk =
-  'tag:inbox':ac-amiens/Inbox
-  'tag:archive':ac-amiens/Archive
-  'tag:deleted':ac-amiens/Trash
+  '!tag:spam and tag:inbox':ac-amiens/Inbox
+#   'tag:archive':ac-amiens/Archive
+#   'tag:deleted':ac-amiens/Trash
 
 ac-orleans-tours/Junk =
-  'tag:inbox':ac-orleans-tours/Inbox
-  'tag:archive':ac-orleans-tours/Archive
-  'tag:deleted':ac-orleans-tours/Trash
+  '!tag:spam and tag:inbox':ac-orleans-tours/Inbox
+#   'tag:archive':ac-orleans-tours/Archive
+#   'tag:deleted':ac-orleans-tours/Trash
 
 # Undraft
 thb.lt/Drafts =
