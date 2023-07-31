@@ -29,7 +29,7 @@ export LANG=C
 # The fpr field contains the three fingerprints, in (some) order.
 fingerprints=$(gpg --card-status --with-colons | grep "^fpr:")
 key_s=$(echo $fingerprints | cut -d: -f2)
-key_a=$(echo $fingerprints | cut -d: -f3)
+key_a=$(echo $fingerprints | cut -d: -f4)
 echo "Signature key: $key_s"
 echo "Auth key:      $key_a"
 
