@@ -9,7 +9,7 @@
 # * Variables
 
 export EDITOR="emacsclient -ca ''"
-export GREP_COLOR=31
+export GREP_COLOR="mt=31"
 alias grep='grep --color=auto'
 
 # * Prompt
