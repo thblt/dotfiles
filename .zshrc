@@ -174,6 +174,11 @@ texclean() {
     done;
 }
 
+# cd to the containing directory of a given binary
+cdb() {
+    cd $(dirname $(realpath $(which $1)))
+}
+
 # ** Git aliases
 
 alias ga="git add"
