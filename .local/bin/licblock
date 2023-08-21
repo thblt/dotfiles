@@ -1,23 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-""" 
+"""
 @file
 @brief A script for inserting/updating license blocks in source files.
-""" 
+"""
 
 import sys, os, re
 
 # begin and end markers for license blocks. Used when updating.
 marks = ("[licblock]", "[/licblock]")
 
-""" 
+"""
 @brief Comment templates py language types.
 @param start Comment block start delimiter
 @param inter Intermediate comment lines prefix
-@param end Comment block end delimiter 
+@param end Comment block end delimiter
 (nb: for line comments, use start=None, inter="//", last=None, …), see <code>templates["python"]</code>.
-@param respect a re object (or any object who defines <code>bool match(self, str)</code> to identify  
+@param respect a re object (or any object who defines <code>bool match(self, str)</code> to identify
        lines which must be kept at the top of the file. (for shebangs and the like)
 """
 templates = dict();
@@ -27,20 +27,20 @@ templates["xml"] = {"start":"<!--", "inter":"", "end":"-->", "respect":re.compil
 
 # Mapping extensions to templates.
 extensions = {
-              "c": "c",
-              "h":"c",
-              "h.in":"c",
-              "cpp":"c",
-              "cxx":"c",
-			  "gengetopt": "python",
-              "hpp":"c",
-              "py":"python",
-              "htm":"xml",
-              "html":"xml",
-              "xhtml":"xml",
-              "xml":"xml",
-              "ui":"xml",
-              }
+    "c": "c",
+    "h":"c",
+    "h.in":"c",
+    "cpp":"c",
+    "cxx":"c",
+    "gengetopt": "python",
+    "hpp":"c",
+    "py":"python",
+    "htm":"xml",
+    "html":"xml",
+    "xhtml":"xml",
+    "xml":"xml",
+    "ui":"xml",
+}
 
 ws = re.compile("\s+")
 
@@ -66,7 +66,7 @@ def do(f, licText):
             do(g, licText)
     else:
         # Find template for file by extension.
-        # We don't use os.path.splitext because it doesn't allow to easily 
+        # We don't use os.path.splitext because it doesn't allow to easily
         # identify double extensions such as "h.in" or "xml.tpl".
         tpl = None
         for ext in extensions.keys():
@@ -78,18 +78,18 @@ def do(f, licText):
         if not tpl:
             # print("Skipping\t{0}\t(unrecognized type)".format(f))
             return False
-    
+
         contents = readFile(f)
-        
+
         maxLen = max(len(line.strip()) for line in licText)
-        
+
         tplStart = tpl["start"] if tpl["start"] else tpl["inter"]
         tplEnd = tpl["end"] if tpl["end"] else ""
-        
+
         startMark = tplStart + (maxLen - 1 - len(marks[0]) + len(tpl["inter"]) - len(tplStart)) * " " + marks[0]
-        endMark = tpl["inter"] + (maxLen - 1 - len(marks[1])) * " " + marks[1] + tplEnd 
-        
-        start = None  # 
+        endMark = tpl["inter"] + (maxLen - 1 - len(marks[1])) * " " + marks[1] + tplEnd
+
+        start = None  #
         end = None
         respect = -1
         respectByMatching = False  # Avoids leaving useless blank lines on top of file.
@@ -111,27 +111,27 @@ def do(f, licText):
                 end = i
                 break;
             elif not line.strip() and respect == i - 1:
-                respect = i 
+                respect = i
             if respect == i - 1 and tpl["respect"] and tpl["respect"].match(line):
                 respect = i
-                respectByMatching = True 
-                
-        respect = respect if (respectByMatching and start == None) or (start == None) else -2;        
-          
+                respectByMatching = True
+
+        respect = respect if (respectByMatching and start == None) or (start == None) else -2;
+
         if ((start == None) != (end == None)) or ((start != None) and end <= start):
             print("Aborting:\t{0}\tParse error ({1},{2},{3})".format(f, start, end, respect))
             return
-          
+
         if start != None:
             print("Replacing in:\t{0}\t({1} file)".format(f, extensions[ext]))
         else:
             print("Adding in:\t{0}\t({1} file)".format(f, extensions[ext]))
-            
+
         output = open(f, 'w')
-        
+
         for i in range(0, len(contents)):
             if i == respect + 1 or i == start:
-                if respect >= 0: 
+                if respect >= 0:
                     output.write("\n")  # Blank line before only on first insertion.
                 output.write(startMark + "\n")
                 for licLine in licText:
@@ -144,8 +144,8 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         usage(sys.argv[0])
         exit(-1)
-        
-    licText = readFile(sys.argv[1]) 
-        
+
+    licText = readFile(sys.argv[1])
+
     for f in sys.argv[2:]:
         do(f, licText)
