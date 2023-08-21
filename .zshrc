@@ -73,21 +73,21 @@ thblt_prompt_git_status() {
 
 thblt_prompt() {
     # Jobs indicator
-    [[ 0 != $(jobs | wc -l) ]] && echo -n "%F{45} ✵ " && thblt_prompt_reset
-
+    # Syntax: <Mikachu> in man zshall, search for conditional substrings in prompts
+    echo -n "%(1j.%F{45} ✵ .)"
     # Opening [
-    echo -n "%F{255}%B["
+     echo -n "%F{255}%B["
 
-    # Path
-    echo -n "%F{39}%B%~"
-    thblt_prompt_reset
+     # Path
+     echo -n "%F{39}%B%~"
+     thblt_prompt_reset
 
-    # Closing ]
-    echo -n "%F{255}%B]"
-    thblt_prompt_reset
+     # Closing ]
+     echo -n "%F{255}%B]"
+     thblt_prompt_reset
 
-    # User/host
-    if [[ -n $SSH_CONNECTION ]]; then
+     # User/host
+     if [[ -n $SSH_CONNECTION ]]; then
         # Aggressive colors
         echo -n " %F{253}%K{253}%F{232}%B ⇅ $HOST %b%F{0}";
         echo -n '%K{232}%F{253}'
