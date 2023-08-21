@@ -154,6 +154,8 @@ alias ee="${EDITO} --create-frame --no-wait"# Shorthand
 alias o=xdg-open
 alias nix-zsh="nix-shell --run zsh"
 
+alias proced="emacs -nw -q -e proced"
+
 texclean() {
     for f in $@; do
         f=$(basename -a --suffix .tex $f)
