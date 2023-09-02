@@ -3,6 +3,7 @@
 [user]
 	name = Thibault Polge
 	email = thibault@thb.lt
+	signingkey = 0xA98D88F522186A99A2DF19286F140DAA78FE8F2D!
 [Include]
 	path = "~/.config/git/signingkey"
 [commit]
