@@ -149,6 +149,7 @@ setopt share_history
 
 alias bc="bc -l"
 alias bgd="bg;disown;"
+alias beep="notify-send \"Beep beep beep\""
 alias e="${EDITOR} --no-wait" # Shorthand
 alias ee="${EDITO} --create-frame --no-wait"# Shorthand
 alias o=xdg-open
