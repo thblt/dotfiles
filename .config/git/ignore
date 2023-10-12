@@ -12,6 +12,7 @@
 .~lock*
 TAGS
 _region_.tex
+a.out
 dir
 dist-newstyle
 ltximg
