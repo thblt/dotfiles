@@ -166,6 +166,8 @@ texclean() {
            $f.bcf \
            $f.blg \
            $f.dvi \
+           $f.fdb_latexmk \
+           $f.fls \
            $f.idx \
            $f.ilg \
            $f.ind \
@@ -173,7 +175,9 @@ texclean() {
            $f.out \
            $f.run.xml \
            $f.synctex.gz \
-           $f.toc;
+           $f.toc \
+           $f.xdv \
+           texput.log;
     done;
 }
 
