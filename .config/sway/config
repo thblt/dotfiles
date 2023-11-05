@@ -79,6 +79,11 @@ bindcode $mod+233 exec "light -S 100"
 # Eject
 # @TODO Don't hardcode fuzzel
 bindsym $mod+Delete exec umount /run/media/$(whoami)/$(ls --color=no /run/media/$(whoami)/ | fuzzel --dmenu --prompt \"unmount? > \")
+# Printscreen
+bindsym Print exec grimshot copy area
+bindsym Alt+Print exec grimshot copy active
+bindsym $mod+Print exec grimshot save area
+bindsym $mod+Alt+Print exec grimshot save active
 
 # Volume
 bindcode 123 exec pactl set-sink-volume @DEFAULT_SINK@ +5%
