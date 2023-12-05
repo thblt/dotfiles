@@ -19,7 +19,6 @@ declare -a files=(
 
 declare -a cherrypick=(
     .cabal
-    .gnupg
     .local/bin
     .config
     .ssh
