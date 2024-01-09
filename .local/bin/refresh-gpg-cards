@@ -35,9 +35,11 @@ echo "Auth key:      $key_a"
 
 # Update gitconfig
 
-git config --global user.signingkey "0x$key_s!"
-# echo "[user]" > ~/.config/git/signingkey
-# echo "  signingkey = 0x$key_s!" >> ~/.config/git/signingkey
+# We don't write to the main config to avoid changes in git.
+# ~/.config/git/signingkey is gitignored.
+echo "[user]" > ~/.config/git/signingkey
+echo "  signingkey = 0x$key_s!" >> ~/.config/git/signingkey
+# git config --global user.signingkey "0x$key_s!"
 
 # Update sshcontrol
 
