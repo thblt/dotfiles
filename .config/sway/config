@@ -123,31 +123,45 @@ bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
 #
 # Workspaces:
+
+set $lc01 quotedbl
+set $lc02 parenleft
+set $lc03 parenright
+set $lc04 bracketleft
+set $lc05 bracketright
+set $lc06 at
+set $lc07 plus
+set $lc08 minus
+set $lc09 slash
+set $lc10 asterisk
+set $lc11 equal
+set $lc12 percent
+
 #
 bindsym $mod+1 move container to workspace 1
-bindsym $mod+quotedbl workspace 1
+bindsym $mod+$lc01 workspace 1
 bindsym $mod+2 move container to workspace 2
-bindsym $mod+guillemotleft workspace 2
+bindsym $mod+$lc02 workspace 2
 bindsym $mod+3 move container to workspace 3
-bindsym $mod+guillemotright workspace 3
+bindsym $mod+$lc03 workspace 3
 bindsym $mod+4 move container to workspace 4
-bindsym $mod+parenleft workspace 4
+bindsym $mod+$lc04 workspace 4
 bindsym $mod+5 move container to workspace 5
-bindsym $mod+parenright workspace 5
+bindsym $mod+$lc05 workspace 5
 bindsym $mod+6 move container to workspace 6
-bindsym $mod+at workspace 6
+bindsym $mod+$lc06 workspace 6
 bindsym $mod+7 move container to workspace 7
-bindsym $mod+plus workspace 7
+bindsym $mod+$lc07 workspace 7
 bindsym $mod+8 move container to workspace 8
-bindsym $mod+minus workspace 8
+bindsym $mod+$lc08 workspace 8
 bindsym $mod+9 move container to workspace 9
-bindsym $mod+slash workspace 9
+bindsym $mod+$lc09 workspace 9
 bindsym $mod+0 move container to workspace 10
-bindsym $mod+asterisk workspace 10
+bindsym $mod+$lc10 workspace 10
 bindsym $mod+degree move container to workspace 11
-bindsym $mod+equal workspace 11
+bindsym $mod+$lc11 workspace 11
 bindsym $mod+grave move container to workspace 12
-bindsym $mod+percent workspace 12
+bindsym $mod+$lc12 workspace 12
 
 #
 # Layout stuff:
