@@ -51,11 +51,6 @@ input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
     tap enabled
     }
 
-### Key bindings
-
-bindsym --release $mod exec "notify-send Belleê"
-bindsym --no-repeat $mod exec "notify-send Pressed"
-
 # Launchers
 bindsym $mod+dollar exec "alacritty"
 bindsym $mod+return exec "emacsclient-with-feedback server"
