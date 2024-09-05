@@ -1,8 +1,4 @@
-"cursor.style" = "Block"
-"debug.render_timer" = false
 live_config_reload = true
-"mouse.hide_when_typing" = false
-"window.opacity" = 0.9
 
 [bell]
 animation = "Ease"
@@ -249,17 +245,11 @@ key = "Down"
 mode = "AppCursor"
 
 [mouse]
-"mouse.faux_scrolling_lines" = 1
+hide_when_typing = false
 
 [[mouse.bindings]]
 action = "PasteSelection"
 mouse = "Middle"
-
-[mouse.double_click]
-threshold = 300
-
-[mouse.triple_click]
-threshold = 300
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>"
