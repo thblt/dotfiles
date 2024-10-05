@@ -30,17 +30,18 @@ exec udiskie
 
 ### Input configuration
 
-input "1:1:AT_Translated_Set_2_keyboard" {
-    # xkb_layout fr
-    # xkb_variant bepo
-    # xkb_options "caps:ctrl_modifier"
-    xkb_file ~/.config/sway/bepo_thblt.xkb
+input "type:keyboard" {
+    xkb_layout "fr,"
+    xkb_variant "bepo,"
+    xkb_options "caps:ctrl_modifier"
+    # xkb_file ~/.config/sway/bepo_thblt.xkb
     repeat_delay 200
     repeat_rate 60
     }
 
 input "4176:1031:Yubico_YubiKey_OTP+FIDO+CCID" {
-      xkb_layout us
+      xkb_layout "us"
+      xkb_variant "intl"
 }
 
 input "2:7:SynPS/2_Synaptics_TouchPad" {
@@ -127,10 +128,10 @@ bindsym $mod+Shift+$right move right
 # Workspaces:
 
 set $lc01 quotedbl
-set $lc02 parenleft
-set $lc03 parenright
-set $lc04 bracketleft
-set $lc05 bracketright
+set $lc02 guillemetleft
+set $lc03 guillemetright
+set $lc04 parenleft
+set $lc05 parenright
 set $lc06 at
 set $lc07 plus
 set $lc08 minus
