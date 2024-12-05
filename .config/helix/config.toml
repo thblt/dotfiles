@@ -2,7 +2,7 @@ theme = "onedark"
 
 [editor]
 line-number = "relative"
-mouse = false
+mouse = true
 auto-save = true
 
 [editor.cursor-shape]
