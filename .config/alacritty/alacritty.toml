@@ -12,23 +12,27 @@ background = "0x000000"
 foreground = "0xffffff"
 
 [font]
-size = 10
-
-[font.bold]
-family = "Iosevka"
-style = "Bold"
+size = 12
 
 [font.glyph_offset]
 x = 0
 y = 0
 
+[font.normal]
+family = "Iosevka"
+style = "Regular"
+
+[font.bold]
+family = "Iosevka"
+style = "Bold"
+
 [font.italic]
 family = "Iosevka"
 style = "Italic"
 
-[font.normal]
+[font.bold_italic]
 family = "Iosevka"
-style = "Regular"
+style = "Bold Italic"
 
 [font.offset]
 x = 0
