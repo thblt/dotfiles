@@ -1,6 +1,7 @@
 theme = "catppuccin_frappe"
 
 [editor]
+true-color = true
 line-number = "relative"
 mouse = false
 auto-save = true
