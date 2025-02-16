@@ -25,11 +25,26 @@
 set -e
 export LANG=C
 
+# WSL is special: we sign with the SSH key in ~/.ssh/id_ed25519_sk.pub
+
+if [ -f "/proc/sys/fs/binfmt_misc/WSLInterop" ]
+then
+  echo "In WSL"
+  {
+  echo "[user]"
+  echo "signingkey = ~/.ssh/id_ed25519_sk.pub"
+  echo "[gpg]"
+  echo "format = ssh"
+  } > ~/.config/git/signingkey
+
+  exit 0
+fi
+
 # Read key fingerprints
 # The fpr field contains the three fingerprints, in (some) order.
 fingerprints=$(gpg --card-status --with-colons | grep "^fpr:")
-key_s=$(echo $fingerprints | cut -d: -f2)
-key_a=$(echo $fingerprints | cut -d: -f4)
+key_s=$(echo "$fingerprints" | cut -d: -f2)
+key_a=$(echo "$fingerprints" | cut -d: -f4)
 echo "Signature key: $key_s"
 echo "Auth key:      $key_a"
 
