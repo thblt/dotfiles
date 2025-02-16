@@ -31,8 +31,8 @@ exec udiskie
 ### Input configuration
 
 input "type:keyboard" {
-    xkb_layout "fr,"
-    xkb_variant "bepo,"
+    xkb_layout "fr,fr"
+    xkb_variant "bepo,ergol"
     xkb_options "caps:ctrl_modifier"
     # xkb_file ~/.config/sway/bepo_thblt.xkb
     repeat_delay 200
@@ -52,6 +52,7 @@ input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
     tap enabled
     }
 
+bindsym $mod+F1 input * xkb_switch_layout next
 # Launchers
 bindsym $mod+dollar exec "alacritty -e fish"
 bindsym $mod+return exec "emacsclient-with-feedback server"
