@@ -10,7 +10,7 @@ Host ssl0.ovh.net
 User thibault@thb.lt
 AuthMechs LOGIN
 PassCmd "gopass show ssl0.ovh.net"
-SSLType IMAPS
+TLSType IMAPS
 
 ImapStore ovh-remote
 Account ovh
@@ -40,7 +40,7 @@ Host imap.ac-amiens.fr
 User tpolge
 AuthMechs LOGIN
 PassCmd "gopass show ac-amiens.fr"
-SSLType IMAPS
+TLSType IMAPS
 
 ImapStore ac-amiens-remote
 Account ac-amiens
@@ -69,7 +69,7 @@ Remove Both # Note that for safety, non-empty mailboxes are never deleted. (manp
 # User tpolge
 # AuthMechs LOGIN
 # PassCmd "gopass show ac-orleans-tours.fr"
-# SSLType IMAPS
+# TLSType IMAPS
 
 # ImapStore ac-orleans-tours-remote
 # Account ac-orleans-tours
