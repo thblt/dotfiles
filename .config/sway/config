@@ -247,3 +247,6 @@ bar {
         inactive_workspace #323232 #323232 #5c5c5c
     }
 }
+
+# Fixes portal issues on NixOS
+include /etc/sway/config.d/*
