@@ -13,6 +13,7 @@ set $down n
 set $up p
 set $right f
 
+set $term "wezterm"
 set $launcher "fuzzel"
 
 font Iosevka 10
@@ -54,7 +55,7 @@ input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
 
 bindsym $mod+F1 input * xkb_switch_layout next
 # Launchers
-bindsym $mod+dollar exec "alacritty -e fish"
+bindsym $mod+dollar exec "$term -e fish"
 bindsym $mod+return exec "emacsclient-with-feedback server"
 bindsym $mod+Shift+return exec "emacsclient-with-feedback"
 bindsym $mod+d exec $launcher
