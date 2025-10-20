@@ -118,7 +118,7 @@ bindsym $mod+Shift+$down move down
 bindsym $mod+Shift+$up move up
 bindsym $mod+Shift+$right move right
 
-# Workspaces
+# Workspaces, from num row
 
 bindcode $mod+10 workspace 1
 bindcode $mod+Shift+10 move container to workspace 1
@@ -144,6 +144,34 @@ bindcode $mod+20 workspace 11
 bindcode $mod+Shift+20 move container to workspace 11
 bindcode $mod+21 workspace 12
 bindcode $mod+Shift+21 move container to workspace 12
+
+# Workspaces, from numpad
+
+bindcode $mod+87 workspace 1
+bindcode $mod+Shift+87 move container to workspace 1
+bindcode $mod+88 workspace 2
+bindcode $mod+Shift+88 move container to workspace 2
+bindcode $mod+89 workspace 3
+bindcode $mod+Shift+89 move container to workspace 3
+bindcode $mod+83 workspace 4
+bindcode $mod+Shift+83 move container to workspace 4
+bindcode $mod+84 workspace 5
+bindcode $mod+Shift+84 move container to workspace 5
+bindcode $mod+85 workspace 6
+bindcode $mod+Shift+85 move container to workspace 6
+bindcode $mod+79 workspace 7
+bindcode $mod+Shift+79 move container to workspace 7
+bindcode $mod+80  workspace 8
+bindcode $mod+Shift+80 move container to workspace 8
+bindcode $mod+81 workspace 9
+bindcode $mod+Shift+81 move container to workspace 9
+# bindcode $mod+19 workspace 10
+# bindcode $mod+Shift+19 move container to workspace 10
+# bindcode $mod+20 workspace 11
+# bindcode $mod+Shift+20 move container to workspace 11
+# bindcode $mod+21 workspace 12
+# bindcode $mod+Shift+21 move container to workspace 12
+
 
 #
 # Layout stuff:
