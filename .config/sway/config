@@ -35,23 +35,14 @@ input "type:keyboard" {
     xkb_layout "fr,fr"
     xkb_variant "bepo,ergol"
     xkb_options "caps:ctrl_modifier"
-    # xkb_file ~/.config/sway/bepo_thblt.xkb
     repeat_delay 200
     repeat_rate 60
     }
 
-input "4176:1031:Yubico_YubiKey_OTP+FIDO+CCID" {
-      xkb_layout "us"
-      xkb_variant "intl"
-}
-
-input "2:7:SynPS/2_Synaptics_TouchPad" {
-      tap enable
-}
-
-input 1739:31251:DLL07BE:01_06CB:7A13_Touchpad {
-    tap enabled
-    }
+# input "4176:1031:Yubico_YubiKey_OTP+FIDO+CCID" {
+#       xkb_layout "us,us,"
+#       xkb_variant "intl,intl,"
+# }
 
 bindsym $mod+F1 input * xkb_switch_layout next
 # Launchers
@@ -82,7 +73,7 @@ bindcode $mod+232 exec "light -S 1"
 bindcode $mod+233 exec "light -S 100"
 
 # Eject
-# @TODO Don't hardcode fuzzel
+# @TODO Don't hardcode fuzzel, quote path to support mountpoints with spaces.
 bindsym $mod+Delete exec umount /run/media/$(whoami)/$(ls --color=no /run/media/$(whoami)/ | fuzzel --dmenu --prompt \"unmount? > \")
 # Printscreen
 bindsym Print exec grimshot copy area
