@@ -35,6 +35,7 @@ input "type:keyboard" {
     xkb_layout "fr,fr"
     xkb_variant "ergol,bepo"
     xkb_options "caps:ctrl_modifier"
+    xkb_numlock enabled
     repeat_delay 200
     repeat_rate 60
     }
