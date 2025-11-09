@@ -44,14 +44,89 @@ input "type:keyboard" {
 #       xkb_layout "us,us,"
 #       xkb_variant "intl,intl,"
 # }
+# All bindings are positional
+
+#
+set $KC_1 10
+set $KC_2 11
+set $KC_3 12
+set $KC_4 13
+set $KC_5 14
+set $KC_6 15
+set $KC_7 16
+set $KC_8 17
+set $KC_9 18
+set $KC_0 19
+#
+set $KC_Q 24
+set $KC_W 25
+set $KC_E 26
+set $KC_R 27
+set $KC_T 28
+set $KC_Y 29
+set $KC_U 30
+set $KC_I 31
+set $KC_O 32
+set $KC_P 33
+#
+set $KC_A 38
+set $KC_S 39
+set $KC_D 40
+set $KC_F 41
+set $KC_G 42
+set $KC_H 43
+set $KC_J 44
+set $KC_K 45
+set $KC_L 46
+set $KC_SEMICOLON 47
+#
+set $KC_Z 52
+set $KC_X 53
+set $KC_C 54
+set $KC_V 55
+set $KC_B 56
+set $KC_N 57
+set $KC_M 58
+set $KC_COMMA 59
+set $KC_DOT 60
+set $KC_SLASH 61
+
+# Keypad
+set $KC_KP0 90
+set $KC_KP1 87
+set $KC_KP2 88
+set $KC_KP3 89
+set $KC_KP4 83
+set $KC_KP5 84
+set $KC_KP6 85
+set $KC_KP7 79
+set $KC_KP8 80
+set $KC_KP9 81
+
+# "Virtual keypad", like the nav layer
+
+set $KC_VKP0 $KC_H
+set $KC_VKP1 $KC_J
+set $KC_VKP2 $KC_K
+set $KC_VKP3 $KC_L
+set $KC_VKP4 $KC_M
+set $KC_VKP5 $KC_COMMA
+set $KC_VKP6 $KC_DOT
+set $KC_VKP7 $KC_U
+set $KC_VKP8 $KC_I
+set $KC_VKP9 $KC_O
+
+# Virtual arrows on the left home row
+set $KC_VUP $KC_E
+set $KC_VLEFT $KC_S
+set $KC_VDOWN $KC_D
+set $KC_VRIGHT $KC_F
 
 bindsym $mod+F1 input * xkb_switch_layout next
 # Launchers
 bindcode $mod+49 exec $term -e fish # Key left of 1
 bindsym $mod+return exec "emacsclient-with-feedback server"
 bindsym $mod+Shift+return exec "emacsclient-with-feedback"
-bindsym $mod+d exec $launcher
-bindsym $mod+j exec emoji-menu
 
 # Audio
 bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master unmute ; amixer -c 0 set Master 2-;"
@@ -88,10 +163,7 @@ bindcode 122 exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindcode 121 exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 
 # Kill focused window
-bindsym $mod+c kill
-
-# Lock
-bindsym $mod+escape exec swaylock -f -c 000000
+bindcode $mod+$KC_W kill
 
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
@@ -100,116 +172,135 @@ bindsym $mod+escape exec swaylock -f -c 000000
 # mouse button for dragging.
 floating_modifier $mod normal
 
-# Reload the configuration file
-bindsym $mod+Shift+q reload
-
+# Lock session
+bindcode $mod+$KC_A exec swaylock -f -c 000000
 # Exit sway (logs you out of your Wayland session)
-bindsym $mod+Shift+escape exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
-#
+bindcode $mod+Shift+$KC_A exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+# Reload config
+bindcode $mod+$KC_Z reload
+
 # Moving around:
-#
+
+# Workspaces.  Three sets of positional bindings: from num row, num
+# pad and the "virtual num pad" of ergo split keyboards (number
+# layer)
+
+# for i in range(10):
+#     ws = i + 1
+#     key = 0 if ws == 10 else ws
+#     for g in ["KC_", "KC_KP", "KC_VKP"]:
+#         print(f"bindcode $mod+${g}{key} workspace {ws}")
+#         print(f"bindcode $mod+Shift+${g}{key} move container to workspace {ws}")
+
+bindcode $mod+$KC_1 workspace 1
+bindcode $mod+Shift+$KC_1 move container to workspace 1
+bindcode $mod+$KC_KP1 workspace 1
+bindcode $mod+Shift+$KC_KP1 move container to workspace 1
+bindcode $mod+$KC_VKP1 workspace 1
+bindcode $mod+Shift+$KC_VKP1 move container to workspace 1
+bindcode $mod+$KC_2 workspace 2
+bindcode $mod+Shift+$KC_2 move container to workspace 2
+bindcode $mod+$KC_KP2 workspace 2
+bindcode $mod+Shift+$KC_KP2 move container to workspace 2
+bindcode $mod+$KC_VKP2 workspace 2
+bindcode $mod+Shift+$KC_VKP2 move container to workspace 2
+bindcode $mod+$KC_3 workspace 3
+bindcode $mod+Shift+$KC_3 move container to workspace 3
+bindcode $mod+$KC_KP3 workspace 3
+bindcode $mod+Shift+$KC_KP3 move container to workspace 3
+bindcode $mod+$KC_VKP3 workspace 3
+bindcode $mod+Shift+$KC_VKP3 move container to workspace 3
+bindcode $mod+$KC_4 workspace 4
+bindcode $mod+Shift+$KC_4 move container to workspace 4
+bindcode $mod+$KC_KP4 workspace 4
+bindcode $mod+Shift+$KC_KP4 move container to workspace 4
+bindcode $mod+$KC_VKP4 workspace 4
+bindcode $mod+Shift+$KC_VKP4 move container to workspace 4
+bindcode $mod+$KC_5 workspace 5
+bindcode $mod+Shift+$KC_5 move container to workspace 5
+bindcode $mod+$KC_KP5 workspace 5
+bindcode $mod+Shift+$KC_KP5 move container to workspace 5
+bindcode $mod+$KC_VKP5 workspace 5
+bindcode $mod+Shift+$KC_VKP5 move container to workspace 5
+bindcode $mod+$KC_6 workspace 6
+bindcode $mod+Shift+$KC_6 move container to workspace 6
+bindcode $mod+$KC_KP6 workspace 6
+bindcode $mod+Shift+$KC_KP6 move container to workspace 6
+bindcode $mod+$KC_VKP6 workspace 6
+bindcode $mod+Shift+$KC_VKP6 move container to workspace 6
+bindcode $mod+$KC_7 workspace 7
+bindcode $mod+Shift+$KC_7 move container to workspace 7
+bindcode $mod+$KC_KP7 workspace 7
+bindcode $mod+Shift+$KC_KP7 move container to workspace 7
+bindcode $mod+$KC_VKP7 workspace 7
+bindcode $mod+Shift+$KC_VKP7 move container to workspace 7
+bindcode $mod+$KC_8 workspace 8
+bindcode $mod+Shift+$KC_8 move container to workspace 8
+bindcode $mod+$KC_KP8 workspace 8
+bindcode $mod+Shift+$KC_KP8 move container to workspace 8
+bindcode $mod+$KC_VKP8 workspace 8
+bindcode $mod+Shift+$KC_VKP8 move container to workspace 8
+bindcode $mod+$KC_9 workspace 9
+bindcode $mod+Shift+$KC_9 move container to workspace 9
+bindcode $mod+$KC_KP9 workspace 9
+bindcode $mod+Shift+$KC_KP9 move container to workspace 9
+bindcode $mod+$KC_VKP9 workspace 9
+bindcode $mod+Shift+$KC_VKP9 move container to workspace 9
+bindcode $mod+$KC_0 workspace 10
+bindcode $mod+Shift+$KC_0 move container to workspace 10
+bindcode $mod+$KC_KP0 workspace 10
+bindcode $mod+Shift+$KC_KP0 move container to workspace 10
+
+# Experimenting
+bindcode $mod+$KC_H exec $launcher
+bindcode $mod+$KC_SEMICOLON exec $term -e fish
+
 # Move your focus around
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+bindsym $mod+left focus left
+bindcode $mod+$KC_VLEFT focus left
+bindsym $mod+down focus down
+bindcode $mod+$KC_VDOWN focus down
+bindsym $mod+up focus up
+bindcode $mod+$KC_VUP focus up
+bindsym $mod+right focus right
+bindcode $mod+$KC_VRIGHT focus right
 # Move the focused window with the same, but add Shift
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
-
-# Workspaces, from num row
-
-bindcode $mod+10 workspace 1
-bindcode $mod+Shift+10 move container to workspace 1
-bindcode $mod+11 workspace 2
-bindcode $mod+Shift+11 move container to workspace 2
-bindcode $mod+12 workspace 3
-bindcode $mod+Shift+12 move container to workspace 3
-bindcode $mod+13 workspace 4
-bindcode $mod+Shift+13 move container to workspace 4
-bindcode $mod+14 workspace 5
-bindcode $mod+Shift+14 move container to workspace 5
-bindcode $mod+15 workspace 6
-bindcode $mod+Shift+15 move container to workspace 6
-bindcode $mod+16 workspace 7
-bindcode $mod+Shift+16 move container to workspace 7
-bindcode $mod+17 workspace 8
-bindcode $mod+Shift+17 move container to workspace 8
-bindcode $mod+18 workspace 9
-bindcode $mod+Shift+18 move container to workspace 9
-bindcode $mod+19 workspace 10
-bindcode $mod+Shift+19 move container to workspace 10
-bindcode $mod+20 workspace 11
-bindcode $mod+Shift+20 move container to workspace 11
-bindcode $mod+21 workspace 12
-bindcode $mod+Shift+21 move container to workspace 12
-
-# Workspaces, from numpad
-
-bindcode $mod+87 workspace 1
-bindcode $mod+Shift+87 move container to workspace 1
-bindcode $mod+88 workspace 2
-bindcode $mod+Shift+88 move container to workspace 2
-bindcode $mod+89 workspace 3
-bindcode $mod+Shift+89 move container to workspace 3
-bindcode $mod+83 workspace 4
-bindcode $mod+Shift+83 move container to workspace 4
-bindcode $mod+84 workspace 5
-bindcode $mod+Shift+84 move container to workspace 5
-bindcode $mod+85 workspace 6
-bindcode $mod+Shift+85 move container to workspace 6
-bindcode $mod+79 workspace 7
-bindcode $mod+Shift+79 move container to workspace 7
-bindcode $mod+80  workspace 8
-bindcode $mod+Shift+80 move container to workspace 8
-bindcode $mod+81 workspace 9
-bindcode $mod+Shift+81 move container to workspace 9
-# bindcode $mod+19 workspace 10
-# bindcode $mod+Shift+19 move container to workspace 10
-# bindcode $mod+20 workspace 11
-# bindcode $mod+Shift+20 move container to workspace 11
-# bindcode $mod+21 workspace 12
-# bindcode $mod+Shift+21 move container to workspace 12
-
-
-#
+bindsym $mod+Shift+left move left
+bindcode $mod+Shift+$KC_VLEFT move left
+bindsym $mod+Shift+down move down
+bindcode $mod+Shift+$KC_VDOWN move down
+bindsym $mod+Shift+up move up
+bindcode $mod+Shift+$KC_VUP move up
+bindsym $mod+Shift+right move right
+bindcode $mod+Shift+$KC_VRIGHT move right
 # Layout stuff:
 #
 # You can "split" the current object of your focus with
 # $mod+b or $mod+v, for horizontal and vertical splits
 # respectively.
-bindsym $mod+q splith
-bindsym $mod+g splitv
-
+bindcode $mod+$KC_T splitv
+bindcode $mod+$KC_B splith
 # Switch the current container between different layout styles
-bindsym $mod+eacute layout toggle tabbed splith splitv
+bindcode $mod+$KC_G layout toggle tabbed splith splitv
+
 
 # Make the current focus fullscreen
 bindsym $mod+f11 fullscreen
 
 # Toggle the current focus between tiling and floating mode
-bindsym $mod+Shift+space floating toggle
+bindcode $mod+$KC_Y floating toggle
 
-# Swap focus between the tiling area and the floating area
-bindsym $mod+space focus mode_toggle
+# Swap focus between the tiling area and the floating area bindcode
+bindcode $mod+$KC_N focus mode_toggle
 
 # Move focus to the parent container
-bindsym $mod+a focus parent
+bindcode $mod+$KC_Q focus parent
 #
 # Scratchpad:
 #
 # Move the currently focused window to the scratchpad
-bindsym $mod+w move scratchpad
-
-# Show the next scratchpad window or hide the focused scratchpad window.
-# If there are multiple scratchpad windows, this command cycles through them.
-bindsym $mod+z scratchpad show
-
-# Add gaps to workspace
-bindsym $mod+Left gaps horizontal current minus 50
-bindsym $mod+Right gaps horizontal current plus 50
+bindcode $mod+$KC_P move scratchpad
+bindcode $mod+$KC_SLASH scratchpad show
 
 # Dismiss notifications
 bindsym $mod+backspace exec makoctl dismiss -a
@@ -222,16 +313,20 @@ mode "resize" {
     # right will grow the containers width
     # up will shrink the containers height
     # down will grow the containers height
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
+    bindsym $mod+left resize shrink width 10px
+    bindcode $mod+$KC_VLEFT resize shrink width 10px
+    bindsym $mod+down resize grow height 10px
+    bindcode $mod+$KC_VDOWN resize grow height 10px
+    bindsym $mod+up resize shrink height 10px
+    bindcode $mod+$KC_VUP resize shrink height 10px
+    bindsym $mod+right resize grow width 10px
+    bindcode $mod+$KC_VRIGHT resize grow width 10px
 
     # Return to default mode
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+r mode "resize"
+bindcode $mod+$KC_C mode "resize"
 
 #
 # Status Bar:
